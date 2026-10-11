@@ -2,23 +2,23 @@
   "$schema": "https://raw.githubusercontent.com/CycloneDX/specification/1.6/schema/bom-1.6.schema.json",
   "bomFormat": "CycloneDX",
   "specVersion": "1.6",
-  "serialNumber": "urn:uuid:f2006179-6bc4-458a-ad7d-6baebcab6e60",
+  "serialNumber": "urn:uuid:6fd81e97-e9df-4ba7-9e7f-04bbf7fb38c7",
   "version": 1,
   "metadata": {
-    "timestamp": "2026-09-16T07:12:12.278055+00:00",
+    "timestamp": "2026-10-02T15:08:25.204387+00:00",
     "component": {
       "type": "library",
-      "bom-ref": "pkg:github/open-quantum-safe/liboqs@5e97276fc3c1baeb7bff3c6569c9dfd49428b9f1",
+      "bom-ref": "pkg:github/open-quantum-safe/liboqs@3751c58b31d231a3cd735e172388b67ba373e50f",
       "name": "liboqs",
-      "version": "5e97276fc3c1baeb7bff3c6569c9dfd49428b9f1"
+      "version": "3751c58b31d231a3cd735e172388b67ba373e50f"
     }
   },
   "components": [
     {
       "type": "library",
-      "bom-ref": "pkg:github/open-quantum-safe/liboqs@5e97276fc3c1baeb7bff3c6569c9dfd49428b9f1",
+      "bom-ref": "pkg:github/open-quantum-safe/liboqs@3751c58b31d231a3cd735e172388b67ba373e50f",
       "name": "liboqs",
-      "version": "5e97276fc3c1baeb7bff3c6569c9dfd49428b9f1"
+      "version": "3751c58b31d231a3cd735e172388b67ba373e50f"
     },
     {
       "type": "cryptographic-asset",
@@ -1342,6 +1342,26 @@
     },
     {
       "type": "cryptographic-asset",
+      "bom-ref": "alg:ML-KEM-512:ppc64le:ppc64le",
+      "name": "ML-KEM",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "ML-KEM-512",
+          "primitive": "kem",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "encapsulate",
+            "decapsulate"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "ppc64le"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
       "bom-ref": "alg:ML-KEM-768:ref:generic",
       "name": "ML-KEM",
       "cryptoProperties": {
@@ -1402,6 +1422,26 @@
     },
     {
       "type": "cryptographic-asset",
+      "bom-ref": "alg:ML-KEM-768:ppc64le:ppc64le",
+      "name": "ML-KEM",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "ML-KEM-768",
+          "primitive": "kem",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "encapsulate",
+            "decapsulate"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "ppc64le"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
       "bom-ref": "alg:ML-KEM-1024:ref:generic",
       "name": "ML-KEM",
       "cryptoProperties": {
@@ -1457,6 +1497,26 @@
           ],
           "nistQuantumSecurityLevel": 5,
           "implementationPlatform": "armv8-a"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:ML-KEM-1024:ppc64le:ppc64le",
+      "name": "ML-KEM",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "ML-KEM-1024",
+          "primitive": "kem",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "encapsulate",
+            "decapsulate"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "ppc64le"
         }
       }
     },
@@ -9807,7 +9867,7 @@
   ],
   "dependencies": [
     {
-      "ref": "pkg:github/open-quantum-safe/liboqs@5e97276fc3c1baeb7bff3c6569c9dfd49428b9f1",
+      "ref": "pkg:github/open-quantum-safe/liboqs@3751c58b31d231a3cd735e172388b67ba373e50f",
       "provides": [
         "alg:BIKE-L1:master:x86_64",
         "alg:BIKE-L3:master:x86_64",
@@ -9875,12 +9935,15 @@
         "alg:ML-KEM-512:ref:generic",
         "alg:ML-KEM-512:x86_64:x86_64",
         "alg:ML-KEM-512:aarch64:armv8-a",
+        "alg:ML-KEM-512:ppc64le:ppc64le",
         "alg:ML-KEM-768:ref:generic",
         "alg:ML-KEM-768:x86_64:x86_64",
         "alg:ML-KEM-768:aarch64:armv8-a",
+        "alg:ML-KEM-768:ppc64le:ppc64le",
         "alg:ML-KEM-1024:ref:generic",
         "alg:ML-KEM-1024:x86_64:x86_64",
         "alg:ML-KEM-1024:aarch64:armv8-a",
+        "alg:ML-KEM-1024:ppc64le:ppc64le",
         "alg:NTRU-HPS-2048-509:clean:generic",
         "alg:NTRU-HPS-2048-509:avx2:x86_64",
         "alg:NTRU-HPS-2048-677:clean:generic",
@@ -10716,6 +10779,12 @@
       ]
     },
     {
+      "ref": "alg:ML-KEM-512:ppc64le:ppc64le",
+      "dependsOn": [
+        "alg:sha3"
+      ]
+    },
+    {
       "ref": "alg:ML-KEM-768:ref:generic",
       "dependsOn": [
         "alg:sha3"
@@ -10734,6 +10803,12 @@
       ]
     },
     {
+      "ref": "alg:ML-KEM-768:ppc64le:ppc64le",
+      "dependsOn": [
+        "alg:sha3"
+      ]
+    },
+    {
       "ref": "alg:ML-KEM-1024:ref:generic",
       "dependsOn": [
         "alg:sha3"
@@ -10747,6 +10822,12 @@
     },
     {
       "ref": "alg:ML-KEM-1024:aarch64:armv8-a",
+      "dependsOn": [
+        "alg:sha3"
+      ]
+    },
+    {
+      "ref": "alg:ML-KEM-1024:ppc64le:ppc64le",
       "dependsOn": [
         "alg:sha3"
       ]

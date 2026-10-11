@@ -79,6 +79,19 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: false
+  - upstream: primary-upstream
+    upstream-id: ppc64le
+    supported-platforms:
+    - architecture: ppc64le
+      operating_systems:
+      - Linux
+      required_flags:
+      - power8_vector
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
   - upstream: cupqc-cuda
     upstream-id: cuda
     supported-platforms:
@@ -137,6 +150,19 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: false
+  - upstream: primary-upstream
+    upstream-id: ppc64le
+    supported-platforms:
+    - architecture: ppc64le
+      operating_systems:
+      - Linux
+      required_flags:
+      - power8_vector
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
   - upstream: cupqc-cuda
     upstream-id: cuda
     supported-platforms:
@@ -190,6 +216,19 @@ parameter-sets:
       operating_systems:
       - Linux
       - Darwin
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+  - upstream: primary-upstream
+    upstream-id: ppc64le
+    supported-platforms:
+    - architecture: ppc64le
+      operating_systems:
+      - Linux
+      required_flags:
+      - power8_vector
     common-crypto:
     - SHA3: liboqs
     no-secret-dependent-branching-claimed: true

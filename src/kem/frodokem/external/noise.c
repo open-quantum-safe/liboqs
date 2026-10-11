@@ -4,8 +4,15 @@
 * Abstract: noise sampling functions
 *********************************************************************************************/
 
-void frodo_sample_n(uint16_t *s, const size_t n) 
-{ // Fills vector s with n samples from the noise distribution which requires 16 bits to sample. 
+/* Keep gcc on ppc64(le) from inlining and vectorizing this into an out-of-bounds read (#2314) */
+#if defined(__GNUC__) && !defined(__clang__) && defined(__powerpc64__)
+#define OQS_FRODO_SAMPLE_N_NO_INLINE __attribute__((noinline))
+#else
+#define OQS_FRODO_SAMPLE_N_NO_INLINE
+#endif
+
+OQS_FRODO_SAMPLE_N_NO_INLINE void frodo_sample_n(uint16_t *s, const size_t n)
+{ // Fills vector s with n samples from the noise distribution which requires 16 bits to sample.
   // The distribution is specified by its CDF.
   // Input: pseudo-random values (2*n bytes) passed in s. The input is overwritten by the output.
     unsigned int i, j;

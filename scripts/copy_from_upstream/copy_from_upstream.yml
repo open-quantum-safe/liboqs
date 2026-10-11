@@ -45,7 +45,7 @@ upstreams:
     git_commit: d1b2fe782888bdb761a50336012923180be7f502
     kem_meta_path: 'integration/liboqs/{pretty_name_full}_META.yml'
     kem_scheme_path: '.'
-    patches: [mlkem-native-exclude-ppc64le.patch]
+    patches: []
     preserve_folder_structure: True
   -
     name: cupqc
