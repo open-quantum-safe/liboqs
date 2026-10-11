@@ -15,6 +15,7 @@ extern "C"
 
 #include <stddef.h>
 #include <stdint.h>
+#include "cbmc.h"
 
   typedef struct
   { /* state context */
@@ -31,7 +32,13 @@ extern "C"
 
   /* incremental interfece */
   void sha3_init(sha3_var_t *c,
-                 size_t md_sz); /* md_sz = hash output in bytes */
+                 size_t md_sz) /* md_sz = hash output in bytes */
+  __contract__(
+    requires(memory_no_alias(c, sizeof(sha3_var_t)))
+    requires(md_sz <= 64)
+    assigns(object_whole(c))
+  );
+
   void sha3_update(sha3_var_t *c, const void *data, size_t data_sz);
   void sha3_final(sha3_var_t *c, uint8_t *md); /* digest goes to md */
 
