@@ -31,3 +31,10 @@ jobs:
     uses: ./.github/workflows/sig-bench.yml
     permissions:
       contents: write
+
+  ct-tooling:
+    uses: ./.github/workflows/ct-tooling.yml
+    permissions:
+      contents: read
+    with:
+      algorithms: 'ML-KEM-512,ML-KEM-768,ML-KEM-1024'
