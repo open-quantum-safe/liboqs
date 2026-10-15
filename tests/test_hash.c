@@ -255,6 +255,11 @@ static int do_arbitrary_hash(void (*hash)(uint8_t *, const uint8_t *, size_t), s
 	}
 	// run main SHA-256 API
 	uint8_t *output = OQS_MEM_malloc(hash_len);
+	if (output == NULL) {
+		fprintf(stderr, "ERROR: OQS_MEM_malloc failed\n");
+		OQS_MEM_insecure_free(msg);
+		return -1;
+	}
 	hash(output, msg, msg_len);
 	print_hex(output, hash_len);
 	OQS_MEM_insecure_free(output);
