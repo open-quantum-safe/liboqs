@@ -142,10 +142,10 @@ static OQS_STATUS init_vectors(void) {
 		}
 		cached[i].sig = sig;
 
-		cached[i].public_key = OQS_MEM_malloc(sig->length_public_key);
-		cached[i].signature = OQS_MEM_malloc(sig->length_signature);
 		cached[i].signature_len = sig->length_signature;
 		cached[i].message_len = strlen(KAT_HEX[i].msg_hex) / 2;
+		cached[i].public_key = OQS_MEM_malloc(sig->length_public_key);
+		cached[i].signature = OQS_MEM_malloc(sig->length_signature);
 		cached[i].message = OQS_MEM_malloc(cached[i].message_len);
 
 		if (!cached[i].public_key || !cached[i].message || !cached[i].signature) {
