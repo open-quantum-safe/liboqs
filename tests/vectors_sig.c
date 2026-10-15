@@ -1157,6 +1157,10 @@ int main(int argc, char **argv) {
 				free_prng_output_stream = true;
 				/* we actually want half the length of the public key but we double for a string. give extra byte for null char. */
 				prng_output_stream = OQS_MEM_malloc(sig->length_public_key + 1);
+				if (prng_output_stream == NULL) {
+					fprintf(stderr, "[vectors_sig] ERROR: OQS_MEM_malloc failed!\n");
+					goto err;
+				}
 				memcpy(prng_output_stream, sigGen_sk + 2 * sig->length_public_key, sig->length_public_key);
 				prng_output_stream[sig->length_public_key] = '\0';
 			}
@@ -1224,6 +1228,10 @@ int main(int argc, char **argv) {
 				free_prng_output_stream = true;
 				/* we actually want half the length of the public key but we double for a string. give extra byte for null char. */
 				prng_output_stream = OQS_MEM_malloc(sig->length_public_key + 1);
+				if (prng_output_stream == NULL) {
+					fprintf(stderr, "[vectors_sig] ERROR: OQS_MEM_malloc failed!\n");
+					goto err;
+				}
 				memcpy(prng_output_stream, sigGen_sk + 2 * sig->length_public_key, sig->length_public_key);
 				prng_output_stream[sig->length_public_key] = '\0';
 			}
