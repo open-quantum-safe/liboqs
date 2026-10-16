@@ -89,9 +89,5 @@ jobs:
       security-events: write
 
   codeql:
-    needs: basic-checks
+    needs: check-push-result
     uses: ./.github/workflows/codeql.yml
-    secrets: inherit
-    permissions:
-      contents: read
-      security-events: write

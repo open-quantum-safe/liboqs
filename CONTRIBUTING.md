@@ -120,10 +120,38 @@ please check the [open issues tagged "good first issue" or "help wanted"](https:
 
 You can also take a look at the [contribution wishlist](https://github.com/open-quantum-safe/liboqs/wiki/Contribution-wishlist) for more substantial contributions we are interested in.
 
-## Verifying the CodeQL OpenSSL return-check query
-The query detects EVP_* calls not wrapped in OQS_OPENSSL_GUARD.
-A deliberately bad example lives in
-.github/codeql/test/openssl-return-check-bad.c.
-When CodeQL runs, any match against this file confirms the query
-is scanning correctly. CI will flag new violations automatically
-on every PR.
+## Custom CodeQL queries
+
+There are two ways in which CodeQL runs in this repo: via GitHub's standard
+code scanning settings, and via `.github/workflows/codeql.yml`:
+- GitHub's standard scans are run via liboqs' repository code scanning settings.
+  Results appear as code scanning alerts in the repository's Security tab.
+- `.github/workflows/codeql.yml` runs liboqs's own CodeQL queries on every pull
+  request and fails if any of them reports a result. Each result is shown as an
+  error annotation on the pull request and in the job log. Its results are not uploaded 
+  to code scanning: while default setup is enabled, GitHub rejects CodeQL results uploaded 
+  by other workflows ([details](https://docs.github.com/en/code-security/reference/code-scanning/sarif-files/troubleshoot-sarif-uploads/default-setup-enabled)).
+  The workflow can also be run manually from the repository's Actions tab.
+
+The custom queries and their tests live in `.github/codeql/`:
+- `.github/codeql/queries/` holds the queries (e.g. `openssl-return-check.ql`,
+  which flags `EVP_*` calls whose status code is discarded instead of checked
+  with `OQS_OPENSSL_GUARD`)
+- `.github/codeql/test/<query-name>/` holds a unit test for each query: a small
+  C file with good and bad examples, a `.qlref` naming the query, and a
+  `.expected` file listing the results the query must report.
+
+The commands below need the CodeQL CLI: either install the GitHub CLI extension
+(`gh extension install github/gh-codeql`, then use `gh codeql` in place of
+`codeql`), or download a CodeQL bundle from the
+[github/codeql-action releases](https://github.com/github/codeql-action/releases).
+
+To add a query, add the `.ql` file and its test directory, then generate the
+`.expected` file and check that it lists exactly the bad examples:
+
+```bash
+codeql test run --learn .github/codeql/test
+```
+
+Run `codeql test run .github/codeql/test` (without `--learn`) to check that
+existing queries still behave as expected.
