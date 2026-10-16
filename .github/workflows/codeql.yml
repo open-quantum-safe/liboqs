@@ -47,7 +47,9 @@ jobs:
           config-file: ./.github/codeql/codeql-config.yml
       - name: Build liboqs
         # CodeQL only sees compiled code: build the default algorithms, with
-        # OpenSSL backing every primitive that supports it.
+        # OpenSSL backing every primitive that supports it. On x86_64 runners
+        # OQS_DIST_BUILD forces OQS_USE_AES_OPENSSL off, so aes_ossl.c is not
+        # analysed.
         run: |
           cmake -S . -B build -DOQS_USE_AES_OPENSSL=ON -DOQS_USE_SHA2_OPENSSL=ON -DOQS_USE_SHA3_OPENSSL=ON
           cmake --build build --parallel "$(nproc)"

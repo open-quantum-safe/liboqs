@@ -31,5 +31,5 @@ def main(sarif_files):
 
 if __name__ == '__main__':
     if len(sys.argv) < 2:
-        sys.exit(__doc__)
+        sys.exit("usage: report_results.py SARIF_FILE...")
     sys.exit(main(sys.argv[1:]))

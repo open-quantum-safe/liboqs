@@ -127,8 +127,9 @@ code scanning settings, and via `.github/workflows/codeql.yml`:
 - GitHub's standard scans are run via liboqs' repository code scanning settings.
   Results appear as code scanning alerts in the repository's Security tab.
 - `.github/workflows/codeql.yml` runs liboqs's own CodeQL queries on every pull
-  request and fails if any of them reports a result. Each result is shown as an
-  error annotation on the pull request and in the job log. Its results are not uploaded 
+  request and fails if any of them reports a result. Every result is listed in
+  the job log; GitHub also shows the first 10 as error annotations on the pull
+  request. Its results are not uploaded 
   to code scanning: while default setup is enabled, GitHub rejects CodeQL results uploaded 
   by other workflows ([details](https://docs.github.com/en/code-security/reference/code-scanning/sarif-files/troubleshoot-sarif-uploads/default-setup-enabled)).
   The workflow can also be run manually from the repository's Actions tab.
