@@ -16,7 +16,7 @@ nist-round: 3
 standardization-status: Under [NIST](https://csrc.nist.gov/Projects/pqc-dig-sig/round-3-additional-signatures)
   consideration
 spec-version: NIST Round 3
-upstream-maintenance: Best effort
+upstream-maintenance: TBD
 upstream-statement-url: null
 oqs-support-tier: 3
 primary-upstream:

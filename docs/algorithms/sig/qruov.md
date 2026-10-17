@@ -19,7 +19,7 @@
 
 ## Support
 
-- **Upstream maintenance**: Best effort
+- **Upstream maintenance**: TBD
 - **OQS support tier**: Tier 3
 
 ## Parameter set summary
