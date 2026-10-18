@@ -1,6 +1,13 @@
 #include <string.h>
 #include <immintrin.h>
+
+#if defined(QRUOV_PRIM_OQS)
+#include <oqs/oqsconfig.h>
+#endif
+
+#if !defined(QRUOV_PRIM_OQS) || defined(OQS_USE_PTHREADS)
 #include <pthread.h>
+#endif
 #include "qruov.h"
 #include "qrop.h"
 #include "prg.h"
@@ -17,7 +24,11 @@
 
 __attribute__((aligned(16))) uint8_t qruov_avx2_bextmask[1u << 16][16];
 __attribute__((aligned(16))) uint8_t qruov_avx2_bdepmask[1u << 16][16];
+#if !defined(QRUOV_PRIM_OQS) || defined(OQS_USE_PTHREADS)
 static pthread_once_t qruov_avx2_init_once = PTHREAD_ONCE_INIT;
+#else
+static int qruov_avx2_initialized = 0;
+#endif
 
 static void qruov_avx2_init_impl(void)
 {
@@ -41,7 +52,14 @@ static void qruov_avx2_init_impl(void)
 
 void qruov_init(void)
 {
+#if !defined(QRUOV_PRIM_OQS) || defined(OQS_USE_PTHREADS)
     pthread_once(&qruov_avx2_init_once, qruov_avx2_init_impl);
+#else
+    if (!qruov_avx2_initialized) {
+        qruov_avx2_init_impl();
+        qruov_avx2_initialized = 1;
+    }
+#endif
 }
 
 // Convert SoA [L][rows][cols] to AoS [rows][cols][L].
