@@ -78,7 +78,7 @@ SDITH_ALWAYS_INLINE void transpose64(uint64_t *a, uint64_t stride) {
 }
 
 /* Not called anywhere in the current build; kept as a utility. */
-SDITH_MAYBE_UNUSED SDITH_ALWAYS_INLINE void transpose64_unaligned(uint8_t *a, uint64_t byte_stride) 
+SDITH_MAYBE_UNUSED SDITH_ALWAYS_INLINE void transpose64_unaligned(uint8_t *a, uint64_t byte_stride)
 {
     uint64_t tmp[64];
     for (size_t i = 0; i < 64; i++)

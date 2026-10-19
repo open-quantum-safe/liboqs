@@ -118,12 +118,13 @@ upstreams:
     sig_meta_path: 'integration/liboqs/META_{pretty_name_full}.yml'
     common_meta_path: 'integration/liboqs/META_Common.yml'
   - name: sdith
-    git_url: https://github.com/owaldron/sdith.git
-    git_branch: feat/liboqs-integration
-    git_commit: fd09ce5f68042935ae73e4a1967fa8ba05f5b4a8
+    git_url: https://github.com/sdith/sdith.git
+    git_branch: main
+    git_commit: ce7adf06476674d4ff990f378f83f9981cd6745b
     sig_scheme_path: '.'
     sig_meta_path: 'integration/liboqs/schemes/META_{pretty_name_full}.yml'
     common_meta_path: 'integration/liboqs/META_Common.yml'
+    patches: [sdith-liboqs-integration.patch]
 kems:
   -
     name: classic_mceliece

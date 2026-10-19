@@ -27,7 +27,7 @@ EXPORT void aes128_encrypt_1block_ref(void* out_ct128, const void* in_pt128, con
 
 /* The below functions are either no-ops or just call the above functions when
  * not building for liboqs. When building for liboqs,`integration/liboqs/aes_glue.c`
- * impliments these to dispatch to liboqs' AES. 
+ * impliments these to dispatch to liboqs' AES.
  *
  * LIBOQS uses a heap-allocated schedule for each key, so a single schedule
  * pointer is written into each round-key buffer instead of the round keys

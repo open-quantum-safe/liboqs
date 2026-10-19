@@ -414,7 +414,7 @@ EXPORT void matrix_rng_init_rijndael256_cat3_avx(matrix_rng_t* rng, const seed_t
 EXPORT void matrix_rng_init_rijndael256_cat5_ref(matrix_rng_t* rng, const seed_t* seed, const uint64_t row_bit_size);
 EXPORT void matrix_rng_init_rijndael256_cat5_avx(matrix_rng_t* rng, const seed_t* seed, const uint64_t row_bit_size);
 
-// Releases whatever matrix_rng_init took hold of. 
+// Releases whatever matrix_rng_init took hold of.
 // Only active in the cat1 aes128 ref path when building for liboqs, where key schedules
 // are heap-allocated (see aes_ansi_ref.h for details).
 // The avx and rijndael256 paths expand in place, so they take matrix_rng_release_noop.
