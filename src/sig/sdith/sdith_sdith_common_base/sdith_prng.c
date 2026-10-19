@@ -68,8 +68,7 @@ GGM_EXTSEED_RNG_LR_X4_NAIVE(ggm_seed_rng_lr_ext_cat5_rijndael256_x4_ref,  //
 // mirrors the raw commit/vole paths exactly, so outputs stay byte-identical.
 // ---------------------------------------------------------------------------
 EXPORT void extend_leaf_seed_cat1_aes128_ref(void* extended_seed_out, const void* seed128) {
-  // The ext_seeds slots are re-keyed thousands of times per signature, so take the
-  // reuse path: on the liboqs backend that avoids an allocation per leaf seed.
+  // When building for liboqs, this allows allows key schedule reuse (see `aes_ansi_ref.h`)
   // Requires the buffer to have been passed to aes128_prepare_rk_buffer first.
   aes128_set_key_reuse_ref(extended_seed_out, seed128);
 }

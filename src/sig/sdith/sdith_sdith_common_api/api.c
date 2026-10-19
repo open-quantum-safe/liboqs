@@ -16,7 +16,6 @@ OQS_STATUS crypto_sign_keypair(uint8_t* public_key, uint8_t* secret_key) {
       CRYPTO_PUBLICKEYBYTES != sdith_public_key_bytes(&SIGNATURE_PARAMS) ||
       CRYPTO_SECRETKEYBYTES != sdith_secret_key_bytes(&SIGNATURE_PARAMS))
     return OQS_ERROR;
-
   uint64_t entropy_bytes = sdith_keygen_entropy_bytes(&SIGNATURE_PARAMS);
   uint64_t tmp_bytes = sdith_keygen_tmp_bytes(&SIGNATURE_PARAMS);
   uint8_t* entropy = OQS_MEM_malloc(entropy_bytes);
@@ -43,6 +42,9 @@ OQS_STATUS crypto_sign_sign(
 	size_t message_len,
 	const uint8_t *secret_key)
 {
+  // TODO: there is an opportunity to optimize this by reusing the allocated tmp/entropy space
+  // when repeatedly signing/verifying. Tracked in liboqs as:
+  // https://github.com/open-quantum-safe/liboqs/issues/2619
   uint64_t entropy_bytes = sdith_signature_entropy_bytes(&SIGNATURE_PARAMS);
   uint64_t tmp_bytes = sdith_signature_tmp_bytes(&SIGNATURE_PARAMS);
   uint8_t* entropy = OQS_MEM_malloc(entropy_bytes);
