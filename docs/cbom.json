@@ -2,23 +2,23 @@
   "$schema": "https://raw.githubusercontent.com/CycloneDX/specification/1.6/schema/bom-1.6.schema.json",
   "bomFormat": "CycloneDX",
   "specVersion": "1.6",
-  "serialNumber": "urn:uuid:034d9c34-dde5-4578-b1b5-7e0d6a8eb0a1",
+  "serialNumber": "urn:uuid:1902a28f-41dc-40cb-9f24-b45e8980ad1c",
   "version": 1,
   "metadata": {
-    "timestamp": "2026-10-21T19:20:51.339360+00:00",
+    "timestamp": "2026-10-21T19:46:14.525685+00:00",
     "component": {
       "type": "library",
-      "bom-ref": "pkg:github/open-quantum-safe/liboqs@8f74956f5a81a4e1b748c8b06b6e057ce13fda2f",
+      "bom-ref": "pkg:github/open-quantum-safe/liboqs@eb61e0df7fb9eb34d0a1d54f16b2c5a5085c467c",
       "name": "liboqs",
-      "version": "8f74956f5a81a4e1b748c8b06b6e057ce13fda2f"
+      "version": "eb61e0df7fb9eb34d0a1d54f16b2c5a5085c467c"
     }
   },
   "components": [
     {
       "type": "library",
-      "bom-ref": "pkg:github/open-quantum-safe/liboqs@8f74956f5a81a4e1b748c8b06b6e057ce13fda2f",
+      "bom-ref": "pkg:github/open-quantum-safe/liboqs@eb61e0df7fb9eb34d0a1d54f16b2c5a5085c467c",
       "name": "liboqs",
-      "version": "8f74956f5a81a4e1b748c8b06b6e057ce13fda2f"
+      "version": "eb61e0df7fb9eb34d0a1d54f16b2c5a5085c467c"
     },
     {
       "type": "cryptographic-asset",
@@ -5103,7 +5103,7 @@
     {
       "type": "cryptographic-asset",
       "bom-ref": "alg:SDitH3-L1-gf2-short:avx2:x86_64",
-      "name": "SDITH",
+      "name": "SDitH",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
@@ -5123,7 +5123,7 @@
     {
       "type": "cryptographic-asset",
       "bom-ref": "alg:SDitH3-L1-gf2-short-cipherpow:avx2:x86_64",
-      "name": "SDITH",
+      "name": "SDitH",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
@@ -5143,7 +5143,7 @@
     {
       "type": "cryptographic-asset",
       "bom-ref": "alg:SDitH3-L1-gf2-fast:avx2:x86_64",
-      "name": "SDITH",
+      "name": "SDitH",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
@@ -5163,7 +5163,7 @@
     {
       "type": "cryptographic-asset",
       "bom-ref": "alg:SDitH3-L1-gf2-fast-cipherpow:avx2:x86_64",
-      "name": "SDITH",
+      "name": "SDitH",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
@@ -5183,7 +5183,7 @@
     {
       "type": "cryptographic-asset",
       "bom-ref": "alg:SDitH3-L3-gf2-short:avx2:x86_64",
-      "name": "SDITH",
+      "name": "SDitH",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
@@ -5203,7 +5203,7 @@
     {
       "type": "cryptographic-asset",
       "bom-ref": "alg:SDitH3-L3-gf2-short-cipherpow:avx2:x86_64",
-      "name": "SDITH",
+      "name": "SDitH",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
@@ -5223,7 +5223,7 @@
     {
       "type": "cryptographic-asset",
       "bom-ref": "alg:SDitH3-L3-gf2-fast:avx2:x86_64",
-      "name": "SDITH",
+      "name": "SDitH",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
@@ -5243,7 +5243,7 @@
     {
       "type": "cryptographic-asset",
       "bom-ref": "alg:SDitH3-L3-gf2-fast-cipherpow:avx2:x86_64",
-      "name": "SDITH",
+      "name": "SDitH",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
@@ -5263,7 +5263,7 @@
     {
       "type": "cryptographic-asset",
       "bom-ref": "alg:SDitH3-L5-gf2-short:avx2:x86_64",
-      "name": "SDITH",
+      "name": "SDitH",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
@@ -5283,7 +5283,7 @@
     {
       "type": "cryptographic-asset",
       "bom-ref": "alg:SDitH3-L5-gf2-short-cipherpow:avx2:x86_64",
-      "name": "SDITH",
+      "name": "SDitH",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
@@ -5303,7 +5303,7 @@
     {
       "type": "cryptographic-asset",
       "bom-ref": "alg:SDitH3-L5-gf2-fast:avx2:x86_64",
-      "name": "SDITH",
+      "name": "SDitH",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
@@ -5323,7 +5323,7 @@
     {
       "type": "cryptographic-asset",
       "bom-ref": "alg:SDitH3-L5-gf2-fast-cipherpow:avx2:x86_64",
-      "name": "SDITH",
+      "name": "SDitH",
       "cryptoProperties": {
         "assetType": "algorithm",
         "algorithmProperties": {
@@ -10647,7 +10647,7 @@
   ],
   "dependencies": [
     {
-      "ref": "pkg:github/open-quantum-safe/liboqs@8f74956f5a81a4e1b748c8b06b6e057ce13fda2f",
+      "ref": "pkg:github/open-quantum-safe/liboqs@eb61e0df7fb9eb34d0a1d54f16b2c5a5085c467c",
       "provides": [
         "alg:BIKE-L1:master:x86_64",
         "alg:BIKE-L3:master:x86_64",

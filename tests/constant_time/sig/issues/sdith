@@ -10,8 +10,8 @@
    Memcheck:Cond
    src:rsd.c:61 # fun:oqs_sig_private_sdith_avx2_rsd_generate_random_instance_ref
    fun:oqs_sig_private_sdith_avx2_sdith_keygen
-   fun:oqs_sig_pubapi_sdith3_*_crypto_sign_keypair
-   fun:OQS_SIG_sdith_sdith3_*_keypair
+   fun:oqs_sig_pubapi_sdith_*_crypto_sign_keypair
+   fun:OQS_SIG_sdith_*_keypair
    fun:OQS_SIG_keypair
 }
 {
@@ -19,8 +19,8 @@
    Memcheck:Cond
    fun:oqs_sig_private_sdith_avx2_bitvec_is_zero_nonct
    fun:oqs_sig_private_sdith_avx2_sdith_sign
-   fun:oqs_sig_pubapi_sdith3_*_avx2_crypto_sign_sign
-   fun:OQS_SIG_sdith_sdith3_*_sign
+   fun:oqs_sig_pubapi_sdith_*_avx2_crypto_sign_sign
+   fun:OQS_SIG_sdith_*_sign
    fun:OQS_SIG_sign
 }
 {
@@ -28,8 +28,8 @@
    Memcheck:Cond
    fun:oqs_sig_private_sdith_avx2_estimate_topen
    fun:oqs_sig_private_sdith_avx2_sdith_sign
-   fun:oqs_sig_pubapi_sdith3_*_avx2_crypto_sign_sign
-   fun:OQS_SIG_sdith_sdith3_*_sign
+   fun:oqs_sig_pubapi_sdith_*_avx2_crypto_sign_sign
+   fun:OQS_SIG_sdith_*_sign
    fun:OQS_SIG_sign
 }
 {
@@ -37,8 +37,8 @@
    Memcheck:Cond
    fun:oqs_sig_private_sdith_avx2_full_ggm_tree_open_sibling_path_from_root
    fun:oqs_sig_private_sdith_avx2_sdith_sign
-   fun:oqs_sig_pubapi_sdith3_*_avx2_crypto_sign_sign
-   fun:OQS_SIG_sdith_sdith3_*_sign
+   fun:oqs_sig_pubapi_sdith_*_avx2_crypto_sign_sign
+   fun:OQS_SIG_sdith_*_sign
    fun:OQS_SIG_sign
 }
 {
@@ -47,8 +47,8 @@
    fun:oqs_sig_private_sdith_avx2_*_proofow_grind_avx2
    fun:oqs_sig_private_sdith_avx2_proofow_grind_w_cipher_cat?_avx
    fun:oqs_sig_private_sdith_avx2_sdith_sign
-   fun:oqs_sig_pubapi_sdith3_*_avx2_crypto_sign_sign
-   fun:OQS_SIG_sdith_sdith3_*_sign
+   fun:oqs_sig_pubapi_sdith_*_avx2_crypto_sign_sign
+   fun:OQS_SIG_sdith_*_sign
    fun:OQS_SIG_sign
 }
 {
@@ -56,8 +56,8 @@
    Memcheck:Cond
    fun:oqs_sig_private_sdith_avx2_proofow_grind_w_shake_cat?_4way
    fun:oqs_sig_private_sdith_avx2_sdith_sign
-   fun:oqs_sig_pubapi_sdith3_*_avx2_crypto_sign_sign
-   fun:OQS_SIG_sdith_sdith3_*_sign
+   fun:oqs_sig_pubapi_sdith_*_avx2_crypto_sign_sign
+   fun:OQS_SIG_sdith_*_sign
    fun:OQS_SIG_sign
 }
 {
@@ -67,8 +67,8 @@
    fun:oqs_sig_private_sdith_avx2_matrix_f2_times_vector_flambda_avx2
    fun:oqs_sig_private_sdith_avx2_prover_vole_consistency_check
    fun:oqs_sig_private_sdith_avx2_sdith_sign
-   fun:oqs_sig_pubapi_sdith3_*_avx2_crypto_sign_sign
-   fun:OQS_SIG_sdith_sdith3_*_sign
+   fun:oqs_sig_pubapi_sdith_*_avx2_crypto_sign_sign
+   fun:OQS_SIG_sdith_*_sign
    fun:OQS_SIG_sign
 }
 {
@@ -79,7 +79,7 @@
    fun:oqs_sig_private_sdith_avx2_matrix_f2_times_vector_flambda_avx2
    fun:oqs_sig_private_sdith_avx2_prover_vole_consistency_check
    fun:oqs_sig_private_sdith_avx2_sdith_sign
-   fun:oqs_sig_pubapi_sdith3_*_avx2_crypto_sign_sign
-   fun:OQS_SIG_sdith_sdith3_*_sign
+   fun:oqs_sig_pubapi_sdith_*_avx2_crypto_sign_sign
+   fun:OQS_SIG_sdith_*_sign
    fun:OQS_SIG_sign
 }

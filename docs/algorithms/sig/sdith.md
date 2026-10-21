@@ -1,4 +1,4 @@
-# SDITH
+# SDitH
 
 - **Algorithm type**: Digital signature scheme.
 - **Main cryptographic assumption**: Hardness of syndrom decoding problem for random linear codes on a finite field..

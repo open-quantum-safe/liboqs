@@ -122,7 +122,7 @@ upstreams:
     git_branch: main
     git_commit: ce7adf06476674d4ff990f378f83f9981cd6745b
     sig_scheme_path: '.'
-    sig_meta_path: 'integration/liboqs/schemes/META_{pretty_name_full}.yml'
+    sig_meta_path: 'integration/liboqs/schemes/{pretty_name_full}/META_{pretty_name_full}.yml'
     common_meta_path: 'integration/liboqs/META_Common.yml'
     patches: [sdith-liboqs-integration.patch]
 kems:
@@ -826,62 +826,62 @@ sigs:
     upstream_location: sdith
     schemes:
       -
-        scheme: "sdith3_l1_gf2_short"
-        pqclean_scheme: sdith3_l1_gf2_short
+        scheme: "l1_gf2_short"
+        pqclean_scheme: l1_gf2_short
         pretty_name_full: SDitH3-L1-gf2-short
         signed_msg_order: msg_then_sig
       -
-        scheme: "sdith3_l1_gf2_short_cipherpow"
-        pqclean_scheme: sdith3_l1_gf2_short_cipherpow
+        scheme: "l1_gf2_short_cipherpow"
+        pqclean_scheme: l1_gf2_short_cipherpow
         pretty_name_full: SDitH3-L1-gf2-short-cipherpow
         signed_msg_order: msg_then_sig
       -
-        scheme: "sdith3_l1_gf2_fast"
-        pqclean_scheme: sdith3_l1_gf2_fast
+        scheme: "l1_gf2_fast"
+        pqclean_scheme: l1_gf2_fast
         pretty_name_full: SDitH3-L1-gf2-fast
         signed_msg_order: msg_then_sig
       -
-        scheme: "sdith3_l1_gf2_fast_cipherpow"
-        pqclean_scheme: sdith3_l1_gf2_fast_cipherpow
+        scheme: "l1_gf2_fast_cipherpow"
+        pqclean_scheme: l1_gf2_fast_cipherpow
         pretty_name_full: SDitH3-L1-gf2-fast-cipherpow
         signed_msg_order: msg_then_sig
       -
-        scheme: "sdith3_l3_gf2_short"
-        pqclean_scheme: sdith3_l3_gf2_short
+        scheme: "l3_gf2_short"
+        pqclean_scheme: l3_gf2_short
         pretty_name_full: SDitH3-L3-gf2-short
         signed_msg_order: msg_then_sig
       -
-        scheme: "sdith3_l3_gf2_short_cipherpow"
-        pqclean_scheme: sdith3_l3_gf2_short_cipherpow
+        scheme: "l3_gf2_short_cipherpow"
+        pqclean_scheme: l3_gf2_short_cipherpow
         pretty_name_full: SDitH3-L3-gf2-short-cipherpow
         signed_msg_order: msg_then_sig
       -
-        scheme: "sdith3_l3_gf2_fast"
-        pqclean_scheme: sdith3_l3_gf2_fast
+        scheme: "l3_gf2_fast"
+        pqclean_scheme: l3_gf2_fast
         pretty_name_full: SDitH3-L3-gf2-fast
         signed_msg_order: msg_then_sig
       -
-        scheme: "sdith3_l3_gf2_fast_cipherpow"
-        pqclean_scheme: sdith3_l3_gf2_fast_cipherpow
+        scheme: "l3_gf2_fast_cipherpow"
+        pqclean_scheme: l3_gf2_fast_cipherpow
         pretty_name_full: SDitH3-L3-gf2-fast-cipherpow
         signed_msg_order: msg_then_sig
       -
-        scheme: "sdith3_l5_gf2_short"
-        pqclean_scheme: sdith3_l5_gf2_short
+        scheme: "l5_gf2_short"
+        pqclean_scheme: l5_gf2_short
         pretty_name_full: SDitH3-L5-gf2-short
         signed_msg_order: msg_then_sig
       -
-        scheme: "sdith3_l5_gf2_short_cipherpow"
-        pqclean_scheme: sdith3_l5_gf2_short_cipherpow
+        scheme: "l5_gf2_short_cipherpow"
+        pqclean_scheme: l5_gf2_short_cipherpow
         pretty_name_full: SDitH3-L5-gf2-short-cipherpow
         signed_msg_order: msg_then_sig
       -
-        scheme: "sdith3_l5_gf2_fast"
-        pqclean_scheme: sdith3_l5_gf2_fast
+        scheme: "l5_gf2_fast"
+        pqclean_scheme: l5_gf2_fast
         pretty_name_full: SDitH3-L5-gf2-fast
         signed_msg_order: msg_then_sig
       -
-        scheme: "sdith3_l5_gf2_fast_cipherpow"
-        pqclean_scheme: sdith3_l5_gf2_fast_cipherpow
+        scheme: "l5_gf2_fast_cipherpow"
+        pqclean_scheme: l5_gf2_fast_cipherpow
         pretty_name_full: SDitH3-L5-gf2-fast-cipherpow
         signed_msg_order: msg_then_sig

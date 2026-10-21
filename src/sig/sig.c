@@ -125,18 +125,18 @@ OQS_API const char *OQS_SIG_alg_identifier(size_t i) {
 		OQS_SIG_alg_mqom_mqom3_cat5_gf16_short_ot,
 		OQS_SIG_alg_mqom_mqom3_cat5_gf2_shorter_ct,
 		OQS_SIG_alg_mqom_mqom3_cat5_gf2_shorter_ot,
-		OQS_SIG_alg_sdith_sdith3_l1_gf2_short,
-		OQS_SIG_alg_sdith_sdith3_l1_gf2_short_cipherpow,
-		OQS_SIG_alg_sdith_sdith3_l1_gf2_fast,
-		OQS_SIG_alg_sdith_sdith3_l1_gf2_fast_cipherpow,
-		OQS_SIG_alg_sdith_sdith3_l3_gf2_short,
-		OQS_SIG_alg_sdith_sdith3_l3_gf2_short_cipherpow,
-		OQS_SIG_alg_sdith_sdith3_l3_gf2_fast,
-		OQS_SIG_alg_sdith_sdith3_l3_gf2_fast_cipherpow,
-		OQS_SIG_alg_sdith_sdith3_l5_gf2_short,
-		OQS_SIG_alg_sdith_sdith3_l5_gf2_short_cipherpow,
-		OQS_SIG_alg_sdith_sdith3_l5_gf2_fast,
-		OQS_SIG_alg_sdith_sdith3_l5_gf2_fast_cipherpow,///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALG_IDENTIFIER_END
+		OQS_SIG_alg_sdith_l1_gf2_short,
+		OQS_SIG_alg_sdith_l1_gf2_short_cipherpow,
+		OQS_SIG_alg_sdith_l1_gf2_fast,
+		OQS_SIG_alg_sdith_l1_gf2_fast_cipherpow,
+		OQS_SIG_alg_sdith_l3_gf2_short,
+		OQS_SIG_alg_sdith_l3_gf2_short_cipherpow,
+		OQS_SIG_alg_sdith_l3_gf2_fast,
+		OQS_SIG_alg_sdith_l3_gf2_fast_cipherpow,
+		OQS_SIG_alg_sdith_l5_gf2_short,
+		OQS_SIG_alg_sdith_l5_gf2_short_cipherpow,
+		OQS_SIG_alg_sdith_l5_gf2_fast,
+		OQS_SIG_alg_sdith_l5_gf2_fast_cipherpow,///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALG_IDENTIFIER_END
 		///// OQS_COPY_FROM_SLH_DSA_FRAGMENT_ALGID_START
 		OQS_SIG_alg_slh_dsa_pure_sha2_128s,
 		OQS_SIG_alg_slh_dsa_pure_sha2_128f,
@@ -1083,85 +1083,85 @@ OQS_API int OQS_SIG_alg_is_enabled(const char *method_name) {
 		return 0;
 #endif
 
-	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_sdith_sdith3_l1_gf2_short)) {
-#ifdef OQS_ENABLE_SIG_sdith_sdith3_l1_gf2_short
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_sdith_l1_gf2_short)) {
+#ifdef OQS_ENABLE_SIG_sdith_l1_gf2_short
 		return 1;
 #else
 		return 0;
 #endif
 
-	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_sdith_sdith3_l1_gf2_short_cipherpow)) {
-#ifdef OQS_ENABLE_SIG_sdith_sdith3_l1_gf2_short_cipherpow
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_sdith_l1_gf2_short_cipherpow)) {
+#ifdef OQS_ENABLE_SIG_sdith_l1_gf2_short_cipherpow
 		return 1;
 #else
 		return 0;
 #endif
 
-	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_sdith_sdith3_l1_gf2_fast)) {
-#ifdef OQS_ENABLE_SIG_sdith_sdith3_l1_gf2_fast
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_sdith_l1_gf2_fast)) {
+#ifdef OQS_ENABLE_SIG_sdith_l1_gf2_fast
 		return 1;
 #else
 		return 0;
 #endif
 
-	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_sdith_sdith3_l1_gf2_fast_cipherpow)) {
-#ifdef OQS_ENABLE_SIG_sdith_sdith3_l1_gf2_fast_cipherpow
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_sdith_l1_gf2_fast_cipherpow)) {
+#ifdef OQS_ENABLE_SIG_sdith_l1_gf2_fast_cipherpow
 		return 1;
 #else
 		return 0;
 #endif
 
-	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_sdith_sdith3_l3_gf2_short)) {
-#ifdef OQS_ENABLE_SIG_sdith_sdith3_l3_gf2_short
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_sdith_l3_gf2_short)) {
+#ifdef OQS_ENABLE_SIG_sdith_l3_gf2_short
 		return 1;
 #else
 		return 0;
 #endif
 
-	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_sdith_sdith3_l3_gf2_short_cipherpow)) {
-#ifdef OQS_ENABLE_SIG_sdith_sdith3_l3_gf2_short_cipherpow
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_sdith_l3_gf2_short_cipherpow)) {
+#ifdef OQS_ENABLE_SIG_sdith_l3_gf2_short_cipherpow
 		return 1;
 #else
 		return 0;
 #endif
 
-	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_sdith_sdith3_l3_gf2_fast)) {
-#ifdef OQS_ENABLE_SIG_sdith_sdith3_l3_gf2_fast
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_sdith_l3_gf2_fast)) {
+#ifdef OQS_ENABLE_SIG_sdith_l3_gf2_fast
 		return 1;
 #else
 		return 0;
 #endif
 
-	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_sdith_sdith3_l3_gf2_fast_cipherpow)) {
-#ifdef OQS_ENABLE_SIG_sdith_sdith3_l3_gf2_fast_cipherpow
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_sdith_l3_gf2_fast_cipherpow)) {
+#ifdef OQS_ENABLE_SIG_sdith_l3_gf2_fast_cipherpow
 		return 1;
 #else
 		return 0;
 #endif
 
-	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_sdith_sdith3_l5_gf2_short)) {
-#ifdef OQS_ENABLE_SIG_sdith_sdith3_l5_gf2_short
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_sdith_l5_gf2_short)) {
+#ifdef OQS_ENABLE_SIG_sdith_l5_gf2_short
 		return 1;
 #else
 		return 0;
 #endif
 
-	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_sdith_sdith3_l5_gf2_short_cipherpow)) {
-#ifdef OQS_ENABLE_SIG_sdith_sdith3_l5_gf2_short_cipherpow
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_sdith_l5_gf2_short_cipherpow)) {
+#ifdef OQS_ENABLE_SIG_sdith_l5_gf2_short_cipherpow
 		return 1;
 #else
 		return 0;
 #endif
 
-	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_sdith_sdith3_l5_gf2_fast)) {
-#ifdef OQS_ENABLE_SIG_sdith_sdith3_l5_gf2_fast
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_sdith_l5_gf2_fast)) {
+#ifdef OQS_ENABLE_SIG_sdith_l5_gf2_fast
 		return 1;
 #else
 		return 0;
 #endif
 
-	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_sdith_sdith3_l5_gf2_fast_cipherpow)) {
-#ifdef OQS_ENABLE_SIG_sdith_sdith3_l5_gf2_fast_cipherpow
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_sdith_l5_gf2_fast_cipherpow)) {
+#ifdef OQS_ENABLE_SIG_sdith_l5_gf2_fast_cipherpow
 		return 1;
 #else
 		return 0;
@@ -2886,86 +2886,86 @@ OQS_API OQS_SIG *OQS_SIG_new(const char *method_name) {
 		return NULL;
 #endif
 
-	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_sdith_sdith3_l1_gf2_short)) {
-#ifdef OQS_ENABLE_SIG_sdith_sdith3_l1_gf2_short
-		return OQS_SIG_sdith_sdith3_l1_gf2_short_new();
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_sdith_l1_gf2_short)) {
+#ifdef OQS_ENABLE_SIG_sdith_l1_gf2_short
+		return OQS_SIG_sdith_l1_gf2_short_new();
 #else
 		return NULL;
 #endif
 
-	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_sdith_sdith3_l1_gf2_short_cipherpow)) {
-#ifdef OQS_ENABLE_SIG_sdith_sdith3_l1_gf2_short_cipherpow
-		return OQS_SIG_sdith_sdith3_l1_gf2_short_cipherpow_new();
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_sdith_l1_gf2_short_cipherpow)) {
+#ifdef OQS_ENABLE_SIG_sdith_l1_gf2_short_cipherpow
+		return OQS_SIG_sdith_l1_gf2_short_cipherpow_new();
 #else
 		return NULL;
 #endif
 
-	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_sdith_sdith3_l1_gf2_fast)) {
-#ifdef OQS_ENABLE_SIG_sdith_sdith3_l1_gf2_fast
-		return OQS_SIG_sdith_sdith3_l1_gf2_fast_new();
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_sdith_l1_gf2_fast)) {
+#ifdef OQS_ENABLE_SIG_sdith_l1_gf2_fast
+		return OQS_SIG_sdith_l1_gf2_fast_new();
 #else
 		return NULL;
 #endif
 
-	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_sdith_sdith3_l1_gf2_fast_cipherpow)) {
-#ifdef OQS_ENABLE_SIG_sdith_sdith3_l1_gf2_fast_cipherpow
-		return OQS_SIG_sdith_sdith3_l1_gf2_fast_cipherpow_new();
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_sdith_l1_gf2_fast_cipherpow)) {
+#ifdef OQS_ENABLE_SIG_sdith_l1_gf2_fast_cipherpow
+		return OQS_SIG_sdith_l1_gf2_fast_cipherpow_new();
 #else
 		return NULL;
 #endif
 
-	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_sdith_sdith3_l3_gf2_short)) {
-#ifdef OQS_ENABLE_SIG_sdith_sdith3_l3_gf2_short
-		return OQS_SIG_sdith_sdith3_l3_gf2_short_new();
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_sdith_l3_gf2_short)) {
+#ifdef OQS_ENABLE_SIG_sdith_l3_gf2_short
+		return OQS_SIG_sdith_l3_gf2_short_new();
 #else
 		return NULL;
 #endif
 
-	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_sdith_sdith3_l3_gf2_short_cipherpow)) {
-#ifdef OQS_ENABLE_SIG_sdith_sdith3_l3_gf2_short_cipherpow
-		return OQS_SIG_sdith_sdith3_l3_gf2_short_cipherpow_new();
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_sdith_l3_gf2_short_cipherpow)) {
+#ifdef OQS_ENABLE_SIG_sdith_l3_gf2_short_cipherpow
+		return OQS_SIG_sdith_l3_gf2_short_cipherpow_new();
 #else
 		return NULL;
 #endif
 
-	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_sdith_sdith3_l3_gf2_fast)) {
-#ifdef OQS_ENABLE_SIG_sdith_sdith3_l3_gf2_fast
-		return OQS_SIG_sdith_sdith3_l3_gf2_fast_new();
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_sdith_l3_gf2_fast)) {
+#ifdef OQS_ENABLE_SIG_sdith_l3_gf2_fast
+		return OQS_SIG_sdith_l3_gf2_fast_new();
 #else
 		return NULL;
 #endif
 
-	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_sdith_sdith3_l3_gf2_fast_cipherpow)) {
-#ifdef OQS_ENABLE_SIG_sdith_sdith3_l3_gf2_fast_cipherpow
-		return OQS_SIG_sdith_sdith3_l3_gf2_fast_cipherpow_new();
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_sdith_l3_gf2_fast_cipherpow)) {
+#ifdef OQS_ENABLE_SIG_sdith_l3_gf2_fast_cipherpow
+		return OQS_SIG_sdith_l3_gf2_fast_cipherpow_new();
 #else
 		return NULL;
 #endif
 
-	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_sdith_sdith3_l5_gf2_short)) {
-#ifdef OQS_ENABLE_SIG_sdith_sdith3_l5_gf2_short
-		return OQS_SIG_sdith_sdith3_l5_gf2_short_new();
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_sdith_l5_gf2_short)) {
+#ifdef OQS_ENABLE_SIG_sdith_l5_gf2_short
+		return OQS_SIG_sdith_l5_gf2_short_new();
 #else
 		return NULL;
 #endif
 
-	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_sdith_sdith3_l5_gf2_short_cipherpow)) {
-#ifdef OQS_ENABLE_SIG_sdith_sdith3_l5_gf2_short_cipherpow
-		return OQS_SIG_sdith_sdith3_l5_gf2_short_cipherpow_new();
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_sdith_l5_gf2_short_cipherpow)) {
+#ifdef OQS_ENABLE_SIG_sdith_l5_gf2_short_cipherpow
+		return OQS_SIG_sdith_l5_gf2_short_cipherpow_new();
 #else
 		return NULL;
 #endif
 
-	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_sdith_sdith3_l5_gf2_fast)) {
-#ifdef OQS_ENABLE_SIG_sdith_sdith3_l5_gf2_fast
-		return OQS_SIG_sdith_sdith3_l5_gf2_fast_new();
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_sdith_l5_gf2_fast)) {
+#ifdef OQS_ENABLE_SIG_sdith_l5_gf2_fast
+		return OQS_SIG_sdith_l5_gf2_fast_new();
 #else
 		return NULL;
 #endif
 
-	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_sdith_sdith3_l5_gf2_fast_cipherpow)) {
-#ifdef OQS_ENABLE_SIG_sdith_sdith3_l5_gf2_fast_cipherpow
-		return OQS_SIG_sdith_sdith3_l5_gf2_fast_cipherpow_new();
+	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_sdith_l5_gf2_fast_cipherpow)) {
+#ifdef OQS_ENABLE_SIG_sdith_l5_gf2_fast_cipherpow
+		return OQS_SIG_sdith_l5_gf2_fast_cipherpow_new();
 #else
 		return NULL;
 #endif

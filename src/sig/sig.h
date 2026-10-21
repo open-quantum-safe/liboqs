@@ -253,29 +253,29 @@ extern "C" {
 /** Algorithm identifier for mqom3_cat5_gf2_shorter_ot */
 #define OQS_SIG_alg_mqom_mqom3_cat5_gf2_shorter_ot "mqom3_cat5_gf2_shorter_ot"
 /** Algorithm identifier for SDitH3-L1-gf2-short */
-#define OQS_SIG_alg_sdith_sdith3_l1_gf2_short "SDitH3-L1-gf2-short"
+#define OQS_SIG_alg_sdith_l1_gf2_short "SDitH3-L1-gf2-short"
 /** Algorithm identifier for SDitH3-L1-gf2-short-cipherpow */
-#define OQS_SIG_alg_sdith_sdith3_l1_gf2_short_cipherpow "SDitH3-L1-gf2-short-cipherpow"
+#define OQS_SIG_alg_sdith_l1_gf2_short_cipherpow "SDitH3-L1-gf2-short-cipherpow"
 /** Algorithm identifier for SDitH3-L1-gf2-fast */
-#define OQS_SIG_alg_sdith_sdith3_l1_gf2_fast "SDitH3-L1-gf2-fast"
+#define OQS_SIG_alg_sdith_l1_gf2_fast "SDitH3-L1-gf2-fast"
 /** Algorithm identifier for SDitH3-L1-gf2-fast-cipherpow */
-#define OQS_SIG_alg_sdith_sdith3_l1_gf2_fast_cipherpow "SDitH3-L1-gf2-fast-cipherpow"
+#define OQS_SIG_alg_sdith_l1_gf2_fast_cipherpow "SDitH3-L1-gf2-fast-cipherpow"
 /** Algorithm identifier for SDitH3-L3-gf2-short */
-#define OQS_SIG_alg_sdith_sdith3_l3_gf2_short "SDitH3-L3-gf2-short"
+#define OQS_SIG_alg_sdith_l3_gf2_short "SDitH3-L3-gf2-short"
 /** Algorithm identifier for SDitH3-L3-gf2-short-cipherpow */
-#define OQS_SIG_alg_sdith_sdith3_l3_gf2_short_cipherpow "SDitH3-L3-gf2-short-cipherpow"
+#define OQS_SIG_alg_sdith_l3_gf2_short_cipherpow "SDitH3-L3-gf2-short-cipherpow"
 /** Algorithm identifier for SDitH3-L3-gf2-fast */
-#define OQS_SIG_alg_sdith_sdith3_l3_gf2_fast "SDitH3-L3-gf2-fast"
+#define OQS_SIG_alg_sdith_l3_gf2_fast "SDitH3-L3-gf2-fast"
 /** Algorithm identifier for SDitH3-L3-gf2-fast-cipherpow */
-#define OQS_SIG_alg_sdith_sdith3_l3_gf2_fast_cipherpow "SDitH3-L3-gf2-fast-cipherpow"
+#define OQS_SIG_alg_sdith_l3_gf2_fast_cipherpow "SDitH3-L3-gf2-fast-cipherpow"
 /** Algorithm identifier for SDitH3-L5-gf2-short */
-#define OQS_SIG_alg_sdith_sdith3_l5_gf2_short "SDitH3-L5-gf2-short"
+#define OQS_SIG_alg_sdith_l5_gf2_short "SDitH3-L5-gf2-short"
 /** Algorithm identifier for SDitH3-L5-gf2-short-cipherpow */
-#define OQS_SIG_alg_sdith_sdith3_l5_gf2_short_cipherpow "SDitH3-L5-gf2-short-cipherpow"
+#define OQS_SIG_alg_sdith_l5_gf2_short_cipherpow "SDitH3-L5-gf2-short-cipherpow"
 /** Algorithm identifier for SDitH3-L5-gf2-fast */
-#define OQS_SIG_alg_sdith_sdith3_l5_gf2_fast "SDitH3-L5-gf2-fast"
+#define OQS_SIG_alg_sdith_l5_gf2_fast "SDitH3-L5-gf2-fast"
 /** Algorithm identifier for SDitH3-L5-gf2-fast-cipherpow */
-#define OQS_SIG_alg_sdith_sdith3_l5_gf2_fast_cipherpow "SDitH3-L5-gf2-fast-cipherpow"
+#define OQS_SIG_alg_sdith_l5_gf2_fast_cipherpow "SDitH3-L5-gf2-fast-cipherpow"
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALG_IDENTIFIER_END
 ///// OQS_COPY_FROM_SLH_DSA_FRAGMENT_ALGID_START
 /** Algorithm identifier for slh_dsa_pure_sha2_128s */
