@@ -48,12 +48,13 @@ index 0000000..b55b41d
 +#endif  // sdith_inline_H
 diff --git a/integration/liboqs/META_Common.yml b/integration/liboqs/META_Common.yml
 new file mode 100644
-index 0000000..e26e5a2
+index 0000000..c612d7f
 --- /dev/null
 +++ b/integration/liboqs/META_Common.yml
-@@ -0,0 +1,90 @@
+@@ -0,0 +1,135 @@
 +commons:
-+  - name: sdith_common_base
++  # The shared code, built for the ref variants.
++  - name: sdith_common
 +    folder_name: .
 +    sources: >- #aes128_ctrle_special_ref.c is excluded and liboqs AES is used instead
 +      integration/liboqs/fips202_glue.h
@@ -98,19 +99,59 @@ index 0000000..e26e5a2
 +      src/vole_parameters.h
 +      src/vole_private.h
 +      src/vole_to_piop.c
-+    include_only: true
-+  - name: sdith_common_ref
-+    folder_name: .
 +    include_only: false
-+    common_dep: sdith_common_base
 +    compile_opts: >-
 +      -DSDITH3_FOR_LIBOQS
 +      -DNDEBUG
 +      -DONLY_REF_IMPLEMENTATION
 +      -DAPPLY_NAMESPACE=oqs_sig_private_sdith_ref_
++  # A second copy of the shared code, built with the avx2 flags alongside the
++  # avx2 sources for the avx2 variants. The first block matches sdith_common.
 +  - name: sdith_common_avx2
 +    folder_name: .
 +    sources: >- # aes128_ctrle_special_avx2.c is intentionally included and isn't shimmed, since it offers improvements over liboqs AES
++      integration/liboqs/fips202_glue.h
++      integration/liboqs/fips202x4_glue.h
++      integration/liboqs/aes_glue.c
++      integration/liboqs/sdith_namespace.h
++      include/sdith_inline.h
++      lib/aes/aes_ansi_ref.h
++      lib/aes/aes128_ctrle.h
++      lib/aes/aes128_ctrle_special_ref.c
++      lib/aes/rijndael256.c
++      lib/aes/rijndael256.h
++      lib/aes/rijndael256_ctrle.h
++      lib/aes/rijndael256_ctrle_special_ref.c
++      src/commons.c
++      src/commons.h
++      src/ct_utils.c
++      src/gf128.c
++      src/gf192.c
++      src/gf256.c
++      src/ggm.c
++      src/ggm.h
++      src/matrix_transpose_f2.c
++      src/matrix_vector_products_f2.c
++      src/piop_circuit.c
++      src/rsd.c
++      src/sdith_algebra.h
++      src/sdith_arithmetic.h
++      src/sdith_ct_utils.h
++      src/sdith_piop_circuits.h
++      src/sdith_prng.c
++      src/sdith_prng.h
++      src/sdith_prng_private.h
++      src/sdith_rsd.h
++      src/sdith_signature.c
++      src/sdith_signature.h
++      src/sdith_signature_parameters.c
++      src/sdith_vole_to_piop.h
++      src/vole_expansion.c
++      src/vole_generation.h
++      src/vole_parameters.c
++      src/vole_parameters.h
++      src/vole_private.h
++      src/vole_to_piop.c
 +      lib/aes/rijndael256_avx.c
 +      lib/aes/rijndael256_avx.h
 +      lib/aes/aes128_ctrle_special_avx2.c
@@ -123,7 +164,6 @@ index 0000000..e26e5a2
 +      src/sdith_prng_avx2.c
 +      src/vole_parameters_avx2.c
 +    include_only: false
-+    common_dep: sdith_common_base
 +    compile_opts: >-
 +      -DSDITH3_FOR_LIBOQS
 +      -DNDEBUG
@@ -138,16 +178,21 @@ index 0000000..e26e5a2
 +          - avx
 +          - aes
 +          - pclmulqdq
-+  - name: sdith_common_api
++  # Headers only. Each variant copies api.c and its params.h into its own folder,
++  # and this puts the shared headers api.c includes on that variant's include path.
++  - name: sdith_common_headers
 +    folder_name: .
-+    sources: integration/liboqs/api.c integration/liboqs/api.h integration/liboqs/check_params.h
++    sources: >-
++      integration/liboqs/sdith_namespace.h
++      src/commons.h
++      src/sdith_signature.h
 +    include_only: true
 diff --git a/integration/liboqs/README.md b/integration/liboqs/README.md
 new file mode 100644
-index 0000000..d250d85
+index 0000000..c73e0a8
 --- /dev/null
 +++ b/integration/liboqs/README.md
-@@ -0,0 +1,75 @@
+@@ -0,0 +1,81 @@
 +# liboqs integration
 +
 +Metadata and glue code that let `liboqs`' `scripts/copy_from_upstream` pull SDitH3
@@ -155,8 +200,11 @@ index 0000000..d250d85
 +
 +The different files involves in the integration are:
 +- `META_Common.yml`: the shared object libraries liboqs builds, and their sources
-+- `schemes/META_{scheme}.yml`: one file per scheme variant specifying sizes, submitters, compile options
-+- `api.c`, `api.h`, `check_params.h`: the liboqs wrapper around `sdith_sign` / `sdith_verify`
++- `schemes/META_{scheme}.yml`: one file per scheme variant specifying sizes, submitters, sources
++- `schemes/{scheme}/{impl}/params.h`: the sizes, parameter set and prefixes of one implementation
++- `api.c`, `api.h`: the liboqs wrapper around `sdith_sign` / `sdith_verify`. Each implementation
++  copies them into its own `src/sig/sdith/sdith_{scheme}_{impl}/` folder next to its `params.h`, so the entry
++  point for a given scheme can be read in one place
 +- `aes_glue.h`, `fips202_glue.h`, `fips202x4_glue.h`: shim SDitH's AES and Keccak at liboqs' implementations where appropriate
 +- `sdith_namespace.h`: generated symbol prefixes (see below)
 +- `gen_namespace.sh`: regenerates `sdith_namespace.h`
@@ -219,9 +267,12 @@ index 0000000..d250d85
 +
 +## Reference vs avx2
 +
++`sdith_common` and `sdith_common_avx2` each compile their own copy of the shared
++sources, so the shared file list appears in both. The ref copy is built with
++`ONLY_REF_IMPLEMENTATION`, the avx2 copy with the avx2 flags and the avx2 sources.
++
 +The two copies carry different `APPLY_NAMESPACE` prefixes: `oqs_sig_private_sdith_ref_` and
-+`oqs_sig_private_sdith_avx2_` depending on the compiled implimentation variant.
-+Each implimentation variant's `api.c` is compiled with the prefix of the copy it links against.
++`oqs_sig_private_sdith_avx2_`. Each implementation's `params.h` sets the prefix of the copy it links against.
 +`gen_namespace.sh` strips either prefix, so the single generated header serves both.
 diff --git a/integration/liboqs/aes_glue.c b/integration/liboqs/aes_glue.c
 new file mode 100644
@@ -279,10 +330,14 @@ index 0000000..6b80b56
 +}
 diff --git a/integration/liboqs/api.c b/integration/liboqs/api.c
 new file mode 100644
-index 0000000..7668a61
+index 0000000..64c3088
 --- /dev/null
 +++ b/integration/liboqs/api.c
-@@ -0,0 +1,91 @@
+@@ -0,0 +1,92 @@
++// The scheme's sizes, parameter set and symbol prefixes. liboqs copies
++// this file next to the params.h of each scheme and implementation.
++#include "params.h"
++
 +#include <stdlib.h>
 +#include <string.h>
 +
@@ -291,9 +346,6 @@ index 0000000..7668a61
 +
 +#include "sdith_signature.h"
 +#include "api.h"
-+
-+// Scheme parameters should be defined in the build system, e.g. -DSIGNATURE_PARAMS=sdith3_l1_gf2_fast_params
-+#include "check_params.h"
 +
 +
 +OQS_STATUS crypto_sign_keypair(uint8_t* public_key, uint8_t* secret_key) {
@@ -448,24 +500,6 @@ index 0000000..fe7891b
 +                                     const uint8_t *public_key);
 +
 +#endif  // API_H
-diff --git a/integration/liboqs/check_params.h b/integration/liboqs/check_params.h
-new file mode 100644
-index 0000000..ff412a8
---- /dev/null
-+++ b/integration/liboqs/check_params.h
-@@ -0,0 +1,12 @@
-+#ifndef CRYPTO_SECRETKEYBYTES
-+#error "CRYPTO_SECRETKEYBYTES must be defined before including this file"
-+#endif
-+#ifndef CRYPTO_PUBLICKEYBYTES
-+#error "CRYPTO_PUBLICKEYBYTES must be defined before including this file"
-+#endif
-+#ifndef CRYPTO_BYTES
-+#error "CRYPTO_BYTES must be defined before including this file"
-+#endif
-+#ifndef SIGNATURE_PARAMS
-+#error "SIGNATURE_PARAMS must be defined before including this file"
-+#endif
 diff --git a/integration/liboqs/fips202_glue.h b/integration/liboqs/fips202_glue.h
 new file mode 100644
 index 0000000..70e1cf1
@@ -725,10 +759,10 @@ index 0000000..0794080
 +echo "symbols namespaced: $(count "$symbols") ($(count "$new") new)" >&2
 diff --git a/integration/liboqs/schemes/META_SDitH3-L1-gf2-fast-cipherpow.yml b/integration/liboqs/schemes/META_SDitH3-L1-gf2-fast-cipherpow.yml
 new file mode 100644
-index 0000000..284fdab
+index 0000000..dd8dac6
 --- /dev/null
 +++ b/integration/liboqs/schemes/META_SDitH3-L1-gf2-fast-cipherpow.yml
-@@ -0,0 +1,79 @@
+@@ -0,0 +1,67 @@
 +name: SDitH3-L1-gf2-fast-cipherpow
 +type: signature
 +claimed-nist-level: 1
@@ -759,20 +793,14 @@ index 0000000..284fdab
 +- name: ref
 +  version: round3
 +  folder_name: .
-+  common_dep: sdith_common_api sdith_common_ref
-+  compile_opts: >-
-+    -DSDITH3_FOR_LIBOQS
-+    -DAPPLY_NAMESPACE=oqs_sig_private_sdith_ref_
-+    -DNDEBUG
-+    -DAPPLY_PUBLIC_API_NAMESPACE=oqs_sig_pubapi_sdith3_l1_gf2_fast_cipherpow_
-+    -DCRYPTO_SECRETKEYBYTES=147
-+    -DCRYPTO_PUBLICKEYBYTES=70
-+    -DCRYPTO_BYTES=4643
-+    -DSIGNATURE_PARAMS=CAT1_FAST_CIPHERPOW_PARAMETERS
++  common_dep: sdith_common_headers sdith_common
 +  signature_keypair: oqs_sig_pubapi_sdith3_l1_gf2_fast_cipherpow_crypto_sign_keypair # prefix + crypto_sign_keypair
 +  signature_signature: oqs_sig_pubapi_sdith3_l1_gf2_fast_cipherpow_crypto_sign_sign # prefix + crypto_sign_sign
 +  signature_verify: oqs_sig_pubapi_sdith3_l1_gf2_fast_cipherpow_crypto_sign_verify # prefix + crypto_sign_verify
-+  sources: "" # all code comes from common_dep
++  sources: >-
++    integration/liboqs/api.c
++    integration/liboqs/api.h
++    integration/liboqs/schemes/sdith3_l1_gf2_fast_cipherpow/ref/params.h
 +  supported_platforms:
 +    # __uint128_t only exists on targets with 128-bit integer support, so the
 +    # reference code does not build on any 32-bit architecture.
@@ -784,20 +812,14 @@ index 0000000..284fdab
 +- name: avx2
 +  version: round3
 +  folder_name: .
-+  common_dep: sdith_common_api sdith_common_avx2
-+  compile_opts: >-
-+    -DSDITH3_FOR_LIBOQS
-+    -DAPPLY_NAMESPACE=oqs_sig_private_sdith_avx2_
-+    -DNDEBUG
-+    -DAPPLY_PUBLIC_API_NAMESPACE=oqs_sig_pubapi_sdith3_l1_gf2_fast_cipherpow_avx2_
-+    -DCRYPTO_SECRETKEYBYTES=147
-+    -DCRYPTO_PUBLICKEYBYTES=70
-+    -DCRYPTO_BYTES=4643
-+    -DSIGNATURE_PARAMS=CAT1_FAST_CIPHERPOW_PARAMETERS
++  common_dep: sdith_common_headers sdith_common_avx2
 +  signature_keypair: oqs_sig_pubapi_sdith3_l1_gf2_fast_cipherpow_avx2_crypto_sign_keypair # prefix + crypto_sign_keypair
 +  signature_signature: oqs_sig_pubapi_sdith3_l1_gf2_fast_cipherpow_avx2_crypto_sign_sign # prefix + crypto_sign_sign
 +  signature_verify: oqs_sig_pubapi_sdith3_l1_gf2_fast_cipherpow_avx2_crypto_sign_verify # prefix + crypto_sign_verify
-+  sources: "" # all code comes from common_dep
++  sources: >-
++    integration/liboqs/api.c
++    integration/liboqs/api.h
++    integration/liboqs/schemes/sdith3_l1_gf2_fast_cipherpow/avx2/params.h
 +  supported_platforms:
 +    - architecture: x86_64
 +      operating_systems:
@@ -810,10 +832,10 @@ index 0000000..284fdab
 +        - pclmulqdq
 diff --git a/integration/liboqs/schemes/META_SDitH3-L1-gf2-fast.yml b/integration/liboqs/schemes/META_SDitH3-L1-gf2-fast.yml
 new file mode 100644
-index 0000000..c4b3435
+index 0000000..f5ec640
 --- /dev/null
 +++ b/integration/liboqs/schemes/META_SDitH3-L1-gf2-fast.yml
-@@ -0,0 +1,79 @@
+@@ -0,0 +1,67 @@
 +name: SDitH3-L1-gf2-fast
 +type: signature
 +claimed-nist-level: 1
@@ -844,20 +866,14 @@ index 0000000..c4b3435
 +- name: ref
 +  version: round3
 +  folder_name: .
-+  common_dep: sdith_common_api sdith_common_ref
-+  compile_opts: >-
-+    -DSDITH3_FOR_LIBOQS
-+    -DNDEBUG
-+    -DAPPLY_NAMESPACE=oqs_sig_private_sdith_ref_
-+    -DAPPLY_PUBLIC_API_NAMESPACE=oqs_sig_pubapi_sdith3_l1_gf2_fast_
-+    -DCRYPTO_SECRETKEYBYTES=147
-+    -DCRYPTO_PUBLICKEYBYTES=70
-+    -DCRYPTO_BYTES=4914
-+    -DSIGNATURE_PARAMS=CAT1_FAST_PARAMETERS
++  common_dep: sdith_common_headers sdith_common
 +  signature_keypair: oqs_sig_pubapi_sdith3_l1_gf2_fast_crypto_sign_keypair # prefix + crypto_sign_keypair
 +  signature_signature: oqs_sig_pubapi_sdith3_l1_gf2_fast_crypto_sign_sign # prefix + crypto_sign_sign
 +  signature_verify: oqs_sig_pubapi_sdith3_l1_gf2_fast_crypto_sign_verify # prefix + crypto_sign_verify
-+  sources: "" # all code comes from common_dep
++  sources: >-
++    integration/liboqs/api.c
++    integration/liboqs/api.h
++    integration/liboqs/schemes/sdith3_l1_gf2_fast/ref/params.h
 +  supported_platforms:
 +    # __uint128_t only exists on targets with 128-bit integer support, so the
 +    # reference code does not build on any 32-bit architecture.
@@ -869,20 +885,14 @@ index 0000000..c4b3435
 +- name: avx2
 +  version: round3
 +  folder_name: .
-+  common_dep: sdith_common_api sdith_common_avx2
-+  compile_opts: >-
-+    -DSDITH3_FOR_LIBOQS
-+    -DNDEBUG
-+    -DAPPLY_NAMESPACE=oqs_sig_private_sdith_avx2_
-+    -DAPPLY_PUBLIC_API_NAMESPACE=oqs_sig_pubapi_sdith3_l1_gf2_fast_avx2_
-+    -DCRYPTO_SECRETKEYBYTES=147
-+    -DCRYPTO_PUBLICKEYBYTES=70
-+    -DCRYPTO_BYTES=4914
-+    -DSIGNATURE_PARAMS=CAT1_FAST_PARAMETERS
++  common_dep: sdith_common_headers sdith_common_avx2
 +  signature_keypair: oqs_sig_pubapi_sdith3_l1_gf2_fast_avx2_crypto_sign_keypair # prefix + crypto_sign_keypair
 +  signature_signature: oqs_sig_pubapi_sdith3_l1_gf2_fast_avx2_crypto_sign_sign # prefix + crypto_sign_sign
 +  signature_verify: oqs_sig_pubapi_sdith3_l1_gf2_fast_avx2_crypto_sign_verify # prefix + crypto_sign_verify
-+  sources: "" # all code comes from common_dep
++  sources: >-
++    integration/liboqs/api.c
++    integration/liboqs/api.h
++    integration/liboqs/schemes/sdith3_l1_gf2_fast/avx2/params.h
 +  supported_platforms:
 +    - architecture: x86_64
 +      operating_systems:
@@ -895,10 +905,10 @@ index 0000000..c4b3435
 +        - pclmulqdq
 diff --git a/integration/liboqs/schemes/META_SDitH3-L1-gf2-short-cipherpow.yml b/integration/liboqs/schemes/META_SDitH3-L1-gf2-short-cipherpow.yml
 new file mode 100644
-index 0000000..2b76a32
+index 0000000..3a40be5
 --- /dev/null
 +++ b/integration/liboqs/schemes/META_SDitH3-L1-gf2-short-cipherpow.yml
-@@ -0,0 +1,79 @@
+@@ -0,0 +1,67 @@
 +name: SDitH3-L1-gf2-short-cipherpow
 +type: signature
 +claimed-nist-level: 1
@@ -929,20 +939,14 @@ index 0000000..2b76a32
 +- name: ref
 +  version: round3
 +  folder_name: .
-+  common_dep: sdith_common_api sdith_common_ref
-+  compile_opts: >-
-+    -DSDITH3_FOR_LIBOQS
-+    -DAPPLY_NAMESPACE=oqs_sig_private_sdith_ref_
-+    -DNDEBUG
-+    -DAPPLY_PUBLIC_API_NAMESPACE=oqs_sig_pubapi_sdith3_l1_gf2_short_cipherpow_
-+    -DCRYPTO_SECRETKEYBYTES=147
-+    -DCRYPTO_PUBLICKEYBYTES=70
-+    -DCRYPTO_BYTES=3721
-+    -DSIGNATURE_PARAMS=CAT1_SHORT_CIPHERPOW_PARAMETERS
++  common_dep: sdith_common_headers sdith_common
 +  signature_keypair: oqs_sig_pubapi_sdith3_l1_gf2_short_cipherpow_crypto_sign_keypair # prefix + crypto_sign_keypair
 +  signature_signature: oqs_sig_pubapi_sdith3_l1_gf2_short_cipherpow_crypto_sign_sign # prefix + crypto_sign_sign
 +  signature_verify: oqs_sig_pubapi_sdith3_l1_gf2_short_cipherpow_crypto_sign_verify # prefix + crypto_sign_verify
-+  sources: "" # all code comes from common_dep
++  sources: >-
++    integration/liboqs/api.c
++    integration/liboqs/api.h
++    integration/liboqs/schemes/sdith3_l1_gf2_short_cipherpow/ref/params.h
 +  supported_platforms:
 +    # __uint128_t only exists on targets with 128-bit integer support, so the
 +    # reference code does not build on any 32-bit architecture.
@@ -954,20 +958,14 @@ index 0000000..2b76a32
 +- name: avx2
 +  version: round3
 +  folder_name: .
-+  common_dep: sdith_common_api sdith_common_avx2
-+  compile_opts: >-
-+    -DSDITH3_FOR_LIBOQS
-+    -DAPPLY_NAMESPACE=oqs_sig_private_sdith_avx2_
-+    -DNDEBUG
-+    -DAPPLY_PUBLIC_API_NAMESPACE=oqs_sig_pubapi_sdith3_l1_gf2_short_cipherpow_avx2_
-+    -DCRYPTO_SECRETKEYBYTES=147
-+    -DCRYPTO_PUBLICKEYBYTES=70
-+    -DCRYPTO_BYTES=3721
-+    -DSIGNATURE_PARAMS=CAT1_SHORT_CIPHERPOW_PARAMETERS
++  common_dep: sdith_common_headers sdith_common_avx2
 +  signature_keypair: oqs_sig_pubapi_sdith3_l1_gf2_short_cipherpow_avx2_crypto_sign_keypair # prefix + crypto_sign_keypair
 +  signature_signature: oqs_sig_pubapi_sdith3_l1_gf2_short_cipherpow_avx2_crypto_sign_sign # prefix + crypto_sign_sign
 +  signature_verify: oqs_sig_pubapi_sdith3_l1_gf2_short_cipherpow_avx2_crypto_sign_verify # prefix + crypto_sign_verify
-+  sources: "" # all code comes from common_dep
++  sources: >-
++    integration/liboqs/api.c
++    integration/liboqs/api.h
++    integration/liboqs/schemes/sdith3_l1_gf2_short_cipherpow/avx2/params.h
 +  supported_platforms:
 +    - architecture: x86_64
 +      operating_systems:
@@ -980,10 +978,10 @@ index 0000000..2b76a32
 +        - pclmulqdq
 diff --git a/integration/liboqs/schemes/META_SDitH3-L1-gf2-short.yml b/integration/liboqs/schemes/META_SDitH3-L1-gf2-short.yml
 new file mode 100644
-index 0000000..e96a1a4
+index 0000000..062c851
 --- /dev/null
 +++ b/integration/liboqs/schemes/META_SDitH3-L1-gf2-short.yml
-@@ -0,0 +1,79 @@
+@@ -0,0 +1,67 @@
 +name: SDitH3-L1-gf2-short
 +type: signature
 +claimed-nist-level: 1
@@ -1014,20 +1012,14 @@ index 0000000..e96a1a4
 +- name: ref
 +  version: round3
 +  folder_name: .
-+  common_dep: sdith_common_api sdith_common_ref
-+  compile_opts: >-
-+    -DSDITH3_FOR_LIBOQS
-+    -DAPPLY_NAMESPACE=oqs_sig_private_sdith_ref_
-+    -DNDEBUG
-+    -DAPPLY_PUBLIC_API_NAMESPACE=oqs_sig_pubapi_sdith3_l1_gf2_short_
-+    -DCRYPTO_SECRETKEYBYTES=147
-+    -DCRYPTO_PUBLICKEYBYTES=70
-+    -DCRYPTO_BYTES=3721
-+    -DSIGNATURE_PARAMS=CAT1_SHORT_PARAMETERS
++  common_dep: sdith_common_headers sdith_common
 +  signature_keypair: oqs_sig_pubapi_sdith3_l1_gf2_short_crypto_sign_keypair # prefix + crypto_sign_keypair
 +  signature_signature: oqs_sig_pubapi_sdith3_l1_gf2_short_crypto_sign_sign # prefix + crypto_sign_sign
 +  signature_verify: oqs_sig_pubapi_sdith3_l1_gf2_short_crypto_sign_verify # prefix + crypto_sign_verify
-+  sources: "" # all code comes from common_dep
++  sources: >-
++    integration/liboqs/api.c
++    integration/liboqs/api.h
++    integration/liboqs/schemes/sdith3_l1_gf2_short/ref/params.h
 +  supported_platforms:
 +    # __uint128_t only exists on targets with 128-bit integer support, so the
 +    # reference code does not build on any 32-bit architecture.
@@ -1039,20 +1031,14 @@ index 0000000..e96a1a4
 +- name: avx2
 +  version: round3
 +  folder_name: .
-+  common_dep: sdith_common_api sdith_common_avx2
-+  compile_opts: >-
-+    -DSDITH3_FOR_LIBOQS
-+    -DAPPLY_NAMESPACE=oqs_sig_private_sdith_avx2_
-+    -DNDEBUG
-+    -DAPPLY_PUBLIC_API_NAMESPACE=oqs_sig_pubapi_sdith3_l1_gf2_short_avx2_
-+    -DCRYPTO_SECRETKEYBYTES=147
-+    -DCRYPTO_PUBLICKEYBYTES=70
-+    -DCRYPTO_BYTES=3721
-+    -DSIGNATURE_PARAMS=CAT1_SHORT_PARAMETERS
++  common_dep: sdith_common_headers sdith_common_avx2
 +  signature_keypair: oqs_sig_pubapi_sdith3_l1_gf2_short_avx2_crypto_sign_keypair # prefix + crypto_sign_keypair
 +  signature_signature: oqs_sig_pubapi_sdith3_l1_gf2_short_avx2_crypto_sign_sign # prefix + crypto_sign_sign
 +  signature_verify: oqs_sig_pubapi_sdith3_l1_gf2_short_avx2_crypto_sign_verify # prefix + crypto_sign_verify
-+  sources: "" # all code comes from common_dep
++  sources: >-
++    integration/liboqs/api.c
++    integration/liboqs/api.h
++    integration/liboqs/schemes/sdith3_l1_gf2_short/avx2/params.h
 +  supported_platforms:
 +    - architecture: x86_64
 +      operating_systems:
@@ -1065,10 +1051,10 @@ index 0000000..e96a1a4
 +        - pclmulqdq
 diff --git a/integration/liboqs/schemes/META_SDitH3-L3-gf2-fast-cipherpow.yml b/integration/liboqs/schemes/META_SDitH3-L3-gf2-fast-cipherpow.yml
 new file mode 100644
-index 0000000..d13ce97
+index 0000000..4c36bc9
 --- /dev/null
 +++ b/integration/liboqs/schemes/META_SDitH3-L3-gf2-fast-cipherpow.yml
-@@ -0,0 +1,79 @@
+@@ -0,0 +1,67 @@
 +name: SDitH3-L3-gf2-fast-cipherpow
 +type: signature
 +claimed-nist-level: 3
@@ -1099,20 +1085,14 @@ index 0000000..d13ce97
 +- name: ref
 +  version: round3
 +  folder_name: .
-+  common_dep: sdith_common_api sdith_common_ref
-+  compile_opts: >-
-+    -DSDITH3_FOR_LIBOQS
-+    -DAPPLY_NAMESPACE=oqs_sig_private_sdith_ref_
-+    -DNDEBUG
-+    -DAPPLY_PUBLIC_API_NAMESPACE=oqs_sig_pubapi_sdith3_l3_gf2_fast_cipherpow_
-+    -DCRYPTO_SECRETKEYBYTES=208
-+    -DCRYPTO_PUBLICKEYBYTES=98
-+    -DCRYPTO_BYTES=10452
-+    -DSIGNATURE_PARAMS=CAT3_FAST_CIPHERPOW_PARAMETERS
++  common_dep: sdith_common_headers sdith_common
 +  signature_keypair: oqs_sig_pubapi_sdith3_l3_gf2_fast_cipherpow_crypto_sign_keypair # prefix + crypto_sign_keypair
 +  signature_signature: oqs_sig_pubapi_sdith3_l3_gf2_fast_cipherpow_crypto_sign_sign # prefix + crypto_sign_sign
 +  signature_verify: oqs_sig_pubapi_sdith3_l3_gf2_fast_cipherpow_crypto_sign_verify # prefix + crypto_sign_verify
-+  sources: "" # all code comes from common_dep
++  sources: >-
++    integration/liboqs/api.c
++    integration/liboqs/api.h
++    integration/liboqs/schemes/sdith3_l3_gf2_fast_cipherpow/ref/params.h
 +  supported_platforms:
 +    # __uint128_t only exists on targets with 128-bit integer support, so the
 +    # reference code does not build on any 32-bit architecture.
@@ -1124,20 +1104,14 @@ index 0000000..d13ce97
 +- name: avx2
 +  version: round3
 +  folder_name: .
-+  common_dep: sdith_common_api sdith_common_avx2
-+  compile_opts: >-
-+    -DSDITH3_FOR_LIBOQS
-+    -DAPPLY_NAMESPACE=oqs_sig_private_sdith_avx2_
-+    -DNDEBUG
-+    -DAPPLY_PUBLIC_API_NAMESPACE=oqs_sig_pubapi_sdith3_l3_gf2_fast_cipherpow_avx2_
-+    -DCRYPTO_SECRETKEYBYTES=208
-+    -DCRYPTO_PUBLICKEYBYTES=98
-+    -DCRYPTO_BYTES=10452
-+    -DSIGNATURE_PARAMS=CAT3_FAST_CIPHERPOW_PARAMETERS
++  common_dep: sdith_common_headers sdith_common_avx2
 +  signature_keypair: oqs_sig_pubapi_sdith3_l3_gf2_fast_cipherpow_avx2_crypto_sign_keypair # prefix + crypto_sign_keypair
 +  signature_signature: oqs_sig_pubapi_sdith3_l3_gf2_fast_cipherpow_avx2_crypto_sign_sign # prefix + crypto_sign_sign
 +  signature_verify: oqs_sig_pubapi_sdith3_l3_gf2_fast_cipherpow_avx2_crypto_sign_verify # prefix + crypto_sign_verify
-+  sources: "" # all code comes from common_dep
++  sources: >-
++    integration/liboqs/api.c
++    integration/liboqs/api.h
++    integration/liboqs/schemes/sdith3_l3_gf2_fast_cipherpow/avx2/params.h
 +  supported_platforms:
 +    - architecture: x86_64
 +      operating_systems:
@@ -1150,10 +1124,10 @@ index 0000000..d13ce97
 +        - pclmulqdq
 diff --git a/integration/liboqs/schemes/META_SDitH3-L3-gf2-fast.yml b/integration/liboqs/schemes/META_SDitH3-L3-gf2-fast.yml
 new file mode 100644
-index 0000000..2529f60
+index 0000000..c2eadbe
 --- /dev/null
 +++ b/integration/liboqs/schemes/META_SDitH3-L3-gf2-fast.yml
-@@ -0,0 +1,79 @@
+@@ -0,0 +1,67 @@
 +name: SDitH3-L3-gf2-fast
 +type: signature
 +claimed-nist-level: 3
@@ -1184,20 +1158,14 @@ index 0000000..2529f60
 +- name: ref
 +  version: round3
 +  folder_name: .
-+  common_dep: sdith_common_api sdith_common_ref
-+  compile_opts: >-
-+    -DSDITH3_FOR_LIBOQS
-+    -DAPPLY_NAMESPACE=oqs_sig_private_sdith_ref_
-+    -DNDEBUG
-+    -DAPPLY_PUBLIC_API_NAMESPACE=oqs_sig_pubapi_sdith3_l3_gf2_fast_
-+    -DCRYPTO_SECRETKEYBYTES=208
-+    -DCRYPTO_PUBLICKEYBYTES=98
-+    -DCRYPTO_BYTES=10852
-+    -DSIGNATURE_PARAMS=CAT3_FAST_PARAMETERS
++  common_dep: sdith_common_headers sdith_common
 +  signature_keypair: oqs_sig_pubapi_sdith3_l3_gf2_fast_crypto_sign_keypair # prefix + crypto_sign_keypair
 +  signature_signature: oqs_sig_pubapi_sdith3_l3_gf2_fast_crypto_sign_sign # prefix + crypto_sign_sign
 +  signature_verify: oqs_sig_pubapi_sdith3_l3_gf2_fast_crypto_sign_verify # prefix + crypto_sign_verify
-+  sources: "" # all code comes from common_dep
++  sources: >-
++    integration/liboqs/api.c
++    integration/liboqs/api.h
++    integration/liboqs/schemes/sdith3_l3_gf2_fast/ref/params.h
 +  supported_platforms:
 +    # __uint128_t only exists on targets with 128-bit integer support, so the
 +    # reference code does not build on any 32-bit architecture.
@@ -1209,20 +1177,14 @@ index 0000000..2529f60
 +- name: avx2
 +  version: round3
 +  folder_name: .
-+  common_dep: sdith_common_api sdith_common_avx2
-+  compile_opts: >-
-+    -DSDITH3_FOR_LIBOQS
-+    -DAPPLY_NAMESPACE=oqs_sig_private_sdith_avx2_
-+    -DNDEBUG
-+    -DAPPLY_PUBLIC_API_NAMESPACE=oqs_sig_pubapi_sdith3_l3_gf2_fast_avx2_
-+    -DCRYPTO_SECRETKEYBYTES=208
-+    -DCRYPTO_PUBLICKEYBYTES=98
-+    -DCRYPTO_BYTES=10852
-+    -DSIGNATURE_PARAMS=CAT3_FAST_PARAMETERS
++  common_dep: sdith_common_headers sdith_common_avx2
 +  signature_keypair: oqs_sig_pubapi_sdith3_l3_gf2_fast_avx2_crypto_sign_keypair # prefix + crypto_sign_keypair
 +  signature_signature: oqs_sig_pubapi_sdith3_l3_gf2_fast_avx2_crypto_sign_sign # prefix + crypto_sign_sign
 +  signature_verify: oqs_sig_pubapi_sdith3_l3_gf2_fast_avx2_crypto_sign_verify # prefix + crypto_sign_verify
-+  sources: "" # all code comes from common_dep
++  sources: >-
++    integration/liboqs/api.c
++    integration/liboqs/api.h
++    integration/liboqs/schemes/sdith3_l3_gf2_fast/avx2/params.h
 +  supported_platforms:
 +    - architecture: x86_64
 +      operating_systems:
@@ -1235,10 +1197,10 @@ index 0000000..2529f60
 +        - pclmulqdq
 diff --git a/integration/liboqs/schemes/META_SDitH3-L3-gf2-short-cipherpow.yml b/integration/liboqs/schemes/META_SDitH3-L3-gf2-short-cipherpow.yml
 new file mode 100644
-index 0000000..022361b
+index 0000000..63340f2
 --- /dev/null
 +++ b/integration/liboqs/schemes/META_SDitH3-L3-gf2-short-cipherpow.yml
-@@ -0,0 +1,79 @@
+@@ -0,0 +1,67 @@
 +name: SDitH3-L3-gf2-short-cipherpow
 +type: signature
 +claimed-nist-level: 3
@@ -1269,20 +1231,14 @@ index 0000000..022361b
 +- name: ref
 +  version: round3
 +  folder_name: .
-+  common_dep: sdith_common_api sdith_common_ref
-+  compile_opts: >-
-+    -DSDITH3_FOR_LIBOQS
-+    -DAPPLY_NAMESPACE=oqs_sig_private_sdith_ref_
-+    -DNDEBUG
-+    -DAPPLY_PUBLIC_API_NAMESPACE=oqs_sig_pubapi_sdith3_l3_gf2_short_cipherpow_
-+    -DCRYPTO_SECRETKEYBYTES=208
-+    -DCRYPTO_PUBLICKEYBYTES=98
-+    -DCRYPTO_BYTES=8484
-+    -DSIGNATURE_PARAMS=CAT3_SHORT_CIPHERPOW_PARAMETERS
++  common_dep: sdith_common_headers sdith_common
 +  signature_keypair: oqs_sig_pubapi_sdith3_l3_gf2_short_cipherpow_crypto_sign_keypair # prefix + crypto_sign_keypair
 +  signature_signature: oqs_sig_pubapi_sdith3_l3_gf2_short_cipherpow_crypto_sign_sign # prefix + crypto_sign_sign
 +  signature_verify: oqs_sig_pubapi_sdith3_l3_gf2_short_cipherpow_crypto_sign_verify # prefix + crypto_sign_verify
-+  sources: "" # all code comes from common_dep
++  sources: >-
++    integration/liboqs/api.c
++    integration/liboqs/api.h
++    integration/liboqs/schemes/sdith3_l3_gf2_short_cipherpow/ref/params.h
 +  supported_platforms:
 +    # __uint128_t only exists on targets with 128-bit integer support, so the
 +    # reference code does not build on any 32-bit architecture.
@@ -1294,20 +1250,14 @@ index 0000000..022361b
 +- name: avx2
 +  version: round3
 +  folder_name: .
-+  common_dep: sdith_common_api sdith_common_avx2
-+  compile_opts: >-
-+    -DSDITH3_FOR_LIBOQS
-+    -DAPPLY_NAMESPACE=oqs_sig_private_sdith_avx2_
-+    -DNDEBUG
-+    -DAPPLY_PUBLIC_API_NAMESPACE=oqs_sig_pubapi_sdith3_l3_gf2_short_cipherpow_avx2_
-+    -DCRYPTO_SECRETKEYBYTES=208
-+    -DCRYPTO_PUBLICKEYBYTES=98
-+    -DCRYPTO_BYTES=8484
-+    -DSIGNATURE_PARAMS=CAT3_SHORT_CIPHERPOW_PARAMETERS
++  common_dep: sdith_common_headers sdith_common_avx2
 +  signature_keypair: oqs_sig_pubapi_sdith3_l3_gf2_short_cipherpow_avx2_crypto_sign_keypair # prefix + crypto_sign_keypair
 +  signature_signature: oqs_sig_pubapi_sdith3_l3_gf2_short_cipherpow_avx2_crypto_sign_sign # prefix + crypto_sign_sign
 +  signature_verify: oqs_sig_pubapi_sdith3_l3_gf2_short_cipherpow_avx2_crypto_sign_verify # prefix + crypto_sign_verify
-+  sources: "" # all code comes from common_dep
++  sources: >-
++    integration/liboqs/api.c
++    integration/liboqs/api.h
++    integration/liboqs/schemes/sdith3_l3_gf2_short_cipherpow/avx2/params.h
 +  supported_platforms:
 +    - architecture: x86_64
 +      operating_systems:
@@ -1320,10 +1270,10 @@ index 0000000..022361b
 +        - pclmulqdq
 diff --git a/integration/liboqs/schemes/META_SDitH3-L3-gf2-short.yml b/integration/liboqs/schemes/META_SDitH3-L3-gf2-short.yml
 new file mode 100644
-index 0000000..e9f9fc0
+index 0000000..134a2a3
 --- /dev/null
 +++ b/integration/liboqs/schemes/META_SDitH3-L3-gf2-short.yml
-@@ -0,0 +1,79 @@
+@@ -0,0 +1,67 @@
 +name: SDitH3-L3-gf2-short
 +type: signature
 +claimed-nist-level: 3
@@ -1354,20 +1304,14 @@ index 0000000..e9f9fc0
 +- name: ref
 +  version: round3
 +  folder_name: .
-+  common_dep: sdith_common_api sdith_common_ref
-+  compile_opts: >-
-+    -DSDITH3_FOR_LIBOQS
-+    -DAPPLY_NAMESPACE=oqs_sig_private_sdith_ref_
-+    -DNDEBUG
-+    -DAPPLY_PUBLIC_API_NAMESPACE=oqs_sig_pubapi_sdith3_l3_gf2_short_
-+    -DCRYPTO_SECRETKEYBYTES=208
-+    -DCRYPTO_PUBLICKEYBYTES=98
-+    -DCRYPTO_BYTES=8484
-+    -DSIGNATURE_PARAMS=CAT3_SHORT_PARAMETERS
++  common_dep: sdith_common_headers sdith_common
 +  signature_keypair: oqs_sig_pubapi_sdith3_l3_gf2_short_crypto_sign_keypair # prefix + crypto_sign_keypair
 +  signature_signature: oqs_sig_pubapi_sdith3_l3_gf2_short_crypto_sign_sign # prefix + crypto_sign_sign
 +  signature_verify: oqs_sig_pubapi_sdith3_l3_gf2_short_crypto_sign_verify # prefix + crypto_sign_verify
-+  sources: "" # all code comes from common_dep
++  sources: >-
++    integration/liboqs/api.c
++    integration/liboqs/api.h
++    integration/liboqs/schemes/sdith3_l3_gf2_short/ref/params.h
 +  supported_platforms:
 +    # __uint128_t only exists on targets with 128-bit integer support, so the
 +    # reference code does not build on any 32-bit architecture.
@@ -1379,20 +1323,14 @@ index 0000000..e9f9fc0
 +- name: avx2
 +  version: round3
 +  folder_name: .
-+  common_dep: sdith_common_api sdith_common_avx2
-+  compile_opts: >-
-+    -DSDITH3_FOR_LIBOQS
-+    -DAPPLY_NAMESPACE=oqs_sig_private_sdith_avx2_
-+    -DNDEBUG
-+    -DAPPLY_PUBLIC_API_NAMESPACE=oqs_sig_pubapi_sdith3_l3_gf2_short_avx2_
-+    -DCRYPTO_SECRETKEYBYTES=208
-+    -DCRYPTO_PUBLICKEYBYTES=98
-+    -DCRYPTO_BYTES=8484
-+    -DSIGNATURE_PARAMS=CAT3_SHORT_PARAMETERS
++  common_dep: sdith_common_headers sdith_common_avx2
 +  signature_keypair: oqs_sig_pubapi_sdith3_l3_gf2_short_avx2_crypto_sign_keypair # prefix + crypto_sign_keypair
 +  signature_signature: oqs_sig_pubapi_sdith3_l3_gf2_short_avx2_crypto_sign_sign # prefix + crypto_sign_sign
 +  signature_verify: oqs_sig_pubapi_sdith3_l3_gf2_short_avx2_crypto_sign_verify # prefix + crypto_sign_verify
-+  sources: "" # all code comes from common_dep
++  sources: >-
++    integration/liboqs/api.c
++    integration/liboqs/api.h
++    integration/liboqs/schemes/sdith3_l3_gf2_short/avx2/params.h
 +  supported_platforms:
 +    - architecture: x86_64
 +      operating_systems:
@@ -1405,10 +1343,10 @@ index 0000000..e9f9fc0
 +        - pclmulqdq
 diff --git a/integration/liboqs/schemes/META_SDitH3-L5-gf2-fast-cipherpow.yml b/integration/liboqs/schemes/META_SDitH3-L5-gf2-fast-cipherpow.yml
 new file mode 100644
-index 0000000..52ebebe
+index 0000000..7446376
 --- /dev/null
 +++ b/integration/liboqs/schemes/META_SDitH3-L5-gf2-fast-cipherpow.yml
-@@ -0,0 +1,79 @@
+@@ -0,0 +1,67 @@
 +name: SDitH3-L5-gf2-fast-cipherpow
 +type: signature
 +claimed-nist-level: 5
@@ -1439,20 +1377,14 @@ index 0000000..52ebebe
 +- name: ref
 +  version: round3
 +  folder_name: .
-+  common_dep: sdith_common_api sdith_common_ref
-+  compile_opts: >-
-+    -DSDITH3_FOR_LIBOQS
-+    -DAPPLY_NAMESPACE=oqs_sig_private_sdith_ref_
-+    -DNDEBUG
-+    -DAPPLY_PUBLIC_API_NAMESPACE=oqs_sig_pubapi_sdith3_l5_gf2_fast_cipherpow_
-+    -DCRYPTO_SECRETKEYBYTES=275
-+    -DCRYPTO_PUBLICKEYBYTES=132
-+    -DCRYPTO_BYTES=19144
-+    -DSIGNATURE_PARAMS=CAT5_FAST_CIPHERPOW_PARAMETERS
++  common_dep: sdith_common_headers sdith_common
 +  signature_keypair: oqs_sig_pubapi_sdith3_l5_gf2_fast_cipherpow_crypto_sign_keypair # prefix + crypto_sign_keypair
 +  signature_signature: oqs_sig_pubapi_sdith3_l5_gf2_fast_cipherpow_crypto_sign_sign # prefix + crypto_sign_sign
 +  signature_verify: oqs_sig_pubapi_sdith3_l5_gf2_fast_cipherpow_crypto_sign_verify # prefix + crypto_sign_verify
-+  sources: "" # all code comes from common_dep
++  sources: >-
++    integration/liboqs/api.c
++    integration/liboqs/api.h
++    integration/liboqs/schemes/sdith3_l5_gf2_fast_cipherpow/ref/params.h
 +  supported_platforms:
 +    # __uint128_t only exists on targets with 128-bit integer support, so the
 +    # reference code does not build on any 32-bit architecture.
@@ -1464,20 +1396,14 @@ index 0000000..52ebebe
 +- name: avx2
 +  version: round3
 +  folder_name: .
-+  common_dep: sdith_common_api sdith_common_avx2
-+  compile_opts: >-
-+    -DSDITH3_FOR_LIBOQS
-+    -DAPPLY_NAMESPACE=oqs_sig_private_sdith_avx2_
-+    -DNDEBUG
-+    -DAPPLY_PUBLIC_API_NAMESPACE=oqs_sig_pubapi_sdith3_l5_gf2_fast_cipherpow_avx2_
-+    -DCRYPTO_SECRETKEYBYTES=275
-+    -DCRYPTO_PUBLICKEYBYTES=132
-+    -DCRYPTO_BYTES=19144
-+    -DSIGNATURE_PARAMS=CAT5_FAST_CIPHERPOW_PARAMETERS
++  common_dep: sdith_common_headers sdith_common_avx2
 +  signature_keypair: oqs_sig_pubapi_sdith3_l5_gf2_fast_cipherpow_avx2_crypto_sign_keypair # prefix + crypto_sign_keypair
 +  signature_signature: oqs_sig_pubapi_sdith3_l5_gf2_fast_cipherpow_avx2_crypto_sign_sign # prefix + crypto_sign_sign
 +  signature_verify: oqs_sig_pubapi_sdith3_l5_gf2_fast_cipherpow_avx2_crypto_sign_verify # prefix + crypto_sign_verify
-+  sources: "" # all code comes from common_dep
++  sources: >-
++    integration/liboqs/api.c
++    integration/liboqs/api.h
++    integration/liboqs/schemes/sdith3_l5_gf2_fast_cipherpow/avx2/params.h
 +  supported_platforms:
 +    - architecture: x86_64
 +      operating_systems:
@@ -1490,10 +1416,10 @@ index 0000000..52ebebe
 +        - pclmulqdq
 diff --git a/integration/liboqs/schemes/META_SDitH3-L5-gf2-fast.yml b/integration/liboqs/schemes/META_SDitH3-L5-gf2-fast.yml
 new file mode 100644
-index 0000000..87e07cc
+index 0000000..9e7372d
 --- /dev/null
 +++ b/integration/liboqs/schemes/META_SDitH3-L5-gf2-fast.yml
-@@ -0,0 +1,79 @@
+@@ -0,0 +1,67 @@
 +name: SDitH3-L5-gf2-fast
 +type: signature
 +claimed-nist-level: 5
@@ -1524,20 +1450,14 @@ index 0000000..87e07cc
 +- name: ref
 +  version: round3
 +  folder_name: .
-+  common_dep: sdith_common_api sdith_common_ref
-+  compile_opts: >-
-+    -DSDITH3_FOR_LIBOQS
-+    -DAPPLY_NAMESPACE=oqs_sig_private_sdith_ref_
-+    -DNDEBUG
-+    -DAPPLY_PUBLIC_API_NAMESPACE=oqs_sig_pubapi_sdith3_l5_gf2_fast_
-+    -DCRYPTO_SECRETKEYBYTES=275
-+    -DCRYPTO_PUBLICKEYBYTES=132
-+    -DCRYPTO_BYTES=19144
-+    -DSIGNATURE_PARAMS=CAT5_FAST_PARAMETERS
++  common_dep: sdith_common_headers sdith_common
 +  signature_keypair: oqs_sig_pubapi_sdith3_l5_gf2_fast_crypto_sign_keypair # prefix + crypto_sign_keypair
 +  signature_signature: oqs_sig_pubapi_sdith3_l5_gf2_fast_crypto_sign_sign # prefix + crypto_sign_sign
 +  signature_verify: oqs_sig_pubapi_sdith3_l5_gf2_fast_crypto_sign_verify # prefix + crypto_sign_verify
-+  sources: "" # all code comes from common_dep
++  sources: >-
++    integration/liboqs/api.c
++    integration/liboqs/api.h
++    integration/liboqs/schemes/sdith3_l5_gf2_fast/ref/params.h
 +  supported_platforms:
 +    # __uint128_t only exists on targets with 128-bit integer support, so the
 +    # reference code does not build on any 32-bit architecture.
@@ -1549,20 +1469,14 @@ index 0000000..87e07cc
 +- name: avx2
 +  version: round3
 +  folder_name: .
-+  common_dep: sdith_common_api sdith_common_avx2
-+  compile_opts: >-
-+    -DSDITH3_FOR_LIBOQS
-+    -DAPPLY_NAMESPACE=oqs_sig_private_sdith_avx2_
-+    -DNDEBUG
-+    -DAPPLY_PUBLIC_API_NAMESPACE=oqs_sig_pubapi_sdith3_l5_gf2_fast_avx2_
-+    -DCRYPTO_SECRETKEYBYTES=275
-+    -DCRYPTO_PUBLICKEYBYTES=132
-+    -DCRYPTO_BYTES=19144
-+    -DSIGNATURE_PARAMS=CAT5_FAST_PARAMETERS
++  common_dep: sdith_common_headers sdith_common_avx2
 +  signature_keypair: oqs_sig_pubapi_sdith3_l5_gf2_fast_avx2_crypto_sign_keypair # prefix + crypto_sign_keypair
 +  signature_signature: oqs_sig_pubapi_sdith3_l5_gf2_fast_avx2_crypto_sign_sign # prefix + crypto_sign_sign
 +  signature_verify: oqs_sig_pubapi_sdith3_l5_gf2_fast_avx2_crypto_sign_verify # prefix + crypto_sign_verify
-+  sources: "" # all code comes from common_dep
++  sources: >-
++    integration/liboqs/api.c
++    integration/liboqs/api.h
++    integration/liboqs/schemes/sdith3_l5_gf2_fast/avx2/params.h
 +  supported_platforms:
 +    - architecture: x86_64
 +      operating_systems:
@@ -1575,10 +1489,10 @@ index 0000000..87e07cc
 +        - pclmulqdq
 diff --git a/integration/liboqs/schemes/META_SDitH3-L5-gf2-short-cipherpow.yml b/integration/liboqs/schemes/META_SDitH3-L5-gf2-short-cipherpow.yml
 new file mode 100644
-index 0000000..d4d37e7
+index 0000000..c3cddff
 --- /dev/null
 +++ b/integration/liboqs/schemes/META_SDitH3-L5-gf2-short-cipherpow.yml
-@@ -0,0 +1,79 @@
+@@ -0,0 +1,67 @@
 +name: SDitH3-L5-gf2-short-cipherpow
 +type: signature
 +claimed-nist-level: 5
@@ -1609,20 +1523,14 @@ index 0000000..d4d37e7
 +- name: ref
 +  version: round3
 +  folder_name: .
-+  common_dep: sdith_common_api sdith_common_ref
-+  compile_opts: >-
-+    -DSDITH3_FOR_LIBOQS
-+    -DAPPLY_NAMESPACE=oqs_sig_private_sdith_ref_
-+    -DNDEBUG
-+    -DAPPLY_PUBLIC_API_NAMESPACE=oqs_sig_pubapi_sdith3_l5_gf2_short_cipherpow_
-+    -DCRYPTO_SECRETKEYBYTES=275
-+    -DCRYPTO_PUBLICKEYBYTES=132
-+    -DCRYPTO_BYTES=15147
-+    -DSIGNATURE_PARAMS=CAT5_SHORT_CIPHERPOW_PARAMETERS
++  common_dep: sdith_common_headers sdith_common
 +  signature_keypair: oqs_sig_pubapi_sdith3_l5_gf2_short_cipherpow_crypto_sign_keypair # prefix + crypto_sign_keypair
 +  signature_signature: oqs_sig_pubapi_sdith3_l5_gf2_short_cipherpow_crypto_sign_sign # prefix + crypto_sign_sign
 +  signature_verify: oqs_sig_pubapi_sdith3_l5_gf2_short_cipherpow_crypto_sign_verify # prefix + crypto_sign_verify
-+  sources: "" # all code comes from common_dep
++  sources: >-
++    integration/liboqs/api.c
++    integration/liboqs/api.h
++    integration/liboqs/schemes/sdith3_l5_gf2_short_cipherpow/ref/params.h
 +  supported_platforms:
 +    # __uint128_t only exists on targets with 128-bit integer support, so the
 +    # reference code does not build on any 32-bit architecture.
@@ -1634,20 +1542,14 @@ index 0000000..d4d37e7
 +- name: avx2
 +  version: round3
 +  folder_name: .
-+  common_dep: sdith_common_api sdith_common_avx2
-+  compile_opts: >-
-+    -DSDITH3_FOR_LIBOQS
-+    -DAPPLY_NAMESPACE=oqs_sig_private_sdith_avx2_
-+    -DNDEBUG
-+    -DAPPLY_PUBLIC_API_NAMESPACE=oqs_sig_pubapi_sdith3_l5_gf2_short_cipherpow_avx2_
-+    -DCRYPTO_SECRETKEYBYTES=275
-+    -DCRYPTO_PUBLICKEYBYTES=132
-+    -DCRYPTO_BYTES=15147
-+    -DSIGNATURE_PARAMS=CAT5_SHORT_CIPHERPOW_PARAMETERS
++  common_dep: sdith_common_headers sdith_common_avx2
 +  signature_keypair: oqs_sig_pubapi_sdith3_l5_gf2_short_cipherpow_avx2_crypto_sign_keypair # prefix + crypto_sign_keypair
 +  signature_signature: oqs_sig_pubapi_sdith3_l5_gf2_short_cipherpow_avx2_crypto_sign_sign # prefix + crypto_sign_sign
 +  signature_verify: oqs_sig_pubapi_sdith3_l5_gf2_short_cipherpow_avx2_crypto_sign_verify # prefix + crypto_sign_verify
-+  sources: "" # all code comes from common_dep
++  sources: >-
++    integration/liboqs/api.c
++    integration/liboqs/api.h
++    integration/liboqs/schemes/sdith3_l5_gf2_short_cipherpow/avx2/params.h
 +  supported_platforms:
 +    - architecture: x86_64
 +      operating_systems:
@@ -1660,10 +1562,10 @@ index 0000000..d4d37e7
 +        - pclmulqdq
 diff --git a/integration/liboqs/schemes/META_SDitH3-L5-gf2-short.yml b/integration/liboqs/schemes/META_SDitH3-L5-gf2-short.yml
 new file mode 100644
-index 0000000..206e74b
+index 0000000..73eecbe
 --- /dev/null
 +++ b/integration/liboqs/schemes/META_SDitH3-L5-gf2-short.yml
-@@ -0,0 +1,79 @@
+@@ -0,0 +1,67 @@
 +name: SDitH3-L5-gf2-short
 +type: signature
 +claimed-nist-level: 5
@@ -1694,20 +1596,14 @@ index 0000000..206e74b
 +- name: ref
 +  version: round3
 +  folder_name: .
-+  common_dep: sdith_common_api sdith_common_ref
-+  compile_opts: >-
-+    -DSDITH3_FOR_LIBOQS
-+    -DAPPLY_NAMESPACE=oqs_sig_private_sdith_ref_
-+    -DNDEBUG
-+    -DAPPLY_PUBLIC_API_NAMESPACE=oqs_sig_pubapi_sdith3_l5_gf2_short_
-+    -DCRYPTO_SECRETKEYBYTES=275
-+    -DCRYPTO_PUBLICKEYBYTES=132
-+    -DCRYPTO_BYTES=15147
-+    -DSIGNATURE_PARAMS=CAT5_SHORT_PARAMETERS
++  common_dep: sdith_common_headers sdith_common
 +  signature_keypair: oqs_sig_pubapi_sdith3_l5_gf2_short_crypto_sign_keypair # prefix + crypto_sign_keypair
 +  signature_signature: oqs_sig_pubapi_sdith3_l5_gf2_short_crypto_sign_sign # prefix + crypto_sign_sign
 +  signature_verify: oqs_sig_pubapi_sdith3_l5_gf2_short_crypto_sign_verify # prefix + crypto_sign_verify
-+  sources: "" # all code comes from common_dep
++  sources: >-
++    integration/liboqs/api.c
++    integration/liboqs/api.h
++    integration/liboqs/schemes/sdith3_l5_gf2_short/ref/params.h
 +  supported_platforms:
 +    # __uint128_t only exists on targets with 128-bit integer support, so the
 +    # reference code does not build on any 32-bit architecture.
@@ -1719,20 +1615,14 @@ index 0000000..206e74b
 +- name: avx2
 +  version: round3
 +  folder_name: .
-+  common_dep: sdith_common_api sdith_common_avx2
-+  compile_opts: >-
-+    -DSDITH3_FOR_LIBOQS
-+    -DAPPLY_NAMESPACE=oqs_sig_private_sdith_avx2_
-+    -DNDEBUG
-+    -DAPPLY_PUBLIC_API_NAMESPACE=oqs_sig_pubapi_sdith3_l5_gf2_short_avx2_
-+    -DCRYPTO_SECRETKEYBYTES=275
-+    -DCRYPTO_PUBLICKEYBYTES=132
-+    -DCRYPTO_BYTES=15147
-+    -DSIGNATURE_PARAMS=CAT5_SHORT_PARAMETERS
++  common_dep: sdith_common_headers sdith_common_avx2
 +  signature_keypair: oqs_sig_pubapi_sdith3_l5_gf2_short_avx2_crypto_sign_keypair # prefix + crypto_sign_keypair
 +  signature_signature: oqs_sig_pubapi_sdith3_l5_gf2_short_avx2_crypto_sign_sign # prefix + crypto_sign_sign
 +  signature_verify: oqs_sig_pubapi_sdith3_l5_gf2_short_avx2_crypto_sign_verify # prefix + crypto_sign_verify
-+  sources: "" # all code comes from common_dep
++  sources: >-
++    integration/liboqs/api.c
++    integration/liboqs/api.h
++    integration/liboqs/schemes/sdith3_l5_gf2_short/avx2/params.h
 +  supported_platforms:
 +    - architecture: x86_64
 +      operating_systems:
@@ -1743,6 +1633,630 @@ index 0000000..206e74b
 +        - avx
 +        - aes
 +        - pclmulqdq
+diff --git a/integration/liboqs/schemes/sdith3_l1_gf2_fast/avx2/params.h b/integration/liboqs/schemes/sdith3_l1_gf2_fast/avx2/params.h
+new file mode 100644
+index 0000000..77809d5
+--- /dev/null
++++ b/integration/liboqs/schemes/sdith3_l1_gf2_fast/avx2/params.h
+@@ -0,0 +1,20 @@
++#ifndef SDITH_LIBOQS_PARAMS_H
++#define SDITH_LIBOQS_PARAMS_H
++
++/* SDitH3-L1-gf2-fast, avx2 implementation: the settings api.c is built with. */
++
++#ifndef SDITH3_FOR_LIBOQS
++#define SDITH3_FOR_LIBOQS
++#endif
++#ifndef NDEBUG
++#define NDEBUG
++#endif
++
++#define APPLY_NAMESPACE oqs_sig_private_sdith_avx2_
++#define APPLY_PUBLIC_API_NAMESPACE oqs_sig_pubapi_sdith3_l1_gf2_fast_avx2_
++#define CRYPTO_SECRETKEYBYTES 147
++#define CRYPTO_PUBLICKEYBYTES 70
++#define CRYPTO_BYTES 4914
++#define SIGNATURE_PARAMS CAT1_FAST_PARAMETERS
++
++#endif  // SDITH_LIBOQS_PARAMS_H
+diff --git a/integration/liboqs/schemes/sdith3_l1_gf2_fast/ref/params.h b/integration/liboqs/schemes/sdith3_l1_gf2_fast/ref/params.h
+new file mode 100644
+index 0000000..87a285d
+--- /dev/null
++++ b/integration/liboqs/schemes/sdith3_l1_gf2_fast/ref/params.h
+@@ -0,0 +1,20 @@
++#ifndef SDITH_LIBOQS_PARAMS_H
++#define SDITH_LIBOQS_PARAMS_H
++
++/* SDitH3-L1-gf2-fast, ref implementation: the settings api.c is built with. */
++
++#ifndef SDITH3_FOR_LIBOQS
++#define SDITH3_FOR_LIBOQS
++#endif
++#ifndef NDEBUG
++#define NDEBUG
++#endif
++
++#define APPLY_NAMESPACE oqs_sig_private_sdith_ref_
++#define APPLY_PUBLIC_API_NAMESPACE oqs_sig_pubapi_sdith3_l1_gf2_fast_
++#define CRYPTO_SECRETKEYBYTES 147
++#define CRYPTO_PUBLICKEYBYTES 70
++#define CRYPTO_BYTES 4914
++#define SIGNATURE_PARAMS CAT1_FAST_PARAMETERS
++
++#endif  // SDITH_LIBOQS_PARAMS_H
+diff --git a/integration/liboqs/schemes/sdith3_l1_gf2_fast_cipherpow/avx2/params.h b/integration/liboqs/schemes/sdith3_l1_gf2_fast_cipherpow/avx2/params.h
+new file mode 100644
+index 0000000..8a20576
+--- /dev/null
++++ b/integration/liboqs/schemes/sdith3_l1_gf2_fast_cipherpow/avx2/params.h
+@@ -0,0 +1,20 @@
++#ifndef SDITH_LIBOQS_PARAMS_H
++#define SDITH_LIBOQS_PARAMS_H
++
++/* SDitH3-L1-gf2-fast-cipherpow, avx2 implementation: the settings api.c is built with. */
++
++#ifndef SDITH3_FOR_LIBOQS
++#define SDITH3_FOR_LIBOQS
++#endif
++#ifndef NDEBUG
++#define NDEBUG
++#endif
++
++#define APPLY_NAMESPACE oqs_sig_private_sdith_avx2_
++#define APPLY_PUBLIC_API_NAMESPACE oqs_sig_pubapi_sdith3_l1_gf2_fast_cipherpow_avx2_
++#define CRYPTO_SECRETKEYBYTES 147
++#define CRYPTO_PUBLICKEYBYTES 70
++#define CRYPTO_BYTES 4643
++#define SIGNATURE_PARAMS CAT1_FAST_CIPHERPOW_PARAMETERS
++
++#endif  // SDITH_LIBOQS_PARAMS_H
+diff --git a/integration/liboqs/schemes/sdith3_l1_gf2_fast_cipherpow/ref/params.h b/integration/liboqs/schemes/sdith3_l1_gf2_fast_cipherpow/ref/params.h
+new file mode 100644
+index 0000000..a56f587
+--- /dev/null
++++ b/integration/liboqs/schemes/sdith3_l1_gf2_fast_cipherpow/ref/params.h
+@@ -0,0 +1,20 @@
++#ifndef SDITH_LIBOQS_PARAMS_H
++#define SDITH_LIBOQS_PARAMS_H
++
++/* SDitH3-L1-gf2-fast-cipherpow, ref implementation: the settings api.c is built with. */
++
++#ifndef SDITH3_FOR_LIBOQS
++#define SDITH3_FOR_LIBOQS
++#endif
++#ifndef NDEBUG
++#define NDEBUG
++#endif
++
++#define APPLY_NAMESPACE oqs_sig_private_sdith_ref_
++#define APPLY_PUBLIC_API_NAMESPACE oqs_sig_pubapi_sdith3_l1_gf2_fast_cipherpow_
++#define CRYPTO_SECRETKEYBYTES 147
++#define CRYPTO_PUBLICKEYBYTES 70
++#define CRYPTO_BYTES 4643
++#define SIGNATURE_PARAMS CAT1_FAST_CIPHERPOW_PARAMETERS
++
++#endif  // SDITH_LIBOQS_PARAMS_H
+diff --git a/integration/liboqs/schemes/sdith3_l1_gf2_short/avx2/params.h b/integration/liboqs/schemes/sdith3_l1_gf2_short/avx2/params.h
+new file mode 100644
+index 0000000..afee38c
+--- /dev/null
++++ b/integration/liboqs/schemes/sdith3_l1_gf2_short/avx2/params.h
+@@ -0,0 +1,20 @@
++#ifndef SDITH_LIBOQS_PARAMS_H
++#define SDITH_LIBOQS_PARAMS_H
++
++/* SDitH3-L1-gf2-short, avx2 implementation: the settings api.c is built with. */
++
++#ifndef SDITH3_FOR_LIBOQS
++#define SDITH3_FOR_LIBOQS
++#endif
++#ifndef NDEBUG
++#define NDEBUG
++#endif
++
++#define APPLY_NAMESPACE oqs_sig_private_sdith_avx2_
++#define APPLY_PUBLIC_API_NAMESPACE oqs_sig_pubapi_sdith3_l1_gf2_short_avx2_
++#define CRYPTO_SECRETKEYBYTES 147
++#define CRYPTO_PUBLICKEYBYTES 70
++#define CRYPTO_BYTES 3721
++#define SIGNATURE_PARAMS CAT1_SHORT_PARAMETERS
++
++#endif  // SDITH_LIBOQS_PARAMS_H
+diff --git a/integration/liboqs/schemes/sdith3_l1_gf2_short/ref/params.h b/integration/liboqs/schemes/sdith3_l1_gf2_short/ref/params.h
+new file mode 100644
+index 0000000..b6de890
+--- /dev/null
++++ b/integration/liboqs/schemes/sdith3_l1_gf2_short/ref/params.h
+@@ -0,0 +1,20 @@
++#ifndef SDITH_LIBOQS_PARAMS_H
++#define SDITH_LIBOQS_PARAMS_H
++
++/* SDitH3-L1-gf2-short, ref implementation: the settings api.c is built with. */
++
++#ifndef SDITH3_FOR_LIBOQS
++#define SDITH3_FOR_LIBOQS
++#endif
++#ifndef NDEBUG
++#define NDEBUG
++#endif
++
++#define APPLY_NAMESPACE oqs_sig_private_sdith_ref_
++#define APPLY_PUBLIC_API_NAMESPACE oqs_sig_pubapi_sdith3_l1_gf2_short_
++#define CRYPTO_SECRETKEYBYTES 147
++#define CRYPTO_PUBLICKEYBYTES 70
++#define CRYPTO_BYTES 3721
++#define SIGNATURE_PARAMS CAT1_SHORT_PARAMETERS
++
++#endif  // SDITH_LIBOQS_PARAMS_H
+diff --git a/integration/liboqs/schemes/sdith3_l1_gf2_short_cipherpow/avx2/params.h b/integration/liboqs/schemes/sdith3_l1_gf2_short_cipherpow/avx2/params.h
+new file mode 100644
+index 0000000..a2ae35b
+--- /dev/null
++++ b/integration/liboqs/schemes/sdith3_l1_gf2_short_cipherpow/avx2/params.h
+@@ -0,0 +1,20 @@
++#ifndef SDITH_LIBOQS_PARAMS_H
++#define SDITH_LIBOQS_PARAMS_H
++
++/* SDitH3-L1-gf2-short-cipherpow, avx2 implementation: the settings api.c is built with. */
++
++#ifndef SDITH3_FOR_LIBOQS
++#define SDITH3_FOR_LIBOQS
++#endif
++#ifndef NDEBUG
++#define NDEBUG
++#endif
++
++#define APPLY_NAMESPACE oqs_sig_private_sdith_avx2_
++#define APPLY_PUBLIC_API_NAMESPACE oqs_sig_pubapi_sdith3_l1_gf2_short_cipherpow_avx2_
++#define CRYPTO_SECRETKEYBYTES 147
++#define CRYPTO_PUBLICKEYBYTES 70
++#define CRYPTO_BYTES 3721
++#define SIGNATURE_PARAMS CAT1_SHORT_CIPHERPOW_PARAMETERS
++
++#endif  // SDITH_LIBOQS_PARAMS_H
+diff --git a/integration/liboqs/schemes/sdith3_l1_gf2_short_cipherpow/ref/params.h b/integration/liboqs/schemes/sdith3_l1_gf2_short_cipherpow/ref/params.h
+new file mode 100644
+index 0000000..550847d
+--- /dev/null
++++ b/integration/liboqs/schemes/sdith3_l1_gf2_short_cipherpow/ref/params.h
+@@ -0,0 +1,20 @@
++#ifndef SDITH_LIBOQS_PARAMS_H
++#define SDITH_LIBOQS_PARAMS_H
++
++/* SDitH3-L1-gf2-short-cipherpow, ref implementation: the settings api.c is built with. */
++
++#ifndef SDITH3_FOR_LIBOQS
++#define SDITH3_FOR_LIBOQS
++#endif
++#ifndef NDEBUG
++#define NDEBUG
++#endif
++
++#define APPLY_NAMESPACE oqs_sig_private_sdith_ref_
++#define APPLY_PUBLIC_API_NAMESPACE oqs_sig_pubapi_sdith3_l1_gf2_short_cipherpow_
++#define CRYPTO_SECRETKEYBYTES 147
++#define CRYPTO_PUBLICKEYBYTES 70
++#define CRYPTO_BYTES 3721
++#define SIGNATURE_PARAMS CAT1_SHORT_CIPHERPOW_PARAMETERS
++
++#endif  // SDITH_LIBOQS_PARAMS_H
+diff --git a/integration/liboqs/schemes/sdith3_l3_gf2_fast/avx2/params.h b/integration/liboqs/schemes/sdith3_l3_gf2_fast/avx2/params.h
+new file mode 100644
+index 0000000..199f5f0
+--- /dev/null
++++ b/integration/liboqs/schemes/sdith3_l3_gf2_fast/avx2/params.h
+@@ -0,0 +1,20 @@
++#ifndef SDITH_LIBOQS_PARAMS_H
++#define SDITH_LIBOQS_PARAMS_H
++
++/* SDitH3-L3-gf2-fast, avx2 implementation: the settings api.c is built with. */
++
++#ifndef SDITH3_FOR_LIBOQS
++#define SDITH3_FOR_LIBOQS
++#endif
++#ifndef NDEBUG
++#define NDEBUG
++#endif
++
++#define APPLY_NAMESPACE oqs_sig_private_sdith_avx2_
++#define APPLY_PUBLIC_API_NAMESPACE oqs_sig_pubapi_sdith3_l3_gf2_fast_avx2_
++#define CRYPTO_SECRETKEYBYTES 208
++#define CRYPTO_PUBLICKEYBYTES 98
++#define CRYPTO_BYTES 10852
++#define SIGNATURE_PARAMS CAT3_FAST_PARAMETERS
++
++#endif  // SDITH_LIBOQS_PARAMS_H
+diff --git a/integration/liboqs/schemes/sdith3_l3_gf2_fast/ref/params.h b/integration/liboqs/schemes/sdith3_l3_gf2_fast/ref/params.h
+new file mode 100644
+index 0000000..fc3bacb
+--- /dev/null
++++ b/integration/liboqs/schemes/sdith3_l3_gf2_fast/ref/params.h
+@@ -0,0 +1,20 @@
++#ifndef SDITH_LIBOQS_PARAMS_H
++#define SDITH_LIBOQS_PARAMS_H
++
++/* SDitH3-L3-gf2-fast, ref implementation: the settings api.c is built with. */
++
++#ifndef SDITH3_FOR_LIBOQS
++#define SDITH3_FOR_LIBOQS
++#endif
++#ifndef NDEBUG
++#define NDEBUG
++#endif
++
++#define APPLY_NAMESPACE oqs_sig_private_sdith_ref_
++#define APPLY_PUBLIC_API_NAMESPACE oqs_sig_pubapi_sdith3_l3_gf2_fast_
++#define CRYPTO_SECRETKEYBYTES 208
++#define CRYPTO_PUBLICKEYBYTES 98
++#define CRYPTO_BYTES 10852
++#define SIGNATURE_PARAMS CAT3_FAST_PARAMETERS
++
++#endif  // SDITH_LIBOQS_PARAMS_H
+diff --git a/integration/liboqs/schemes/sdith3_l3_gf2_fast_cipherpow/avx2/params.h b/integration/liboqs/schemes/sdith3_l3_gf2_fast_cipherpow/avx2/params.h
+new file mode 100644
+index 0000000..142ad8e
+--- /dev/null
++++ b/integration/liboqs/schemes/sdith3_l3_gf2_fast_cipherpow/avx2/params.h
+@@ -0,0 +1,20 @@
++#ifndef SDITH_LIBOQS_PARAMS_H
++#define SDITH_LIBOQS_PARAMS_H
++
++/* SDitH3-L3-gf2-fast-cipherpow, avx2 implementation: the settings api.c is built with. */
++
++#ifndef SDITH3_FOR_LIBOQS
++#define SDITH3_FOR_LIBOQS
++#endif
++#ifndef NDEBUG
++#define NDEBUG
++#endif
++
++#define APPLY_NAMESPACE oqs_sig_private_sdith_avx2_
++#define APPLY_PUBLIC_API_NAMESPACE oqs_sig_pubapi_sdith3_l3_gf2_fast_cipherpow_avx2_
++#define CRYPTO_SECRETKEYBYTES 208
++#define CRYPTO_PUBLICKEYBYTES 98
++#define CRYPTO_BYTES 10452
++#define SIGNATURE_PARAMS CAT3_FAST_CIPHERPOW_PARAMETERS
++
++#endif  // SDITH_LIBOQS_PARAMS_H
+diff --git a/integration/liboqs/schemes/sdith3_l3_gf2_fast_cipherpow/ref/params.h b/integration/liboqs/schemes/sdith3_l3_gf2_fast_cipherpow/ref/params.h
+new file mode 100644
+index 0000000..d75bd2c
+--- /dev/null
++++ b/integration/liboqs/schemes/sdith3_l3_gf2_fast_cipherpow/ref/params.h
+@@ -0,0 +1,20 @@
++#ifndef SDITH_LIBOQS_PARAMS_H
++#define SDITH_LIBOQS_PARAMS_H
++
++/* SDitH3-L3-gf2-fast-cipherpow, ref implementation: the settings api.c is built with. */
++
++#ifndef SDITH3_FOR_LIBOQS
++#define SDITH3_FOR_LIBOQS
++#endif
++#ifndef NDEBUG
++#define NDEBUG
++#endif
++
++#define APPLY_NAMESPACE oqs_sig_private_sdith_ref_
++#define APPLY_PUBLIC_API_NAMESPACE oqs_sig_pubapi_sdith3_l3_gf2_fast_cipherpow_
++#define CRYPTO_SECRETKEYBYTES 208
++#define CRYPTO_PUBLICKEYBYTES 98
++#define CRYPTO_BYTES 10452
++#define SIGNATURE_PARAMS CAT3_FAST_CIPHERPOW_PARAMETERS
++
++#endif  // SDITH_LIBOQS_PARAMS_H
+diff --git a/integration/liboqs/schemes/sdith3_l3_gf2_short/avx2/params.h b/integration/liboqs/schemes/sdith3_l3_gf2_short/avx2/params.h
+new file mode 100644
+index 0000000..36d9ff3
+--- /dev/null
++++ b/integration/liboqs/schemes/sdith3_l3_gf2_short/avx2/params.h
+@@ -0,0 +1,20 @@
++#ifndef SDITH_LIBOQS_PARAMS_H
++#define SDITH_LIBOQS_PARAMS_H
++
++/* SDitH3-L3-gf2-short, avx2 implementation: the settings api.c is built with. */
++
++#ifndef SDITH3_FOR_LIBOQS
++#define SDITH3_FOR_LIBOQS
++#endif
++#ifndef NDEBUG
++#define NDEBUG
++#endif
++
++#define APPLY_NAMESPACE oqs_sig_private_sdith_avx2_
++#define APPLY_PUBLIC_API_NAMESPACE oqs_sig_pubapi_sdith3_l3_gf2_short_avx2_
++#define CRYPTO_SECRETKEYBYTES 208
++#define CRYPTO_PUBLICKEYBYTES 98
++#define CRYPTO_BYTES 8484
++#define SIGNATURE_PARAMS CAT3_SHORT_PARAMETERS
++
++#endif  // SDITH_LIBOQS_PARAMS_H
+diff --git a/integration/liboqs/schemes/sdith3_l3_gf2_short/ref/params.h b/integration/liboqs/schemes/sdith3_l3_gf2_short/ref/params.h
+new file mode 100644
+index 0000000..7fc171b
+--- /dev/null
++++ b/integration/liboqs/schemes/sdith3_l3_gf2_short/ref/params.h
+@@ -0,0 +1,20 @@
++#ifndef SDITH_LIBOQS_PARAMS_H
++#define SDITH_LIBOQS_PARAMS_H
++
++/* SDitH3-L3-gf2-short, ref implementation: the settings api.c is built with. */
++
++#ifndef SDITH3_FOR_LIBOQS
++#define SDITH3_FOR_LIBOQS
++#endif
++#ifndef NDEBUG
++#define NDEBUG
++#endif
++
++#define APPLY_NAMESPACE oqs_sig_private_sdith_ref_
++#define APPLY_PUBLIC_API_NAMESPACE oqs_sig_pubapi_sdith3_l3_gf2_short_
++#define CRYPTO_SECRETKEYBYTES 208
++#define CRYPTO_PUBLICKEYBYTES 98
++#define CRYPTO_BYTES 8484
++#define SIGNATURE_PARAMS CAT3_SHORT_PARAMETERS
++
++#endif  // SDITH_LIBOQS_PARAMS_H
+diff --git a/integration/liboqs/schemes/sdith3_l3_gf2_short_cipherpow/avx2/params.h b/integration/liboqs/schemes/sdith3_l3_gf2_short_cipherpow/avx2/params.h
+new file mode 100644
+index 0000000..f7323ef
+--- /dev/null
++++ b/integration/liboqs/schemes/sdith3_l3_gf2_short_cipherpow/avx2/params.h
+@@ -0,0 +1,20 @@
++#ifndef SDITH_LIBOQS_PARAMS_H
++#define SDITH_LIBOQS_PARAMS_H
++
++/* SDitH3-L3-gf2-short-cipherpow, avx2 implementation: the settings api.c is built with. */
++
++#ifndef SDITH3_FOR_LIBOQS
++#define SDITH3_FOR_LIBOQS
++#endif
++#ifndef NDEBUG
++#define NDEBUG
++#endif
++
++#define APPLY_NAMESPACE oqs_sig_private_sdith_avx2_
++#define APPLY_PUBLIC_API_NAMESPACE oqs_sig_pubapi_sdith3_l3_gf2_short_cipherpow_avx2_
++#define CRYPTO_SECRETKEYBYTES 208
++#define CRYPTO_PUBLICKEYBYTES 98
++#define CRYPTO_BYTES 8484
++#define SIGNATURE_PARAMS CAT3_SHORT_CIPHERPOW_PARAMETERS
++
++#endif  // SDITH_LIBOQS_PARAMS_H
+diff --git a/integration/liboqs/schemes/sdith3_l3_gf2_short_cipherpow/ref/params.h b/integration/liboqs/schemes/sdith3_l3_gf2_short_cipherpow/ref/params.h
+new file mode 100644
+index 0000000..2bb5a83
+--- /dev/null
++++ b/integration/liboqs/schemes/sdith3_l3_gf2_short_cipherpow/ref/params.h
+@@ -0,0 +1,20 @@
++#ifndef SDITH_LIBOQS_PARAMS_H
++#define SDITH_LIBOQS_PARAMS_H
++
++/* SDitH3-L3-gf2-short-cipherpow, ref implementation: the settings api.c is built with. */
++
++#ifndef SDITH3_FOR_LIBOQS
++#define SDITH3_FOR_LIBOQS
++#endif
++#ifndef NDEBUG
++#define NDEBUG
++#endif
++
++#define APPLY_NAMESPACE oqs_sig_private_sdith_ref_
++#define APPLY_PUBLIC_API_NAMESPACE oqs_sig_pubapi_sdith3_l3_gf2_short_cipherpow_
++#define CRYPTO_SECRETKEYBYTES 208
++#define CRYPTO_PUBLICKEYBYTES 98
++#define CRYPTO_BYTES 8484
++#define SIGNATURE_PARAMS CAT3_SHORT_CIPHERPOW_PARAMETERS
++
++#endif  // SDITH_LIBOQS_PARAMS_H
+diff --git a/integration/liboqs/schemes/sdith3_l5_gf2_fast/avx2/params.h b/integration/liboqs/schemes/sdith3_l5_gf2_fast/avx2/params.h
+new file mode 100644
+index 0000000..12d0a38
+--- /dev/null
++++ b/integration/liboqs/schemes/sdith3_l5_gf2_fast/avx2/params.h
+@@ -0,0 +1,20 @@
++#ifndef SDITH_LIBOQS_PARAMS_H
++#define SDITH_LIBOQS_PARAMS_H
++
++/* SDitH3-L5-gf2-fast, avx2 implementation: the settings api.c is built with. */
++
++#ifndef SDITH3_FOR_LIBOQS
++#define SDITH3_FOR_LIBOQS
++#endif
++#ifndef NDEBUG
++#define NDEBUG
++#endif
++
++#define APPLY_NAMESPACE oqs_sig_private_sdith_avx2_
++#define APPLY_PUBLIC_API_NAMESPACE oqs_sig_pubapi_sdith3_l5_gf2_fast_avx2_
++#define CRYPTO_SECRETKEYBYTES 275
++#define CRYPTO_PUBLICKEYBYTES 132
++#define CRYPTO_BYTES 19144
++#define SIGNATURE_PARAMS CAT5_FAST_PARAMETERS
++
++#endif  // SDITH_LIBOQS_PARAMS_H
+diff --git a/integration/liboqs/schemes/sdith3_l5_gf2_fast/ref/params.h b/integration/liboqs/schemes/sdith3_l5_gf2_fast/ref/params.h
+new file mode 100644
+index 0000000..ba939d9
+--- /dev/null
++++ b/integration/liboqs/schemes/sdith3_l5_gf2_fast/ref/params.h
+@@ -0,0 +1,20 @@
++#ifndef SDITH_LIBOQS_PARAMS_H
++#define SDITH_LIBOQS_PARAMS_H
++
++/* SDitH3-L5-gf2-fast, ref implementation: the settings api.c is built with. */
++
++#ifndef SDITH3_FOR_LIBOQS
++#define SDITH3_FOR_LIBOQS
++#endif
++#ifndef NDEBUG
++#define NDEBUG
++#endif
++
++#define APPLY_NAMESPACE oqs_sig_private_sdith_ref_
++#define APPLY_PUBLIC_API_NAMESPACE oqs_sig_pubapi_sdith3_l5_gf2_fast_
++#define CRYPTO_SECRETKEYBYTES 275
++#define CRYPTO_PUBLICKEYBYTES 132
++#define CRYPTO_BYTES 19144
++#define SIGNATURE_PARAMS CAT5_FAST_PARAMETERS
++
++#endif  // SDITH_LIBOQS_PARAMS_H
+diff --git a/integration/liboqs/schemes/sdith3_l5_gf2_fast_cipherpow/avx2/params.h b/integration/liboqs/schemes/sdith3_l5_gf2_fast_cipherpow/avx2/params.h
+new file mode 100644
+index 0000000..95227d7
+--- /dev/null
++++ b/integration/liboqs/schemes/sdith3_l5_gf2_fast_cipherpow/avx2/params.h
+@@ -0,0 +1,20 @@
++#ifndef SDITH_LIBOQS_PARAMS_H
++#define SDITH_LIBOQS_PARAMS_H
++
++/* SDitH3-L5-gf2-fast-cipherpow, avx2 implementation: the settings api.c is built with. */
++
++#ifndef SDITH3_FOR_LIBOQS
++#define SDITH3_FOR_LIBOQS
++#endif
++#ifndef NDEBUG
++#define NDEBUG
++#endif
++
++#define APPLY_NAMESPACE oqs_sig_private_sdith_avx2_
++#define APPLY_PUBLIC_API_NAMESPACE oqs_sig_pubapi_sdith3_l5_gf2_fast_cipherpow_avx2_
++#define CRYPTO_SECRETKEYBYTES 275
++#define CRYPTO_PUBLICKEYBYTES 132
++#define CRYPTO_BYTES 19144
++#define SIGNATURE_PARAMS CAT5_FAST_CIPHERPOW_PARAMETERS
++
++#endif  // SDITH_LIBOQS_PARAMS_H
+diff --git a/integration/liboqs/schemes/sdith3_l5_gf2_fast_cipherpow/ref/params.h b/integration/liboqs/schemes/sdith3_l5_gf2_fast_cipherpow/ref/params.h
+new file mode 100644
+index 0000000..1535168
+--- /dev/null
++++ b/integration/liboqs/schemes/sdith3_l5_gf2_fast_cipherpow/ref/params.h
+@@ -0,0 +1,20 @@
++#ifndef SDITH_LIBOQS_PARAMS_H
++#define SDITH_LIBOQS_PARAMS_H
++
++/* SDitH3-L5-gf2-fast-cipherpow, ref implementation: the settings api.c is built with. */
++
++#ifndef SDITH3_FOR_LIBOQS
++#define SDITH3_FOR_LIBOQS
++#endif
++#ifndef NDEBUG
++#define NDEBUG
++#endif
++
++#define APPLY_NAMESPACE oqs_sig_private_sdith_ref_
++#define APPLY_PUBLIC_API_NAMESPACE oqs_sig_pubapi_sdith3_l5_gf2_fast_cipherpow_
++#define CRYPTO_SECRETKEYBYTES 275
++#define CRYPTO_PUBLICKEYBYTES 132
++#define CRYPTO_BYTES 19144
++#define SIGNATURE_PARAMS CAT5_FAST_CIPHERPOW_PARAMETERS
++
++#endif  // SDITH_LIBOQS_PARAMS_H
+diff --git a/integration/liboqs/schemes/sdith3_l5_gf2_short/avx2/params.h b/integration/liboqs/schemes/sdith3_l5_gf2_short/avx2/params.h
+new file mode 100644
+index 0000000..cedac7f
+--- /dev/null
++++ b/integration/liboqs/schemes/sdith3_l5_gf2_short/avx2/params.h
+@@ -0,0 +1,20 @@
++#ifndef SDITH_LIBOQS_PARAMS_H
++#define SDITH_LIBOQS_PARAMS_H
++
++/* SDitH3-L5-gf2-short, avx2 implementation: the settings api.c is built with. */
++
++#ifndef SDITH3_FOR_LIBOQS
++#define SDITH3_FOR_LIBOQS
++#endif
++#ifndef NDEBUG
++#define NDEBUG
++#endif
++
++#define APPLY_NAMESPACE oqs_sig_private_sdith_avx2_
++#define APPLY_PUBLIC_API_NAMESPACE oqs_sig_pubapi_sdith3_l5_gf2_short_avx2_
++#define CRYPTO_SECRETKEYBYTES 275
++#define CRYPTO_PUBLICKEYBYTES 132
++#define CRYPTO_BYTES 15147
++#define SIGNATURE_PARAMS CAT5_SHORT_PARAMETERS
++
++#endif  // SDITH_LIBOQS_PARAMS_H
+diff --git a/integration/liboqs/schemes/sdith3_l5_gf2_short/ref/params.h b/integration/liboqs/schemes/sdith3_l5_gf2_short/ref/params.h
+new file mode 100644
+index 0000000..720d2b2
+--- /dev/null
++++ b/integration/liboqs/schemes/sdith3_l5_gf2_short/ref/params.h
+@@ -0,0 +1,20 @@
++#ifndef SDITH_LIBOQS_PARAMS_H
++#define SDITH_LIBOQS_PARAMS_H
++
++/* SDitH3-L5-gf2-short, ref implementation: the settings api.c is built with. */
++
++#ifndef SDITH3_FOR_LIBOQS
++#define SDITH3_FOR_LIBOQS
++#endif
++#ifndef NDEBUG
++#define NDEBUG
++#endif
++
++#define APPLY_NAMESPACE oqs_sig_private_sdith_ref_
++#define APPLY_PUBLIC_API_NAMESPACE oqs_sig_pubapi_sdith3_l5_gf2_short_
++#define CRYPTO_SECRETKEYBYTES 275
++#define CRYPTO_PUBLICKEYBYTES 132
++#define CRYPTO_BYTES 15147
++#define SIGNATURE_PARAMS CAT5_SHORT_PARAMETERS
++
++#endif  // SDITH_LIBOQS_PARAMS_H
+diff --git a/integration/liboqs/schemes/sdith3_l5_gf2_short_cipherpow/avx2/params.h b/integration/liboqs/schemes/sdith3_l5_gf2_short_cipherpow/avx2/params.h
+new file mode 100644
+index 0000000..0495e3f
+--- /dev/null
++++ b/integration/liboqs/schemes/sdith3_l5_gf2_short_cipherpow/avx2/params.h
+@@ -0,0 +1,20 @@
++#ifndef SDITH_LIBOQS_PARAMS_H
++#define SDITH_LIBOQS_PARAMS_H
++
++/* SDitH3-L5-gf2-short-cipherpow, avx2 implementation: the settings api.c is built with. */
++
++#ifndef SDITH3_FOR_LIBOQS
++#define SDITH3_FOR_LIBOQS
++#endif
++#ifndef NDEBUG
++#define NDEBUG
++#endif
++
++#define APPLY_NAMESPACE oqs_sig_private_sdith_avx2_
++#define APPLY_PUBLIC_API_NAMESPACE oqs_sig_pubapi_sdith3_l5_gf2_short_cipherpow_avx2_
++#define CRYPTO_SECRETKEYBYTES 275
++#define CRYPTO_PUBLICKEYBYTES 132
++#define CRYPTO_BYTES 15147
++#define SIGNATURE_PARAMS CAT5_SHORT_CIPHERPOW_PARAMETERS
++
++#endif  // SDITH_LIBOQS_PARAMS_H
+diff --git a/integration/liboqs/schemes/sdith3_l5_gf2_short_cipherpow/ref/params.h b/integration/liboqs/schemes/sdith3_l5_gf2_short_cipherpow/ref/params.h
+new file mode 100644
+index 0000000..ed27f3e
+--- /dev/null
++++ b/integration/liboqs/schemes/sdith3_l5_gf2_short_cipherpow/ref/params.h
+@@ -0,0 +1,20 @@
++#ifndef SDITH_LIBOQS_PARAMS_H
++#define SDITH_LIBOQS_PARAMS_H
++
++/* SDitH3-L5-gf2-short-cipherpow, ref implementation: the settings api.c is built with. */
++
++#ifndef SDITH3_FOR_LIBOQS
++#define SDITH3_FOR_LIBOQS
++#endif
++#ifndef NDEBUG
++#define NDEBUG
++#endif
++
++#define APPLY_NAMESPACE oqs_sig_private_sdith_ref_
++#define APPLY_PUBLIC_API_NAMESPACE oqs_sig_pubapi_sdith3_l5_gf2_short_cipherpow_
++#define CRYPTO_SECRETKEYBYTES 275
++#define CRYPTO_PUBLICKEYBYTES 132
++#define CRYPTO_BYTES 15147
++#define SIGNATURE_PARAMS CAT5_SHORT_CIPHERPOW_PARAMETERS
++
++#endif  // SDITH_LIBOQS_PARAMS_H
 diff --git a/integration/liboqs/sdith_namespace.h b/integration/liboqs/sdith_namespace.h
 new file mode 100644
 index 0000000..8691c1c

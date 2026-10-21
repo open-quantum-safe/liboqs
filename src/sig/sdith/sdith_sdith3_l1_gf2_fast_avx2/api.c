@@ -1,3 +1,7 @@
+// The scheme's sizes, parameter set and symbol prefixes. liboqs copies
+// this file next to the params.h of each scheme and implementation.
+#include "params.h"
+
 #include <stdlib.h>
 #include <string.h>
 
@@ -6,9 +10,6 @@
 
 #include "sdith_signature.h"
 #include "api.h"
-
-// Scheme parameters should be defined in the build system, e.g. -DSIGNATURE_PARAMS=sdith3_l1_gf2_fast_params
-#include "check_params.h"
 
 
 OQS_STATUS crypto_sign_keypair(uint8_t* public_key, uint8_t* secret_key) {
