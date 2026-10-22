@@ -15,7 +15,7 @@ Using any code prior to 0.12.0 is strongly discouraged due to a [known security 
 
 liboqs is intended for prototyping and experimentation, not for production use (see the [support limitations](https://github.com/open-quantum-safe/liboqs/blob/main/README.md#support-limitations)). In most cases there is therefore no deployed software that needs an embargo period before a fix is made public. Handling ordinary bugs in the open gets them fixed faster and reduces the load on a small, time-limited maintainer team. Before opening a private security advisory, please consider whether the problem is serious enough to warrant one and, potentially, a [CVE](https://www.cve.org).
 
-### Report publicly, as an issue or (preferably) a pull request with a fix
+### Report publicly as an issue or a pull request with a fix
 
 - Denial of service: crashes, aborts, hangs or excessive resource consumption, provided no memory corruption or exposure of secret data is involved.
 - Memory leaks.
@@ -25,7 +25,7 @@ liboqs is intended for prototyping and experimentation, not for production use (
 - Issues affecting only unsupported versions.
 - Hardening suggestions, compiler warnings and static-analysis findings without a demonstrated security impact.
 
-### Report privately, as a GitHub security advisory
+### Report privately as a GitHub security advisory
 
 - Memory-safety violations (out-of-bounds reads or writes, use-after-free, etc.) that can be triggered by attacker-controlled input such as public keys, ciphertexts or signatures.
 - Secret-dependent timing behaviour within the threat model below.
