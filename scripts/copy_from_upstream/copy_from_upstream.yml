@@ -101,6 +101,7 @@ upstreams:
     sig_scheme_path: '.'
     sig_meta_path: 'integration/liboqs/{pretty_name_full}_META.yml'
     common_meta_path: 'integration/liboqs/META_Common.yml'
+    patches: [qruov-common-aes.patch]
   -
     name: snova
     git_url: https://github.com/PQCLAB-SNOVA/SNOVA
