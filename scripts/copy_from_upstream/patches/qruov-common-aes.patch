@@ -1,0 +1,647 @@
+diff --git a/integration/liboqs/META_Common.yml b/integration/liboqs/META_Common.yml
+index 9f025ac..9fb851d 100644
+--- a/integration/liboqs/META_Common.yml
++++ b/integration/liboqs/META_Common.yml
+@@ -16,5 +16,5 @@ commons:
+ 
+   - name: qruov_avx2
+     folder_name: .
+-    sources: src/avx2/qruov.c src/avx2/emi_transform.c src/avx2/emi_matrix.c src/avx2/emi_transform_gen.c src/avx2/helpers.c src/avx2/kernel.c src/avx2/x86aesni.c src/avx2/emi_transform.h src/avx2/fastop.h src/avx2/helpers.h src/avx2/kernel.h src/avx2/qruov_simd.h src/avx2/simd.h src/avx2/x86aesni.h
++    sources: src/avx2/qruov.c src/avx2/emi_transform.c src/avx2/emi_matrix.c src/avx2/emi_transform_gen.c src/avx2/helpers.c src/avx2/kernel.c src/avx2/emi_transform.h src/avx2/fastop.h src/avx2/helpers.h src/avx2/kernel.h src/avx2/qruov_simd.h src/avx2/simd.h
+     include_only: true
+diff --git a/integration/liboqs/QRUOV-1q127L10-aes_META.yml b/integration/liboqs/QRUOV-1q127L10-aes_META.yml
+index 750a0f9..4f8e297 100644
+--- a/integration/liboqs/QRUOV-1q127L10-aes_META.yml
++++ b/integration/liboqs/QRUOV-1q127L10-aes_META.yml
+@@ -42,7 +42,7 @@ implementations:
+ - name: avx2
+   version: Round 3
+   folder_name: .
+-  compile_opts: -DQRUOV_PARAM_1q127L10 -DPRG_IS_AES=1 -DQRUOV_PRIM_OQS -DQRUOV_NAMESPACE_PREFIX=qruov_1q127L10_aes_avx2_ -DPRIM_AES_BACKEND_X86AESNI=1 -mavx2 -mbmi2 -maes $<$<C_COMPILER_ID:MSVC>:/FInamespace.h> $<$<NOT:$<C_COMPILER_ID:MSVC>>:-include> $<$<NOT:$<C_COMPILER_ID:MSVC>>:namespace.h>
++  compile_opts: -DQRUOV_PARAM_1q127L10 -DPRG_IS_AES=1 -DQRUOV_PRIM_OQS -DQRUOV_NAMESPACE_PREFIX=qruov_1q127L10_aes_avx2_ -mavx2 -mbmi2 -maes $<$<C_COMPILER_ID:MSVC>:/FInamespace.h> $<$<NOT:$<C_COMPILER_ID:MSVC>>:-include> $<$<NOT:$<C_COMPILER_ID:MSVC>>:namespace.h>
+   signature_keypair: qruov_1q127L10_aes_avx2_crypto_sign_keypair
+   signature_signature: qruov_1q127L10_aes_avx2_crypto_sign_signature
+   signature_verify: qruov_1q127L10_aes_avx2_crypto_sign_verify
+diff --git a/integration/liboqs/QRUOV-1q127L10-shake_META.yml b/integration/liboqs/QRUOV-1q127L10-shake_META.yml
+index f112d64..dc584cb 100644
+--- a/integration/liboqs/QRUOV-1q127L10-shake_META.yml
++++ b/integration/liboqs/QRUOV-1q127L10-shake_META.yml
+@@ -42,7 +42,7 @@ implementations:
+ - name: avx2
+   version: Round 3
+   folder_name: .
+-  compile_opts: -DQRUOV_PARAM_1q127L10 -DPRG_IS_AES=0 -DQRUOV_PRIM_OQS -DQRUOV_NAMESPACE_PREFIX=qruov_1q127L10_shake_avx2_ -DPRIM_AES_BACKEND_X86AESNI=1 -mavx2 -mbmi2 -maes $<$<C_COMPILER_ID:MSVC>:/FInamespace.h> $<$<NOT:$<C_COMPILER_ID:MSVC>>:-include> $<$<NOT:$<C_COMPILER_ID:MSVC>>:namespace.h>
++  compile_opts: -DQRUOV_PARAM_1q127L10 -DPRG_IS_AES=0 -DQRUOV_PRIM_OQS -DQRUOV_NAMESPACE_PREFIX=qruov_1q127L10_shake_avx2_ -mavx2 -mbmi2 -maes $<$<C_COMPILER_ID:MSVC>:/FInamespace.h> $<$<NOT:$<C_COMPILER_ID:MSVC>>:-include> $<$<NOT:$<C_COMPILER_ID:MSVC>>:namespace.h>
+   signature_keypair: qruov_1q127L10_shake_avx2_crypto_sign_keypair
+   signature_signature: qruov_1q127L10_shake_avx2_crypto_sign_signature
+   signature_verify: qruov_1q127L10_shake_avx2_crypto_sign_verify
+diff --git a/integration/liboqs/QRUOV-1q127L3-aes_META.yml b/integration/liboqs/QRUOV-1q127L3-aes_META.yml
+index 352a9d2..b43f402 100644
+--- a/integration/liboqs/QRUOV-1q127L3-aes_META.yml
++++ b/integration/liboqs/QRUOV-1q127L3-aes_META.yml
+@@ -42,7 +42,7 @@ implementations:
+ - name: avx2
+   version: Round 3
+   folder_name: .
+-  compile_opts: -DQRUOV_PARAM_1q127L3 -DPRG_IS_AES=1 -DQRUOV_PRIM_OQS -DQRUOV_NAMESPACE_PREFIX=qruov_1q127L3_aes_avx2_ -DPRIM_AES_BACKEND_X86AESNI=1 -mavx2 -mbmi2 -maes $<$<C_COMPILER_ID:MSVC>:/FInamespace.h> $<$<NOT:$<C_COMPILER_ID:MSVC>>:-include> $<$<NOT:$<C_COMPILER_ID:MSVC>>:namespace.h>
++  compile_opts: -DQRUOV_PARAM_1q127L3 -DPRG_IS_AES=1 -DQRUOV_PRIM_OQS -DQRUOV_NAMESPACE_PREFIX=qruov_1q127L3_aes_avx2_ -mavx2 -mbmi2 -maes $<$<C_COMPILER_ID:MSVC>:/FInamespace.h> $<$<NOT:$<C_COMPILER_ID:MSVC>>:-include> $<$<NOT:$<C_COMPILER_ID:MSVC>>:namespace.h>
+   signature_keypair: qruov_1q127L3_aes_avx2_crypto_sign_keypair
+   signature_signature: qruov_1q127L3_aes_avx2_crypto_sign_signature
+   signature_verify: qruov_1q127L3_aes_avx2_crypto_sign_verify
+diff --git a/integration/liboqs/QRUOV-1q127L3-shake_META.yml b/integration/liboqs/QRUOV-1q127L3-shake_META.yml
+index 076706d..401ec38 100644
+--- a/integration/liboqs/QRUOV-1q127L3-shake_META.yml
++++ b/integration/liboqs/QRUOV-1q127L3-shake_META.yml
+@@ -42,7 +42,7 @@ implementations:
+ - name: avx2
+   version: Round 3
+   folder_name: .
+-  compile_opts: -DQRUOV_PARAM_1q127L3 -DPRG_IS_AES=0 -DQRUOV_PRIM_OQS -DQRUOV_NAMESPACE_PREFIX=qruov_1q127L3_shake_avx2_ -DPRIM_AES_BACKEND_X86AESNI=1 -mavx2 -mbmi2 -maes $<$<C_COMPILER_ID:MSVC>:/FInamespace.h> $<$<NOT:$<C_COMPILER_ID:MSVC>>:-include> $<$<NOT:$<C_COMPILER_ID:MSVC>>:namespace.h>
++  compile_opts: -DQRUOV_PARAM_1q127L3 -DPRG_IS_AES=0 -DQRUOV_PRIM_OQS -DQRUOV_NAMESPACE_PREFIX=qruov_1q127L3_shake_avx2_ -mavx2 -mbmi2 -maes $<$<C_COMPILER_ID:MSVC>:/FInamespace.h> $<$<NOT:$<C_COMPILER_ID:MSVC>>:-include> $<$<NOT:$<C_COMPILER_ID:MSVC>>:namespace.h>
+   signature_keypair: qruov_1q127L3_shake_avx2_crypto_sign_keypair
+   signature_signature: qruov_1q127L3_shake_avx2_crypto_sign_signature
+   signature_verify: qruov_1q127L3_shake_avx2_crypto_sign_verify
+diff --git a/integration/liboqs/QRUOV-1q31L10-aes_META.yml b/integration/liboqs/QRUOV-1q31L10-aes_META.yml
+index a39a069..76958d4 100644
+--- a/integration/liboqs/QRUOV-1q31L10-aes_META.yml
++++ b/integration/liboqs/QRUOV-1q31L10-aes_META.yml
+@@ -42,7 +42,7 @@ implementations:
+ - name: avx2
+   version: Round 3
+   folder_name: .
+-  compile_opts: -DQRUOV_PARAM_1q31L10 -DPRG_IS_AES=1 -DQRUOV_PRIM_OQS -DQRUOV_NAMESPACE_PREFIX=qruov_1q31L10_aes_avx2_ -DPRIM_AES_BACKEND_X86AESNI=1 -mavx2 -mbmi2 -maes $<$<C_COMPILER_ID:MSVC>:/FInamespace.h> $<$<NOT:$<C_COMPILER_ID:MSVC>>:-include> $<$<NOT:$<C_COMPILER_ID:MSVC>>:namespace.h>
++  compile_opts: -DQRUOV_PARAM_1q31L10 -DPRG_IS_AES=1 -DQRUOV_PRIM_OQS -DQRUOV_NAMESPACE_PREFIX=qruov_1q31L10_aes_avx2_ -mavx2 -mbmi2 -maes $<$<C_COMPILER_ID:MSVC>:/FInamespace.h> $<$<NOT:$<C_COMPILER_ID:MSVC>>:-include> $<$<NOT:$<C_COMPILER_ID:MSVC>>:namespace.h>
+   signature_keypair: qruov_1q31L10_aes_avx2_crypto_sign_keypair
+   signature_signature: qruov_1q31L10_aes_avx2_crypto_sign_signature
+   signature_verify: qruov_1q31L10_aes_avx2_crypto_sign_verify
+diff --git a/integration/liboqs/QRUOV-1q31L10-shake_META.yml b/integration/liboqs/QRUOV-1q31L10-shake_META.yml
+index ff9b87f..2fc1db8 100644
+--- a/integration/liboqs/QRUOV-1q31L10-shake_META.yml
++++ b/integration/liboqs/QRUOV-1q31L10-shake_META.yml
+@@ -42,7 +42,7 @@ implementations:
+ - name: avx2
+   version: Round 3
+   folder_name: .
+-  compile_opts: -DQRUOV_PARAM_1q31L10 -DPRG_IS_AES=0 -DQRUOV_PRIM_OQS -DQRUOV_NAMESPACE_PREFIX=qruov_1q31L10_shake_avx2_ -DPRIM_AES_BACKEND_X86AESNI=1 -mavx2 -mbmi2 -maes $<$<C_COMPILER_ID:MSVC>:/FInamespace.h> $<$<NOT:$<C_COMPILER_ID:MSVC>>:-include> $<$<NOT:$<C_COMPILER_ID:MSVC>>:namespace.h>
++  compile_opts: -DQRUOV_PARAM_1q31L10 -DPRG_IS_AES=0 -DQRUOV_PRIM_OQS -DQRUOV_NAMESPACE_PREFIX=qruov_1q31L10_shake_avx2_ -mavx2 -mbmi2 -maes $<$<C_COMPILER_ID:MSVC>:/FInamespace.h> $<$<NOT:$<C_COMPILER_ID:MSVC>>:-include> $<$<NOT:$<C_COMPILER_ID:MSVC>>:namespace.h>
+   signature_keypair: qruov_1q31L10_shake_avx2_crypto_sign_keypair
+   signature_signature: qruov_1q31L10_shake_avx2_crypto_sign_signature
+   signature_verify: qruov_1q31L10_shake_avx2_crypto_sign_verify
+diff --git a/integration/liboqs/QRUOV-1q31L3-aes_META.yml b/integration/liboqs/QRUOV-1q31L3-aes_META.yml
+index af3c57d..bcc3fca 100644
+--- a/integration/liboqs/QRUOV-1q31L3-aes_META.yml
++++ b/integration/liboqs/QRUOV-1q31L3-aes_META.yml
+@@ -42,7 +42,7 @@ implementations:
+ - name: avx2
+   version: Round 3
+   folder_name: .
+-  compile_opts: -DQRUOV_PARAM_1q31L3 -DPRG_IS_AES=1 -DQRUOV_PRIM_OQS -DQRUOV_NAMESPACE_PREFIX=qruov_1q31L3_aes_avx2_ -DPRIM_AES_BACKEND_X86AESNI=1 -mavx2 -mbmi2 -maes $<$<C_COMPILER_ID:MSVC>:/FInamespace.h> $<$<NOT:$<C_COMPILER_ID:MSVC>>:-include> $<$<NOT:$<C_COMPILER_ID:MSVC>>:namespace.h>
++  compile_opts: -DQRUOV_PARAM_1q31L3 -DPRG_IS_AES=1 -DQRUOV_PRIM_OQS -DQRUOV_NAMESPACE_PREFIX=qruov_1q31L3_aes_avx2_ -mavx2 -mbmi2 -maes $<$<C_COMPILER_ID:MSVC>:/FInamespace.h> $<$<NOT:$<C_COMPILER_ID:MSVC>>:-include> $<$<NOT:$<C_COMPILER_ID:MSVC>>:namespace.h>
+   signature_keypair: qruov_1q31L3_aes_avx2_crypto_sign_keypair
+   signature_signature: qruov_1q31L3_aes_avx2_crypto_sign_signature
+   signature_verify: qruov_1q31L3_aes_avx2_crypto_sign_verify
+diff --git a/integration/liboqs/QRUOV-1q31L3-shake_META.yml b/integration/liboqs/QRUOV-1q31L3-shake_META.yml
+index 009a7aa..ab68efc 100644
+--- a/integration/liboqs/QRUOV-1q31L3-shake_META.yml
++++ b/integration/liboqs/QRUOV-1q31L3-shake_META.yml
+@@ -42,7 +42,7 @@ implementations:
+ - name: avx2
+   version: Round 3
+   folder_name: .
+-  compile_opts: -DQRUOV_PARAM_1q31L3 -DPRG_IS_AES=0 -DQRUOV_PRIM_OQS -DQRUOV_NAMESPACE_PREFIX=qruov_1q31L3_shake_avx2_ -DPRIM_AES_BACKEND_X86AESNI=1 -mavx2 -mbmi2 -maes $<$<C_COMPILER_ID:MSVC>:/FInamespace.h> $<$<NOT:$<C_COMPILER_ID:MSVC>>:-include> $<$<NOT:$<C_COMPILER_ID:MSVC>>:namespace.h>
++  compile_opts: -DQRUOV_PARAM_1q31L3 -DPRG_IS_AES=0 -DQRUOV_PRIM_OQS -DQRUOV_NAMESPACE_PREFIX=qruov_1q31L3_shake_avx2_ -mavx2 -mbmi2 -maes $<$<C_COMPILER_ID:MSVC>:/FInamespace.h> $<$<NOT:$<C_COMPILER_ID:MSVC>>:-include> $<$<NOT:$<C_COMPILER_ID:MSVC>>:namespace.h>
+   signature_keypair: qruov_1q31L3_shake_avx2_crypto_sign_keypair
+   signature_signature: qruov_1q31L3_shake_avx2_crypto_sign_signature
+   signature_verify: qruov_1q31L3_shake_avx2_crypto_sign_verify
+diff --git a/integration/liboqs/QRUOV-1q7L10-aes_META.yml b/integration/liboqs/QRUOV-1q7L10-aes_META.yml
+index 924e641..dbaa57c 100644
+--- a/integration/liboqs/QRUOV-1q7L10-aes_META.yml
++++ b/integration/liboqs/QRUOV-1q7L10-aes_META.yml
+@@ -42,7 +42,7 @@ implementations:
+ - name: avx2
+   version: Round 3
+   folder_name: .
+-  compile_opts: -DQRUOV_PARAM_1q7L10 -DPRG_IS_AES=1 -DQRUOV_PRIM_OQS -DQRUOV_NAMESPACE_PREFIX=qruov_1q7L10_aes_avx2_ -DPRIM_AES_BACKEND_X86AESNI=1 -mavx2 -mbmi2 -maes $<$<C_COMPILER_ID:MSVC>:/FInamespace.h> $<$<NOT:$<C_COMPILER_ID:MSVC>>:-include> $<$<NOT:$<C_COMPILER_ID:MSVC>>:namespace.h>
++  compile_opts: -DQRUOV_PARAM_1q7L10 -DPRG_IS_AES=1 -DQRUOV_PRIM_OQS -DQRUOV_NAMESPACE_PREFIX=qruov_1q7L10_aes_avx2_ -mavx2 -mbmi2 -maes $<$<C_COMPILER_ID:MSVC>:/FInamespace.h> $<$<NOT:$<C_COMPILER_ID:MSVC>>:-include> $<$<NOT:$<C_COMPILER_ID:MSVC>>:namespace.h>
+   signature_keypair: qruov_1q7L10_aes_avx2_crypto_sign_keypair
+   signature_signature: qruov_1q7L10_aes_avx2_crypto_sign_signature
+   signature_verify: qruov_1q7L10_aes_avx2_crypto_sign_verify
+diff --git a/integration/liboqs/QRUOV-1q7L10-shake_META.yml b/integration/liboqs/QRUOV-1q7L10-shake_META.yml
+index 21b7f84..b09d5c6 100644
+--- a/integration/liboqs/QRUOV-1q7L10-shake_META.yml
++++ b/integration/liboqs/QRUOV-1q7L10-shake_META.yml
+@@ -42,7 +42,7 @@ implementations:
+ - name: avx2
+   version: Round 3
+   folder_name: .
+-  compile_opts: -DQRUOV_PARAM_1q7L10 -DPRG_IS_AES=0 -DQRUOV_PRIM_OQS -DQRUOV_NAMESPACE_PREFIX=qruov_1q7L10_shake_avx2_ -DPRIM_AES_BACKEND_X86AESNI=1 -mavx2 -mbmi2 -maes $<$<C_COMPILER_ID:MSVC>:/FInamespace.h> $<$<NOT:$<C_COMPILER_ID:MSVC>>:-include> $<$<NOT:$<C_COMPILER_ID:MSVC>>:namespace.h>
++  compile_opts: -DQRUOV_PARAM_1q7L10 -DPRG_IS_AES=0 -DQRUOV_PRIM_OQS -DQRUOV_NAMESPACE_PREFIX=qruov_1q7L10_shake_avx2_ -mavx2 -mbmi2 -maes $<$<C_COMPILER_ID:MSVC>:/FInamespace.h> $<$<NOT:$<C_COMPILER_ID:MSVC>>:-include> $<$<NOT:$<C_COMPILER_ID:MSVC>>:namespace.h>
+   signature_keypair: qruov_1q7L10_shake_avx2_crypto_sign_keypair
+   signature_signature: qruov_1q7L10_shake_avx2_crypto_sign_signature
+   signature_verify: qruov_1q7L10_shake_avx2_crypto_sign_verify
+diff --git a/integration/liboqs/QRUOV-3q127L10-aes_META.yml b/integration/liboqs/QRUOV-3q127L10-aes_META.yml
+index 42390b1..1cfe61b 100644
+--- a/integration/liboqs/QRUOV-3q127L10-aes_META.yml
++++ b/integration/liboqs/QRUOV-3q127L10-aes_META.yml
+@@ -42,7 +42,7 @@ implementations:
+ - name: avx2
+   version: Round 3
+   folder_name: .
+-  compile_opts: -DQRUOV_PARAM_3q127L10 -DPRG_IS_AES=1 -DQRUOV_PRIM_OQS -DQRUOV_NAMESPACE_PREFIX=qruov_3q127L10_aes_avx2_ -DPRIM_AES_BACKEND_X86AESNI=1 -mavx2 -mbmi2 -maes $<$<C_COMPILER_ID:MSVC>:/FInamespace.h> $<$<NOT:$<C_COMPILER_ID:MSVC>>:-include> $<$<NOT:$<C_COMPILER_ID:MSVC>>:namespace.h>
++  compile_opts: -DQRUOV_PARAM_3q127L10 -DPRG_IS_AES=1 -DQRUOV_PRIM_OQS -DQRUOV_NAMESPACE_PREFIX=qruov_3q127L10_aes_avx2_ -mavx2 -mbmi2 -maes $<$<C_COMPILER_ID:MSVC>:/FInamespace.h> $<$<NOT:$<C_COMPILER_ID:MSVC>>:-include> $<$<NOT:$<C_COMPILER_ID:MSVC>>:namespace.h>
+   signature_keypair: qruov_3q127L10_aes_avx2_crypto_sign_keypair
+   signature_signature: qruov_3q127L10_aes_avx2_crypto_sign_signature
+   signature_verify: qruov_3q127L10_aes_avx2_crypto_sign_verify
+diff --git a/integration/liboqs/QRUOV-3q127L10-shake_META.yml b/integration/liboqs/QRUOV-3q127L10-shake_META.yml
+index ce4b73d..8ba29ec 100644
+--- a/integration/liboqs/QRUOV-3q127L10-shake_META.yml
++++ b/integration/liboqs/QRUOV-3q127L10-shake_META.yml
+@@ -42,7 +42,7 @@ implementations:
+ - name: avx2
+   version: Round 3
+   folder_name: .
+-  compile_opts: -DQRUOV_PARAM_3q127L10 -DPRG_IS_AES=0 -DQRUOV_PRIM_OQS -DQRUOV_NAMESPACE_PREFIX=qruov_3q127L10_shake_avx2_ -DPRIM_AES_BACKEND_X86AESNI=1 -mavx2 -mbmi2 -maes $<$<C_COMPILER_ID:MSVC>:/FInamespace.h> $<$<NOT:$<C_COMPILER_ID:MSVC>>:-include> $<$<NOT:$<C_COMPILER_ID:MSVC>>:namespace.h>
++  compile_opts: -DQRUOV_PARAM_3q127L10 -DPRG_IS_AES=0 -DQRUOV_PRIM_OQS -DQRUOV_NAMESPACE_PREFIX=qruov_3q127L10_shake_avx2_ -mavx2 -mbmi2 -maes $<$<C_COMPILER_ID:MSVC>:/FInamespace.h> $<$<NOT:$<C_COMPILER_ID:MSVC>>:-include> $<$<NOT:$<C_COMPILER_ID:MSVC>>:namespace.h>
+   signature_keypair: qruov_3q127L10_shake_avx2_crypto_sign_keypair
+   signature_signature: qruov_3q127L10_shake_avx2_crypto_sign_signature
+   signature_verify: qruov_3q127L10_shake_avx2_crypto_sign_verify
+diff --git a/integration/liboqs/QRUOV-3q127L3-aes_META.yml b/integration/liboqs/QRUOV-3q127L3-aes_META.yml
+index a9b113c..40d3090 100644
+--- a/integration/liboqs/QRUOV-3q127L3-aes_META.yml
++++ b/integration/liboqs/QRUOV-3q127L3-aes_META.yml
+@@ -42,7 +42,7 @@ implementations:
+ - name: avx2
+   version: Round 3
+   folder_name: .
+-  compile_opts: -DQRUOV_PARAM_3q127L3 -DPRG_IS_AES=1 -DQRUOV_PRIM_OQS -DQRUOV_NAMESPACE_PREFIX=qruov_3q127L3_aes_avx2_ -DPRIM_AES_BACKEND_X86AESNI=1 -mavx2 -mbmi2 -maes $<$<C_COMPILER_ID:MSVC>:/FInamespace.h> $<$<NOT:$<C_COMPILER_ID:MSVC>>:-include> $<$<NOT:$<C_COMPILER_ID:MSVC>>:namespace.h>
++  compile_opts: -DQRUOV_PARAM_3q127L3 -DPRG_IS_AES=1 -DQRUOV_PRIM_OQS -DQRUOV_NAMESPACE_PREFIX=qruov_3q127L3_aes_avx2_ -mavx2 -mbmi2 -maes $<$<C_COMPILER_ID:MSVC>:/FInamespace.h> $<$<NOT:$<C_COMPILER_ID:MSVC>>:-include> $<$<NOT:$<C_COMPILER_ID:MSVC>>:namespace.h>
+   signature_keypair: qruov_3q127L3_aes_avx2_crypto_sign_keypair
+   signature_signature: qruov_3q127L3_aes_avx2_crypto_sign_signature
+   signature_verify: qruov_3q127L3_aes_avx2_crypto_sign_verify
+diff --git a/integration/liboqs/QRUOV-3q127L3-shake_META.yml b/integration/liboqs/QRUOV-3q127L3-shake_META.yml
+index 6542e9c..3a591a1 100644
+--- a/integration/liboqs/QRUOV-3q127L3-shake_META.yml
++++ b/integration/liboqs/QRUOV-3q127L3-shake_META.yml
+@@ -42,7 +42,7 @@ implementations:
+ - name: avx2
+   version: Round 3
+   folder_name: .
+-  compile_opts: -DQRUOV_PARAM_3q127L3 -DPRG_IS_AES=0 -DQRUOV_PRIM_OQS -DQRUOV_NAMESPACE_PREFIX=qruov_3q127L3_shake_avx2_ -DPRIM_AES_BACKEND_X86AESNI=1 -mavx2 -mbmi2 -maes $<$<C_COMPILER_ID:MSVC>:/FInamespace.h> $<$<NOT:$<C_COMPILER_ID:MSVC>>:-include> $<$<NOT:$<C_COMPILER_ID:MSVC>>:namespace.h>
++  compile_opts: -DQRUOV_PARAM_3q127L3 -DPRG_IS_AES=0 -DQRUOV_PRIM_OQS -DQRUOV_NAMESPACE_PREFIX=qruov_3q127L3_shake_avx2_ -mavx2 -mbmi2 -maes $<$<C_COMPILER_ID:MSVC>:/FInamespace.h> $<$<NOT:$<C_COMPILER_ID:MSVC>>:-include> $<$<NOT:$<C_COMPILER_ID:MSVC>>:namespace.h>
+   signature_keypair: qruov_3q127L3_shake_avx2_crypto_sign_keypair
+   signature_signature: qruov_3q127L3_shake_avx2_crypto_sign_signature
+   signature_verify: qruov_3q127L3_shake_avx2_crypto_sign_verify
+diff --git a/integration/liboqs/QRUOV-3q31L10-aes_META.yml b/integration/liboqs/QRUOV-3q31L10-aes_META.yml
+index 38be997..8a278b0 100644
+--- a/integration/liboqs/QRUOV-3q31L10-aes_META.yml
++++ b/integration/liboqs/QRUOV-3q31L10-aes_META.yml
+@@ -42,7 +42,7 @@ implementations:
+ - name: avx2
+   version: Round 3
+   folder_name: .
+-  compile_opts: -DQRUOV_PARAM_3q31L10 -DPRG_IS_AES=1 -DQRUOV_PRIM_OQS -DQRUOV_NAMESPACE_PREFIX=qruov_3q31L10_aes_avx2_ -DPRIM_AES_BACKEND_X86AESNI=1 -mavx2 -mbmi2 -maes $<$<C_COMPILER_ID:MSVC>:/FInamespace.h> $<$<NOT:$<C_COMPILER_ID:MSVC>>:-include> $<$<NOT:$<C_COMPILER_ID:MSVC>>:namespace.h>
++  compile_opts: -DQRUOV_PARAM_3q31L10 -DPRG_IS_AES=1 -DQRUOV_PRIM_OQS -DQRUOV_NAMESPACE_PREFIX=qruov_3q31L10_aes_avx2_ -mavx2 -mbmi2 -maes $<$<C_COMPILER_ID:MSVC>:/FInamespace.h> $<$<NOT:$<C_COMPILER_ID:MSVC>>:-include> $<$<NOT:$<C_COMPILER_ID:MSVC>>:namespace.h>
+   signature_keypair: qruov_3q31L10_aes_avx2_crypto_sign_keypair
+   signature_signature: qruov_3q31L10_aes_avx2_crypto_sign_signature
+   signature_verify: qruov_3q31L10_aes_avx2_crypto_sign_verify
+diff --git a/integration/liboqs/QRUOV-3q31L10-shake_META.yml b/integration/liboqs/QRUOV-3q31L10-shake_META.yml
+index ca86db3..2ffccef 100644
+--- a/integration/liboqs/QRUOV-3q31L10-shake_META.yml
++++ b/integration/liboqs/QRUOV-3q31L10-shake_META.yml
+@@ -42,7 +42,7 @@ implementations:
+ - name: avx2
+   version: Round 3
+   folder_name: .
+-  compile_opts: -DQRUOV_PARAM_3q31L10 -DPRG_IS_AES=0 -DQRUOV_PRIM_OQS -DQRUOV_NAMESPACE_PREFIX=qruov_3q31L10_shake_avx2_ -DPRIM_AES_BACKEND_X86AESNI=1 -mavx2 -mbmi2 -maes $<$<C_COMPILER_ID:MSVC>:/FInamespace.h> $<$<NOT:$<C_COMPILER_ID:MSVC>>:-include> $<$<NOT:$<C_COMPILER_ID:MSVC>>:namespace.h>
++  compile_opts: -DQRUOV_PARAM_3q31L10 -DPRG_IS_AES=0 -DQRUOV_PRIM_OQS -DQRUOV_NAMESPACE_PREFIX=qruov_3q31L10_shake_avx2_ -mavx2 -mbmi2 -maes $<$<C_COMPILER_ID:MSVC>:/FInamespace.h> $<$<NOT:$<C_COMPILER_ID:MSVC>>:-include> $<$<NOT:$<C_COMPILER_ID:MSVC>>:namespace.h>
+   signature_keypair: qruov_3q31L10_shake_avx2_crypto_sign_keypair
+   signature_signature: qruov_3q31L10_shake_avx2_crypto_sign_signature
+   signature_verify: qruov_3q31L10_shake_avx2_crypto_sign_verify
+diff --git a/integration/liboqs/QRUOV-3q31L3-aes_META.yml b/integration/liboqs/QRUOV-3q31L3-aes_META.yml
+index eef1821..9cd20b2 100644
+--- a/integration/liboqs/QRUOV-3q31L3-aes_META.yml
++++ b/integration/liboqs/QRUOV-3q31L3-aes_META.yml
+@@ -42,7 +42,7 @@ implementations:
+ - name: avx2
+   version: Round 3
+   folder_name: .
+-  compile_opts: -DQRUOV_PARAM_3q31L3 -DPRG_IS_AES=1 -DQRUOV_PRIM_OQS -DQRUOV_NAMESPACE_PREFIX=qruov_3q31L3_aes_avx2_ -DPRIM_AES_BACKEND_X86AESNI=1 -mavx2 -mbmi2 -maes $<$<C_COMPILER_ID:MSVC>:/FInamespace.h> $<$<NOT:$<C_COMPILER_ID:MSVC>>:-include> $<$<NOT:$<C_COMPILER_ID:MSVC>>:namespace.h>
++  compile_opts: -DQRUOV_PARAM_3q31L3 -DPRG_IS_AES=1 -DQRUOV_PRIM_OQS -DQRUOV_NAMESPACE_PREFIX=qruov_3q31L3_aes_avx2_ -mavx2 -mbmi2 -maes $<$<C_COMPILER_ID:MSVC>:/FInamespace.h> $<$<NOT:$<C_COMPILER_ID:MSVC>>:-include> $<$<NOT:$<C_COMPILER_ID:MSVC>>:namespace.h>
+   signature_keypair: qruov_3q31L3_aes_avx2_crypto_sign_keypair
+   signature_signature: qruov_3q31L3_aes_avx2_crypto_sign_signature
+   signature_verify: qruov_3q31L3_aes_avx2_crypto_sign_verify
+diff --git a/integration/liboqs/QRUOV-3q31L3-shake_META.yml b/integration/liboqs/QRUOV-3q31L3-shake_META.yml
+index 3c98d7b..e387222 100644
+--- a/integration/liboqs/QRUOV-3q31L3-shake_META.yml
++++ b/integration/liboqs/QRUOV-3q31L3-shake_META.yml
+@@ -42,7 +42,7 @@ implementations:
+ - name: avx2
+   version: Round 3
+   folder_name: .
+-  compile_opts: -DQRUOV_PARAM_3q31L3 -DPRG_IS_AES=0 -DQRUOV_PRIM_OQS -DQRUOV_NAMESPACE_PREFIX=qruov_3q31L3_shake_avx2_ -DPRIM_AES_BACKEND_X86AESNI=1 -mavx2 -mbmi2 -maes $<$<C_COMPILER_ID:MSVC>:/FInamespace.h> $<$<NOT:$<C_COMPILER_ID:MSVC>>:-include> $<$<NOT:$<C_COMPILER_ID:MSVC>>:namespace.h>
++  compile_opts: -DQRUOV_PARAM_3q31L3 -DPRG_IS_AES=0 -DQRUOV_PRIM_OQS -DQRUOV_NAMESPACE_PREFIX=qruov_3q31L3_shake_avx2_ -mavx2 -mbmi2 -maes $<$<C_COMPILER_ID:MSVC>:/FInamespace.h> $<$<NOT:$<C_COMPILER_ID:MSVC>>:-include> $<$<NOT:$<C_COMPILER_ID:MSVC>>:namespace.h>
+   signature_keypair: qruov_3q31L3_shake_avx2_crypto_sign_keypair
+   signature_signature: qruov_3q31L3_shake_avx2_crypto_sign_signature
+   signature_verify: qruov_3q31L3_shake_avx2_crypto_sign_verify
+diff --git a/integration/liboqs/QRUOV-3q7L10-aes_META.yml b/integration/liboqs/QRUOV-3q7L10-aes_META.yml
+index 7a888b2..63d632f 100644
+--- a/integration/liboqs/QRUOV-3q7L10-aes_META.yml
++++ b/integration/liboqs/QRUOV-3q7L10-aes_META.yml
+@@ -42,7 +42,7 @@ implementations:
+ - name: avx2
+   version: Round 3
+   folder_name: .
+-  compile_opts: -DQRUOV_PARAM_3q7L10 -DPRG_IS_AES=1 -DQRUOV_PRIM_OQS -DQRUOV_NAMESPACE_PREFIX=qruov_3q7L10_aes_avx2_ -DPRIM_AES_BACKEND_X86AESNI=1 -mavx2 -mbmi2 -maes $<$<C_COMPILER_ID:MSVC>:/FInamespace.h> $<$<NOT:$<C_COMPILER_ID:MSVC>>:-include> $<$<NOT:$<C_COMPILER_ID:MSVC>>:namespace.h>
++  compile_opts: -DQRUOV_PARAM_3q7L10 -DPRG_IS_AES=1 -DQRUOV_PRIM_OQS -DQRUOV_NAMESPACE_PREFIX=qruov_3q7L10_aes_avx2_ -mavx2 -mbmi2 -maes $<$<C_COMPILER_ID:MSVC>:/FInamespace.h> $<$<NOT:$<C_COMPILER_ID:MSVC>>:-include> $<$<NOT:$<C_COMPILER_ID:MSVC>>:namespace.h>
+   signature_keypair: qruov_3q7L10_aes_avx2_crypto_sign_keypair
+   signature_signature: qruov_3q7L10_aes_avx2_crypto_sign_signature
+   signature_verify: qruov_3q7L10_aes_avx2_crypto_sign_verify
+diff --git a/integration/liboqs/QRUOV-3q7L10-shake_META.yml b/integration/liboqs/QRUOV-3q7L10-shake_META.yml
+index 76b2475..a549737 100644
+--- a/integration/liboqs/QRUOV-3q7L10-shake_META.yml
++++ b/integration/liboqs/QRUOV-3q7L10-shake_META.yml
+@@ -42,7 +42,7 @@ implementations:
+ - name: avx2
+   version: Round 3
+   folder_name: .
+-  compile_opts: -DQRUOV_PARAM_3q7L10 -DPRG_IS_AES=0 -DQRUOV_PRIM_OQS -DQRUOV_NAMESPACE_PREFIX=qruov_3q7L10_shake_avx2_ -DPRIM_AES_BACKEND_X86AESNI=1 -mavx2 -mbmi2 -maes $<$<C_COMPILER_ID:MSVC>:/FInamespace.h> $<$<NOT:$<C_COMPILER_ID:MSVC>>:-include> $<$<NOT:$<C_COMPILER_ID:MSVC>>:namespace.h>
++  compile_opts: -DQRUOV_PARAM_3q7L10 -DPRG_IS_AES=0 -DQRUOV_PRIM_OQS -DQRUOV_NAMESPACE_PREFIX=qruov_3q7L10_shake_avx2_ -mavx2 -mbmi2 -maes $<$<C_COMPILER_ID:MSVC>:/FInamespace.h> $<$<NOT:$<C_COMPILER_ID:MSVC>>:-include> $<$<NOT:$<C_COMPILER_ID:MSVC>>:namespace.h>
+   signature_keypair: qruov_3q7L10_shake_avx2_crypto_sign_keypair
+   signature_signature: qruov_3q7L10_shake_avx2_crypto_sign_signature
+   signature_verify: qruov_3q7L10_shake_avx2_crypto_sign_verify
+diff --git a/integration/liboqs/QRUOV-5q127L10-aes_META.yml b/integration/liboqs/QRUOV-5q127L10-aes_META.yml
+index b03170c..67c8479 100644
+--- a/integration/liboqs/QRUOV-5q127L10-aes_META.yml
++++ b/integration/liboqs/QRUOV-5q127L10-aes_META.yml
+@@ -42,7 +42,7 @@ implementations:
+ - name: avx2
+   version: Round 3
+   folder_name: .
+-  compile_opts: -DQRUOV_PARAM_5q127L10 -DPRG_IS_AES=1 -DQRUOV_PRIM_OQS -DQRUOV_NAMESPACE_PREFIX=qruov_5q127L10_aes_avx2_ -DPRIM_AES_BACKEND_X86AESNI=1 -mavx2 -mbmi2 -maes $<$<C_COMPILER_ID:MSVC>:/FInamespace.h> $<$<NOT:$<C_COMPILER_ID:MSVC>>:-include> $<$<NOT:$<C_COMPILER_ID:MSVC>>:namespace.h>
++  compile_opts: -DQRUOV_PARAM_5q127L10 -DPRG_IS_AES=1 -DQRUOV_PRIM_OQS -DQRUOV_NAMESPACE_PREFIX=qruov_5q127L10_aes_avx2_ -mavx2 -mbmi2 -maes $<$<C_COMPILER_ID:MSVC>:/FInamespace.h> $<$<NOT:$<C_COMPILER_ID:MSVC>>:-include> $<$<NOT:$<C_COMPILER_ID:MSVC>>:namespace.h>
+   signature_keypair: qruov_5q127L10_aes_avx2_crypto_sign_keypair
+   signature_signature: qruov_5q127L10_aes_avx2_crypto_sign_signature
+   signature_verify: qruov_5q127L10_aes_avx2_crypto_sign_verify
+diff --git a/integration/liboqs/QRUOV-5q127L10-shake_META.yml b/integration/liboqs/QRUOV-5q127L10-shake_META.yml
+index 3030073..5e0d52c 100644
+--- a/integration/liboqs/QRUOV-5q127L10-shake_META.yml
++++ b/integration/liboqs/QRUOV-5q127L10-shake_META.yml
+@@ -42,7 +42,7 @@ implementations:
+ - name: avx2
+   version: Round 3
+   folder_name: .
+-  compile_opts: -DQRUOV_PARAM_5q127L10 -DPRG_IS_AES=0 -DQRUOV_PRIM_OQS -DQRUOV_NAMESPACE_PREFIX=qruov_5q127L10_shake_avx2_ -DPRIM_AES_BACKEND_X86AESNI=1 -mavx2 -mbmi2 -maes $<$<C_COMPILER_ID:MSVC>:/FInamespace.h> $<$<NOT:$<C_COMPILER_ID:MSVC>>:-include> $<$<NOT:$<C_COMPILER_ID:MSVC>>:namespace.h>
++  compile_opts: -DQRUOV_PARAM_5q127L10 -DPRG_IS_AES=0 -DQRUOV_PRIM_OQS -DQRUOV_NAMESPACE_PREFIX=qruov_5q127L10_shake_avx2_ -mavx2 -mbmi2 -maes $<$<C_COMPILER_ID:MSVC>:/FInamespace.h> $<$<NOT:$<C_COMPILER_ID:MSVC>>:-include> $<$<NOT:$<C_COMPILER_ID:MSVC>>:namespace.h>
+   signature_keypair: qruov_5q127L10_shake_avx2_crypto_sign_keypair
+   signature_signature: qruov_5q127L10_shake_avx2_crypto_sign_signature
+   signature_verify: qruov_5q127L10_shake_avx2_crypto_sign_verify
+diff --git a/integration/liboqs/QRUOV-5q127L3-aes_META.yml b/integration/liboqs/QRUOV-5q127L3-aes_META.yml
+index ced800a..fc3f1b6 100644
+--- a/integration/liboqs/QRUOV-5q127L3-aes_META.yml
++++ b/integration/liboqs/QRUOV-5q127L3-aes_META.yml
+@@ -42,7 +42,7 @@ implementations:
+ - name: avx2
+   version: Round 3
+   folder_name: .
+-  compile_opts: -DQRUOV_PARAM_5q127L3 -DPRG_IS_AES=1 -DQRUOV_PRIM_OQS -DQRUOV_NAMESPACE_PREFIX=qruov_5q127L3_aes_avx2_ -DPRIM_AES_BACKEND_X86AESNI=1 -mavx2 -mbmi2 -maes $<$<C_COMPILER_ID:MSVC>:/FInamespace.h> $<$<NOT:$<C_COMPILER_ID:MSVC>>:-include> $<$<NOT:$<C_COMPILER_ID:MSVC>>:namespace.h>
++  compile_opts: -DQRUOV_PARAM_5q127L3 -DPRG_IS_AES=1 -DQRUOV_PRIM_OQS -DQRUOV_NAMESPACE_PREFIX=qruov_5q127L3_aes_avx2_ -mavx2 -mbmi2 -maes $<$<C_COMPILER_ID:MSVC>:/FInamespace.h> $<$<NOT:$<C_COMPILER_ID:MSVC>>:-include> $<$<NOT:$<C_COMPILER_ID:MSVC>>:namespace.h>
+   signature_keypair: qruov_5q127L3_aes_avx2_crypto_sign_keypair
+   signature_signature: qruov_5q127L3_aes_avx2_crypto_sign_signature
+   signature_verify: qruov_5q127L3_aes_avx2_crypto_sign_verify
+diff --git a/integration/liboqs/QRUOV-5q127L3-shake_META.yml b/integration/liboqs/QRUOV-5q127L3-shake_META.yml
+index a6de8bc..7e737ed 100644
+--- a/integration/liboqs/QRUOV-5q127L3-shake_META.yml
++++ b/integration/liboqs/QRUOV-5q127L3-shake_META.yml
+@@ -42,7 +42,7 @@ implementations:
+ - name: avx2
+   version: Round 3
+   folder_name: .
+-  compile_opts: -DQRUOV_PARAM_5q127L3 -DPRG_IS_AES=0 -DQRUOV_PRIM_OQS -DQRUOV_NAMESPACE_PREFIX=qruov_5q127L3_shake_avx2_ -DPRIM_AES_BACKEND_X86AESNI=1 -mavx2 -mbmi2 -maes $<$<C_COMPILER_ID:MSVC>:/FInamespace.h> $<$<NOT:$<C_COMPILER_ID:MSVC>>:-include> $<$<NOT:$<C_COMPILER_ID:MSVC>>:namespace.h>
++  compile_opts: -DQRUOV_PARAM_5q127L3 -DPRG_IS_AES=0 -DQRUOV_PRIM_OQS -DQRUOV_NAMESPACE_PREFIX=qruov_5q127L3_shake_avx2_ -mavx2 -mbmi2 -maes $<$<C_COMPILER_ID:MSVC>:/FInamespace.h> $<$<NOT:$<C_COMPILER_ID:MSVC>>:-include> $<$<NOT:$<C_COMPILER_ID:MSVC>>:namespace.h>
+   signature_keypair: qruov_5q127L3_shake_avx2_crypto_sign_keypair
+   signature_signature: qruov_5q127L3_shake_avx2_crypto_sign_signature
+   signature_verify: qruov_5q127L3_shake_avx2_crypto_sign_verify
+diff --git a/integration/liboqs/QRUOV-5q31L10-aes_META.yml b/integration/liboqs/QRUOV-5q31L10-aes_META.yml
+index 21c6c15..bfd9d59 100644
+--- a/integration/liboqs/QRUOV-5q31L10-aes_META.yml
++++ b/integration/liboqs/QRUOV-5q31L10-aes_META.yml
+@@ -42,7 +42,7 @@ implementations:
+ - name: avx2
+   version: Round 3
+   folder_name: .
+-  compile_opts: -DQRUOV_PARAM_5q31L10 -DPRG_IS_AES=1 -DQRUOV_PRIM_OQS -DQRUOV_NAMESPACE_PREFIX=qruov_5q31L10_aes_avx2_ -DPRIM_AES_BACKEND_X86AESNI=1 -mavx2 -mbmi2 -maes $<$<C_COMPILER_ID:MSVC>:/FInamespace.h> $<$<NOT:$<C_COMPILER_ID:MSVC>>:-include> $<$<NOT:$<C_COMPILER_ID:MSVC>>:namespace.h>
++  compile_opts: -DQRUOV_PARAM_5q31L10 -DPRG_IS_AES=1 -DQRUOV_PRIM_OQS -DQRUOV_NAMESPACE_PREFIX=qruov_5q31L10_aes_avx2_ -mavx2 -mbmi2 -maes $<$<C_COMPILER_ID:MSVC>:/FInamespace.h> $<$<NOT:$<C_COMPILER_ID:MSVC>>:-include> $<$<NOT:$<C_COMPILER_ID:MSVC>>:namespace.h>
+   signature_keypair: qruov_5q31L10_aes_avx2_crypto_sign_keypair
+   signature_signature: qruov_5q31L10_aes_avx2_crypto_sign_signature
+   signature_verify: qruov_5q31L10_aes_avx2_crypto_sign_verify
+diff --git a/integration/liboqs/QRUOV-5q31L10-shake_META.yml b/integration/liboqs/QRUOV-5q31L10-shake_META.yml
+index 14f0774..fb018ac 100644
+--- a/integration/liboqs/QRUOV-5q31L10-shake_META.yml
++++ b/integration/liboqs/QRUOV-5q31L10-shake_META.yml
+@@ -42,7 +42,7 @@ implementations:
+ - name: avx2
+   version: Round 3
+   folder_name: .
+-  compile_opts: -DQRUOV_PARAM_5q31L10 -DPRG_IS_AES=0 -DQRUOV_PRIM_OQS -DQRUOV_NAMESPACE_PREFIX=qruov_5q31L10_shake_avx2_ -DPRIM_AES_BACKEND_X86AESNI=1 -mavx2 -mbmi2 -maes $<$<C_COMPILER_ID:MSVC>:/FInamespace.h> $<$<NOT:$<C_COMPILER_ID:MSVC>>:-include> $<$<NOT:$<C_COMPILER_ID:MSVC>>:namespace.h>
++  compile_opts: -DQRUOV_PARAM_5q31L10 -DPRG_IS_AES=0 -DQRUOV_PRIM_OQS -DQRUOV_NAMESPACE_PREFIX=qruov_5q31L10_shake_avx2_ -mavx2 -mbmi2 -maes $<$<C_COMPILER_ID:MSVC>:/FInamespace.h> $<$<NOT:$<C_COMPILER_ID:MSVC>>:-include> $<$<NOT:$<C_COMPILER_ID:MSVC>>:namespace.h>
+   signature_keypair: qruov_5q31L10_shake_avx2_crypto_sign_keypair
+   signature_signature: qruov_5q31L10_shake_avx2_crypto_sign_signature
+   signature_verify: qruov_5q31L10_shake_avx2_crypto_sign_verify
+diff --git a/integration/liboqs/QRUOV-5q31L3-aes_META.yml b/integration/liboqs/QRUOV-5q31L3-aes_META.yml
+index a898d58..ff1f656 100644
+--- a/integration/liboqs/QRUOV-5q31L3-aes_META.yml
++++ b/integration/liboqs/QRUOV-5q31L3-aes_META.yml
+@@ -42,7 +42,7 @@ implementations:
+ - name: avx2
+   version: Round 3
+   folder_name: .
+-  compile_opts: -DQRUOV_PARAM_5q31L3 -DPRG_IS_AES=1 -DQRUOV_PRIM_OQS -DQRUOV_NAMESPACE_PREFIX=qruov_5q31L3_aes_avx2_ -DPRIM_AES_BACKEND_X86AESNI=1 -mavx2 -mbmi2 -maes $<$<C_COMPILER_ID:MSVC>:/FInamespace.h> $<$<NOT:$<C_COMPILER_ID:MSVC>>:-include> $<$<NOT:$<C_COMPILER_ID:MSVC>>:namespace.h>
++  compile_opts: -DQRUOV_PARAM_5q31L3 -DPRG_IS_AES=1 -DQRUOV_PRIM_OQS -DQRUOV_NAMESPACE_PREFIX=qruov_5q31L3_aes_avx2_ -mavx2 -mbmi2 -maes $<$<C_COMPILER_ID:MSVC>:/FInamespace.h> $<$<NOT:$<C_COMPILER_ID:MSVC>>:-include> $<$<NOT:$<C_COMPILER_ID:MSVC>>:namespace.h>
+   signature_keypair: qruov_5q31L3_aes_avx2_crypto_sign_keypair
+   signature_signature: qruov_5q31L3_aes_avx2_crypto_sign_signature
+   signature_verify: qruov_5q31L3_aes_avx2_crypto_sign_verify
+diff --git a/integration/liboqs/QRUOV-5q31L3-shake_META.yml b/integration/liboqs/QRUOV-5q31L3-shake_META.yml
+index d5c3906..1530ac8 100644
+--- a/integration/liboqs/QRUOV-5q31L3-shake_META.yml
++++ b/integration/liboqs/QRUOV-5q31L3-shake_META.yml
+@@ -42,7 +42,7 @@ implementations:
+ - name: avx2
+   version: Round 3
+   folder_name: .
+-  compile_opts: -DQRUOV_PARAM_5q31L3 -DPRG_IS_AES=0 -DQRUOV_PRIM_OQS -DQRUOV_NAMESPACE_PREFIX=qruov_5q31L3_shake_avx2_ -DPRIM_AES_BACKEND_X86AESNI=1 -mavx2 -mbmi2 -maes $<$<C_COMPILER_ID:MSVC>:/FInamespace.h> $<$<NOT:$<C_COMPILER_ID:MSVC>>:-include> $<$<NOT:$<C_COMPILER_ID:MSVC>>:namespace.h>
++  compile_opts: -DQRUOV_PARAM_5q31L3 -DPRG_IS_AES=0 -DQRUOV_PRIM_OQS -DQRUOV_NAMESPACE_PREFIX=qruov_5q31L3_shake_avx2_ -mavx2 -mbmi2 -maes $<$<C_COMPILER_ID:MSVC>:/FInamespace.h> $<$<NOT:$<C_COMPILER_ID:MSVC>>:-include> $<$<NOT:$<C_COMPILER_ID:MSVC>>:namespace.h>
+   signature_keypair: qruov_5q31L3_shake_avx2_crypto_sign_keypair
+   signature_signature: qruov_5q31L3_shake_avx2_crypto_sign_signature
+   signature_verify: qruov_5q31L3_shake_avx2_crypto_sign_verify
+diff --git a/integration/liboqs/QRUOV-5q7L10-aes_META.yml b/integration/liboqs/QRUOV-5q7L10-aes_META.yml
+index ac7708a..567a7ac 100644
+--- a/integration/liboqs/QRUOV-5q7L10-aes_META.yml
++++ b/integration/liboqs/QRUOV-5q7L10-aes_META.yml
+@@ -42,7 +42,7 @@ implementations:
+ - name: avx2
+   version: Round 3
+   folder_name: .
+-  compile_opts: -DQRUOV_PARAM_5q7L10 -DPRG_IS_AES=1 -DQRUOV_PRIM_OQS -DQRUOV_NAMESPACE_PREFIX=qruov_5q7L10_aes_avx2_ -DPRIM_AES_BACKEND_X86AESNI=1 -mavx2 -mbmi2 -maes $<$<C_COMPILER_ID:MSVC>:/FInamespace.h> $<$<NOT:$<C_COMPILER_ID:MSVC>>:-include> $<$<NOT:$<C_COMPILER_ID:MSVC>>:namespace.h>
++  compile_opts: -DQRUOV_PARAM_5q7L10 -DPRG_IS_AES=1 -DQRUOV_PRIM_OQS -DQRUOV_NAMESPACE_PREFIX=qruov_5q7L10_aes_avx2_ -mavx2 -mbmi2 -maes $<$<C_COMPILER_ID:MSVC>:/FInamespace.h> $<$<NOT:$<C_COMPILER_ID:MSVC>>:-include> $<$<NOT:$<C_COMPILER_ID:MSVC>>:namespace.h>
+   signature_keypair: qruov_5q7L10_aes_avx2_crypto_sign_keypair
+   signature_signature: qruov_5q7L10_aes_avx2_crypto_sign_signature
+   signature_verify: qruov_5q7L10_aes_avx2_crypto_sign_verify
+diff --git a/integration/liboqs/QRUOV-5q7L10-shake_META.yml b/integration/liboqs/QRUOV-5q7L10-shake_META.yml
+index 3f2290e..055b3b8 100644
+--- a/integration/liboqs/QRUOV-5q7L10-shake_META.yml
++++ b/integration/liboqs/QRUOV-5q7L10-shake_META.yml
+@@ -42,7 +42,7 @@ implementations:
+ - name: avx2
+   version: Round 3
+   folder_name: .
+-  compile_opts: -DQRUOV_PARAM_5q7L10 -DPRG_IS_AES=0 -DQRUOV_PRIM_OQS -DQRUOV_NAMESPACE_PREFIX=qruov_5q7L10_shake_avx2_ -DPRIM_AES_BACKEND_X86AESNI=1 -mavx2 -mbmi2 -maes $<$<C_COMPILER_ID:MSVC>:/FInamespace.h> $<$<NOT:$<C_COMPILER_ID:MSVC>>:-include> $<$<NOT:$<C_COMPILER_ID:MSVC>>:namespace.h>
++  compile_opts: -DQRUOV_PARAM_5q7L10 -DPRG_IS_AES=0 -DQRUOV_PRIM_OQS -DQRUOV_NAMESPACE_PREFIX=qruov_5q7L10_shake_avx2_ -mavx2 -mbmi2 -maes $<$<C_COMPILER_ID:MSVC>:/FInamespace.h> $<$<NOT:$<C_COMPILER_ID:MSVC>>:-include> $<$<NOT:$<C_COMPILER_ID:MSVC>>:namespace.h>
+   signature_keypair: qruov_5q7L10_shake_avx2_crypto_sign_keypair
+   signature_signature: qruov_5q7L10_shake_avx2_crypto_sign_signature
+   signature_verify: qruov_5q7L10_shake_avx2_crypto_sign_verify
+diff --git a/integration/liboqs/namespace.h b/integration/liboqs/namespace.h
+index ae6a55e..4494415 100644
+--- a/integration/liboqs/namespace.h
++++ b/integration/liboqs/namespace.h
+@@ -83,8 +83,6 @@
+ #define crypto_sign_signature QRUOV_NAMESPACE(crypto_sign_signature)
+ #define crypto_sign_verify QRUOV_NAMESPACE(crypto_sign_verify)
+ 
+-#define AES128_CTR_Stream                    QRUOV_NAMESPACE(AES128_CTR_Stream)
+-#define AES128_Key_Expansion                 QRUOV_NAMESPACE(AES128_Key_Expansion)
+ #define evaluate                             QRUOV_NAMESPACE(evaluate)
+ #define fq_eval_transpose_planes             QRUOV_NAMESPACE(fq_eval_transpose_planes)
+ #define fql_aos_to_eval_transposed_soa       QRUOV_NAMESPACE(fql_aos_to_eval_transposed_soa)
+diff --git a/src/avx2/x86aesni.c b/src/avx2/x86aesni.c
+deleted file mode 100644
+index e8e20db..0000000
+--- a/src/avx2/x86aesni.c
++++ /dev/null
+@@ -1,117 +0,0 @@
+-#include "x86aesni.h"
+-
+-#include <emmintrin.h>
+-#include <smmintrin.h>
+-#include <wmmintrin.h>
+-
+-static inline __m128i aes128_assist(__m128i temp1, __m128i temp2)
+-{
+-    __m128i temp3;
+-    temp2 = _mm_shuffle_epi32(temp2, 0xff);
+-    temp3 = _mm_slli_si128(temp1, 0x4);
+-    temp1 = _mm_xor_si128(temp1, temp3);
+-    temp3 = _mm_slli_si128(temp3, 0x4);
+-    temp1 = _mm_xor_si128(temp1, temp3);
+-    temp3 = _mm_slli_si128(temp3, 0x4);
+-    temp1 = _mm_xor_si128(temp1, temp3);
+-    temp1 = _mm_xor_si128(temp1, temp2);
+-    return temp1;
+-}
+-
+-void AES128_Key_Expansion(unsigned char *key, const unsigned char *userkey)
+-{
+-    __m128i temp1, temp2;
+-    __m128i *key_schedule = (__m128i *)key;
+-
+-    temp1 = _mm_loadu_si128((const __m128i *)userkey);
+-    key_schedule[0] = temp1;
+-    temp2 = _mm_aeskeygenassist_si128(temp1, 0x1);
+-    temp1 = aes128_assist(temp1, temp2);
+-    key_schedule[1] = temp1;
+-    temp2 = _mm_aeskeygenassist_si128(temp1, 0x2);
+-    temp1 = aes128_assist(temp1, temp2);
+-    key_schedule[2] = temp1;
+-    temp2 = _mm_aeskeygenassist_si128(temp1, 0x4);
+-    temp1 = aes128_assist(temp1, temp2);
+-    key_schedule[3] = temp1;
+-    temp2 = _mm_aeskeygenassist_si128(temp1, 0x8);
+-    temp1 = aes128_assist(temp1, temp2);
+-    key_schedule[4] = temp1;
+-    temp2 = _mm_aeskeygenassist_si128(temp1, 0x10);
+-    temp1 = aes128_assist(temp1, temp2);
+-    key_schedule[5] = temp1;
+-    temp2 = _mm_aeskeygenassist_si128(temp1, 0x20);
+-    temp1 = aes128_assist(temp1, temp2);
+-    key_schedule[6] = temp1;
+-    temp2 = _mm_aeskeygenassist_si128(temp1, 0x40);
+-    temp1 = aes128_assist(temp1, temp2);
+-    key_schedule[7] = temp1;
+-    temp2 = _mm_aeskeygenassist_si128(temp1, 0x80);
+-    temp1 = aes128_assist(temp1, temp2);
+-    key_schedule[8] = temp1;
+-    temp2 = _mm_aeskeygenassist_si128(temp1, 0x1b);
+-    temp1 = aes128_assist(temp1, temp2);
+-    key_schedule[9] = temp1;
+-    temp2 = _mm_aeskeygenassist_si128(temp1, 0x36);
+-    temp1 = aes128_assist(temp1, temp2);
+-    key_schedule[10] = temp1;
+-}
+-
+-void AES128_CTR_Stream(unsigned char *out, unsigned long n_16B,
+-                       const unsigned char *key, const unsigned char nonce[16],
+-                       uint32_t ctr)
+-{
+-    const int rounds = 10;
+-    const int blocks = (int)n_16B;
+-    const __m128i one = _mm_set_epi32(0, 0, 0, 1);
+-    const __m128i bswap = _mm_setr_epi8(
+-        15, 14, 13, 12, 11, 10, 9, 8,
+-         7,  6,  5,  4,  3,  2, 1, 0);
+-    __m128i ctr_block, tmp0, tmp1, tmp2, tmp3;
+-
+-    ctr_block = _mm_loadu_si128((const __m128i *)nonce);
+-    ctr_block = _mm_shuffle_epi8(ctr_block, bswap);
+-    ctr_block = _mm_insert_epi32(ctr_block, (int)ctr, 0);
+-
+-    int i = 0;
+-    // Valid only for ctr % 4 == 0: +1/+2/+3 affect only the last AES-order byte.
+-    if ((ctr & 3) == 0) {
+-        const __m128i four = _mm_set_epi32(0, 0, 0, 4);
+-        const __m128i key0_0 = ((__m128i *)key)[0];
+-        const __m128i key0_1 = _mm_xor_si128(key0_0, _mm_set_epi32(0x01000000, 0, 0, 0));
+-        const __m128i key0_2 = _mm_xor_si128(key0_0, _mm_set_epi32(0x02000000, 0, 0, 0));
+-        const __m128i key0_3 = _mm_xor_si128(key0_0, _mm_set_epi32(0x03000000, 0, 0, 0));
+-        for (; i + 3 < blocks; i += 4) {
+-            __m128i ctr_block_bswap = _mm_shuffle_epi8(ctr_block, bswap);
+-            tmp0 = _mm_xor_si128(ctr_block_bswap, key0_0);
+-            tmp1 = _mm_xor_si128(ctr_block_bswap, key0_1);
+-            tmp2 = _mm_xor_si128(ctr_block_bswap, key0_2);
+-            tmp3 = _mm_xor_si128(ctr_block_bswap, key0_3);
+-            ctr_block = _mm_add_epi64(ctr_block, four);
+-            for (int j = 1; j < rounds; j++) {
+-                tmp0 = _mm_aesenc_si128(tmp0, ((__m128i *)key)[j]);
+-                tmp1 = _mm_aesenc_si128(tmp1, ((__m128i *)key)[j]);
+-                tmp2 = _mm_aesenc_si128(tmp2, ((__m128i *)key)[j]);
+-                tmp3 = _mm_aesenc_si128(tmp3, ((__m128i *)key)[j]);
+-            }
+-            tmp0 = _mm_aesenclast_si128(tmp0, ((__m128i *)key)[rounds]);
+-            tmp1 = _mm_aesenclast_si128(tmp1, ((__m128i *)key)[rounds]);
+-            tmp2 = _mm_aesenclast_si128(tmp2, ((__m128i *)key)[rounds]);
+-            tmp3 = _mm_aesenclast_si128(tmp3, ((__m128i *)key)[rounds]);
+-            _mm_storeu_si128(&((__m128i *)out)[i + 0], tmp0);
+-            _mm_storeu_si128(&((__m128i *)out)[i + 1], tmp1);
+-            _mm_storeu_si128(&((__m128i *)out)[i + 2], tmp2);
+-            _mm_storeu_si128(&((__m128i *)out)[i + 3], tmp3);
+-        }
+-    }
+-    for (; i < blocks; i++) {
+-        tmp0 = _mm_shuffle_epi8(ctr_block, bswap);
+-        ctr_block = _mm_add_epi64(ctr_block, one);
+-        tmp0 = _mm_xor_si128(tmp0, ((__m128i *)key)[0]);
+-        for (int j = 1; j < rounds; j++) {
+-            tmp0 = _mm_aesenc_si128(tmp0, ((__m128i *)key)[j]);
+-        }
+-        tmp0 = _mm_aesenclast_si128(tmp0, ((__m128i *)key)[rounds]);
+-        _mm_storeu_si128(&((__m128i *)out)[i], tmp0);
+-    }
+-}
+diff --git a/src/avx2/x86aesni.h b/src/avx2/x86aesni.h
+deleted file mode 100644
+index 3566b06..0000000
+--- a/src/avx2/x86aesni.h
++++ /dev/null
+@@ -1,11 +0,0 @@
+-#ifndef AVX2_X86AESNI_H
+-#define AVX2_X86AESNI_H
+-
+-#include <stdint.h>
+-
+-void AES128_Key_Expansion(unsigned char *key, const unsigned char *userkey);
+-void AES128_CTR_Stream(unsigned char *out, unsigned long n_16B,
+-                       const unsigned char *key, const unsigned char nonce[16],
+-                       uint32_t ctr);
+-
+-#endif // AVX2_X86AESNI_H
+diff --git a/src/prim.c b/src/prim.c
+index 0ef2cbf..b1b3bef 100644
+--- a/src/prim.c
++++ b/src/prim.c
+@@ -1,23 +1,17 @@
+ #include <stdlib.h>
+ #include <string.h>
+ #include <limits.h>
+-// AES-NI cleanses round keys regardless of SHAKE backend, so OpenSSL may not be linked.
+ #if defined(QRUOV_PRIM_OQS)
+ #include <oqs/common.h>
+-#define QRUOV_CLEANSE(p, n) OQS_MEM_cleanse((p), (n))
+ #define QRUOV_MALLOC(n) OQS_MEM_malloc((n))
+ #define QRUOV_SECURE_FREE(p, n) OQS_MEM_secure_free((p), (n))
+ #else
+ #include <openssl/crypto.h>
+ #include <openssl/evp.h>
+-#define QRUOV_CLEANSE(p, n) OPENSSL_cleanse((p), (n))
+ #define QRUOV_MALLOC(n) malloc((n)) // IGNORE memory-check
+ #define QRUOV_SECURE_FREE(p, n) do { OPENSSL_cleanse((p), (n)); free((p)); } while (0) // IGNORE memory-check
+ #endif // QRUOV_PRIM_OQS
+ #include "prim.h"
+-#if defined(PRIM_AES_BACKEND_X86AESNI)
+-#include "x86aesni.h"
+-#endif // PRIM_AES_BACKEND_X86AESNI
+ 
+ #if defined(QRUOV_PRIM_OQS)
+ void shake256_init(shake256 *ctx)
+@@ -209,36 +203,7 @@ void shake128_free(shake128 *ctx)
+ 
+ #endif // QRUOV_PRIM_OQS
+ 
+-#if defined(PRIM_AES_BACKEND_X86AESNI)
+-void aes128ctr_init(aes128 *ctx, const uint8_t key[16])
+-{
+-    AES128_Key_Expansion(ctx->round_keys, key);
+-}
+-
+-void aes128ctr_stream(aes128 *ctx, const uint8_t iv[8], uint8_t *dst, size_t size)
+-{
+-    const size_t blocks = size / 16u;
+-    const size_t tail = size % 16u;
+-    uint8_t nonce[16] = {0};
+-    memcpy(nonce, iv, 8);
+-
+-    if (blocks != 0) {
+-        if (blocks > ULONG_MAX) abort();
+-        AES128_CTR_Stream(dst, (unsigned long)blocks, ctx->round_keys, nonce, 0);
+-    }
+-    if (tail != 0) {
+-        uint8_t tail_block[16];
+-        if (blocks > UINT32_MAX) abort();
+-        AES128_CTR_Stream(tail_block, 1, ctx->round_keys, nonce, (uint32_t)blocks);
+-        memcpy(dst + (blocks * 16u), tail_block, tail);
+-    }
+-}
+-
+-void aes128ctr_free(aes128 *ctx)
+-{
+-    QRUOV_CLEANSE(ctx->round_keys, sizeof(ctx->round_keys));
+-}
+-#elif defined(QRUOV_PRIM_OQS)
++#if defined(QRUOV_PRIM_OQS)
+ void aes128ctr_init(aes128 *ctx, const uint8_t key[16])
+ {
+     OQS_AES128_CTR_inc_init(key, &ctx->schedule);
+@@ -294,4 +259,4 @@ void aes128ctr_free(aes128 *ctx)
+     EVP_CIPHER_CTX_free(ctx->cipher_ctx);
+     ctx->cipher_ctx = NULL;
+ }
+-#endif // PRIM_AES_BACKEND_X86AESNI
++#endif // QRUOV_PRIM_OQS
+diff --git a/src/prim.h b/src/prim.h
+index b84bdde..61bf8e7 100644
+--- a/src/prim.h
++++ b/src/prim.h
+@@ -49,14 +49,11 @@ typedef struct shake128 {
+ } shake128;
+ 
+ typedef struct aes128 {
+-#if defined(PRIM_AES_BACKEND_X86AESNI)
+-    // AES-128 round keys (11 x 16 bytes), 16-byte aligned for AES-NI loads.
+-    uint8_t round_keys[11 * 16] __attribute__((aligned(16)));
+-#elif defined(QRUOV_PRIM_OQS)
++#if defined(QRUOV_PRIM_OQS)
+     void *schedule;
+ #else
+     EVP_CIPHER_CTX *cipher_ctx;
+-#endif // PRIM_AES_BACKEND_X86AESNI
++#endif // QRUOV_PRIM_OQS
+ } aes128;
+ 
+ // Requires:

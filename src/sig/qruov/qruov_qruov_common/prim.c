@@ -1,23 +1,17 @@
 #include <stdlib.h>
 #include <string.h>
 #include <limits.h>
-// AES-NI cleanses round keys regardless of SHAKE backend, so OpenSSL may not be linked.
 #if defined(QRUOV_PRIM_OQS)
 #include <oqs/common.h>
-#define QRUOV_CLEANSE(p, n) OQS_MEM_cleanse((p), (n))
 #define QRUOV_MALLOC(n) OQS_MEM_malloc((n))
 #define QRUOV_SECURE_FREE(p, n) OQS_MEM_secure_free((p), (n))
 #else
 #include <openssl/crypto.h>
 #include <openssl/evp.h>
-#define QRUOV_CLEANSE(p, n) OPENSSL_cleanse((p), (n))
 #define QRUOV_MALLOC(n) malloc((n)) // IGNORE memory-check
 #define QRUOV_SECURE_FREE(p, n) do { OPENSSL_cleanse((p), (n)); free((p)); } while (0) // IGNORE memory-check
 #endif // QRUOV_PRIM_OQS
 #include "prim.h"
-#if defined(PRIM_AES_BACKEND_X86AESNI)
-#include "x86aesni.h"
-#endif // PRIM_AES_BACKEND_X86AESNI
 
 #if defined(QRUOV_PRIM_OQS)
 void shake256_init(shake256 *ctx)
@@ -209,36 +203,7 @@ void shake128_free(shake128 *ctx)
 
 #endif // QRUOV_PRIM_OQS
 
-#if defined(PRIM_AES_BACKEND_X86AESNI)
-void aes128ctr_init(aes128 *ctx, const uint8_t key[16])
-{
-    AES128_Key_Expansion(ctx->round_keys, key);
-}
-
-void aes128ctr_stream(aes128 *ctx, const uint8_t iv[8], uint8_t *dst, size_t size)
-{
-    const size_t blocks = size / 16u;
-    const size_t tail = size % 16u;
-    uint8_t nonce[16] = {0};
-    memcpy(nonce, iv, 8);
-
-    if (blocks != 0) {
-        if (blocks > ULONG_MAX) abort();
-        AES128_CTR_Stream(dst, (unsigned long)blocks, ctx->round_keys, nonce, 0);
-    }
-    if (tail != 0) {
-        uint8_t tail_block[16];
-        if (blocks > UINT32_MAX) abort();
-        AES128_CTR_Stream(tail_block, 1, ctx->round_keys, nonce, (uint32_t)blocks);
-        memcpy(dst + (blocks * 16u), tail_block, tail);
-    }
-}
-
-void aes128ctr_free(aes128 *ctx)
-{
-    QRUOV_CLEANSE(ctx->round_keys, sizeof(ctx->round_keys));
-}
-#elif defined(QRUOV_PRIM_OQS)
+#if defined(QRUOV_PRIM_OQS)
 void aes128ctr_init(aes128 *ctx, const uint8_t key[16])
 {
     OQS_AES128_CTR_inc_init(key, &ctx->schedule);
@@ -294,4 +259,4 @@ void aes128ctr_free(aes128 *ctx)
     EVP_CIPHER_CTX_free(ctx->cipher_ctx);
     ctx->cipher_ctx = NULL;
 }
-#endif // PRIM_AES_BACKEND_X86AESNI
+#endif // QRUOV_PRIM_OQS
