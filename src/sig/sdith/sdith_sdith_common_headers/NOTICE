@@ -1,0 +1,28 @@
+Copyright 2026 The SDitH Consortium
+
+This product includes software developed by:
+
+lib/sha3:
+  copied from The eXtended Keccak Code Package (XKCP) (multiple licenses)
+  https://github.com/XKCP/XKCP
+  only build files have been edited (CMakeLists.txt)
+
+lib/aes/aes_ansi_ref.c/.h:
+  ANSI C Rijndael code by Vincent Rijmen, Antoon Bosselaers and Paulo Barreto -- public domain
+  A little-endian version of the algorithm is provided in aes_ansi_littleendian_ref.c
+  the avx implementation via the aes-ni instructions are new, and covered by the main repository license.
+
+lib/aes/rijndael256_avx.c/.h:
+  The following part is adapted from a work by Nir Drucker and Shay Gueron:
+  Software optimization of Rijndael for Modern x86_64 platforms,
+  in ITNG 2022 - 19th International Conference on Information Technology - New Generations (pp 147-153)
+  Original code: Copyright Nir Drucker and Shay Gueron All Rights Reserved.
+  (SPDX-License-Identifier: Apache-2.0)
+
+kat/*/PQCgenKAT_sign.c, rng.c, rng.h:
+  NIST-developed software is provided by NIST as a public service. You may use, copy, and distribute copies of the
+  software in any medium, provided that you keep intact this entire notice. You may improve, modify, and create derivative
+  works of the software or any portion of the software, and you may copy and distribute such modifications or works.
+  Modified works should carry a notice stating that you changed the software and should note the date and nature of any
+  such change. Please explicitly acknowledge the National Institute of Standards and Technology as the source of the
+  software.
