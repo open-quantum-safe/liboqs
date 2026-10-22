@@ -21,6 +21,7 @@ upstream-statement-url: null
 oqs-support-tier: 3
 primary-upstream:
   source: https://github.com/0rlych1kk4/round3/commit/df619f46a6c937c1b14907a933f74ae7d82a202d
+    with copy_from_upstream patches
   spdx-license-identifier: 0BSD
 parameter-sets:
 - name: QRUOV-1q127L10-aes
