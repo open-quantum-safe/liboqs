@@ -35,7 +35,7 @@ static void AES128_ECB_load_schedule(const uint8_t *key, void **schedule) {
 	ks->ctx = OSSL_FUNC(EVP_CIPHER_CTX_new)();
 	OQS_EXIT_IF_NULLPTR(ks->ctx, "OpenSSL");
 	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_EncryptInit_ex)(ks->ctx, oqs_aes_128_ecb(), NULL, key, NULL));
-	OSSL_FUNC(EVP_CIPHER_CTX_set_padding)(ks->ctx, 0);
+	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_CIPHER_CTX_set_padding)(ks->ctx, 0));
 }
 
 static void AES128_free_schedule(void *schedule) {
@@ -135,7 +135,7 @@ static void AES256_ECB_load_schedule(const uint8_t *key, void **schedule) {
 	ks->ctx = OSSL_FUNC(EVP_CIPHER_CTX_new)();
 	OQS_EXIT_IF_NULLPTR(ks->ctx, "OpenSSL");
 	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_EncryptInit_ex)(ks->ctx, oqs_aes_256_ecb(), NULL, key, NULL));
-	OSSL_FUNC(EVP_CIPHER_CTX_set_padding)(ks->ctx, 0);
+	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_CIPHER_CTX_set_padding)(ks->ctx, 0));
 }
 
 static void AES256_CTR_inc_init(const uint8_t *key, void **schedule) {
@@ -233,7 +233,7 @@ static void AES192_ECB_load_schedule(const uint8_t *key, void **schedule) {
 	ks->ctx = OSSL_FUNC(EVP_CIPHER_CTX_new)();
 	OQS_EXIT_IF_NULLPTR(ks->ctx, "OpenSSL");
 	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_EncryptInit_ex)(ks->ctx, oqs_aes_192_ecb(), NULL, key, NULL));
-	OSSL_FUNC(EVP_CIPHER_CTX_set_padding)(ks->ctx, 0);
+	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_CIPHER_CTX_set_padding)(ks->ctx, 0));
 }
 
 static void AES192_free_schedule(void *schedule) {
