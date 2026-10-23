@@ -1,0 +1,26 @@
+#ifndef ENCODED_SIZES_H
+#define ENCODED_SIZES_H
+#include <tutil.h>
+#define SECURITY_BITS 128
+#define CHALLENGE_BITS 128
+#define RESPONSE_BITS 196
+#define RESPONSE_BYTES 25
+#define HASH_ITERATIONS 1
+#define FP_ENCODED_BYTES 41
+#define FP2_ENCODED_BYTES 82
+#define CHALLENGE_BYTES 16
+#define EC_CURVE_ENCODED_BYTES 82
+#define EC_POINT_ENCODED_BYTES 82
+#define EC_BASIS_ENCODED_BYTES 246
+#define PUBLICKEY_BYTES 83
+#define SECRETKEY_BYTES 270
+#define SIGNATURE_BYTES 200
+#if 0
+#elif RADIX == 16
+#define IBZ_NLIMBS 120
+#elif RADIX == 32
+#define IBZ_NLIMBS 60
+#elif RADIX == 64
+#define IBZ_NLIMBS 30
+#endif
+#endif

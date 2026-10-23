@@ -213,5 +213,8 @@
   "QRUOV-5q31L3-aes": ["qruov"],
   "QRUOV-5q31L3-shake": ["qruov"],
   "QRUOV-5q7L10-aes": ["qruov"],
-  "QRUOV-5q7L10-shake": ["qruov"]
+  "QRUOV-5q7L10-shake": ["qruov"],
+  "SQIsign-p324-3": ["sqisign"],
+  "SQIsign-p500-27": ["sqisign"],
+  "SQIsign-p664-17": ["sqisign"]
 }

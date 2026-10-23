@@ -2,23 +2,23 @@
   "$schema": "https://raw.githubusercontent.com/CycloneDX/specification/1.6/schema/bom-1.6.schema.json",
   "bomFormat": "CycloneDX",
   "specVersion": "1.6",
-  "serialNumber": "urn:uuid:8aef1183-a364-451a-be1d-f35fc5b2cef3",
+  "serialNumber": "urn:uuid:9f579b26-4592-4c06-9688-f78937aca8a4",
   "version": 1,
   "metadata": {
-    "timestamp": "2026-09-22T16:48:43.819494+00:00",
+    "timestamp": "2026-09-17T11:21:32.766908+00:00",
     "component": {
       "type": "library",
-      "bom-ref": "pkg:github/open-quantum-safe/liboqs@078c4d3c73b982de8d7a1665d68073bfdaf48147",
+      "bom-ref": "pkg:github/open-quantum-safe/liboqs@c18bedc1c896b272c47b6947a4c4a48469d9a6d7",
       "name": "liboqs",
-      "version": "078c4d3c73b982de8d7a1665d68073bfdaf48147"
+      "version": "c18bedc1c896b272c47b6947a4c4a48469d9a6d7"
     }
   },
   "components": [
     {
       "type": "library",
-      "bom-ref": "pkg:github/open-quantum-safe/liboqs@078c4d3c73b982de8d7a1665d68073bfdaf48147",
+      "bom-ref": "pkg:github/open-quantum-safe/liboqs@c18bedc1c896b272c47b6947a4c4a48469d9a6d7",
       "name": "liboqs",
-      "version": "078c4d3c73b982de8d7a1665d68073bfdaf48147"
+      "version": "c18bedc1c896b272c47b6947a4c4a48469d9a6d7"
     },
     {
       "type": "cryptographic-asset",
@@ -9662,6 +9662,126 @@
     },
     {
       "type": "cryptographic-asset",
+      "bom-ref": "alg:SQIsign-p324-3:ref:generic",
+      "name": "SQIsign",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SQIsign-p324-3",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SQIsign-p324-3:broadwell:x86_64",
+      "name": "SQIsign",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SQIsign-p324-3",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "x86_64"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SQIsign-p500-27:ref:generic",
+      "name": "SQIsign",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SQIsign-p500-27",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SQIsign-p500-27:broadwell:x86_64",
+      "name": "SQIsign",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SQIsign-p500-27",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "x86_64"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SQIsign-p664-17:ref:generic",
+      "name": "SQIsign",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SQIsign-p664-17",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:SQIsign-p664-17:broadwell:x86_64",
+      "name": "SQIsign",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "SQIsign-p664-17",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "x86_64"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
       "bom-ref": "alg:OV-Is:ref:generic",
       "name": "UOV",
       "cryptoProperties": {
@@ -10407,7 +10527,7 @@
   ],
   "dependencies": [
     {
-      "ref": "pkg:github/open-quantum-safe/liboqs@078c4d3c73b982de8d7a1665d68073bfdaf48147",
+      "ref": "pkg:github/open-quantum-safe/liboqs@c18bedc1c896b272c47b6947a4c4a48469d9a6d7",
       "provides": [
         "alg:BIKE-L1:master:x86_64",
         "alg:BIKE-L3:master:x86_64",
@@ -10891,6 +11011,12 @@
         "alg:SNOVA_V_S_AES:avx2:x86_64",
         "alg:SNOVA_V_S_AES:neon:armv8-a",
         "alg:SNOVA_V_S_AES:memopt:generic",
+        "alg:SQIsign-p324-3:ref:generic",
+        "alg:SQIsign-p324-3:broadwell:x86_64",
+        "alg:SQIsign-p500-27:ref:generic",
+        "alg:SQIsign-p500-27:broadwell:x86_64",
+        "alg:SQIsign-p664-17:ref:generic",
+        "alg:SQIsign-p664-17:broadwell:x86_64",
         "alg:OV-Is:ref:generic",
         "alg:OV-Is:neon:armv8-a",
         "alg:OV-Is:avx2:x86_64",
@@ -13009,6 +13135,42 @@
       "dependsOn": [
         "alg:sha3",
         "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:SQIsign-p324-3:ref:generic",
+      "dependsOn": [
+        "alg:sha3"
+      ]
+    },
+    {
+      "ref": "alg:SQIsign-p324-3:broadwell:x86_64",
+      "dependsOn": [
+        "alg:sha3"
+      ]
+    },
+    {
+      "ref": "alg:SQIsign-p500-27:ref:generic",
+      "dependsOn": [
+        "alg:sha3"
+      ]
+    },
+    {
+      "ref": "alg:SQIsign-p500-27:broadwell:x86_64",
+      "dependsOn": [
+        "alg:sha3"
+      ]
+    },
+    {
+      "ref": "alg:SQIsign-p664-17:ref:generic",
+      "dependsOn": [
+        "alg:sha3"
+      ]
+    },
+    {
+      "ref": "alg:SQIsign-p664-17:broadwell:x86_64",
+      "dependsOn": [
+        "alg:sha3"
       ]
     },
     {

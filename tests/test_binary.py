@@ -7,6 +7,36 @@ import re
 import sys
 import glob
 
+# NOTE: each ignore takes one line helps making git diff's easier to read
+NAMESPACE_IGNORE = [
+    "oqs",
+    "pqclean",
+    "keccak",
+    "pqcrystals",
+    "pqmayo",
+    "init",
+    "fini",
+    "seedexpander",
+    "__x86.get_pc_thunk",
+    "libjade",
+    "jade",
+    "__jade",
+    "__jasmin_syscall",
+    "pqcp",
+    "pqov",
+    "qruov",
+    "_snova",
+    "sha3",
+    "slh",
+    "sha2",
+    "shake",
+    "hash",
+    "openssh",
+    "hqc",
+    "pqchqc",
+    "sqisign",
+]
+
 # Check if liboqs contains any non-namespaced global symbols
 # See https://github.com/open-quantum-safe/liboqs/wiki/Coding-conventions for function naming conventions
 
@@ -33,15 +63,13 @@ def test_namespace():
         if ' T ' in line or ' D ' in line or ' S ' in line:
             symbols.append(line)
 
-    # ideally this would be just ['oqs', 'pqclean'], but contains exceptions (e.g., providing compat implementations of unavailable platform functions)
-    namespaces = ['oqs', 'pqclean', 'keccak', 'pqcrystals', 'pqmayo', 'init', 'fini', 'seedexpander', '__x86.get_pc_thunk', 'libjade', 'jade', '__jade', '__jasmin_syscall', 'pqcp', 'pqov', 'qruov', '_snova', 'sha3', 'slh', 'sha2', 'shake', 'hash', 'openssh', 'hqc', 'pqchqc']
     non_namespaced = []
 
     for symbolstr in symbols:
         *_, symtype, symbol = symbolstr.split()
         if symtype in 'TR':
             is_namespaced = False
-            for namespace in namespaces:
+            for namespace in NAMESPACE_IGNORE:
                 if symbol.lower().startswith(namespace) or symbol.lower().startswith('_' + namespace):
                     is_namespaced = True
             if not(is_namespaced):
