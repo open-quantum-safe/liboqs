@@ -1,5 +1,6 @@
 # SPDX-License-Identifier: MIT
 
+import fnmatch
 import helpers
 import os
 import pytest
@@ -90,7 +91,91 @@ def test_memory_functions():
                   "If you are sure you want to use these functions in a particular spot, "
                   "add the comment '// IGNORE memory-check' on the line where the function occurs.")
 
+# Ignore patterns to ignore false-positives in upstreams without the need to
+# insert an `// IGNORE malloc-check`.
+MALLOC_CHECK_IGNORED_DIRS = [
+    'src/sig/cross/upcross_*',  # CROSS
+    'src/sig_stfl/*/external',  # XMSS and LMS
+]
+
+# Ensure every OQS_MEM_{malloc,calloc,strdup,aligned_alloc} call is immediately
+# followed by a null check (OQS_EXIT_IF_NULLPTR, "== NULL", "if (!ptr)", ...).
+# Can add `// IGNORE malloc-check` to supress a false positive, or modify
+# `MALLOC_CHECK_IGNORED_DIRS` above.
+# TODO: this tests for common null-check patterns, but a stronger check would
+# involve using an analyzer to track the real dataflow
+def test_malloc_null_check():
+    def is_allocation(line):
+        # A call to one of the OQS_MEM_* allocators (excluding the wrappers' own declarations/definitions)
+        return (re.search(r'\bOQS_MEM_(?:malloc|calloc|strdup|aligned_alloc)\(', line) is not None
+                and re.search(r'\*\s*OQS_MEM_\w+\(', line) is None)
+
+    def is_null_check(line):
+        # A line counts as a null check if it contains any of the forms below.
+
+        # OQS_EXIT_IF_NULLPTR(ptr, ...)
+        if re.search(r'\bOQS_EXIT_IF_NULLPTR\(', line):
+            return True
+
+        # ptr == NULL  or  ptr != NULL
+        if re.search(r'[!=]=\s*NULL\b', line):
+            return True
+
+        # !ptr ending a condition, e.g. "if (!ptr)", "if (!a || !b)", "if (!s->buf[i])"
+        if re.search(r'!\s*[A-Za-z_]\w*(?:->\w+|\.\w+|\[[^\]]*\])*\s*(?:\)|\|\||&&)', line):
+            return True
+
+        return False
+
+    def skippable(line):
+        # returns True if a line can be safetly skipped
+        return not line.strip() or line.strip().startswith(('//', '/*', '*'))
+
+    # Get all relivant files to check
+    c_h_files = []
+    for root in ('src', 'tests'):
+        for path, dirs, files in os.walk(root):
+            if any(fnmatch.fnmatch(path, pattern) for pattern in MALLOC_CHECK_IGNORED_DIRS):
+                dirs[:] = []  # don't descend into ignored directories
+                continue
+            c_h_files += [os.path.join(path, f) for f in files if f.endswith(('.c', '.h', '.fragment'))]
+
+    okay = True
+    for fn in c_h_files:
+        with open(fn) as f:
+            lines = f.read().splitlines()
+        i = 0
+        while i < len(lines):
+            line = lines[i]
+            # skip non-allocations, opted-out lines, and allocations checked on the same line
+            if (skippable(line)
+                or not is_allocation(line)
+                or 'IGNORE malloc-check' in line or is_null_check(line)
+            ):
+                i += 1
+                continue
+            start, j = i, i
+            while True:
+                while j < len(lines) and ';' not in lines[j]:  # end of the statement
+                    j += 1
+                j += 1
+                while j < len(lines) and skippable(lines[j]):
+                    j += 1
+                if j < len(lines) and is_allocation(lines[j]):  # batched allocation
+                    continue
+                break
+            if j >= len(lines) or not is_null_check(lines[j]):
+                okay = False
+                print(f"Unchecked allocation in {fn}:{start + 1}:{line.strip()}")
+            i = j
+
+    assert okay, ("Every OQS_MEM_malloc/calloc/strdup/aligned_alloc call must be immediately "
+                  "followed by a null check (e.g. OQS_EXIT_IF_NULLPTR, or an explicit NULL / !ptr "
+                  "test). If an allocation is intentionally left unchecked, add the comment "
+                  "'// IGNORE malloc-check' on that line.")
+
 if __name__ == "__main__":
     test_memory_functions()
+    test_malloc_null_check()
     import sys
     pytest.main(sys.argv)
