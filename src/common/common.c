@@ -196,6 +196,36 @@ static void set_available_cpu_extensions(void) {
 		cpu_ext_data[OQS_CPU_EXT_ARM_NEON] = 1;
 	}
 }
+#elif defined(OQS_DIST_RISCV64_BUILD) && defined(__linux__)
+#include <sys/auxv.h>
+#if defined(__riscv_vector) && defined(__riscv_v_intrinsic)
+#include <riscv_vector.h>
+#endif
+/* HWCAP bits for RISC-V, as defined in the kernel uapi
+ * (arch/riscv/include/uapi/asm/hwcap.h): one bit per ISA
+ * extension letter, HWCAP_ISA_V corresponding to the 'v'
+ * (vector) extension. */
+#ifndef HWCAP_ISA_V
+#define HWCAP_ISA_V (1 << ('v' - 'a'))
+#endif
+static void set_available_cpu_extensions(void) {
+	/* mark that this function has been called */
+	cpu_ext_data[OQS_CPU_EXT_INIT] = 1;
+	unsigned long int hwcaps = getauxval(AT_HWCAP);
+	if (hwcaps & HWCAP_ISA_V) {
+#if defined(__riscv_vector) && defined(__riscv_v_intrinsic)
+		/* The vectorized NTT and inverse NTT of the mlkem-native
+		 * RVV backend are implemented for VLEN=256 only; other
+		 * operations vectorize for any VLEN >= 256, with the
+		 * backend falling back to the C implementation per
+		 * operation at runtime. Cores with VLEN < 256 are fully
+		 * served by the C implementation. */
+		if (__riscv_vsetvlmax_e16m1() >= 16) {
+			cpu_ext_data[OQS_CPU_EXT_RISCV_RVV] = 1;
+		}
+#endif
+	}
+}
 #elif defined(OQS_DIST_PPC64LE_BUILD)
 static void set_available_cpu_extensions(void) {
 	/* mark that this function has been called */
