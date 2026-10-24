@@ -299,7 +299,11 @@ Note: `ALG` in `OQS_ENABLE_LIBJADE_KEM_ALG/OQS_ENABLE_LIBJADE_SIG_ALG` should be
 **Default**: `OFF` if OQS_LIBJADE_BUILD is `OFF` else unset.
 
 ## OQS_BUILD_FUZZ_TESTS
-Can be `ON` or `OFF`. When `ON` liboqs the fuzz test-suite will be enabled. This option is only available if the c compiler is set to clang i.e. `-DCMAKE_C_COMPILER=clang`.
+
+Can be `ON` or `OFF`. If `ON`, fuzz test targets will be built. Fuzz tests are
+only available under Clang toolchains. When using unsupported compiler, a fatal
+error will be reported at configuration time. Fatal error will also be reported
+if `OQS_BUILD_ONLY_LIB` is turned on at the same time.
 
 Note: It is strongly recommended that this configuration be enabled with `CFLAGS=-fsanitize=address,fuzzer-no-link LDFLAGS=-fsanitize=address`. While fuzzing will run without these flags, enabling this instrumentation will make fuzzing performance much faster and catch [potential memory related bugs](https://clang.llvm.org/docs/AddressSanitizer.html). 
 

@@ -34,11 +34,74 @@ option(OQS_USE_ICICLE "Utilize ICICLE as the backend for supported PQC algorithm
 set(OQS_PYTEST_NUMPROCESSES "auto" CACHE STRING "Number of parallel processes for pytest (e.g., 'auto', '1', '2'). Useful for limiting memory usage on constrained CI/CD systems.")
 message(STATUS "OQS Testing: Pytest parallel workers set to '${OQS_PYTEST_NUMPROCESSES}'")
 
-# Libfuzzer isn't supported on gcc
-if('${CMAKE_C_COMPILER_ID}' STREQUAL 'Clang')
-    option(OQS_BUILD_FUZZ_TESTS "Build fuzz test suite" OFF)
-endif()
+# --- Fuzz Test Configuration ---
+# All configuration validations are performed here in the top-level list file.
+# After this section, fuzz tests are gated behind OQS_BUILD_FUZZ_TESTS only
+option(OQS_BUILD_FUZZ_TESTS "Build fuzz test suite" OFF)
 
+function(probe_libfuzzer cflags ldflags)
+    # Require linking even when a toolchain (such as .CMake/apple.cmake)
+    # selects STATIC_LIBRARY. This override is local to the function.
+    set(CMAKE_TRY_COMPILE_TARGET_TYPE EXECUTABLE)
+
+    separate_arguments(probe_cflags NATIVE_COMMAND "${cflags}")
+    separate_arguments(probe_ldflags NATIVE_COMMAND "${ldflags}")
+
+    set(probe_source "${CMAKE_CURRENT_BINARY_DIR}/fuzzer_probe.c")
+    file(WRITE "${probe_source}" [=[
+#include <stddef.h>
+#include <stdint.h>
+
+int LLVMFuzzerTestOneInput(const uint8_t *data, size_t size) {
+    (void)data;
+    (void)size;
+    return 0;
+}
+]=])
+
+    try_compile(
+        libfuzzer_probe_ok
+        "${CMAKE_CURRENT_BINARY_DIR}"
+        "${probe_source}"
+        COMPILE_DEFINITIONS ${probe_cflags}
+        LINK_OPTIONS ${probe_ldflags}
+        OUTPUT_VARIABLE LIBFUZZER_PROBE_DIAGNOSTIC
+    )
+
+    if(libfuzzer_probe_ok)
+        message(STATUS "LibFuzzer probe ok.")
+    else()
+        message(FATAL_ERROR
+            "LibFuzzer probe failed:\n${LIBFUZZER_PROBE_DIAGNOSTIC}"
+        )
+    endif()
+endfunction()
+
+if(OQS_BUILD_FUZZ_TESTS)
+    if(OQS_BUILD_ONLY_LIB)
+        message(FATAL_ERROR
+            "OQS_BUILD_FUZZ_TESTS=ON is incompatible with OQS_BUILD_ONLY_LIB=ON."
+        )
+    endif()
+
+    if(NOT CMAKE_C_COMPILER_ID MATCHES "Clang")
+        message(FATAL_ERROR
+            "OQS_BUILD_FUZZ_TESTS=ON requires Clang; detected ${CMAKE_C_COMPILER_ID}."
+        )
+    endif()
+
+    # Use an externally supplied engine when available, otherwise use Clang's runtime.
+    if(DEFINED ENV{LIB_FUZZING_ENGINE})
+        set(FUZZING_ENGINE "$ENV{LIB_FUZZING_ENGINE}")
+        set(FUZZING_COMPILE_FLAGS "")
+        set(FUZZING_LINK_FLAGS "${FUZZING_ENGINE}")
+    else()
+        set(FUZZING_COMPILE_FLAGS "-fsanitize=fuzzer-no-link,address")
+        set(FUZZING_LINK_FLAGS "-fsanitize=fuzzer,address")
+    endif()
+
+    probe_libfuzzer("${FUZZING_COMPILE_FLAGS}" "${FUZZING_LINK_FLAGS}")
+endif()
 
 set(OQS_OPT_TARGET auto CACHE STRING "The target microarchitecture for optimization.")
 
@@ -58,16 +121,6 @@ set(OQS_VERSION_TEXT "${OQS_VERSION_MAJOR}.${OQS_VERSION_MINOR}.${OQS_VERSION_PA
 set(OQS_COMPILE_BUILD_TARGET "${CMAKE_SYSTEM_PROCESSOR}-${CMAKE_HOST_SYSTEM}")
 set(OQS_MINIMAL_GCC_VERSION "7.1.0")
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-
-# Determine the flags for fuzzing. Use OSS-Fuzz's configuration if available, otherwise fall back to defaults.
-if(DEFINED ENV{LIB_FUZZING_ENGINE})
-    set(FUZZING_ENGINE $ENV{LIB_FUZZING_ENGINE})
-    set(FUZZING_COMPILE_FLAGS "")
-    set(FUZZING_LINK_FLAGS "${FUZZING_ENGINE}")
-else()
-    set(FUZZING_COMPILE_FLAGS "-fsanitize=fuzzer,address")
-    set(FUZZING_LINK_FLAGS "-fsanitize=fuzzer,address")
-endif()
 
 # heuristic check to see whether we're running on a RaspberryPi
 if(EXISTS "/opt/vc/include/bcm_host.h")
