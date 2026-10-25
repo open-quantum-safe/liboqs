@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1792891102964,
+  "lastUpdate": 1792891148734,
   "repoUrl": "https://github.com/open-quantum-safe/liboqs",
   "entries": {
     "Dilithium2": [
@@ -133998,6 +133998,46 @@ window.BENCHMARK_DATA = {
             "value": 47740,
             "unit": "cycles",
             "extra": "Target platform: x86_64-Linux-6.17.0-1022-azure | Compiler: gcc (13.3.0) | Compile options: [-Wa,--noexecstack;-fomit-frame-pointer;-fdata-sections;-ffunction-sections;-Wl,--gc-sections;-Wbad-function-cast] | OQS version: 0.16.0 (major: 0, minor: 16, patch: 0) | Git commit: fd44469daeffe6b28f031f54f9bb66cbae69a572 | OpenSSL enabled: Yes (OpenSSL 3.0.13 30 Jan 2024) | AES: NI | SHA-2: OpenSSL | SHA-3: AVX512VL | OQS build flags: OQS_DIST_BUILD OQS_LIBJADE_BUILD OQS_OPT_TARGET=generic CMAKE_BUILD_TYPE=Release | CPU exts active: ADX AES AVX AVX2 AVX512 BMI1 BMI2 PCLMULQDQ VPCLMULQDQ POPCNT SSE SSE2 SSE3 | "
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "name": "Rodrigo Martín",
+            "username": "RodriM11",
+            "email": "62776780+RodriM11@users.noreply.github.com"
+          },
+          "committer": {
+            "name": "GitHub",
+            "username": "web-flow",
+            "email": "noreply@github.com"
+          },
+          "id": "e1f480f382d9443c4412133b55948374c77a5c21",
+          "message": "Expand SECURITY.md classification of vulnerabilities (#2639)\n\n* Expand SECURITY.md classification of vulnerabilities\n\nSigned-off-by: RodriM11 <62776780+RodriM11@users.noreply.github.com>\n\n* Work around doxyfy bug\n\nSigned-off-by: Ganyu (Bruce) Xu <g66xu@uwaterloo.ca>\n\n---------\n\nSigned-off-by: RodriM11 <62776780+RodriM11@users.noreply.github.com>\nSigned-off-by: Ganyu (Bruce) Xu <g66xu@uwaterloo.ca>\nCo-authored-by: Ganyu (Bruce) Xu <g66xu@uwaterloo.ca>",
+          "timestamp": "2026-10-22T14:17:21Z",
+          "url": "https://github.com/open-quantum-safe/liboqs/commit/e1f480f382d9443c4412133b55948374c77a5c21"
+        },
+        "date": 1792891147097,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "MAYO-2 keypair",
+            "value": 73386,
+            "unit": "cycles",
+            "extra": "Target platform: x86_64-Linux-6.17.0-1022-azure | Compiler: gcc (13.3.0) | Compile options: [-Wa,--noexecstack;-fomit-frame-pointer;-fdata-sections;-ffunction-sections;-Wl,--gc-sections;-Wbad-function-cast] | OQS version: 0.16.0 (major: 0, minor: 16, patch: 0) | Git commit: e1f480f382d9443c4412133b55948374c77a5c21 | OpenSSL enabled: Yes (OpenSSL 3.0.13 30 Jan 2024) | AES: NI | SHA-2: OpenSSL | SHA-3: AVX512VL | OQS build flags: OQS_DIST_BUILD OQS_LIBJADE_BUILD OQS_OPT_TARGET=generic CMAKE_BUILD_TYPE=Release | CPU exts active: ADX AES AVX AVX2 AVX512 BMI1 BMI2 PCLMULQDQ VPCLMULQDQ POPCNT SSE SSE2 SSE3 | "
+          },
+          {
+            "name": "MAYO-2 sign",
+            "value": 126953,
+            "unit": "cycles",
+            "extra": "Target platform: x86_64-Linux-6.17.0-1022-azure | Compiler: gcc (13.3.0) | Compile options: [-Wa,--noexecstack;-fomit-frame-pointer;-fdata-sections;-ffunction-sections;-Wl,--gc-sections;-Wbad-function-cast] | OQS version: 0.16.0 (major: 0, minor: 16, patch: 0) | Git commit: e1f480f382d9443c4412133b55948374c77a5c21 | OpenSSL enabled: Yes (OpenSSL 3.0.13 30 Jan 2024) | AES: NI | SHA-2: OpenSSL | SHA-3: AVX512VL | OQS build flags: OQS_DIST_BUILD OQS_LIBJADE_BUILD OQS_OPT_TARGET=generic CMAKE_BUILD_TYPE=Release | CPU exts active: ADX AES AVX AVX2 AVX512 BMI1 BMI2 PCLMULQDQ VPCLMULQDQ POPCNT SSE SSE2 SSE3 | "
+          },
+          {
+            "name": "MAYO-2 verify",
+            "value": 47488,
+            "unit": "cycles",
+            "extra": "Target platform: x86_64-Linux-6.17.0-1022-azure | Compiler: gcc (13.3.0) | Compile options: [-Wa,--noexecstack;-fomit-frame-pointer;-fdata-sections;-ffunction-sections;-Wl,--gc-sections;-Wbad-function-cast] | OQS version: 0.16.0 (major: 0, minor: 16, patch: 0) | Git commit: e1f480f382d9443c4412133b55948374c77a5c21 | OpenSSL enabled: Yes (OpenSSL 3.0.13 30 Jan 2024) | AES: NI | SHA-2: OpenSSL | SHA-3: AVX512VL | OQS build flags: OQS_DIST_BUILD OQS_LIBJADE_BUILD OQS_OPT_TARGET=generic CMAKE_BUILD_TYPE=Release | CPU exts active: ADX AES AVX AVX2 AVX512 BMI1 BMI2 PCLMULQDQ VPCLMULQDQ POPCNT SSE SSE2 SSE3 | "
           }
         ]
       }
