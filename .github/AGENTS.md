@@ -107,7 +107,7 @@ Useful optional tools:
 ```sh
 clang --version
 valgrind --version
-astyle --version
+clang-format --version
 actionlint --version
 ```
 
@@ -306,8 +306,7 @@ Keep changes narrow and reviewable.
 - Avoid algorithm-specific special cases in shared logic unless the algorithm
   genuinely requires them.
 - Add tests for new features and bug fixes.
-- Run `LIBOQS_DIR=<liboqs directory> ./scripts/format_code.sh` before submitting
-  C formatting changes.
+- Run `./scripts/format_code.sh` before submitting C formatting changes.
 - Run `actionlint .github/workflows/*.yml` for workflow changes.
 - Update documentation when behavior, build options, algorithm lists, or
   supported platforms change.

@@ -2,21 +2,46 @@
 
 # SPDX-License-Identifier: MIT
 
-# usage: LIBOQS_DIR=<liboqs dir> ./scripts/format_code.sh
+# usage: ./scripts/format_code.sh [--check]
+#
+# Formats C sources in src/ and tests/ according to .clang-format, skipping files
+# listed in .clang-format-ignore. With --check, files are left untouched and the
+# script exits non-zero if any file needs reformatting.
+#
+# The clang-format version is pinned in requirements-linter.txt, since different versions
+# may format code differently; install it with
+# `pip3 install --require-hashes -r requirements-linter.txt`.
+# Set CLANG_FORMAT to use a specific clang-format binary.
 
-arch=$(uname -m)
+CLANG_FORMAT=${CLANG_FORMAT:-clang-format}
 
-# tested on Ubuntu 22 / x86_64 and macOS 13 / arm64
-if [ "$arch" != "x86_64" ] && [ "$arch" != "arm64" ]
-then
-	echo "This script does not currently support systems where \`uname -m\` returns $arch."
-	exit 1
+if [ "$1" = "--check" ]; then
+	mode="--dry-run --Werror"
+else
+	mode="-i"
 fi
 
-if [ ! -d "$LIBOQS_DIR" ]
-then
-	echo "Please set the environment variable LIBOQS_DIR to point to your liboqs directory."
+cd "$(dirname "$0")/.." || exit 1
+
+# Read the expected clang-format version from requirements-linter.txt
+expected=$(sed -n 's/^clang-format==\([0-9.]*\).*/\1/p' requirements-linter.txt)
+
+# Check if clang-format is installed and query its version
+if ! command -v "$CLANG_FORMAT" >/dev/null 2>&1; then
+	echo "Error: $CLANG_FORMAT not found. Install clang-format $expected with \`pip3 install --require-hashes -r requirements-linter.txt\`." >&2
 	exit 1
 fi
+found=$("$CLANG_FORMAT" --version | sed -n 's/.*clang-format version \([0-9.]*\).*/\1/p')
 
-docker run --rm -v"$LIBOQS_DIR":/root/liboqs -w /root/liboqs openquantumsafe/ci-ubuntu-latest:latest ./tests/run_astyle.sh --no-dry-run
+# Run clang-format
+find src tests -name '*.[ch]' | xargs "$CLANG_FORMAT" $mode
+rv=$?
+
+# Different clang-format versions may format code differently, so flag a mismatch
+# with the pinned version (without failing because of it).
+if [ "$found" != "$expected" ]; then
+	echo "Warning: used clang-format ${found:-unknown} ($(command -v "$CLANG_FORMAT")), but $expected is pinned in requirements-linter.txt." \
+		"Results may differ from CI. Install it with \`pip3 install --require-hashes -r requirements-linter.txt\`." >&2
+fi
+
+exit $rv

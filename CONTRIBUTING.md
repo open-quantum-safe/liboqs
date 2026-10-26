@@ -35,15 +35,16 @@ them before the final "Review" stage.
 
 ### Coding style
 
-This project has adopted a slightly modified [Google code formatting style](https://astyle.sourceforge.net/astyle.html#_style=google) for the core components
-of the library as documented in the [style template](.astylerc).
-The `astyle` tool is used to check formatting in CI.
-Due to variations in behaviour across version and platforms, it is possible to encounter CI failures even if code has been locally formatted with `astyle`.
-To assist with this inconvenience, we provide a convenience script which runs `astyle` in the same Docker image that we use for the CI checks:
+This project has adopted a slightly modified [Google code formatting style](https://google.github.io/styleguide/cppguide.html#Formatting) for the core components
+of the library as documented in the [clang-format configuration](.clang-format).
+Upstream and third-party code listed in [.clang-format-ignore](.clang-format-ignore) is not formatted.
+The `clang-format` tool is used to check formatting in CI.
+Because different versions of `clang-format` may format code differently, the version is pinned in [requirements-linter.txt](requirements-linter.txt); install it with `pip3 install --require-hashes -r requirements-linter.txt` (see the [README](README.md) for setting up a virtual environment).
+To format the code, run:
 ```bash
-LIBOQS_DIR=<liboqs directory> ./scripts/format_code.sh
+./scripts/format_code.sh
 ```
-This script has been tested on x86\_64 Ubuntu and arm64 macOS. Contributions for other platforms are welcome and appreciated!
+To check the formatting without modifying any files, run `./scripts/format_code.sh --check`.
 
 ### Git hooks
 
