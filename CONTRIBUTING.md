@@ -59,6 +59,9 @@ git config core.hooksPath .githooks
 > `core.hooksPath` is available in git 2.9 or newer; for older versions of git,
 > please manually set up symlinks or copy the hooks into `.git/hooks`.
 
+The pre-commit hook lints Markdown with `rumdl` and checks that staged C files are formatted (see [Coding style](#coding-style)).
+Both tools are pinned in [requirements-linter.txt](requirements-linter.txt).
+
 ### Public and internal APIs
 
 Public API functions are marked with the `OQS_API` keyword. These functions are made available to users of the library.
