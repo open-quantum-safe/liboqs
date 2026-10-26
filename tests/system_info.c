@@ -65,13 +65,13 @@ static void print_platform_info(void) {
         } \
     } while(0)
 #elif defined(OQS_USE_AES_INSTRUCTIONS)
-#define  AES_C_OR_NI_OR_ARM(stmt_c, stmt_ni, stmt_arm) \
+#define AES_C_OR_NI_OR_ARM(stmt_c, stmt_ni, stmt_arm) \
     stmt_ni
 #elif defined(OQS_USE_ARM_AES_INSTRUCTIONS)
 #define AES_C_OR_NI_OR_ARM(stmt_c, stmt_ni, stmt_arm) \
     stmt_arm
 #else
-#define  AES_C_OR_NI_OR_ARM(stmt_c, stmt_ni, stmt_arm) \
+#define AES_C_OR_NI_OR_ARM(stmt_c, stmt_ni, stmt_arm) \
     stmt_c
 #endif
 
@@ -239,16 +239,14 @@ static void print_oqs_configuration(void) {
 	AES_C_OR_NI_OR_ARM(
 	    printf("AES:              C\n"),
 	    printf("AES:              NI\n"),
-	    printf("AES:              C and ARM CRYPTO extensions\n")
-	);
+	    printf("AES:              C and ARM CRYPTO extensions\n"));
 #endif
 #if defined(OQS_USE_SHA2_OPENSSL)
 	printf("SHA-2:            OpenSSL\n");
 #else
 	SHA2_C_OR_ARM(
 	    printf("SHA-2:            C\n"),
-	    printf("SHA-2:            C and ARM CRYPTO extensions\n")
-	);
+	    printf("SHA-2:            C and ARM CRYPTO extensions\n"));
 #endif
 #if defined(OQS_USE_SHA3_OPENSSL)
 	printf("SHA-3:            OpenSSL\n");
@@ -283,7 +281,7 @@ static void print_oqs_configuration(void) {
 	printf("OQS_BUILD_ONLY_LIB "); // pretty much impossible to appear but added for completeness
 #endif
 #ifdef USE_COVERAGE
-	printf("USE_COVERAGE " );
+	printf("USE_COVERAGE ");
 #endif
 #ifdef USE_SANITIZER
 	printf("USE_SANITIZER=%s ", USE_SANITIZER);
@@ -295,9 +293,9 @@ static void print_oqs_configuration(void) {
 	printf("CMAKE_BUILD_TYPE=%s ", CMAKE_BUILD_TYPE);
 #else
 #ifdef OQS_DEBUG_BUILD
-	guard against impossible configuration (no CMAKE_BUILD_TYPE but DEBUG_BUILD)
+	guard against impossible configuration(no CMAKE_BUILD_TYPE but DEBUG_BUILD)
 #endif
-	printf("CMAKE_BUILD_TYPE=Release ");
+	    printf("CMAKE_BUILD_TYPE=Release ");
 #endif
 	printf("\n");
 }

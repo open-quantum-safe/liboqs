@@ -74,7 +74,7 @@ void OQS_randombytes_system(uint8_t *random_array, size_t bytes_to_read) {
 #else
 	HCRYPTPROV hCryptProv;
 	if (!CryptAcquireContext(&hCryptProv, NULL, NULL, PROV_RSA_FULL, CRYPT_VERIFYCONTEXT) ||
-	        !CryptGenRandom(hCryptProv, (DWORD) bytes_to_read, random_array)) {
+	    !CryptGenRandom(hCryptProv, (DWORD) bytes_to_read, random_array)) {
 		exit(EXIT_FAILURE); // better to fail than to return bad random data
 	}
 	CryptReleaseContext(hCryptProv, 0);

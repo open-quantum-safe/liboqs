@@ -73,28 +73,28 @@ static OQS_STATUS hex_decode(const char *hex, uint8_t *out, size_t out_len) {
 		return OQS_ERROR;
 	}
 	for (size_t i = 0; i < out_len; i++) {
-		unsigned char c0 = (unsigned char)hex[2 * i];
-		unsigned char c1 = (unsigned char)hex[2 * i + 1];
+		unsigned char c0 = (unsigned char) hex[2 * i];
+		unsigned char c1 = (unsigned char) hex[2 * i + 1];
 		unsigned v0, v1;
 		if (c0 >= '0' && c0 <= '9') {
-			v0 = c0 - (unsigned char)'0';
+			v0 = c0 - (unsigned char) '0';
 		} else if (c0 >= 'A' && c0 <= 'F') {
-			v0 = 10 + c0 - (unsigned char)'A';
+			v0 = 10 + c0 - (unsigned char) 'A';
 		} else if (c0 >= 'a' && c0 <= 'f') {
-			v0 = 10 + c0 - (unsigned char)'a';
+			v0 = 10 + c0 - (unsigned char) 'a';
 		} else {
 			return OQS_ERROR;
 		}
 		if (c1 >= '0' && c1 <= '9') {
-			v1 = c1 - (unsigned char)'0';
+			v1 = c1 - (unsigned char) '0';
 		} else if (c1 >= 'A' && c1 <= 'F') {
-			v1 = 10 + c1 - (unsigned char)'A';
+			v1 = 10 + c1 - (unsigned char) 'A';
 		} else if (c1 >= 'a' && c1 <= 'f') {
-			v1 = 10 + c1 - (unsigned char)'a';
+			v1 = 10 + c1 - (unsigned char) 'a';
 		} else {
 			return OQS_ERROR;
 		}
-		out[i] = (uint8_t)((v0 << 4) | v1);
+		out[i] = (uint8_t) ((v0 << 4) | v1);
 	}
 	return OQS_SUCCESS;
 }
@@ -250,8 +250,8 @@ static OQS_STATUS fuzz_sig_stfl_xmss(const uint8_t *data, size_t data_len) {
 }
 
 int LLVMFuzzerInitialize(int *argc, char ***argv) {
-	(void)argc;
-	(void)argv;
+	(void) argc;
+	(void) argv;
 	OQS_init();
 	if (OQS_SUCCESS != init_vectors()) {
 		return -1;

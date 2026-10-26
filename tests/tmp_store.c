@@ -70,7 +70,7 @@ static OQS_STATUS oqs_fload(const char *fname, const char *mname, uint8_t *data,
 	// assume some OSs don't deliver all data in one go...
 	while (len_read < len) {
 		size_t want = len - len_read;
-		dr = (uint8_t *)(data + len_read);
+		dr = (uint8_t *) (data + len_read);
 		r = fread(dr, 1, want, fp);
 		len_read += r;
 		if (r < want) {

@@ -16,9 +16,9 @@ typedef struct magic_s {
 } magic_t;
 
 typedef enum kem_ops {
-	KEM_KEYGEN    = 0,
-	KEM_ENCAPS    = 1,
-	KEM_DECAPS    = 2
+	KEM_KEYGEN = 0,
+	KEM_ENCAPS = 1,
+	KEM_DECAPS = 2
 } KEM_OPS;
 
 static OQS_STATUS kem_test_correctness(const char *method_name, KEM_OPS op) {
@@ -218,7 +218,7 @@ int main(int argc, char **argv) {
 		return EXIT_FAILURE;
 	}
 
-	rc = kem_test_correctness(alg_name, (unsigned int)atoi(argv[2]));
+	rc = kem_test_correctness(alg_name, (unsigned int) atoi(argv[2]));
 
 	if (rc != OQS_SUCCESS) {
 		OQS_destroy();

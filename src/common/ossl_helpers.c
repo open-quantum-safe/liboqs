@@ -20,8 +20,8 @@ static pthread_once_t squeeze_probe_once_control = PTHREAD_ONCE_INIT;
 #endif
 
 static EVP_MD *sha256_ptr, *sha384_ptr, *sha512_ptr,
-       *sha3_256_ptr, *sha3_384_ptr, *sha3_512_ptr,
-       *shake128_ptr, *shake256_ptr;
+    *sha3_256_ptr, *sha3_384_ptr, *sha3_512_ptr,
+    *shake128_ptr, *shake256_ptr;
 
 static EVP_CIPHER *aes128_ecb_ptr, *aes128_ctr_ptr, *aes192_ecb_ptr, *aes256_ecb_ptr, *aes256_ctr_ptr;
 
@@ -43,8 +43,8 @@ static void fetch_ossl_objects(void) {
 	aes256_ctr_ptr = OSSL_FUNC(EVP_CIPHER_fetch)(NULL, "AES-256-CTR", NULL);
 
 	if (!sha256_ptr || !sha384_ptr || !sha512_ptr || !sha3_256_ptr ||
-	        !sha3_384_ptr || !sha3_512_ptr || !shake128_ptr || !shake256_ptr ||
-	        !aes128_ecb_ptr || !aes128_ctr_ptr || !aes192_ecb_ptr || !aes256_ecb_ptr || !aes256_ctr_ptr) {
+	    !sha3_384_ptr || !sha3_512_ptr || !shake128_ptr || !shake256_ptr ||
+	    !aes128_ecb_ptr || !aes128_ctr_ptr || !aes192_ecb_ptr || !aes256_ecb_ptr || !aes256_ctr_ptr) {
 		fprintf(stderr, "liboqs warning: OpenSSL initialization failure. Is provider for SHA, SHAKE, AES enabled?\n");
 	}
 }
@@ -94,8 +94,8 @@ void oqs_ossl_destroy(void) {
 	pthread_once(&free_once_control, free_ossl_objects);
 #else
 	if (sha256_ptr || sha384_ptr || sha512_ptr || sha3_256_ptr ||
-	        sha3_384_ptr || sha3_512_ptr || shake128_ptr || shake256_ptr ||
-	        aes128_ecb_ptr || aes128_ctr_ptr || aes192_ecb_ptr || aes256_ecb_ptr || aes256_ctr_ptr) {
+	    sha3_384_ptr || sha3_512_ptr || shake128_ptr || shake256_ptr ||
+	    aes128_ecb_ptr || aes128_ctr_ptr || aes192_ecb_ptr || aes256_ecb_ptr || aes256_ctr_ptr) {
 		free_ossl_objects();
 	}
 #endif

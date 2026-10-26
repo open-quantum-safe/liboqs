@@ -353,7 +353,7 @@ OQS_API int OQS_SIG_STFL_alg_is_enabled(const char *method_name) {
 		return 0;
 #endif
 	}
-//#ifdef OQS_ENABLE_SIG_STFL_LMS
+	//#ifdef OQS_ENABLE_SIG_STFL_LMS
 	else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_lms_sha256_h5_w1)) {
 #ifdef OQS_ENABLE_SIG_STFL_lms_sha256_h5_w1
 		return 1;
@@ -561,7 +561,7 @@ OQS_API int OQS_SIG_STFL_alg_is_enabled(const char *method_name) {
 		return 0;
 #endif
 	}
-//#endif //OQS_ENABLE_SIG_STFL_LMS
+	//#endif //OQS_ENABLE_SIG_STFL_LMS
 	else {
 		return 0;
 	}
@@ -795,7 +795,7 @@ OQS_API OQS_SIG_STFL *OQS_SIG_STFL_new(const char *method_name) {
 		return NULL;
 #endif
 	}
-//#ifdef OQS_ENABLE_SIG_STFL_LMS
+	//#ifdef OQS_ENABLE_SIG_STFL_LMS
 	else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_lms_sha256_h5_w1)) {
 #ifdef OQS_ENABLE_SIG_STFL_lms_sha256_h5_w1
 		return OQS_SIG_STFL_alg_lms_sha256_h5_w1_new();
@@ -917,7 +917,7 @@ OQS_API OQS_SIG_STFL *OQS_SIG_STFL_new(const char *method_name) {
 		return NULL;
 #endif
 	}
-//2-Level LMS
+	//2-Level LMS
 	else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_lms_sha256_h5_w8_h5_w8)) {
 #ifdef OQS_ENABLE_SIG_STFL_lms_sha256_h5_w8_h5_w8
 		return OQS_SIG_STFL_alg_lms_sha256_h5_w8_h5_w8_new();
@@ -997,7 +997,7 @@ OQS_API OQS_SIG_STFL *OQS_SIG_STFL_new(const char *method_name) {
 		return NULL;
 #endif
 	}
-//#endif //OQS_ENABLE_SIG_STFL_LMS
+	//#endif //OQS_ENABLE_SIG_STFL_LMS
 	else {
 		return NULL;
 	}
@@ -1005,9 +1005,9 @@ OQS_API OQS_SIG_STFL *OQS_SIG_STFL_new(const char *method_name) {
 
 OQS_API OQS_STATUS OQS_SIG_STFL_keypair(const OQS_SIG_STFL *sig, uint8_t *public_key, OQS_SIG_STFL_SECRET_KEY *secret_key) {
 #ifndef OQS_ALLOW_STFL_KEY_AND_SIG_GEN
-	(void)sig;
-	(void)public_key;
-	(void)secret_key;
+	(void) sig;
+	(void) public_key;
+	(void) secret_key;
 	fprintf(stderr, "OQS_SIG_STFL_keypair: stateful key generation is not supported in this build of liboqs (built without OQS_HAZARDOUS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN); see OQS_SIG_STFL_keygen_and_sign_supported().\n");
 	return OQS_ERROR;
 #else
@@ -1023,12 +1023,12 @@ OQS_API OQS_STATUS OQS_SIG_STFL_keypair(const OQS_SIG_STFL *sig, uint8_t *public
 OQS_API OQS_STATUS OQS_SIG_STFL_sign(const OQS_SIG_STFL *sig, uint8_t *signature, size_t *signature_len, const uint8_t *message,
                                      size_t message_len, OQS_SIG_STFL_SECRET_KEY *secret_key) {
 #ifndef OQS_ALLOW_STFL_KEY_AND_SIG_GEN
-	(void)sig;
-	(void)signature;
-	(void)signature_len;
-	(void)message;
-	(void)message_len;
-	(void)secret_key;
+	(void) sig;
+	(void) signature;
+	(void) signature_len;
+	(void) message;
+	(void) message_len;
+	(void) secret_key;
 	fprintf(stderr, "OQS_SIG_STFL_sign: stateful signing is not supported in this build of liboqs (built without OQS_HAZARDOUS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN); see OQS_SIG_STFL_keygen_and_sign_supported().\n");
 	return OQS_ERROR;
 #else
@@ -1050,9 +1050,9 @@ OQS_API OQS_STATUS OQS_SIG_STFL_verify(const OQS_SIG_STFL *sig, const uint8_t *m
 
 OQS_API OQS_STATUS OQS_SIG_STFL_sigs_remaining(const OQS_SIG_STFL *sig, unsigned long long *remain, const OQS_SIG_STFL_SECRET_KEY *secret_key) {
 #ifndef OQS_ALLOW_STFL_KEY_AND_SIG_GEN
-	(void)sig;
-	(void)remain;
-	(void)secret_key;
+	(void) sig;
+	(void) remain;
+	(void) secret_key;
 	fprintf(stderr, "OQS_SIG_STFL_sigs_remaining: stateful signatures are not supported in this build of liboqs (built without OQS_HAZARDOUS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN); see OQS_SIG_STFL_keygen_and_sign_supported().\n");
 	return OQS_ERROR;
 #else
@@ -1061,14 +1061,14 @@ OQS_API OQS_STATUS OQS_SIG_STFL_sigs_remaining(const OQS_SIG_STFL *sig, unsigned
 	} else {
 		return OQS_SUCCESS;
 	}
-#endif //OQS_ALLOW_STFL_KEY_AND_SIG_GEN 
+#endif //OQS_ALLOW_STFL_KEY_AND_SIG_GEN
 }
 
 OQS_API OQS_STATUS OQS_SIG_STFL_sigs_total(const OQS_SIG_STFL *sig, unsigned long long *max, const OQS_SIG_STFL_SECRET_KEY *secret_key) {
 #ifndef OQS_ALLOW_STFL_KEY_AND_SIG_GEN
-	(void)sig;
-	(void)max;
-	(void)secret_key;
+	(void) sig;
+	(void) max;
+	(void) secret_key;
 	fprintf(stderr, "OQS_SIG_STFL_sigs_total: stateful signatures are not supported in this build of liboqs (built without OQS_HAZARDOUS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN); see OQS_SIG_STFL_keygen_and_sign_supported().\n");
 	return OQS_ERROR;
 #else
@@ -1314,7 +1314,7 @@ OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SIG_STFL_SECRET_KEY_new(const char *method_
 		return NULL;
 #endif
 	}
-//#ifdef OQS_ENABLE_SIG_STFL_LMS
+	//#ifdef OQS_ENABLE_SIG_STFL_LMS
 	else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_lms_sha256_h5_w1)) {
 #ifdef OQS_ENABLE_SIG_STFL_lms_sha256_h5_w1
 		return OQS_SECRET_KEY_LMS_SHA256_H5_W1_new();
@@ -1436,7 +1436,7 @@ OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SIG_STFL_SECRET_KEY_new(const char *method_
 		return NULL;
 #endif
 	}
-//2-Level LMS
+	//2-Level LMS
 	else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_lms_sha256_h5_w8_h5_w8)) {
 #ifdef OQS_ENABLE_SIG_STFL_lms_sha256_h5_w8_h5_w8
 		return OQS_SECRET_KEY_LMS_SHA256_H5_W8_H5_W8_new();
@@ -1516,7 +1516,7 @@ OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SIG_STFL_SECRET_KEY_new(const char *method_
 		return NULL;
 #endif
 	}
-//#endif //OQS_ENABLE_SIG_STFL_LMS
+	//#endif //OQS_ENABLE_SIG_STFL_LMS
 	else {
 		return NULL;
 	}

@@ -35,7 +35,7 @@ typedef struct {
 static void SHA3_shake128_x4_inc_init(OQS_SHA3_shake128_x4_inc_ctx *state) {
 	state->ctx = OQS_MEM_malloc(sizeof(intrn_shake128_x4_inc_ctx));
 
-	intrn_shake128_x4_inc_ctx *s = (intrn_shake128_x4_inc_ctx *)state->ctx;
+	intrn_shake128_x4_inc_ctx *s = (intrn_shake128_x4_inc_ctx *) state->ctx;
 	s->mdctx0 = OSSL_FUNC(EVP_MD_CTX_new)();
 	s->mdctx1 = OSSL_FUNC(EVP_MD_CTX_new)();
 	s->mdctx2 = OSSL_FUNC(EVP_MD_CTX_new)();
@@ -48,7 +48,7 @@ static void SHA3_shake128_x4_inc_init(OQS_SHA3_shake128_x4_inc_ctx *state) {
 }
 
 static void SHA3_shake128_x4_inc_absorb(OQS_SHA3_shake128_x4_inc_ctx *state, const uint8_t *in0, const uint8_t *in1, const uint8_t *in2, const uint8_t *in3, size_t inplen) {
-	intrn_shake128_x4_inc_ctx *s = (intrn_shake128_x4_inc_ctx *)state->ctx;
+	intrn_shake128_x4_inc_ctx *s = (intrn_shake128_x4_inc_ctx *) state->ctx;
 	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_DigestUpdate)(s->mdctx0, in0, inplen));
 	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_DigestUpdate)(s->mdctx1, in1, inplen));
 	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_DigestUpdate)(s->mdctx2, in2, inplen));
@@ -56,11 +56,11 @@ static void SHA3_shake128_x4_inc_absorb(OQS_SHA3_shake128_x4_inc_ctx *state, con
 }
 
 static void SHA3_shake128_x4_inc_finalize(OQS_SHA3_shake128_x4_inc_ctx *state) {
-	(void)state;
+	(void) state;
 }
 
 static void SHA3_shake128_x4_inc_squeeze(uint8_t *out0, uint8_t *out1, uint8_t *out2, uint8_t *out3, size_t outlen, OQS_SHA3_shake128_x4_inc_ctx *state) {
-	intrn_shake128_x4_inc_ctx *s = (intrn_shake128_x4_inc_ctx *)state->ctx;
+	intrn_shake128_x4_inc_ctx *s = (intrn_shake128_x4_inc_ctx *) state->ctx;
 #if OPENSSL_VERSION_NUMBER >= 0x30300000L
 	if (oqs_ossl_can_digest_squeeze()) {
 		OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_DigestSqueeze)(s->mdctx0, out0, outlen));
@@ -105,8 +105,8 @@ static void SHA3_shake128_x4_inc_squeeze(uint8_t *out0, uint8_t *out1, uint8_t *
 }
 
 static void SHA3_shake128_x4_inc_ctx_clone(OQS_SHA3_shake128_x4_inc_ctx *dest, const OQS_SHA3_shake128_x4_inc_ctx *src) {
-	intrn_shake128_x4_inc_ctx *s = (intrn_shake128_x4_inc_ctx *)src->ctx;
-	intrn_shake128_x4_inc_ctx *d = (intrn_shake128_x4_inc_ctx *)dest->ctx;
+	intrn_shake128_x4_inc_ctx *s = (intrn_shake128_x4_inc_ctx *) src->ctx;
+	intrn_shake128_x4_inc_ctx *d = (intrn_shake128_x4_inc_ctx *) dest->ctx;
 	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_MD_CTX_copy_ex)(d->mdctx0, s->mdctx0));
 	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_MD_CTX_copy_ex)(d->mdctx1, s->mdctx1));
 	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_MD_CTX_copy_ex)(d->mdctx2, s->mdctx2));
@@ -115,7 +115,7 @@ static void SHA3_shake128_x4_inc_ctx_clone(OQS_SHA3_shake128_x4_inc_ctx *dest, c
 }
 
 static void SHA3_shake128_x4_inc_ctx_release(OQS_SHA3_shake128_x4_inc_ctx *state) {
-	intrn_shake128_x4_inc_ctx *s = (intrn_shake128_x4_inc_ctx *)state->ctx;
+	intrn_shake128_x4_inc_ctx *s = (intrn_shake128_x4_inc_ctx *) state->ctx;
 	OSSL_FUNC(EVP_MD_CTX_free)(s->mdctx0);
 	OSSL_FUNC(EVP_MD_CTX_free)(s->mdctx1);
 	OSSL_FUNC(EVP_MD_CTX_free)(s->mdctx2);
@@ -124,7 +124,7 @@ static void SHA3_shake128_x4_inc_ctx_release(OQS_SHA3_shake128_x4_inc_ctx *state
 }
 
 static void SHA3_shake128_x4_inc_ctx_reset(OQS_SHA3_shake128_x4_inc_ctx *state) {
-	intrn_shake128_x4_inc_ctx *s = (intrn_shake128_x4_inc_ctx *)state->ctx;
+	intrn_shake128_x4_inc_ctx *s = (intrn_shake128_x4_inc_ctx *) state->ctx;
 	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_MD_CTX_reset)(s->mdctx0));
 	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_MD_CTX_reset)(s->mdctx1));
 	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_MD_CTX_reset)(s->mdctx2));
@@ -159,7 +159,7 @@ typedef struct {
 static void SHA3_shake256_x4_inc_init(OQS_SHA3_shake256_x4_inc_ctx *state) {
 	state->ctx = OQS_MEM_malloc(sizeof(intrn_shake256_x4_inc_ctx));
 
-	intrn_shake256_x4_inc_ctx *s = (intrn_shake256_x4_inc_ctx *)state->ctx;
+	intrn_shake256_x4_inc_ctx *s = (intrn_shake256_x4_inc_ctx *) state->ctx;
 	s->mdctx0 = OSSL_FUNC(EVP_MD_CTX_new)();
 	s->mdctx1 = OSSL_FUNC(EVP_MD_CTX_new)();
 	s->mdctx2 = OSSL_FUNC(EVP_MD_CTX_new)();
@@ -172,7 +172,7 @@ static void SHA3_shake256_x4_inc_init(OQS_SHA3_shake256_x4_inc_ctx *state) {
 }
 
 static void SHA3_shake256_x4_inc_absorb(OQS_SHA3_shake256_x4_inc_ctx *state, const uint8_t *in0, const uint8_t *in1, const uint8_t *in2, const uint8_t *in3, size_t inplen) {
-	intrn_shake256_x4_inc_ctx *s = (intrn_shake256_x4_inc_ctx *)state->ctx;
+	intrn_shake256_x4_inc_ctx *s = (intrn_shake256_x4_inc_ctx *) state->ctx;
 	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_DigestUpdate)(s->mdctx0, in0, inplen));
 	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_DigestUpdate)(s->mdctx1, in1, inplen));
 	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_DigestUpdate)(s->mdctx2, in2, inplen));
@@ -180,11 +180,11 @@ static void SHA3_shake256_x4_inc_absorb(OQS_SHA3_shake256_x4_inc_ctx *state, con
 }
 
 static void SHA3_shake256_x4_inc_finalize(OQS_SHA3_shake256_x4_inc_ctx *state) {
-	(void)state;
+	(void) state;
 }
 
 static void SHA3_shake256_x4_inc_squeeze(uint8_t *out0, uint8_t *out1, uint8_t *out2, uint8_t *out3, size_t outlen, OQS_SHA3_shake256_x4_inc_ctx *state) {
-	intrn_shake256_x4_inc_ctx *s = (intrn_shake256_x4_inc_ctx *)state->ctx;
+	intrn_shake256_x4_inc_ctx *s = (intrn_shake256_x4_inc_ctx *) state->ctx;
 #if OPENSSL_VERSION_NUMBER >= 0x30300000L
 	if (oqs_ossl_can_digest_squeeze()) {
 		OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_DigestSqueeze)(s->mdctx0, out0, outlen));
@@ -229,8 +229,8 @@ static void SHA3_shake256_x4_inc_squeeze(uint8_t *out0, uint8_t *out1, uint8_t *
 }
 
 static void SHA3_shake256_x4_inc_ctx_clone(OQS_SHA3_shake256_x4_inc_ctx *dest, const OQS_SHA3_shake256_x4_inc_ctx *src) {
-	intrn_shake256_x4_inc_ctx *s = (intrn_shake256_x4_inc_ctx *)src->ctx;
-	intrn_shake256_x4_inc_ctx *d = (intrn_shake256_x4_inc_ctx *)dest->ctx;
+	intrn_shake256_x4_inc_ctx *s = (intrn_shake256_x4_inc_ctx *) src->ctx;
+	intrn_shake256_x4_inc_ctx *d = (intrn_shake256_x4_inc_ctx *) dest->ctx;
 	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_MD_CTX_copy_ex)(d->mdctx0, s->mdctx0));
 	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_MD_CTX_copy_ex)(d->mdctx1, s->mdctx1));
 	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_MD_CTX_copy_ex)(d->mdctx2, s->mdctx2));
@@ -239,7 +239,7 @@ static void SHA3_shake256_x4_inc_ctx_clone(OQS_SHA3_shake256_x4_inc_ctx *dest, c
 }
 
 static void SHA3_shake256_x4_inc_ctx_release(OQS_SHA3_shake256_x4_inc_ctx *state) {
-	intrn_shake256_x4_inc_ctx *s = (intrn_shake256_x4_inc_ctx *)state->ctx;
+	intrn_shake256_x4_inc_ctx *s = (intrn_shake256_x4_inc_ctx *) state->ctx;
 	OSSL_FUNC(EVP_MD_CTX_free)(s->mdctx0);
 	OSSL_FUNC(EVP_MD_CTX_free)(s->mdctx1);
 	OSSL_FUNC(EVP_MD_CTX_free)(s->mdctx2);
@@ -248,7 +248,7 @@ static void SHA3_shake256_x4_inc_ctx_release(OQS_SHA3_shake256_x4_inc_ctx *state
 }
 
 static void SHA3_shake256_x4_inc_ctx_reset(OQS_SHA3_shake256_x4_inc_ctx *state) {
-	intrn_shake256_x4_inc_ctx *s = (intrn_shake256_x4_inc_ctx *)state->ctx;
+	intrn_shake256_x4_inc_ctx *s = (intrn_shake256_x4_inc_ctx *) state->ctx;
 	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_MD_CTX_reset)(s->mdctx0));
 	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_MD_CTX_reset)(s->mdctx1));
 	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_MD_CTX_reset)(s->mdctx2));

@@ -76,45 +76,41 @@ typedef struct {
 } aes256ctx_nobitslice;
 
 static inline uint32_t br_dec32le(const unsigned char *src) {
-	return (uint32_t)src[0]
-	       | ((uint32_t)src[1] << 8)
-	       | ((uint32_t)src[2] << 16)
-	       | ((uint32_t)src[3] << 24);
+	return (uint32_t) src[0] | ((uint32_t) src[1] << 8) | ((uint32_t) src[2] << 16) | ((uint32_t) src[3] << 24);
 }
 
 
 static void br_range_dec32le(uint32_t *v, size_t num, const unsigned char *src) {
 	while (num-- > 0) {
-		*v ++ = br_dec32le(src);
+		*v++ = br_dec32le(src);
 		src += 4;
 	}
 }
 
 
 static inline uint32_t br_swap32(uint32_t x) {
-	x = ((x & (uint32_t)0x00FF00FF) << 8)
-	    | ((x >> 8) & (uint32_t)0x00FF00FF);
+	x = ((x & (uint32_t) 0x00FF00FF) << 8) | ((x >> 8) & (uint32_t) 0x00FF00FF);
 	return (x << 16) | (x >> 16);
 }
 
 
 static inline void br_enc32le(unsigned char *dst, uint32_t x) {
-	dst[0] = (unsigned char)x;
-	dst[1] = (unsigned char)(x >> 8);
-	dst[2] = (unsigned char)(x >> 16);
-	dst[3] = (unsigned char)(x >> 24);
+	dst[0] = (unsigned char) x;
+	dst[1] = (unsigned char) (x >> 8);
+	dst[2] = (unsigned char) (x >> 16);
+	dst[3] = (unsigned char) (x >> 24);
 }
 
 static inline void br_enc32be(unsigned char *dst, uint32_t x) {
-	dst[0] = (unsigned char)(x >> 24);
-	dst[1] = (unsigned char)(x >> 16);
-	dst[2] = (unsigned char)(x >>  8);
-	dst[3] = (unsigned char)x;
+	dst[0] = (unsigned char) (x >> 24);
+	dst[1] = (unsigned char) (x >> 16);
+	dst[2] = (unsigned char) (x >> 8);
+	dst[3] = (unsigned char) x;
 }
 
 static void br_range_enc32le(unsigned char *dst, const uint32_t *v, size_t num) {
 	while (num-- > 0) {
-		br_enc32le(dst, *v ++);
+		br_enc32le(dst, *v++);
 		dst += 4;
 	}
 }
@@ -335,18 +331,18 @@ static void br_aes_ct64_interleave_in(uint64_t *q0, uint64_t *q1, const uint32_t
 	x1 |= (x1 << 16);
 	x2 |= (x2 << 16);
 	x3 |= (x3 << 16);
-	x0 &= (uint64_t)0x0000FFFF0000FFFF;
-	x1 &= (uint64_t)0x0000FFFF0000FFFF;
-	x2 &= (uint64_t)0x0000FFFF0000FFFF;
-	x3 &= (uint64_t)0x0000FFFF0000FFFF;
+	x0 &= (uint64_t) 0x0000FFFF0000FFFF;
+	x1 &= (uint64_t) 0x0000FFFF0000FFFF;
+	x2 &= (uint64_t) 0x0000FFFF0000FFFF;
+	x3 &= (uint64_t) 0x0000FFFF0000FFFF;
 	x0 |= (x0 << 8);
 	x1 |= (x1 << 8);
 	x2 |= (x2 << 8);
 	x3 |= (x3 << 8);
-	x0 &= (uint64_t)0x00FF00FF00FF00FF;
-	x1 &= (uint64_t)0x00FF00FF00FF00FF;
-	x2 &= (uint64_t)0x00FF00FF00FF00FF;
-	x3 &= (uint64_t)0x00FF00FF00FF00FF;
+	x0 &= (uint64_t) 0x00FF00FF00FF00FF;
+	x1 &= (uint64_t) 0x00FF00FF00FF00FF;
+	x2 &= (uint64_t) 0x00FF00FF00FF00FF;
+	x3 &= (uint64_t) 0x00FF00FF00FF00FF;
 	*q0 = x0 | (x2 << 8);
 	*q1 = x1 | (x3 << 8);
 }
@@ -355,22 +351,22 @@ static void br_aes_ct64_interleave_in(uint64_t *q0, uint64_t *q1, const uint32_t
 static void br_aes_ct64_interleave_out(uint32_t *w, uint64_t q0, uint64_t q1) {
 	uint64_t x0, x1, x2, x3;
 
-	x0 = q0 & (uint64_t)0x00FF00FF00FF00FF;
-	x1 = q1 & (uint64_t)0x00FF00FF00FF00FF;
-	x2 = (q0 >> 8) & (uint64_t)0x00FF00FF00FF00FF;
-	x3 = (q1 >> 8) & (uint64_t)0x00FF00FF00FF00FF;
+	x0 = q0 & (uint64_t) 0x00FF00FF00FF00FF;
+	x1 = q1 & (uint64_t) 0x00FF00FF00FF00FF;
+	x2 = (q0 >> 8) & (uint64_t) 0x00FF00FF00FF00FF;
+	x3 = (q1 >> 8) & (uint64_t) 0x00FF00FF00FF00FF;
 	x0 |= (x0 >> 8);
 	x1 |= (x1 >> 8);
 	x2 |= (x2 >> 8);
 	x3 |= (x3 >> 8);
-	x0 &= (uint64_t)0x0000FFFF0000FFFF;
-	x1 &= (uint64_t)0x0000FFFF0000FFFF;
-	x2 &= (uint64_t)0x0000FFFF0000FFFF;
-	x3 &= (uint64_t)0x0000FFFF0000FFFF;
-	w[0] = (uint32_t)x0 | (uint32_t)(x0 >> 16);
-	w[1] = (uint32_t)x1 | (uint32_t)(x1 >> 16);
-	w[2] = (uint32_t)x2 | (uint32_t)(x2 >> 16);
-	w[3] = (uint32_t)x3 | (uint32_t)(x3 >> 16);
+	x0 &= (uint64_t) 0x0000FFFF0000FFFF;
+	x1 &= (uint64_t) 0x0000FFFF0000FFFF;
+	x2 &= (uint64_t) 0x0000FFFF0000FFFF;
+	x3 &= (uint64_t) 0x0000FFFF0000FFFF;
+	w[0] = (uint32_t) x0 | (uint32_t) (x0 >> 16);
+	w[1] = (uint32_t) x1 | (uint32_t) (x1 >> 16);
+	w[2] = (uint32_t) x2 | (uint32_t) (x2 >> 16);
+	w[3] = (uint32_t) x3 | (uint32_t) (x3 >> 16);
 }
 
 static const unsigned char Rcon[] = {
@@ -385,7 +381,7 @@ static uint32_t sub_word(uint32_t x) {
 	br_aes_ct64_ortho(q);
 	br_aes_ct64_bitslice_Sbox(q);
 	br_aes_ct64_ortho(q);
-	return (uint32_t)q[0];
+	return (uint32_t) q[0];
 }
 
 static void br_aes_ct64_keysched(uint64_t *comp_skey, const unsigned char *key, unsigned int key_len) {
@@ -398,7 +394,7 @@ static void br_aes_ct64_keysched(uint64_t *comp_skey, const unsigned char *key, 
 	nkf = ((nrounds + 1) << 2);
 	br_range_dec32le(skey, (key_len >> 2), key);
 	tmp = skey[(key_len >> 2) - 1];
-	for (i = nk, j = 0, k = 0; i < nkf; i ++) {
+	for (i = nk, j = 0, k = 0; i < nkf; i++) {
 		if (j == 0) {
 			tmp = (tmp << 24) | (tmp >> 8);
 			tmp = sub_word(tmp) ^ Rcon[k];
@@ -407,9 +403,9 @@ static void br_aes_ct64_keysched(uint64_t *comp_skey, const unsigned char *key, 
 		}
 		tmp ^= skey[i - nk];
 		skey[i] = tmp;
-		if (++ j == nk) {
+		if (++j == nk) {
 			j = 0;
-			k ++;
+			k++;
 		}
 	}
 
@@ -425,15 +421,9 @@ static void br_aes_ct64_keysched(uint64_t *comp_skey, const unsigned char *key, 
 		q[7] = q[4];
 		br_aes_ct64_ortho(q);
 		comp_skey[j + 0] =
-		    (q[0] & (uint64_t)0x1111111111111111)
-		    | (q[1] & (uint64_t)0x2222222222222222)
-		    | (q[2] & (uint64_t)0x4444444444444444)
-		    | (q[3] & (uint64_t)0x8888888888888888);
+		    (q[0] & (uint64_t) 0x1111111111111111) | (q[1] & (uint64_t) 0x2222222222222222) | (q[2] & (uint64_t) 0x4444444444444444) | (q[3] & (uint64_t) 0x8888888888888888);
 		comp_skey[j + 1] =
-		    (q[4] & (uint64_t)0x1111111111111111)
-		    | (q[5] & (uint64_t)0x2222222222222222)
-		    | (q[6] & (uint64_t)0x4444444444444444)
-		    | (q[7] & (uint64_t)0x8888888888888888);
+		    (q[4] & (uint64_t) 0x1111111111111111) | (q[5] & (uint64_t) 0x2222222222222222) | (q[6] & (uint64_t) 0x4444444444444444) | (q[7] & (uint64_t) 0x8888888888888888);
 	}
 }
 
@@ -441,14 +431,14 @@ static void br_aes_ct64_skey_expand(uint64_t *skey, const uint64_t *comp_skey, u
 	unsigned u, v, n;
 
 	n = (nrounds + 1) << 1;
-	for (u = 0, v = 0; u < n; u ++, v += 4) {
+	for (u = 0, v = 0; u < n; u++, v += 4) {
 		uint64_t x0, x1, x2, x3;
 
 		x0 = x1 = x2 = x3 = comp_skey[u];
-		x0 &= (uint64_t)0x1111111111111111;
-		x1 &= (uint64_t)0x2222222222222222;
-		x2 &= (uint64_t)0x4444444444444444;
-		x3 &= (uint64_t)0x8888888888888888;
+		x0 &= (uint64_t) 0x1111111111111111;
+		x1 &= (uint64_t) 0x2222222222222222;
+		x2 &= (uint64_t) 0x4444444444444444;
+		x3 &= (uint64_t) 0x8888888888888888;
 		x1 >>= 1;
 		x2 >>= 2;
 		x3 >>= 3;
@@ -474,17 +464,11 @@ static inline void add_round_key(uint64_t *q, const uint64_t *sk) {
 static inline void shift_rows(uint64_t *q) {
 	int i;
 
-	for (i = 0; i < 8; i ++) {
+	for (i = 0; i < 8; i++) {
 		uint64_t x;
 
 		x = q[i];
-		q[i] = (x & (uint64_t)0x000000000000FFFF)
-		       | ((x & (uint64_t)0x00000000FFF00000) >> 4)
-		       | ((x & (uint64_t)0x00000000000F0000) << 12)
-		       | ((x & (uint64_t)0x0000FF0000000000) >> 8)
-		       | ((x & (uint64_t)0x000000FF00000000) << 8)
-		       | ((x & (uint64_t)0xF000000000000000) >> 12)
-		       | ((x & (uint64_t)0x0FFF000000000000) << 4);
+		q[i] = (x & (uint64_t) 0x000000000000FFFF) | ((x & (uint64_t) 0x00000000FFF00000) >> 4) | ((x & (uint64_t) 0x00000000000F0000) << 12) | ((x & (uint64_t) 0x0000FF0000000000) >> 8) | ((x & (uint64_t) 0x000000FF00000000) << 8) | ((x & (uint64_t) 0xF000000000000000) >> 12) | ((x & (uint64_t) 0x0FFF000000000000) << 4);
 	}
 }
 
@@ -554,7 +538,7 @@ static void aes_ecb4x(unsigned char out[64], const uint32_t ivw[16], const uint6
 	add_round_key(q, sk_exp + 8 * nrounds);
 
 	br_aes_ct64_ortho(q);
-	for (i = 0; i < 4; i ++) {
+	for (i = 0; i < 4; i++) {
 		br_aes_ct64_interleave_out(w + (i << 2), q[i], q[i + 4]);
 	}
 	br_range_enc32le(out, w, 16);
@@ -601,11 +585,11 @@ static inline void aes256_ctr_upd_blks(unsigned char *out, size_t outblks, aes25
 
 	br_range_dec32le(ivw, 4, iv);
 
-	memcpy(ivw +  4, ivw, 3 * sizeof(uint32_t));
-	memcpy(ivw +  8, ivw, 3 * sizeof(uint32_t));
+	memcpy(ivw + 4, ivw, 3 * sizeof(uint32_t));
+	memcpy(ivw + 8, ivw, 3 * sizeof(uint32_t));
 	memcpy(ivw + 12, ivw, 3 * sizeof(uint32_t));
 	cc = br_swap32(ivw[3]);
-	ivw[ 7] = br_swap32(cc + 1);
+	ivw[7] = br_swap32(cc + 1);
 	ivw[11] = br_swap32(cc + 2);
 	ivw[15] = br_swap32(cc + 3);
 
@@ -637,11 +621,11 @@ static void aes_ctr(unsigned char *out, size_t outlen, const unsigned char *iv, 
 	} else {
 		exit(EXIT_FAILURE);
 	}
-	memcpy(ivw +  4, ivw, 3 * sizeof(uint32_t));
-	memcpy(ivw +  8, ivw, 3 * sizeof(uint32_t));
+	memcpy(ivw + 4, ivw, 3 * sizeof(uint32_t));
+	memcpy(ivw + 8, ivw, 3 * sizeof(uint32_t));
 	memcpy(ivw + 12, ivw, 3 * sizeof(uint32_t));
 	cc = br_swap32(ivw[3]);
-	ivw[ 7] = br_swap32(cc + 1);
+	ivw[7] = br_swap32(cc + 1);
 	ivw[11] = br_swap32(cc + 2);
 	ivw[15] = br_swap32(cc + 3);
 
@@ -695,7 +679,7 @@ static void aes_keysched_no_bitslice(uint32_t *skey, const unsigned char *key, u
 	nkf = ((nrounds + 1) << 2);
 	br_range_dec32le(skey, (key_len >> 2), key);
 	tmp = skey[(key_len >> 2) - 1];
-	for (i = nk, j = 0, k = 0; i < nkf; i ++) {
+	for (i = nk, j = 0, k = 0; i < nkf; i++) {
 		if (j == 0) {
 			tmp = (tmp << 24) | (tmp >> 8);
 			tmp = sub_word(tmp) ^ Rcon[k];
@@ -704,9 +688,9 @@ static void aes_keysched_no_bitslice(uint32_t *skey, const unsigned char *key, u
 		}
 		tmp ^= skey[i - nk];
 		skey[i] = tmp;
-		if (++ j == nk) {
+		if (++j == nk) {
 			j = 0;
-			k ++;
+			k++;
 		}
 	}
 }
@@ -740,14 +724,14 @@ void oqs_aes256_load_iv_c(const uint8_t *iv, size_t iv_len, void *_schedule) {
 void oqs_aes256_load_iv_u64_c(uint64_t iv, void *schedule) {
 	OQS_EXIT_IF_NULLPTR(schedule, "AES");
 	aes256ctx *ctx = (aes256ctx *) schedule;
-	ctx->iv[7] = (unsigned char)(iv >> 56);
-	ctx->iv[6] = (unsigned char)(iv >> 48);
-	ctx->iv[5] = (unsigned char)(iv >> 40);
-	ctx->iv[4] = (unsigned char)(iv >> 32);
-	ctx->iv[3] = (unsigned char)(iv >> 24);
-	ctx->iv[2] = (unsigned char)(iv >> 16);
-	ctx->iv[1] = (unsigned char)(iv >>  8);
-	ctx->iv[0] = (unsigned char)iv;
+	ctx->iv[7] = (unsigned char) (iv >> 56);
+	ctx->iv[6] = (unsigned char) (iv >> 48);
+	ctx->iv[5] = (unsigned char) (iv >> 40);
+	ctx->iv[4] = (unsigned char) (iv >> 32);
+	ctx->iv[3] = (unsigned char) (iv >> 24);
+	ctx->iv[2] = (unsigned char) (iv >> 16);
+	ctx->iv[1] = (unsigned char) (iv >> 8);
+	ctx->iv[0] = (unsigned char) iv;
 	memset(&ctx->iv[8], 0, 8);
 }
 
@@ -773,14 +757,14 @@ void oqs_aes128_load_iv_c(const uint8_t *iv, size_t iv_len, void *_schedule) {
 void oqs_aes128_load_iv_u64_c(uint64_t iv, void *schedule) {
 	OQS_EXIT_IF_NULLPTR(schedule, "AES");
 	aes128ctx *ctx = (aes128ctx *) schedule;
-	ctx->iv[7] = (unsigned char)(iv >> 56);
-	ctx->iv[6] = (unsigned char)(iv >> 48);
-	ctx->iv[5] = (unsigned char)(iv >> 40);
-	ctx->iv[4] = (unsigned char)(iv >> 32);
-	ctx->iv[3] = (unsigned char)(iv >> 24);
-	ctx->iv[2] = (unsigned char)(iv >> 16);
-	ctx->iv[1] = (unsigned char)(iv >>  8);
-	ctx->iv[0] = (unsigned char)iv;
+	ctx->iv[7] = (unsigned char) (iv >> 56);
+	ctx->iv[6] = (unsigned char) (iv >> 48);
+	ctx->iv[5] = (unsigned char) (iv >> 40);
+	ctx->iv[4] = (unsigned char) (iv >> 32);
+	ctx->iv[3] = (unsigned char) (iv >> 24);
+	ctx->iv[2] = (unsigned char) (iv >> 16);
+	ctx->iv[1] = (unsigned char) (iv >> 8);
+	ctx->iv[0] = (unsigned char) iv;
 	memset(&ctx->iv[8], 0, 8);
 }
 

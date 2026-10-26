@@ -55,20 +55,20 @@ SHA3_shake256_inc_ctx_reset_avx512vl(OQS_SHA3_shake256_inc_ctx *state);
  * External absorb functions
  */
 extern void SHA3_sha3_256_inc_absorb_avx512vl(OQS_SHA3_sha3_256_inc_ctx *state,
-        const uint8_t *input,
-        size_t inlen);
+                                              const uint8_t *input,
+                                              size_t inlen);
 extern void SHA3_sha3_384_inc_absorb_avx512vl(OQS_SHA3_sha3_384_inc_ctx *state,
-        const uint8_t *input,
-        size_t inlen);
+                                              const uint8_t *input,
+                                              size_t inlen);
 extern void SHA3_sha3_512_inc_absorb_avx512vl(OQS_SHA3_sha3_512_inc_ctx *state,
-        const uint8_t *input,
-        size_t inlen);
+                                              const uint8_t *input,
+                                              size_t inlen);
 extern void SHA3_shake128_inc_absorb_avx512vl(OQS_SHA3_shake128_inc_ctx *state,
-        const uint8_t *input,
-        size_t inlen);
+                                              const uint8_t *input,
+                                              size_t inlen);
 extern void SHA3_shake256_inc_absorb_avx512vl(OQS_SHA3_shake256_inc_ctx *state,
-        const uint8_t *input,
-        size_t inlen);
+                                              const uint8_t *input,
+                                              size_t inlen);
 /*
  * External finalize functions
  */

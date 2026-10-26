@@ -34,15 +34,13 @@ static void SHA2_sha256_inc_ctx_clone(OQS_SHA2_sha256_ctx *dest, const OQS_SHA2_
 static void SHA2_sha256_inc(OQS_SHA2_sha256_ctx *state, const uint8_t *in, size_t len) {
 	C_OR_ARM(
 	    oqs_sha2_sha256_inc_c((sha256ctx *) state, in, len),
-	    oqs_sha2_sha256_inc_armv8((sha256ctx *) state, in, len)
-	);
+	    oqs_sha2_sha256_inc_armv8((sha256ctx *) state, in, len));
 }
 
 static void SHA2_sha256_inc_blocks(OQS_SHA2_sha256_ctx *state, const uint8_t *in, size_t inblocks) {
 	C_OR_ARM(
 	    oqs_sha2_sha256_inc_blocks_c((sha256ctx *) state, in, inblocks),
-	    oqs_sha2_sha256_inc_blocks_armv8((sha256ctx *) state, in, inblocks)
-	);
+	    oqs_sha2_sha256_inc_blocks_armv8((sha256ctx *) state, in, inblocks));
 }
 
 static void SHA2_sha256_inc_finalize(uint8_t *out, OQS_SHA2_sha256_ctx *state, const uint8_t *in, size_t inlen) {
@@ -54,7 +52,7 @@ static void SHA2_sha256_inc_ctx_release(OQS_SHA2_sha256_ctx *state) {
 }
 
 static void SHA2_sha384_inc_init(OQS_SHA2_sha384_ctx *state) {
-	oqs_sha2_sha384_inc_init_c((sha384ctx *)state);
+	oqs_sha2_sha384_inc_init_c((sha384ctx *) state);
 }
 
 static void SHA2_sha384_inc_ctx_clone(OQS_SHA2_sha384_ctx *dest, const OQS_SHA2_sha384_ctx *src) {
@@ -74,7 +72,7 @@ static void SHA2_sha384_inc_ctx_release(OQS_SHA2_sha384_ctx *state) {
 }
 
 static void SHA2_sha512_inc_init(OQS_SHA2_sha512_ctx *state) {
-	oqs_sha2_sha512_inc_init_c((sha512ctx *)state);
+	oqs_sha2_sha512_inc_init_c((sha512ctx *) state);
 }
 
 static void SHA2_sha512_inc_ctx_clone(OQS_SHA2_sha512_ctx *dest, const OQS_SHA2_sha512_ctx *src) {
@@ -94,10 +92,9 @@ static void SHA2_sha512_inc_ctx_release(OQS_SHA2_sha512_ctx *state) {
 }
 
 static void SHA2_sha256(uint8_t *out, const uint8_t *in, size_t inlen) {
-	C_OR_ARM (
+	C_OR_ARM(
 	    oqs_sha2_sha256_c(out, in, inlen),
-	    oqs_sha2_sha256_armv8(out, in, inlen)
-	);
+	    oqs_sha2_sha256_armv8(out, in, inlen));
 }
 
 static void SHA2_sha384(uint8_t *out, const uint8_t *in, size_t inlen) {

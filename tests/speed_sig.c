@@ -167,7 +167,7 @@ int main(int argc, char **argv) {
 			}
 		} else if ((strcmp(argv[i], "--duration") == 0) || (strcmp(argv[i], "-d") == 0)) {
 			if (i < argc - 1) {
-				duration = (uint64_t)strtol(argv[i + 1], NULL, 10);
+				duration = (uint64_t) strtol(argv[i + 1], NULL, 10);
 				if (duration > 0) {
 					i += 1;
 					continue;

@@ -136,18 +136,18 @@ static uint64_t _bench_rdtsc(void) {
 	/* Use the Performance Monitoring Unit */
 	uint64_t value;
 	/* Read the PMU register */
-	__asm__ volatile("mrs %0, PMCCNTR_EL0" : "=r" (value));
+	__asm__ volatile("mrs %0, PMCCNTR_EL0" : "=r"(value));
 	return value;
 #elif defined(__s390x__)
 #define USING_TIME_RATHER_THAN_CYCLES
 	uint64_t tod;
-	__asm__ volatile("stckf %0\n" : "=Q" (tod) : : "cc");
+	__asm__ volatile("stckf %0\n" : "=Q"(tod) : : "cc");
 	return (tod * 1000 / 4096);
 #else
 #define USING_TIME_RATHER_THAN_CYCLES
 	struct timespec time;
 	clock_gettime(CLOCK_REALTIME, &time);
-	return (uint64_t)((double)time.tv_sec * 1e9 + (double)time.tv_nsec);
+	return (uint64_t) ((double) time.tv_sec * 1e9 + (double) time.tv_nsec);
 #endif
 }
 

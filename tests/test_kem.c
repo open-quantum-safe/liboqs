@@ -33,8 +33,8 @@ static bool mlkem_rej_testcase(OQS_KEM *kem, uint8_t *ciphertext, uint8_t *secre
 	}
 	// Only run tests for ML-KEM
 	if (!(strcasecmp(kem->method_name, OQS_KEM_alg_ml_kem_512) == 0 ||
-	        strcasecmp(kem->method_name, OQS_KEM_alg_ml_kem_768) == 0 ||
-	        strcasecmp(kem->method_name, OQS_KEM_alg_ml_kem_1024) == 0)) {
+	      strcasecmp(kem->method_name, OQS_KEM_alg_ml_kem_768) == 0 ||
+	      strcasecmp(kem->method_name, OQS_KEM_alg_ml_kem_1024) == 0)) {
 		return true;
 	}
 	// Buffer to hold z and c. z is always 32 bytes
@@ -192,7 +192,6 @@ static OQS_STATUS kem_test_correctness(const char *method_name, bool derand) {
 		memcpy(encaps_seed + kem->length_encaps_seed, magic.val,
 		       sizeof(magic_t));
 	}
-
 
 
 	if (derand) {
@@ -356,7 +355,7 @@ cleanup:
 static void TEST_KEM_randombytes(uint8_t *random_array, size_t bytes_to_read) {
 	// We can't make direct calls to the system randombytes on some platforms,
 	// so we have to swap out the OQS_randombytes provider.
-	(void)OQS_randombytes_switch_algorithm("system");
+	(void) OQS_randombytes_switch_algorithm("system");
 	OQS_randombytes(random_array, bytes_to_read);
 	OQS_randombytes_custom_algorithm(&TEST_KEM_randombytes);
 
@@ -428,9 +427,9 @@ int main(int argc, char **argv) {
 #if OQS_USE_PTHREADS
 #define MAX_LEN_KEM_NAME_ 64
 	// don't run Classic McEliece in threads because of large stack usage
-	char no_thread_kem_patterns[][MAX_LEN_KEM_NAME_]  = {"Classic-McEliece", "HQC-256-"};
+	char no_thread_kem_patterns[][MAX_LEN_KEM_NAME_] = { "Classic-McEliece", "HQC-256-" };
 	int test_in_thread = 1;
-	for (size_t i = 0 ; i < sizeof(no_thread_kem_patterns) / MAX_LEN_KEM_NAME_; ++i) {
+	for (size_t i = 0; i < sizeof(no_thread_kem_patterns) / MAX_LEN_KEM_NAME_; ++i) {
 		if (strstr(alg_name, no_thread_kem_patterns[i]) != NULL) {
 			test_in_thread = 0;
 			break;

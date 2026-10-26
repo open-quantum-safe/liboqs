@@ -23,110 +23,110 @@
 
 #ifdef OQS_ENABLE_SIG_ml_dsa_44
 extern int PQCP_MLDSA_NATIVE_MLDSA44_C_signature_internal(uint8_t *sig,
-        const uint8_t *m,
-        size_t mlen,
-        const uint8_t *pre,
-        size_t prelen,
-        const uint8_t rnd[MLDSA_RNDBYTES],
-        const uint8_t *sk,
-        int externalmu);
+                                                          const uint8_t *m,
+                                                          size_t mlen,
+                                                          const uint8_t *pre,
+                                                          size_t prelen,
+                                                          const uint8_t rnd[MLDSA_RNDBYTES],
+                                                          const uint8_t *sk,
+                                                          int externalmu);
 
 extern int PQCP_MLDSA_NATIVE_MLDSA44_C_signature_pre_hash_internal(uint8_t *sig,
-        const uint8_t *ph,
-        size_t phlen,
-        const uint8_t *ctx,
-        size_t ctxlen,
-        const uint8_t rnd[MLDSA_RNDBYTES],
-        const uint8_t *sk,
-        int hashalg);
+                                                                   const uint8_t *ph,
+                                                                   size_t phlen,
+                                                                   const uint8_t *ctx,
+                                                                   size_t ctxlen,
+                                                                   const uint8_t rnd[MLDSA_RNDBYTES],
+                                                                   const uint8_t *sk,
+                                                                   int hashalg);
 
 extern int PQCP_MLDSA_NATIVE_MLDSA44_C_verify_internal(const uint8_t *sig,
-        const uint8_t *m,
-        size_t mlen,
-        const uint8_t *pre,
-        size_t prelen,
-        const uint8_t *pk,
-        int externalmu);
+                                                       const uint8_t *m,
+                                                       size_t mlen,
+                                                       const uint8_t *pre,
+                                                       size_t prelen,
+                                                       const uint8_t *pk,
+                                                       int externalmu);
 
 extern int PQCP_MLDSA_NATIVE_MLDSA44_C_verify_pre_hash_internal(const uint8_t *sig,
-        const uint8_t *ph,
-        size_t phlen,
-        const uint8_t *ctx,
-        size_t ctxlen,
-        const uint8_t *pk,
-        int hashalg);
+                                                                const uint8_t *ph,
+                                                                size_t phlen,
+                                                                const uint8_t *ctx,
+                                                                size_t ctxlen,
+                                                                const uint8_t *pk,
+                                                                int hashalg);
 #endif
 
 #ifdef OQS_ENABLE_SIG_ml_dsa_65
 extern int PQCP_MLDSA_NATIVE_MLDSA65_C_signature_internal(uint8_t *sig,
-        const uint8_t *m,
-        size_t mlen,
-        const uint8_t *pre,
-        size_t prelen,
-        const uint8_t rnd[MLDSA_RNDBYTES],
-        const uint8_t *sk,
-        int externalmu);
+                                                          const uint8_t *m,
+                                                          size_t mlen,
+                                                          const uint8_t *pre,
+                                                          size_t prelen,
+                                                          const uint8_t rnd[MLDSA_RNDBYTES],
+                                                          const uint8_t *sk,
+                                                          int externalmu);
 
 extern int PQCP_MLDSA_NATIVE_MLDSA65_C_signature_pre_hash_internal(uint8_t *sig,
-        const uint8_t *ph,
-        size_t phlen,
-        const uint8_t *ctx,
-        size_t ctxlen,
-        const uint8_t rnd[MLDSA_RNDBYTES],
-        const uint8_t *sk,
-        int hashalg);
+                                                                   const uint8_t *ph,
+                                                                   size_t phlen,
+                                                                   const uint8_t *ctx,
+                                                                   size_t ctxlen,
+                                                                   const uint8_t rnd[MLDSA_RNDBYTES],
+                                                                   const uint8_t *sk,
+                                                                   int hashalg);
 
 extern int PQCP_MLDSA_NATIVE_MLDSA65_C_verify_internal(const uint8_t *sig,
-        const uint8_t *m,
-        size_t mlen,
-        const uint8_t *pre,
-        size_t prelen,
-        const uint8_t *pk,
-        int externalmu);
+                                                       const uint8_t *m,
+                                                       size_t mlen,
+                                                       const uint8_t *pre,
+                                                       size_t prelen,
+                                                       const uint8_t *pk,
+                                                       int externalmu);
 
 extern int PQCP_MLDSA_NATIVE_MLDSA65_C_verify_pre_hash_internal(const uint8_t *sig,
-        const uint8_t *ph,
-        size_t phlen,
-        const uint8_t *ctx,
-        size_t ctxlen,
-        const uint8_t *pk,
-        int hashalg);
+                                                                const uint8_t *ph,
+                                                                size_t phlen,
+                                                                const uint8_t *ctx,
+                                                                size_t ctxlen,
+                                                                const uint8_t *pk,
+                                                                int hashalg);
 #endif
 
 #ifdef OQS_ENABLE_SIG_ml_dsa_87
 extern int PQCP_MLDSA_NATIVE_MLDSA87_C_signature_internal(uint8_t *sig,
-        const uint8_t *m,
-        size_t mlen,
-        const uint8_t *pre,
-        size_t prelen,
-        const uint8_t rnd[MLDSA_RNDBYTES],
-        const uint8_t *sk,
-        int externalmu);
+                                                          const uint8_t *m,
+                                                          size_t mlen,
+                                                          const uint8_t *pre,
+                                                          size_t prelen,
+                                                          const uint8_t rnd[MLDSA_RNDBYTES],
+                                                          const uint8_t *sk,
+                                                          int externalmu);
 
 extern int PQCP_MLDSA_NATIVE_MLDSA87_C_signature_pre_hash_internal(uint8_t *sig,
-        const uint8_t *ph,
-        size_t phlen,
-        const uint8_t *ctx,
-        size_t ctxlen,
-        const uint8_t rnd[MLDSA_RNDBYTES],
-        const uint8_t *sk,
-        int hashalg);
+                                                                   const uint8_t *ph,
+                                                                   size_t phlen,
+                                                                   const uint8_t *ctx,
+                                                                   size_t ctxlen,
+                                                                   const uint8_t rnd[MLDSA_RNDBYTES],
+                                                                   const uint8_t *sk,
+                                                                   int hashalg);
 
 extern int PQCP_MLDSA_NATIVE_MLDSA87_C_verify_internal(const uint8_t *sig,
-        const uint8_t *m,
-        size_t mlen,
-        const uint8_t *pre,
-        size_t prelen,
-        const uint8_t *pk,
-        int externalmu);
+                                                       const uint8_t *m,
+                                                       size_t mlen,
+                                                       const uint8_t *pre,
+                                                       size_t prelen,
+                                                       const uint8_t *pk,
+                                                       int externalmu);
 
 extern int PQCP_MLDSA_NATIVE_MLDSA87_C_verify_pre_hash_internal(const uint8_t *sig,
-        const uint8_t *ph,
-        size_t phlen,
-        const uint8_t *ctx,
-        size_t ctxlen,
-        const uint8_t *pk,
-        int hashalg);
+                                                                const uint8_t *ph,
+                                                                size_t phlen,
+                                                                const uint8_t *ctx,
+                                                                size_t ctxlen,
+                                                                const uint8_t *pk,
+                                                                int hashalg);
 #endif
 
 #ifdef OQS_ENABLE_SIG_SLH_DSA
@@ -185,16 +185,12 @@ static void hexStringToByteArray(const char *hexString, uint8_t *byteArray) {
 
 /* ML_DSA-specific functions */
 static inline bool is_ml_dsa(const char *method_name) {
-	return (0 == strcmp(method_name, OQS_SIG_alg_ml_dsa_44))
-	       || (0 == strcmp(method_name, OQS_SIG_alg_ml_dsa_65))
-	       || (0 == strcmp(method_name, OQS_SIG_alg_ml_dsa_87));
+	return (0 == strcmp(method_name, OQS_SIG_alg_ml_dsa_44)) || (0 == strcmp(method_name, OQS_SIG_alg_ml_dsa_65)) || (0 == strcmp(method_name, OQS_SIG_alg_ml_dsa_87));
 }
 
 /* ML_DSA-specific extmu functions */
 static inline bool is_ml_dsa_extmu(const char *method_name) {
-	return (0 == strcmp(method_name, OQS_SIG_alg_ml_dsa_44_extmu))
-	       || (0 == strcmp(method_name, OQS_SIG_alg_ml_dsa_65_extmu))
-	       || (0 == strcmp(method_name, OQS_SIG_alg_ml_dsa_87_extmu));
+	return (0 == strcmp(method_name, OQS_SIG_alg_ml_dsa_44_extmu)) || (0 == strcmp(method_name, OQS_SIG_alg_ml_dsa_65_extmu)) || (0 == strcmp(method_name, OQS_SIG_alg_ml_dsa_87_extmu));
 }
 
 static void MLDSA_randombytes_init(const uint8_t *entropy_input, const uint8_t *personalization_string) {
@@ -298,7 +294,7 @@ int prehash_id_from_string(const char *s) {
 		return 12;
 	}
 #else
-	(void)s;
+	(void) s;
 #endif
 	return -1;
 }
@@ -445,7 +441,7 @@ static int sig_ver_vector_int(const char *method_name,
 	}
 
 
-	fprintBstr(fh, "testPassed: ", (const uint8_t *)&testPassed, 1);
+	fprintBstr(fh, "testPassed: ", (const uint8_t *) &testPassed, 1);
 
 	goto cleanup;
 
@@ -511,7 +507,7 @@ static int sig_ver_vector_ext(const char *method_name,
 		}
 	}
 
-	fprintBstr(fh, "testPassed: ", (const uint8_t *)&testPassed, 1);
+	fprintBstr(fh, "testPassed: ", (const uint8_t *) &testPassed, 1);
 
 	goto cleanup;
 
@@ -525,7 +521,6 @@ algo_not_enabled:
 cleanup:
 	OQS_SIG_free(sig);
 	return ret;
-
 }
 
 #if defined(OQS_ENABLE_SIG_ml_dsa_44_extmu) || defined(OQS_ENABLE_SIG_ml_dsa_65_extmu) || defined(OQS_ENABLE_SIG_ml_dsa_87_extmu)
@@ -564,7 +559,7 @@ static int sig_ver_vector_extmu(const char *method_name,
 		ret = EXIT_SUCCESS;
 	}
 
-	fprintBstr(fh, "testPassed: ", (const uint8_t *)&testPassed, 1);
+	fprintBstr(fh, "testPassed: ", (const uint8_t *) &testPassed, 1);
 
 	goto cleanup;
 
@@ -634,7 +629,7 @@ static int sig_ver_prehash_vector_ext(const char *method_name,
 		ret = EXIT_SUCCESS;
 	}
 
-	fprintBstr(fh, "testPassed: ", (const uint8_t *)&testPassed, 1);
+	fprintBstr(fh, "testPassed: ", (const uint8_t *) &testPassed, 1);
 
 	goto cleanup;
 
@@ -1095,8 +1090,8 @@ int main(int argc, char **argv) {
 			kg_sk = argv[5];
 
 			if (strlen(prng_output_stream) != 2 * MLDSA_RNDBYTES ||
-			        strlen(kg_pk) != 2 * sig->length_public_key ||
-			        strlen(kg_sk) != 2 * sig->length_secret_key) {
+			    strlen(kg_pk) != 2 * sig->length_public_key ||
+			    strlen(kg_sk) != 2 * sig->length_secret_key) {
 				printf("lengths bad\n");
 				goto err;
 			}
@@ -1106,8 +1101,8 @@ int main(int argc, char **argv) {
 			prng_output_stream = kg_sk;
 
 			if (strlen(prng_output_stream) != 2 * sig->length_secret_key ||
-			        strlen(kg_pk) != 2 * sig->length_public_key ||
-			        strlen(kg_sk) != 2 * sig->length_secret_key) {
+			    strlen(kg_pk) != 2 * sig->length_public_key ||
+			    strlen(kg_sk) != 2 * sig->length_secret_key) {
 				printf("lengths bad\n");
 				goto err;
 			}
@@ -1143,10 +1138,10 @@ int main(int argc, char **argv) {
 		prng_output_stream = argv[6];
 		/* still need to deal with prehash FIX */
 		if (is_ml_dsa(alg_name)) {
-			if ( strlen(sigGen_msg) % 2 != 0 ||
-			        strlen(prng_output_stream) != 2 * MLDSA_RNDBYTES ||
-			        strlen(sigGen_sig) != 2 * sig->length_signature ||
-			        strlen(sigGen_sk) != 2 * sig->length_secret_key) {
+			if (strlen(sigGen_msg) % 2 != 0 ||
+			    strlen(prng_output_stream) != 2 * MLDSA_RNDBYTES ||
+			    strlen(sigGen_sig) != 2 * sig->length_signature ||
+			    strlen(sigGen_sk) != 2 * sig->length_secret_key) {
 				printf("lengths bad\n");
 				goto err;
 			}
@@ -1161,10 +1156,10 @@ int main(int argc, char **argv) {
 				prng_output_stream[sig->length_public_key] = '\0';
 			}
 
-			if ( strlen(sigGen_msg) % 2 != 0 ||
-			        strlen(prng_output_stream) != sig->length_public_key ||
-			        strlen(sigGen_sig) != 2 * sig->length_signature ||
-			        strlen(sigGen_sk) != 2 * sig->length_secret_key) {
+			if (strlen(sigGen_msg) % 2 != 0 ||
+			    strlen(prng_output_stream) != sig->length_public_key ||
+			    strlen(sigGen_sig) != 2 * sig->length_signature ||
+			    strlen(sigGen_sk) != 2 * sig->length_secret_key) {
 				printf("lengths bad\n");
 				goto err;
 			}
@@ -1209,11 +1204,11 @@ int main(int argc, char **argv) {
 		prng_output_stream = argv[7];
 
 		if (is_ml_dsa(alg_name)) {
-			if ( strlen(sigGen_msg) % 2 != 0 ||
-			        strlen(sigGen_sig) != 2 * sig->length_signature ||
-			        strlen(prng_output_stream) != 2 * MLDSA_RNDBYTES ||
-			        strlen(sigGen_sk) != 2 * sig->length_secret_key ||
-			        strlen(sigGen_ctx) > 2 * MAXCTXBYTES) {
+			if (strlen(sigGen_msg) % 2 != 0 ||
+			    strlen(sigGen_sig) != 2 * sig->length_signature ||
+			    strlen(prng_output_stream) != 2 * MLDSA_RNDBYTES ||
+			    strlen(sigGen_sk) != 2 * sig->length_secret_key ||
+			    strlen(sigGen_ctx) > 2 * MAXCTXBYTES) {
 				printf("lengths bad\n");
 				goto err;
 			}
@@ -1228,12 +1223,12 @@ int main(int argc, char **argv) {
 				prng_output_stream[sig->length_public_key] = '\0';
 			}
 
-			if ( strlen(sigGen_msg) % 2 != 0 ||
-			        strlen(prng_output_stream) != sig->length_public_key ||
-			        strlen(sigGen_sig) != 2 * sig->length_signature ||
-			        strlen(sigGen_sk) != 2 * sig->length_secret_key ||
-			        strlen(sigGen_ctx) % 2 != 0 ||
-			        strlen(sigGen_ctx) > 2 * MAXCTXBYTES) {
+			if (strlen(sigGen_msg) % 2 != 0 ||
+			    strlen(prng_output_stream) != sig->length_public_key ||
+			    strlen(sigGen_sig) != 2 * sig->length_signature ||
+			    strlen(sigGen_sk) != 2 * sig->length_secret_key ||
+			    strlen(sigGen_ctx) % 2 != 0 ||
+			    strlen(sigGen_ctx) > 2 * MAXCTXBYTES) {
 				printf("lengths bad\n");
 				goto err;
 			}
@@ -1284,10 +1279,10 @@ int main(int argc, char **argv) {
 		sigGen_sig = argv[5];
 		prng_output_stream = argv[6];
 
-		if ( strlen(sigGen_msg)  != 2 *  MLDSA_MULEN ||
-		        strlen(sigGen_sig) != 2 * sig->length_signature ||
-		        strlen(prng_output_stream) != 2 * MLDSA_RNDBYTES ||
-		        strlen(sigGen_sk) != 2 * sig->length_secret_key) {
+		if (strlen(sigGen_msg) != 2 * MLDSA_MULEN ||
+		    strlen(sigGen_sig) != 2 * sig->length_signature ||
+		    strlen(prng_output_stream) != 2 * MLDSA_RNDBYTES ||
+		    strlen(sigGen_sk) != 2 * sig->length_secret_key) {
 			printf("lengths bad\n");
 			goto err;
 		}
@@ -1330,12 +1325,12 @@ int main(int argc, char **argv) {
 		char *hash_algo = argv[8];
 		int prehash_id = prehash_id_from_string(hash_algo);
 
-		if ( strlen(sigGen_msg) % 2 != 0 ||
-		        strlen(sigGen_sig) != 2 * sig->length_signature ||
-		        strlen(prng_output_stream) != 2 * MLDSA_RNDBYTES ||
-		        strlen(sigGen_sk) != 2 * sig->length_secret_key ||
-		        strlen(sigGen_ctx) > 2 * MAXCTXBYTES ||
-		        (prehash_id < 1 || prehash_id > 12)) {
+		if (strlen(sigGen_msg) % 2 != 0 ||
+		    strlen(sigGen_sig) != 2 * sig->length_signature ||
+		    strlen(prng_output_stream) != 2 * MLDSA_RNDBYTES ||
+		    strlen(sigGen_sk) != 2 * sig->length_secret_key ||
+		    strlen(sigGen_ctx) > 2 * MAXCTXBYTES ||
+		    (prehash_id < 1 || prehash_id > 12)) {
 			printf("lengths bad or incorrect hash algo constant \n");
 			goto err;
 		}
@@ -1388,18 +1383,18 @@ int main(int argc, char **argv) {
 
 		if (is_ml_dsa(alg_name)) {
 			if (strlen(sigVer_msg) % 2 != 0 ||
-			        strlen(sigVer_sig) != 2 * sig->length_signature ||
-			        strlen(sigVer_pk) != 2 * sig->length_public_key ||
-			        (sigVerPassed != 0 && sigVerPassed != 1)) {
+			    strlen(sigVer_sig) != 2 * sig->length_signature ||
+			    strlen(sigVer_pk) != 2 * sig->length_public_key ||
+			    (sigVerPassed != 0 && sigVerPassed != 1)) {
 				printf("lengths bad or incorrect verification status \n");
 				goto err;
 			}
 		} else if (is_slh_dsa(alg_name)) {
 			/* SLHDSA also tests for wrong sig lengths so we don't fail here */
 			if (strlen(sigVer_msg) % 2 != 0 ||
-			        strlen(sigVer_sig) % 2 != 0 ||
-			        strlen(sigVer_pk) != 2 * sig->length_public_key ||
-			        (sigVerPassed != 0 && sigVerPassed != 1)) {
+			    strlen(sigVer_sig) % 2 != 0 ||
+			    strlen(sigVer_pk) != 2 * sig->length_public_key ||
+			    (sigVerPassed != 0 && sigVerPassed != 1)) {
 				printf("lengths bad or incorrect verification status \n");
 				goto err;
 			}
@@ -1444,21 +1439,21 @@ int main(int argc, char **argv) {
 
 		if (is_ml_dsa(alg_name)) {
 			if (strlen(sigVer_msg) % 2 != 0 ||
-			        strlen(sigVer_sig) != 2 * sig->length_signature ||
-			        strlen(sigVer_pk) != 2 * sig->length_public_key ||
-			        strlen(sigVer_ctx) > 2 * MAXCTXBYTES ||
-			        (sigVerPassed != 0 && sigVerPassed != 1)) {
+			    strlen(sigVer_sig) != 2 * sig->length_signature ||
+			    strlen(sigVer_pk) != 2 * sig->length_public_key ||
+			    strlen(sigVer_ctx) > 2 * MAXCTXBYTES ||
+			    (sigVerPassed != 0 && sigVerPassed != 1)) {
 				printf("lengths bad or incorrect verification status \n");
 				goto err;
 			}
 		} else if (is_slh_dsa(alg_name)) {
 			/* SLHDSA also tests for wrong sig lengths so we don't fail here */
 			if (strlen(sigVer_msg) % 2 != 0 ||
-			        strlen(sigVer_sig) % 2 != 0 ||
-			        strlen(sigVer_pk) != 2 * sig->length_public_key ||
-			        strlen(sigVer_ctx) % 2 != 0 ||
-			        strlen(sigVer_ctx) > 2 * MAXCTXBYTES ||
-			        (sigVerPassed != 0 && sigVerPassed != 1)) {
+			    strlen(sigVer_sig) % 2 != 0 ||
+			    strlen(sigVer_pk) != 2 * sig->length_public_key ||
+			    strlen(sigVer_ctx) % 2 != 0 ||
+			    strlen(sigVer_ctx) > 2 * MAXCTXBYTES ||
+			    (sigVerPassed != 0 && sigVerPassed != 1)) {
 				printf("lengths bad or incorrect verification status \n");
 				goto err;
 			}
@@ -1496,7 +1491,7 @@ int main(int argc, char **argv) {
 		goto cleanup;
 #endif
 
-	}  else if (!strcmp(test_name, "sigVer_extmu")) {
+	} else if (!strcmp(test_name, "sigVer_extmu")) {
 		/* vectors_sig alg_name sigVer_extmu pk message signature testPassed ---> (argc 7) */
 		if (argc != 7) {
 			valid_args = false;
@@ -1508,9 +1503,9 @@ int main(int argc, char **argv) {
 		int sigVerPassed = atoi(argv[6]);
 
 		if (strlen(sigVer_msg) % 2 != 0 ||
-		        strlen(sigVer_sig) != 2 * sig->length_signature ||
-		        strlen(sigVer_pk) != 2 * sig->length_public_key ||
-		        (sigVerPassed != 0 && sigVerPassed != 1)) {
+		    strlen(sigVer_sig) != 2 * sig->length_signature ||
+		    strlen(sigVer_pk) != 2 * sig->length_public_key ||
+		    (sigVerPassed != 0 && sigVerPassed != 1)) {
 			printf("lengths bad or incorrect verification status \n");
 			goto err;
 		}
@@ -1553,11 +1548,11 @@ int main(int argc, char **argv) {
 		int prehash_id = prehash_id_from_string(hash_algo);
 
 		if (strlen(sigVer_msg) % 2 != 0 ||
-		        strlen(sigVer_sig) != 2 * sig->length_signature ||
-		        strlen(sigVer_pk) != 2 * sig->length_public_key ||
-		        strlen(sigVer_ctx) > 2 * MAXCTXBYTES ||
-		        (sigVerPassed != 0 && sigVerPassed != 1) ||
-		        (prehash_id < 1 || prehash_id > 12)) {
+		    strlen(sigVer_sig) != 2 * sig->length_signature ||
+		    strlen(sigVer_pk) != 2 * sig->length_public_key ||
+		    strlen(sigVer_ctx) > 2 * MAXCTXBYTES ||
+		    (sigVerPassed != 0 && sigVerPassed != 1) ||
+		    (prehash_id < 1 || prehash_id > 12)) {
 			printf("lengths bad or incorrect verification status or incorrect hash algo constant \n");
 			goto err;
 		}
@@ -1588,7 +1583,7 @@ int main(int argc, char **argv) {
 		}
 
 #if defined(OQS_ENABLE_SIG_ml_dsa_44) || defined(OQS_ENABLE_SIG_ml_dsa_65) || defined(OQS_ENABLE_SIG_ml_dsa_87)
-		rc = sig_ver_prehash_vector_ext(alg_name, sigVer_pk_bytes, sigVer_msg_bytes, msgLen, sigVer_sig_bytes, strlen(sigVer_sig) / 2, sigVer_ctx_bytes, ctxlen, sigVerPassed, prehash_id) ;
+		rc = sig_ver_prehash_vector_ext(alg_name, sigVer_pk_bytes, sigVer_msg_bytes, msgLen, sigVer_sig_bytes, strlen(sigVer_sig) / 2, sigVer_ctx_bytes, ctxlen, sigVerPassed, prehash_id);
 #else
 		rc = EXIT_SUCCESS;
 		goto cleanup;

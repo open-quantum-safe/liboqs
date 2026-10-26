@@ -16,7 +16,7 @@
 /* -------------- XMSS -------------- */
 #ifndef OQS_ALLOW_XMSS_KEY_AND_SIG_GEN
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sign(XMSS_UNUSED_ATT uint8_t *signature, XMSS_UNUSED_ATT size_t *signature_len, XMSS_UNUSED_ATT const uint8_t *message, XMSS_UNUSED_ATT size_t message_len,
-        XMSS_UNUSED_ATT OQS_SIG_STFL_SECRET_KEY *secret_key) {
+                                              XMSS_UNUSED_ATT OQS_SIG_STFL_SECRET_KEY *secret_key) {
 	return OQS_ERROR;
 }
 #else
@@ -45,7 +45,7 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sign(uint8_t *signature, size_t *signat
 		status = OQS_ERROR;
 		goto err;
 	}
-	*signature_len = (size_t)sig_length;
+	*signature_len = (size_t) sig_length;
 	/*
 	 * serialize and securely store the updated private key
 	 * regardless, delete signature and the serialized key other wise
@@ -76,7 +76,7 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_verify(XMSS_UNUSED_ATT const uint8_t *m
 		return OQS_ERROR;
 	}
 
-	if (xmss_sign_open(message, (unsigned long long)message_len, signature, (unsigned long long)signature_len, public_key)) {
+	if (xmss_sign_open(message, (unsigned long long) message_len, signature, (unsigned long long) signature_len, public_key)) {
 		return OQS_ERROR;
 	}
 

@@ -4,8 +4,8 @@
 #include <string.h>
 
 #include <oqs/oqs.h>
-#include <oqs/rand_nist.h>  // Internal NIST DRBG API
-#include <oqs/sha3.h>       // Internal SHA3 API
+#include <oqs/rand_nist.h> // Internal NIST DRBG API
+#include <oqs/sha3.h> // Internal SHA3 API
 
 #include "test_helpers.h"
 
@@ -45,11 +45,11 @@ static void hqc_prng_randombytes(uint8_t *random_array, size_t bytes_to_read) {
 }
 
 static void hqc_prng_get_state(void *out) {
-	OQS_SHA3_shake256_inc_ctx_clone((OQS_SHA3_shake256_inc_ctx *)out, &hqc_prng_state);
+	OQS_SHA3_shake256_inc_ctx_clone((OQS_SHA3_shake256_inc_ctx *) out, &hqc_prng_state);
 }
 
 static void hqc_prng_set_state(const void *in) {
-	OQS_SHA3_shake256_inc_ctx_clone(&hqc_prng_state, (const OQS_SHA3_shake256_inc_ctx *)in);
+	OQS_SHA3_shake256_inc_ctx_clone(&hqc_prng_state, (const OQS_SHA3_shake256_inc_ctx *) in);
 }
 
 static void hqc_prng_free(OQS_KAT_PRNG_state *saved_state) {
@@ -64,22 +64,11 @@ static void hqc_prng_free(OQS_KAT_PRNG_state *saved_state) {
 
 /* Helpers for identifying algorithms */
 static int is_mceliece(const char *method_name) {
-	return ( !strcmp(method_name, OQS_KEM_alg_classic_mceliece_348864)
-	         || !strcmp(method_name, OQS_KEM_alg_classic_mceliece_348864f)
-	         || !strcmp(method_name, OQS_KEM_alg_classic_mceliece_460896)
-	         || !strcmp(method_name, OQS_KEM_alg_classic_mceliece_460896f)
-	         || !strcmp(method_name, OQS_KEM_alg_classic_mceliece_6688128)
-	         || !strcmp(method_name, OQS_KEM_alg_classic_mceliece_6688128f)
-	         || !strcmp(method_name, OQS_KEM_alg_classic_mceliece_6960119)
-	         || !strcmp(method_name, OQS_KEM_alg_classic_mceliece_6960119f)
-	         || !strcmp(method_name, OQS_KEM_alg_classic_mceliece_8192128)
-	         || !strcmp(method_name, OQS_KEM_alg_classic_mceliece_8192128f) );
+	return (!strcmp(method_name, OQS_KEM_alg_classic_mceliece_348864) || !strcmp(method_name, OQS_KEM_alg_classic_mceliece_348864f) || !strcmp(method_name, OQS_KEM_alg_classic_mceliece_460896) || !strcmp(method_name, OQS_KEM_alg_classic_mceliece_460896f) || !strcmp(method_name, OQS_KEM_alg_classic_mceliece_6688128) || !strcmp(method_name, OQS_KEM_alg_classic_mceliece_6688128f) || !strcmp(method_name, OQS_KEM_alg_classic_mceliece_6960119) || !strcmp(method_name, OQS_KEM_alg_classic_mceliece_6960119f) || !strcmp(method_name, OQS_KEM_alg_classic_mceliece_8192128) || !strcmp(method_name, OQS_KEM_alg_classic_mceliece_8192128f));
 }
 
 static int is_hqc(const char *method_name) {
-	return (0 == strcmp(method_name, OQS_KEM_alg_hqc_1))
-	       || (0 == strcmp(method_name, OQS_KEM_alg_hqc_3))
-	       || (0 == strcmp(method_name, OQS_KEM_alg_hqc_5));
+	return (0 == strcmp(method_name, OQS_KEM_alg_hqc_1)) || (0 == strcmp(method_name, OQS_KEM_alg_hqc_3)) || (0 == strcmp(method_name, OQS_KEM_alg_hqc_5));
 }
 
 /* OQS_KAT_PRNG interface implementation */
@@ -186,9 +175,9 @@ OQS_STATUS test_sig_bitflip(OQS_SIG *sig, uint8_t *message, size_t message_len, 
 		size_t tampered_array_len = (test == 1) ? signature_len : message_len;
 		/* select the number of bitflips */
 		uint64_t bitflips_selected = bitflips_all[test] ? tampered_array_len * 8 : bitflips[test];
-		for (uint64_t i = 0; i < bitflips_selected; i ++) {
+		for (uint64_t i = 0; i < bitflips_selected; i++) {
 			uint64_t random_bit_index;
-			OQS_randombytes((uint8_t *)&random_bit_index, sizeof(random_bit_index));
+			OQS_randombytes((uint8_t *) &random_bit_index, sizeof(random_bit_index));
 			OQS_TEST_CT_DECLASSIFY(&random_bit_index, sizeof(random_bit_index));
 			random_bit_index = random_bit_index % (tampered_array_len * 8);
 			uint64_t bit_index = bitflips_all[test] ? i : random_bit_index;
@@ -205,7 +194,7 @@ OQS_STATUS test_sig_bitflip(OQS_SIG *sig, uint8_t *message, size_t message_len, 
 			}
 			OQS_TEST_CT_DECLASSIFY(&rc, sizeof(rc));
 			if (rc != OQS_ERROR) {
-				fprintf(stderr, "ERROR: OQS_SIG_verify should have failed after flipping bit %llu of the %s!\n", (unsigned long long)bit_index, (test == 0) ? "message" : "signature");
+				fprintf(stderr, "ERROR: OQS_SIG_verify should have failed after flipping bit %llu of the %s!\n", (unsigned long long) bit_index, (test == 0) ? "message" : "signature");
 				return OQS_ERROR;
 			}
 			/* flip back the bit */
@@ -230,9 +219,9 @@ OQS_STATUS test_sig_stfl_bitflip(OQS_SIG_STFL *sig, uint8_t *message, size_t mes
 		size_t tampered_array_len = (test == 1) ? signature_len : message_len;
 		/* select the number of bitflips */
 		uint64_t bitflips_selected = bitflips_all[test] ? tampered_array_len * 8 : bitflips[test];
-		for (uint64_t i = 0; i < bitflips_selected; i ++) {
+		for (uint64_t i = 0; i < bitflips_selected; i++) {
 			uint64_t random_bit_index;
-			OQS_randombytes((uint8_t *)&random_bit_index, sizeof(random_bit_index));
+			OQS_randombytes((uint8_t *) &random_bit_index, sizeof(random_bit_index));
 			OQS_TEST_CT_DECLASSIFY(&random_bit_index, sizeof(random_bit_index));
 			random_bit_index = random_bit_index % (tampered_array_len * 8);
 			uint64_t bit_index = bitflips_all[test] ? i : random_bit_index;
@@ -245,7 +234,7 @@ OQS_STATUS test_sig_stfl_bitflip(OQS_SIG_STFL *sig, uint8_t *message, size_t mes
 			rc = OQS_SIG_STFL_verify(sig, message, message_len, signature, signature_len, public_key);
 			OQS_TEST_CT_DECLASSIFY(&rc, sizeof(rc));
 			if (rc != OQS_ERROR) {
-				fprintf(stderr, "ERROR: OQS_SIG_STFL_verify should have failed after flipping bit %llu of the %s!\n", (unsigned long long)bit_index, (test == 0) ? "message" : "signature");
+				fprintf(stderr, "ERROR: OQS_SIG_STFL_verify should have failed after flipping bit %llu of the %s!\n", (unsigned long long) bit_index, (test == 0) ? "message" : "signature");
 				return OQS_ERROR;
 			}
 			/* flip back the bit */
