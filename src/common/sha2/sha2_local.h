@@ -23,26 +23,26 @@ extern "C" {
 
 typedef struct {
 	uint8_t *ctx;
-	size_t data_len;      /* current number of bytes in data */
-	uint8_t data[128];    /* msg buffer */
+	size_t data_len; /* current number of bytes in data */
+	uint8_t data[128]; /* msg buffer */
 } sha224ctx;
 
 typedef struct {
 	uint8_t *ctx;
-	size_t data_len;      /* current number of bytes in data */
-	uint8_t data[128];    /* msg buffer */
+	size_t data_len; /* current number of bytes in data */
+	uint8_t data[128]; /* msg buffer */
 } sha256ctx;
 
 typedef struct {
 	uint8_t *ctx;
-	size_t data_len;      /* current number of bytes in data */
-	uint8_t data[128];    /* msg buffer */
+	size_t data_len; /* current number of bytes in data */
+	uint8_t data[128]; /* msg buffer */
 } sha384ctx;
 
 typedef struct {
 	uint8_t *ctx;
-	size_t data_len;      /* current number of bytes in data */
-	uint8_t data[128];    /* msg buffer */
+	size_t data_len; /* current number of bytes in data */
+	uint8_t data[128]; /* msg buffer */
 } sha512ctx;
 
 void oqs_sha2_sha224_inc_init_c(sha224ctx *state);

@@ -41,7 +41,7 @@ static void store_bigendian_64(uint8_t *x, uint64_t u) {
 }
 
 static size_t crypto_hashblocks_sha256_armv8(uint8_t *statebytes,
-        const uint8_t *data, size_t length) {
+                                             const uint8_t *data, size_t length) {
 	static unsigned int s256cst[64] = {
 		0x428a2f98, 0x71374491, 0xb5c0fbcf, 0xe9b5dba5,
 		0x3956c25b, 0x59f111f1, 0x923f82a4, 0xab1c5ed5,
