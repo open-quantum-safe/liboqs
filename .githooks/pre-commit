@@ -1,8 +1,18 @@
 #!/bin/bash
 
+rv=0
+
 if ! command -v rumdl >/dev/null 2>&1; then
   echo "Error: rumdl not found. Please install using requirements-linter.txt" >&2
   exit 1
 fi
 
-rumdl check --config .rumdl.toml --respect-gitignore --exclude "build,**/build" .
+rumdl check --config .rumdl.toml --respect-gitignore --exclude "build,**/build" . || rv=1
+
+# Check formatting of C sources (files in .clang-format-ignore are skipped)
+if ! ./scripts/format_code.sh --check; then
+  echo "Error: C files are not formatted. Run ./scripts/format_code.sh and stage the changes." >&2
+  rv=1
+fi
+
+exit $rv
