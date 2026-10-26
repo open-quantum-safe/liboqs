@@ -21,7 +21,7 @@ endif()
 project(liboqs C ASM)
 
 option(OQS_DIST_BUILD "Build distributable library with optimized code for several CPU microarchitectures. Enables run-time CPU feature detection." ON)
-option(OQS_BUILD_ONLY_LIB "Build only liboqs and do not expose build targets for tests, documentation, and pretty-printing available." OFF)
+option(OQS_BUILD_ONLY_LIB "Build only liboqs and do not expose build targets for tests, documentation, and code formatting available." OFF)
 set(OQS_MINIMAL_BUILD "" CACHE STRING "Only build specifically listed algorithms.")
 option(OQS_LIBJADE_BUILD "Enable formally verified implementation of supported algorithms from libjade." OFF)
 option(OQS_PERMIT_UNSUPPORTED_ARCHITECTURE "Permit compilation on an an unsupported architecture." OFF)
@@ -333,8 +333,8 @@ if(NOT ${OQS_BUILD_ONLY_LIB})
 
     if(NOT WIN32)
         add_custom_target(
-            prettyprint
-            COMMAND find src tests -name '*.[ch]' | grep -v '/external/' | grep -v 'kem.*/pqclean_' | grep -v 'sig.*/pqclean_' | xargs astyle --options=.astylerc
+            format_code
+            COMMAND ${PROJECT_SOURCE_DIR}/scripts/format_code.sh
             WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
             USES_TERMINAL)
     endif()
