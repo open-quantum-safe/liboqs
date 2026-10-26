@@ -96,7 +96,7 @@ int ReadHex(FILE *infile, unsigned char *a, unsigned long Length, char *str) {
 	}
 	OQS_MEM_cleanse(a, Length);
 	started = 0;
-	if (FindMarker(infile, str))
+	if (FindMarker(infile, str)) {
 		while ((ch = fgetc(infile)) != EOF) {
 			if (!isxdigit(ch)) {
 				if (!started) {
@@ -122,10 +122,11 @@ int ReadHex(FILE *infile, unsigned char *a, unsigned long Length, char *str) {
 			}
 
 			for (i = 0; i < Length - 1; i++) {
-				a[i] = (unsigned char) (a[i] << 4) | (unsigned char) (a[i + 1] >> 4);
+				a[i] = (unsigned char)(a[i] << 4) | (unsigned char)(a[i + 1] >> 4);
 			}
-			a[Length - 1] = (unsigned char) (a[Length - 1] << 4) | (unsigned char) ich;
-		} else {
+			a[Length - 1] = (unsigned char)(a[Length - 1] << 4) | (unsigned char)ich;
+		}
+	} else {
 		return 0;
 	}
 
@@ -172,7 +173,7 @@ static OQS_STATUS lock_sk_key(void *mutex) {
 	if (pthread_mutex_lock((pthread_mutex_t *)mutex)) {
 		return OQS_ERROR;
 	}
-	return  OQS_SUCCESS;
+	return OQS_SUCCESS;
 }
 
 static OQS_STATUS unlock_sk_key(void *mutex) {
@@ -183,7 +184,7 @@ static OQS_STATUS unlock_sk_key(void *mutex) {
 	if (pthread_mutex_unlock((pthread_mutex_t *)mutex)) {
 		return OQS_ERROR;
 	}
-	return  OQS_SUCCESS;
+	return OQS_SUCCESS;
 }
 #else
 static OQS_STATUS lock_sk_key(UNUSED void *mutex) {
@@ -252,7 +253,7 @@ cleanup:
  * XMSSMT-SHAKE_60/3_256
  */
 OQS_STATUS sig_stfl_KATs_keygen(OQS_SIG_STFL *sig, uint8_t *public_key, OQS_SIG_STFL_SECRET_KEY *secret_key, const char *katfile) {
-	if (sig == NULL || public_key == NULL || secret_key == NULL ) {
+	if (sig == NULL || public_key == NULL || secret_key == NULL) {
 		return OQS_ERROR;
 	}
 
@@ -462,11 +463,11 @@ static OQS_STATUS test_invalid_sig(const char *method_name) {
 		return OQS_ERROR;
 	}
 
-	uint8_t pk[TEST_INVALID_SIG_PK_LEN] = {0};
+	uint8_t pk[TEST_INVALID_SIG_PK_LEN] = { 0 };
 	pk[TEST_XMSS_OID_LEN - 1] = (uint8_t)TEST_XMSS_OID_SHA2_10_256;
 
 	uint8_t message[] = "test";
-	uint8_t malicious_sig[TEST_INVALID_SIG_MALICIOUS_SIG_LEN] = {0};
+	uint8_t malicious_sig[TEST_INVALID_SIG_MALICIOUS_SIG_LEN] = { 0 };
 
 	// Sub-case 1 (GHSA-wf7v-fhxj-73m2): caller-supplied signature_len shorter than the
 	// declared algorithm's expected size. Must be rejected by the wrapper length check.
@@ -527,7 +528,7 @@ static OQS_STATUS test_invalid_sig(const char *method_name) {
 		/* Acceptance by any of the three consumers is the failure being tested for, so it
 		 * must leave status == OQS_SUCCESS for the check below to flag. */
 		if (OQS_SIG_STFL_sigs_remaining(sig, &dummy, foreign_sk) == OQS_SUCCESS ||
-		        OQS_SIG_STFL_sigs_total(sig, &dummy, foreign_sk) == OQS_SUCCESS) {
+		    OQS_SIG_STFL_sigs_total(sig, &dummy, foreign_sk) == OQS_SUCCESS) {
 			status = OQS_SUCCESS;
 		} else {
 			size_t foreign_sig_len = 0;
@@ -572,7 +573,7 @@ static OQS_STATUS test_invalid_sig_lms(const char *method_name) {
 
 	/* hss_validate_signature_init derives every parameter from the pk and
 	 * signature bytes, so one well-formed single-level pk covers all variants. */
-	uint8_t pk[TEST_INVALID_SIG_LMS_PK_LEN] = {0};
+	uint8_t pk[TEST_INVALID_SIG_LMS_PK_LEN] = { 0 };
 	pk[TEST_LMS_LEVELS_OFFSET] = 1;
 	pk[TEST_LMS_TYPE_OFFSET] = TEST_LMS_TYPE_SHA256_H5;
 	pk[TEST_LMS_OTS_TYPE_OFFSET] = TEST_LMOTS_TYPE_SHA256_N32_W2;
@@ -892,7 +893,7 @@ static OQS_STATUS sig_stfl_test_secret_key(const char *method_name, const char *
 		goto err;
 	}
 
-	file_store_name  = convert_method_name_to_file_name(sig_obj->method_name);
+	file_store_name = convert_method_name_to_file_name(sig_obj->method_name);
 	if (oqs_fstore("sk", file_store_name, to_file_sk_buf, to_file_sk_len) != OQS_SUCCESS) {
 		goto err;
 	}
@@ -982,9 +983,9 @@ static OQS_STATUS sig_stfl_test_query_key(const char *method_name) {
 	printf("Testing stateful Signature Verification %s\n", method_name);
 	printf("================================================================================\n");
 
-	if ( lock_test_sk == NULL || lock_test_sig_obj == NULL ||
-	        signature_1 == NULL || signature_2 == NULL ||
-	        lock_test_public_key == NULL) {
+	if (lock_test_sk == NULL || lock_test_sig_obj == NULL ||
+	    signature_1 == NULL || signature_2 == NULL ||
+	    lock_test_public_key == NULL) {
 		return OQS_ERROR;
 	}
 
@@ -1035,7 +1036,7 @@ static OQS_STATUS sig_stfl_test_sig_gen(const char *method_name) {
 	printf("Testing stateful Signature Generation %s\n", method_name);
 	printf("================================================================================\n");
 
-	if ( lock_test_sk == NULL || lock_test_sig_obj == NULL) {
+	if (lock_test_sk == NULL || lock_test_sig_obj == NULL) {
 		return OQS_ERROR;
 	}
 
@@ -1271,7 +1272,7 @@ void *test_secret_key_wrapper(void *arg) {
  * When key and signature generation is off
  * these operations should fail. So flip the results.
  */
-static OQS_STATUS update_test_result( OQS_STATUS rc, int xmss_or_lms) {
+static OQS_STATUS update_test_result(OQS_STATUS rc, int xmss_or_lms) {
 	OQS_STATUS rc_update = rc;
 	if (xmss_or_lms) {
 		;
@@ -1296,7 +1297,7 @@ static OQS_STATUS update_test_result( OQS_STATUS rc, int xmss_or_lms) {
 }
 
 int main(int argc, char **argv) {
-	OQS_STATUS  rc = OQS_ERROR, rc1 = OQS_ERROR, rc2 = OQS_SUCCESS;
+	OQS_STATUS rc = OQS_ERROR, rc1 = OQS_ERROR, rc2 = OQS_SUCCESS;
 	OQS_init();
 	rc = oqs_fstore_init();
 	if (rc != OQS_SUCCESS) {
@@ -1337,8 +1338,8 @@ int main(int argc, char **argv) {
 	}
 
 	/* by default, flip 50 random bits of the message and signature (to test EUF-CMA and SUF-CMA, respectively) */
-	bool bitflips_all[2] = {false, false};
-	size_t bitflips[2] = {50, 50};
+	bool bitflips_all[2] = { false, false };
+	size_t bitflips[2] = { 50, 50 };
 	if (argc >= 4) {
 		if (strcmp(argv[2], "all") == 0) {
 			bitflips_all[0] = true;
@@ -1398,12 +1399,12 @@ int main(int argc, char **argv) {
 	pthread_t sign_key_thread;
 	pthread_t query_key_thread;
 
-	thread_data_t td = {.alg_name = alg_name, .katfile = katfile, .bitflips_all = bitflips_all, .bitflips = bitflips, .rc = OQS_ERROR, .rc2 = OQS_SUCCESS};
-	thread_data_t td_2 = {.alg_name = alg_name, .katfile = katfile, .bitflips_all = bitflips_all, .bitflips = bitflips, .rc = OQS_ERROR, .rc2 = OQS_SUCCESS};
+	thread_data_t td = { .alg_name = alg_name, .katfile = katfile, .bitflips_all = bitflips_all, .bitflips = bitflips, .rc = OQS_ERROR, .rc2 = OQS_SUCCESS };
+	thread_data_t td_2 = { .alg_name = alg_name, .katfile = katfile, .bitflips_all = bitflips_all, .bitflips = bitflips, .rc = OQS_ERROR, .rc2 = OQS_SUCCESS };
 
-	lock_test_data_t td_create = {.alg_name = alg_name, .katfile = katfile, .rc = OQS_ERROR};
-	lock_test_data_t td_sign = {.alg_name = alg_name, .katfile = katfile, .rc = OQS_ERROR};
-	lock_test_data_t td_query = {.alg_name = alg_name, .katfile = katfile, .rc = OQS_ERROR};
+	lock_test_data_t td_create = { .alg_name = alg_name, .katfile = katfile, .rc = OQS_ERROR };
+	lock_test_data_t td_sign = { .alg_name = alg_name, .katfile = katfile, .rc = OQS_ERROR };
+	lock_test_data_t td_query = { .alg_name = alg_name, .katfile = katfile, .rc = OQS_ERROR };
 
 	pthread_mutex_t *test_sk_lock_local = (pthread_mutex_t *)OQS_MEM_malloc(sizeof(pthread_mutex_t));
 	if (test_sk_lock_local == NULL) {

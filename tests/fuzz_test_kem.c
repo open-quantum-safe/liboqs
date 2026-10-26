@@ -41,7 +41,7 @@ void fuzz_rand(uint8_t *random_array, size_t bytes_to_read) {
 
 fuzz_ctx_t init_fuzz_context(const uint8_t *data, size_t data_len) {
 
-	fuzz_ctx_t ctx = {{0, 0}, NULL, 0};
+	fuzz_ctx_t ctx = { { 0, 0 }, NULL, 0 };
 	if (data_len > sizeof(fuzz_init_ctx_t)) {
 		memcpy(&ctx.init, data, sizeof(fuzz_init_ctx_t));
 		ctx.data = data + sizeof(fuzz_init_ctx_t);
@@ -88,7 +88,7 @@ static OQS_STATUS fuzz_kem(const uint8_t *data, size_t data_len) {
 	shared_secret_d = OQS_MEM_malloc(kem->length_shared_secret);
 
 	if ((public_key == NULL) || (secret_key == NULL) || (ciphertext == NULL) ||
-	        (shared_secret_e == NULL) || (shared_secret_d == NULL)) {
+	    (shared_secret_e == NULL) || (shared_secret_d == NULL)) {
 		fprintf(stderr, "ERROR: OQS_MEM_malloc failed!\n");
 		cleanup_heap(secret_key, shared_secret_e, shared_secret_d, public_key,
 		             ciphertext, kem);

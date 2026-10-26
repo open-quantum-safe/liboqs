@@ -30,7 +30,6 @@ static void fullcycletest(OQS_KEM *kem, uint8_t *public_key, uint8_t *secret_key
 		printf("Error during KEM decaps. Exiting.\n");
 		exit(-1);
 	}
-
 }
 
 static OQS_STATUS kem_speed_wrapper(const char *method_name, uint64_t duration, bool printInfo, bool doFullCycle) {

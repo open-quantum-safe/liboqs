@@ -87,7 +87,7 @@ static inline uint32_t br_dec32le(const unsigned char *src) {
 
 static void br_range_dec32le(uint32_t *v, size_t num, const unsigned char *src) {
 	while (num-- > 0) {
-		*v ++ = br_dec32le(src);
+		*v++ = br_dec32le(src);
 		src += 4;
 	}
 }
@@ -112,13 +112,13 @@ static inline void br_enc32le(unsigned char *dst, uint32_t x) {
 static inline void br_enc32be(unsigned char *dst, uint32_t x) {
 	dst[0] = (unsigned char)(x >> 24);
 	dst[1] = (unsigned char)(x >> 16);
-	dst[2] = (unsigned char)(x >>  8);
+	dst[2] = (unsigned char)(x >> 8);
 	dst[3] = (unsigned char)x;
 }
 
 static void br_range_enc32le(unsigned char *dst, const uint32_t *v, size_t num) {
 	while (num-- > 0) {
-		br_enc32le(dst, *v ++);
+		br_enc32le(dst, *v++);
 		dst += 4;
 	}
 }
@@ -402,7 +402,7 @@ static void br_aes_ct64_keysched(uint64_t *comp_skey, const unsigned char *key, 
 	nkf = ((nrounds + 1) << 2);
 	br_range_dec32le(skey, (key_len >> 2), key);
 	tmp = skey[(key_len >> 2) - 1];
-	for (i = nk, j = 0, k = 0; i < nkf; i ++) {
+	for (i = nk, j = 0, k = 0; i < nkf; i++) {
 		if (j == 0) {
 			tmp = (tmp << 24) | (tmp >> 8);
 			tmp = sub_word(tmp) ^ Rcon[k];
@@ -411,9 +411,9 @@ static void br_aes_ct64_keysched(uint64_t *comp_skey, const unsigned char *key, 
 		}
 		tmp ^= skey[i - nk];
 		skey[i] = tmp;
-		if (++ j == nk) {
+		if (++j == nk) {
 			j = 0;
-			k ++;
+			k++;
 		}
 	}
 
@@ -447,7 +447,7 @@ static void br_aes_ct64_skey_expand(uint64_t *skey, const uint64_t *comp_skey, u
 	unsigned u, v, n;
 
 	n = (nrounds + 1) << 1;
-	for (u = 0, v = 0; u < n; u ++, v += 4) {
+	for (u = 0, v = 0; u < n; u++, v += 4) {
 		uint64_t x0, x1, x2, x3;
 
 		x0 = x1 = x2 = x3 = comp_skey[u];
@@ -480,7 +480,7 @@ static inline void add_round_key(uint64_t *q, const uint64_t *sk) {
 static inline void shift_rows(uint64_t *q) {
 	int i;
 
-	for (i = 0; i < 8; i ++) {
+	for (i = 0; i < 8; i++) {
 		uint64_t x;
 
 		x = q[i];
@@ -562,7 +562,7 @@ static void aes_ecb4x(unsigned char out[64], const uint32_t ivw[16], const uint6
 	add_round_key(q, sk_exp + 8 * nrounds);
 
 	br_aes_ct64_ortho(q);
-	for (i = 0; i < 4; i ++) {
+	for (i = 0; i < 4; i++) {
 		br_aes_ct64_interleave_out(w + (i << 2), q[i], q[i + 4]);
 	}
 	br_range_enc32le(out, w, 16);
@@ -604,16 +604,16 @@ static inline void aes256_ctr_upd_blks(unsigned char *out, size_t outblks, aes25
 	size_t i;
 	uint32_t cc;
 	uint8_t *iv = ctx->iv;
-	uint32_t blocks = (uint32_t) outblks;
+	uint32_t blocks = (uint32_t)outblks;
 	unsigned int nrounds = 14;
 
 	br_range_dec32le(ivw, 4, iv);
 
-	memcpy(ivw +  4, ivw, 3 * sizeof(uint32_t));
-	memcpy(ivw +  8, ivw, 3 * sizeof(uint32_t));
+	memcpy(ivw + 4, ivw, 3 * sizeof(uint32_t));
+	memcpy(ivw + 8, ivw, 3 * sizeof(uint32_t));
 	memcpy(ivw + 12, ivw, 3 * sizeof(uint32_t));
 	cc = br_swap32(ivw[3]);
-	ivw[ 7] = br_swap32(cc + 1);
+	ivw[7] = br_swap32(cc + 1);
 	ivw[11] = br_swap32(cc + 2);
 	ivw[15] = br_swap32(cc + 3);
 
@@ -645,11 +645,11 @@ static void aes_ctr(unsigned char *out, size_t outlen, const unsigned char *iv, 
 	} else {
 		exit(EXIT_FAILURE);
 	}
-	memcpy(ivw +  4, ivw, 3 * sizeof(uint32_t));
-	memcpy(ivw +  8, ivw, 3 * sizeof(uint32_t));
+	memcpy(ivw + 4, ivw, 3 * sizeof(uint32_t));
+	memcpy(ivw + 8, ivw, 3 * sizeof(uint32_t));
 	memcpy(ivw + 12, ivw, 3 * sizeof(uint32_t));
 	cc = br_swap32(ivw[3]);
-	ivw[ 7] = br_swap32(cc + 1);
+	ivw[7] = br_swap32(cc + 1);
 	ivw[11] = br_swap32(cc + 2);
 	ivw[15] = br_swap32(cc + 3);
 
@@ -670,7 +670,7 @@ static void aes_ctr(unsigned char *out, size_t outlen, const unsigned char *iv, 
 void oqs_aes128_load_schedule_c(const uint8_t *key, void **_schedule) {
 	*_schedule = OQS_MEM_malloc(sizeof(aes128ctx));
 	OQS_EXIT_IF_NULLPTR(*_schedule, "AES");
-	aes128ctx *ctx = (aes128ctx *) *_schedule;
+	aes128ctx *ctx = (aes128ctx *)*_schedule;
 	uint64_t skey[22];
 	br_aes_ct64_keysched(skey, key, AES128_KEYBYTES);
 	br_aes_ct64_skey_expand(ctx->sk_exp, skey, 10);
@@ -679,7 +679,7 @@ void oqs_aes128_load_schedule_c(const uint8_t *key, void **_schedule) {
 void oqs_aes192_load_schedule_c(const uint8_t *key, void **_schedule) {
 	*_schedule = OQS_MEM_malloc(sizeof(aes192ctx));
 	OQS_EXIT_IF_NULLPTR(*_schedule, "AES");
-	aes192ctx *ctx = (aes192ctx *) *_schedule;
+	aes192ctx *ctx = (aes192ctx *)*_schedule;
 	uint64_t skey[26];
 	br_aes_ct64_keysched(skey, key, AES192_KEYBYTES);
 	br_aes_ct64_skey_expand(ctx->sk_exp, skey, 12);
@@ -688,7 +688,7 @@ void oqs_aes192_load_schedule_c(const uint8_t *key, void **_schedule) {
 void oqs_aes256_load_schedule_c(const uint8_t *key, void **_schedule) {
 	*_schedule = OQS_MEM_malloc(sizeof(aes256ctx));
 	OQS_EXIT_IF_NULLPTR(*_schedule, "AES");
-	aes256ctx *ctx = (aes256ctx *) *_schedule;
+	aes256ctx *ctx = (aes256ctx *)*_schedule;
 	uint64_t skey[30];
 	br_aes_ct64_keysched(skey, key, AES256_KEYBYTES);
 	br_aes_ct64_skey_expand(ctx->sk_exp, skey, 14);
@@ -703,7 +703,7 @@ static void aes_keysched_no_bitslice(uint32_t *skey, const unsigned char *key, u
 	nkf = ((nrounds + 1) << 2);
 	br_range_dec32le(skey, (key_len >> 2), key);
 	tmp = skey[(key_len >> 2) - 1];
-	for (i = nk, j = 0, k = 0; i < nkf; i ++) {
+	for (i = nk, j = 0, k = 0; i < nkf; i++) {
 		if (j == 0) {
 			tmp = (tmp << 24) | (tmp >> 8);
 			tmp = sub_word(tmp) ^ Rcon[k];
@@ -712,9 +712,9 @@ static void aes_keysched_no_bitslice(uint32_t *skey, const unsigned char *key, u
 		}
 		tmp ^= skey[i - nk];
 		skey[i] = tmp;
-		if (++ j == nk) {
+		if (++j == nk) {
 			j = 0;
-			k ++;
+			k++;
 		}
 	}
 }
@@ -722,15 +722,15 @@ static void aes_keysched_no_bitslice(uint32_t *skey, const unsigned char *key, u
 void oqs_aes192_load_schedule_no_bitslice(const uint8_t *key, void **_schedule) {
 	*_schedule = OQS_MEM_malloc(sizeof(aes192ctx_nobitslice));
 	OQS_EXIT_IF_NULLPTR(*_schedule, "AES");
-	uint32_t *schedule = ((aes192ctx_nobitslice *) *_schedule)->sk_exp;
-	aes_keysched_no_bitslice(schedule, (const unsigned char *) key, AES192_KEYBYTES);
+	uint32_t *schedule = ((aes192ctx_nobitslice *)*_schedule)->sk_exp;
+	aes_keysched_no_bitslice(schedule, (const unsigned char *)key, AES192_KEYBYTES);
 }
 
 void oqs_aes256_load_schedule_no_bitslice(const uint8_t *key, void **_schedule) {
 	*_schedule = OQS_MEM_malloc(sizeof(aes256ctx_nobitslice));
 	OQS_EXIT_IF_NULLPTR(*_schedule, "AES");
-	uint32_t *schedule = ((aes256ctx_nobitslice *) *_schedule)->sk_exp;
-	aes_keysched_no_bitslice(schedule, (const unsigned char *) key, 32);
+	uint32_t *schedule = ((aes256ctx_nobitslice *)*_schedule)->sk_exp;
+	aes_keysched_no_bitslice(schedule, (const unsigned char *)key, 32);
 }
 
 void oqs_aes256_load_iv_c(const uint8_t *iv, size_t iv_len, void *_schedule) {
@@ -747,14 +747,14 @@ void oqs_aes256_load_iv_c(const uint8_t *iv, size_t iv_len, void *_schedule) {
 
 void oqs_aes256_load_iv_u64_c(uint64_t iv, void *schedule) {
 	OQS_EXIT_IF_NULLPTR(schedule, "AES");
-	aes256ctx *ctx = (aes256ctx *) schedule;
+	aes256ctx *ctx = (aes256ctx *)schedule;
 	ctx->iv[7] = (unsigned char)(iv >> 56);
 	ctx->iv[6] = (unsigned char)(iv >> 48);
 	ctx->iv[5] = (unsigned char)(iv >> 40);
 	ctx->iv[4] = (unsigned char)(iv >> 32);
 	ctx->iv[3] = (unsigned char)(iv >> 24);
 	ctx->iv[2] = (unsigned char)(iv >> 16);
-	ctx->iv[1] = (unsigned char)(iv >>  8);
+	ctx->iv[1] = (unsigned char)(iv >> 8);
 	ctx->iv[0] = (unsigned char)iv;
 	memset(&ctx->iv[8], 0, 8);
 }
@@ -762,8 +762,8 @@ void oqs_aes256_load_iv_u64_c(uint64_t iv, void *schedule) {
 void oqs_aes128_load_schedule_no_bitslice(const uint8_t *key, void **_schedule) {
 	*_schedule = OQS_MEM_malloc(sizeof(aes128ctx_nobitslice));
 	OQS_EXIT_IF_NULLPTR(*_schedule, "AES");
-	uint32_t *schedule = ((aes128ctx_nobitslice *) *_schedule)->sk_exp;
-	aes_keysched_no_bitslice(schedule, (const unsigned char *) key, 16);
+	uint32_t *schedule = ((aes128ctx_nobitslice *)*_schedule)->sk_exp;
+	aes_keysched_no_bitslice(schedule, (const unsigned char *)key, 16);
 }
 
 void oqs_aes128_load_iv_c(const uint8_t *iv, size_t iv_len, void *_schedule) {
@@ -780,68 +780,68 @@ void oqs_aes128_load_iv_c(const uint8_t *iv, size_t iv_len, void *_schedule) {
 
 void oqs_aes128_load_iv_u64_c(uint64_t iv, void *schedule) {
 	OQS_EXIT_IF_NULLPTR(schedule, "AES");
-	aes128ctx *ctx = (aes128ctx *) schedule;
+	aes128ctx *ctx = (aes128ctx *)schedule;
 	ctx->iv[7] = (unsigned char)(iv >> 56);
 	ctx->iv[6] = (unsigned char)(iv >> 48);
 	ctx->iv[5] = (unsigned char)(iv >> 40);
 	ctx->iv[4] = (unsigned char)(iv >> 32);
 	ctx->iv[3] = (unsigned char)(iv >> 24);
 	ctx->iv[2] = (unsigned char)(iv >> 16);
-	ctx->iv[1] = (unsigned char)(iv >>  8);
+	ctx->iv[1] = (unsigned char)(iv >> 8);
 	ctx->iv[0] = (unsigned char)iv;
 	memset(&ctx->iv[8], 0, 8);
 }
 
 void oqs_aes128_ecb_enc_sch_c(const uint8_t *plaintext, const size_t plaintext_len, const void *schedule, uint8_t *ciphertext) {
 	assert(plaintext_len % 16 == 0);
-	const aes128ctx *ctx = (const aes128ctx *) schedule;
+	const aes128ctx *ctx = (const aes128ctx *)schedule;
 	aes_ecb(ciphertext, plaintext, plaintext_len / 16, ctx->sk_exp, 10);
 }
 
 void oqs_aes192_ecb_enc_sch_c(const uint8_t *plaintext, const size_t plaintext_len, const void *schedule, uint8_t *ciphertext) {
 	assert(plaintext_len % 16 == 0);
-	const aes192ctx *ctx = (const aes192ctx *) schedule;
+	const aes192ctx *ctx = (const aes192ctx *)schedule;
 	aes_ecb(ciphertext, plaintext, plaintext_len / 16, ctx->sk_exp, 12);
 }
 
 void oqs_aes128_ctr_enc_sch_c(const uint8_t *iv, const size_t iv_len, const void *schedule, uint8_t *out, size_t out_len) {
-	const aes128ctx *ctx = (const aes128ctx *) schedule;
+	const aes128ctx *ctx = (const aes128ctx *)schedule;
 	aes_ctr(out, out_len, iv, iv_len, ctx->sk_exp, 10);
 }
 
 void oqs_aes256_ecb_enc_sch_c(const uint8_t *plaintext, const size_t plaintext_len, const void *schedule, uint8_t *ciphertext) {
 	assert(plaintext_len % 16 == 0);
-	const aes256ctx *ctx = (const aes256ctx *) schedule;
+	const aes256ctx *ctx = (const aes256ctx *)schedule;
 	aes_ecb(ciphertext, plaintext, plaintext_len / 16, ctx->sk_exp, 14);
 }
 
 void oqs_aes256_ctr_enc_sch_c(const uint8_t *iv, const size_t iv_len, const void *schedule, uint8_t *out, size_t out_len) {
-	const aes256ctx *ctx = (const aes256ctx *) schedule;
+	const aes256ctx *ctx = (const aes256ctx *)schedule;
 	aes_ctr(out, out_len, iv, iv_len, ctx->sk_exp, 14);
 }
 
 void oqs_aes256_ctr_enc_sch_upd_blks_c(void *schedule, uint8_t *out, size_t out_blks) {
-	aes256ctx *ctx = (aes256ctx *) schedule;
+	aes256ctx *ctx = (aes256ctx *)schedule;
 	aes256_ctr_upd_blks(out, out_blks, ctx);
 }
 
 void oqs_aes128_free_schedule_c(void *schedule) {
 	if (schedule != NULL) {
-		aes128ctx *ctx = (aes128ctx *) schedule;
+		aes128ctx *ctx = (aes128ctx *)schedule;
 		OQS_MEM_secure_free(ctx, sizeof(aes128ctx));
 	}
 }
 
 void oqs_aes192_free_schedule_c(void *schedule) {
 	if (schedule != NULL) {
-		aes192ctx *ctx = (aes192ctx *) schedule;
+		aes192ctx *ctx = (aes192ctx *)schedule;
 		OQS_MEM_secure_free(ctx, sizeof(aes192ctx));
 	}
 }
 
 void oqs_aes256_free_schedule_c(void *schedule) {
 	if (schedule != NULL) {
-		aes256ctx *ctx = (aes256ctx *) schedule;
+		aes256ctx *ctx = (aes256ctx *)schedule;
 		OQS_MEM_secure_free(ctx, sizeof(aes256ctx));
 	}
 }

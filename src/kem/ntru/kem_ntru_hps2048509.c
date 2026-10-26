@@ -49,14 +49,14 @@ OQS_API OQS_STATUS OQS_KEM_ntru_hps2048509_keypair(uint8_t *public_key, uint8_t 
 #if defined(OQS_DIST_BUILD)
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_BMI2)) {
 #endif /* OQS_DIST_BUILD */
-		return (OQS_STATUS) PQCLEAN_NTRUHPS2048509_AVX2_crypto_kem_keypair(public_key, secret_key);
+		return (OQS_STATUS)PQCLEAN_NTRUHPS2048509_AVX2_crypto_kem_keypair(public_key, secret_key);
 #if defined(OQS_DIST_BUILD)
 	} else {
-		return (OQS_STATUS) PQCLEAN_NTRUHPS2048509_CLEAN_crypto_kem_keypair(public_key, secret_key);
+		return (OQS_STATUS)PQCLEAN_NTRUHPS2048509_CLEAN_crypto_kem_keypair(public_key, secret_key);
 	}
 #endif /* OQS_DIST_BUILD */
 #else
-	return (OQS_STATUS) PQCLEAN_NTRUHPS2048509_CLEAN_crypto_kem_keypair(public_key, secret_key);
+	return (OQS_STATUS)PQCLEAN_NTRUHPS2048509_CLEAN_crypto_kem_keypair(public_key, secret_key);
 #endif
 }
 
@@ -80,14 +80,14 @@ OQS_API OQS_STATUS OQS_KEM_ntru_hps2048509_encaps(uint8_t *ciphertext, uint8_t *
 #if defined(OQS_DIST_BUILD)
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_BMI2)) {
 #endif /* OQS_DIST_BUILD */
-		return (OQS_STATUS) PQCLEAN_NTRUHPS2048509_AVX2_crypto_kem_enc(ciphertext, shared_secret, public_key);
+		return (OQS_STATUS)PQCLEAN_NTRUHPS2048509_AVX2_crypto_kem_enc(ciphertext, shared_secret, public_key);
 #if defined(OQS_DIST_BUILD)
 	} else {
-		return (OQS_STATUS) PQCLEAN_NTRUHPS2048509_CLEAN_crypto_kem_enc(ciphertext, shared_secret, public_key);
+		return (OQS_STATUS)PQCLEAN_NTRUHPS2048509_CLEAN_crypto_kem_enc(ciphertext, shared_secret, public_key);
 	}
 #endif /* OQS_DIST_BUILD */
 #else
-	return (OQS_STATUS) PQCLEAN_NTRUHPS2048509_CLEAN_crypto_kem_enc(ciphertext, shared_secret, public_key);
+	return (OQS_STATUS)PQCLEAN_NTRUHPS2048509_CLEAN_crypto_kem_enc(ciphertext, shared_secret, public_key);
 #endif
 }
 
@@ -96,14 +96,14 @@ OQS_API OQS_STATUS OQS_KEM_ntru_hps2048509_decaps(uint8_t *shared_secret, const 
 #if defined(OQS_DIST_BUILD)
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_BMI2)) {
 #endif /* OQS_DIST_BUILD */
-		return (OQS_STATUS) PQCLEAN_NTRUHPS2048509_AVX2_crypto_kem_dec(shared_secret, ciphertext, secret_key);
+		return (OQS_STATUS)PQCLEAN_NTRUHPS2048509_AVX2_crypto_kem_dec(shared_secret, ciphertext, secret_key);
 #if defined(OQS_DIST_BUILD)
 	} else {
-		return (OQS_STATUS) PQCLEAN_NTRUHPS2048509_CLEAN_crypto_kem_dec(shared_secret, ciphertext, secret_key);
+		return (OQS_STATUS)PQCLEAN_NTRUHPS2048509_CLEAN_crypto_kem_dec(shared_secret, ciphertext, secret_key);
 	}
 #endif /* OQS_DIST_BUILD */
 #else
-	return (OQS_STATUS) PQCLEAN_NTRUHPS2048509_CLEAN_crypto_kem_dec(shared_secret, ciphertext, secret_key);
+	return (OQS_STATUS)PQCLEAN_NTRUHPS2048509_CLEAN_crypto_kem_dec(shared_secret, ciphertext, secret_key);
 #endif
 }
 

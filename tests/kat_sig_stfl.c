@@ -102,7 +102,7 @@ size_t ReadHex(FILE *infile, unsigned char *a, unsigned long Length,
 	}
 	OQS_MEM_cleanse(a, Length);
 	started = 0;
-	if (FindMarker(infile, str))
+	if (FindMarker(infile, str)) {
 		while ((ch = fgetc(infile)) != EOF) {
 			if (!isxdigit(ch)) {
 				if (!started) {
@@ -128,12 +128,11 @@ size_t ReadHex(FILE *infile, unsigned char *a, unsigned long Length,
 			}
 
 			for (i = 0; i < Length - 1; i++) {
-				a[i] = (unsigned char)(a[i] << 4)
-				       | (unsigned char)(a[i + 1] >> 4);
+				a[i] = (unsigned char)(a[i] << 4) | (unsigned char)(a[i + 1] >> 4);
 			}
-			a[Length - 1]
-			    = (unsigned char)(a[Length - 1] << 4) | (unsigned char)ich;
-		} else {
+			a[Length - 1] = (unsigned char)(a[Length - 1] << 4) | (unsigned char)ich;
+		}
+	} else {
 		return 0;
 	}
 
@@ -458,8 +457,7 @@ static OQS_STATUS test_lms_kat(const char *method_name, const char *katfile) {
 		goto err;
 	}
 
-	if ((public_key_len > sig->length_public_key)
-	        || (!ReadHex(fp_rsp, public_key, public_key_len, "pk = "))) {
+	if ((public_key_len > sig->length_public_key) || (!ReadHex(fp_rsp, public_key, public_key_len, "pk = "))) {
 		fprintf(stderr, "ERROR: unable to read 'pk' from <%s>\n", katfile);
 		goto err;
 	}

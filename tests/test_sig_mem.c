@@ -15,7 +15,7 @@
 
 typedef enum sig_ops {
 	SIG_KEYGEN = 0,
-	SIG_SIGN   = 1,
+	SIG_SIGN = 1,
 	SIG_VERIFY = 2
 } SIG_OPS;
 

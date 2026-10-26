@@ -25,8 +25,8 @@ static bool sha3_x4_callback_called = false;
 
 /* KAT input messages shared across all test functions.
  * Vectors from https://di-mgt.com.au/sha_testvectors.html */
-static const uint8_t msg0[1] = {0x0};
-static const uint8_t msg24[3] = {0x61, 0x62, 0x63};
+static const uint8_t msg0[1] = { 0x0 };
+static const uint8_t msg24[3] = { 0x61, 0x62, 0x63 };
 static const uint8_t msg448[56] = {
 	0x61, 0x62, 0x63, 0x64, 0x62, 0x63, 0x64, 0x65, 0x63, 0x64, 0x65, 0x66, 0x64, 0x65, 0x66, 0x67,
 	0x65, 0x66, 0x67, 0x68, 0x66, 0x67, 0x68, 0x69, 0x67, 0x68, 0x69, 0x6A, 0x68, 0x69, 0x6A, 0x6B,
@@ -59,23 +59,23 @@ static const uint8_t msg1600[200] = {
 };
 
 /**
-* \file sha3_test.h
-* \brief <b>SHA3 Known Answer Tests</b> \n
-* Uses Known Answer Tests from official sources to verify the
-* correct operation of SHA3 digest and SHAKE implementations.
-* \author John Underhill
-* \date December 28, 2017
-*/
+ * \file sha3_test.h
+ * \brief <b>SHA3 Known Answer Tests</b> \n
+ * Uses Known Answer Tests from official sources to verify the
+ * correct operation of SHA3 digest and SHAKE implementations.
+ * \author John Underhill
+ * \date December 28, 2017
+ */
 
 /**
-* \brief Compares two arrays of 8 bit integers for equivalence
-*
-* \param a The first byte array for comparison
-* \param b The second byte array for comparison
-* \param length The number of bytes to compare
-*
-* \return Returns EXIT_SUCCESS (zero) if the arrays match, EXIT_FAILURE otherwise
-*/
+ * \brief Compares two arrays of 8 bit integers for equivalence
+ *
+ * \param a The first byte array for comparison
+ * \param b The second byte array for comparison
+ * \param length The number of bytes to compare
+ *
+ * \return Returns EXIT_SUCCESS (zero) if the arrays match, EXIT_FAILURE otherwise
+ */
 static int are_equal8(const uint8_t *a, const uint8_t *b, size_t length) {
 	size_t i;
 	int status = EXIT_SUCCESS;
@@ -91,11 +91,11 @@ static int are_equal8(const uint8_t *a, const uint8_t *b, size_t length) {
 }
 
 /**
-* \brief Set a number of a uint8 array elements to zero
-*
-* \param a The array to reset
-* \param count The number of uint8 integers to clear
-*/
+ * \brief Set a number of a uint8 array elements to zero
+ *
+ * \param a The array to reset
+ * \param count The number of uint8 integers to clear
+ */
 static void clear8(uint8_t *a, size_t count) {
 	for (size_t i = 0; i < count; ++i) {
 		a[i] = 0;
@@ -103,17 +103,17 @@ static void clear8(uint8_t *a, size_t count) {
 }
 
 /**
-* \brief Tests the 256 bit version of the keccak message digest for correct operation,
-* using selected vectors from the NIST Fips202 and alternative references.
-*
-* \return Returns 1 for success, 0 for failure
-*
-* \remarks <b>Test References:</b> \n
-* Fips202: <a href="http://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.202.pdf">SHA3-Standard</a> \n
-* KAT: <a href="https://csrc.nist.gov/CSRC/media/Projects/Cryptographic-Standards-and-Guidelines/documents/examples/SHA3-256_Msg0.pdf">SHA256(0)</a> \n
-* KAT: <a href="https://csrc.nist.gov/CSRC/media/Projects/Cryptographic-Standards-and-Guidelines/documents/examples/SHA3-256_1600.pdf">SHA256(1600)</a> \n
-* KAT: <a href="https://www.di-mgt.com.au/sha_testvectors.html">SHA256(24, 448, 896)</a>
-*/
+ * \brief Tests the 256 bit version of the keccak message digest for correct operation,
+ * using selected vectors from the NIST Fips202 and alternative references.
+ *
+ * \return Returns 1 for success, 0 for failure
+ *
+ * \remarks <b>Test References:</b> \n
+ * Fips202: <a href="http://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.202.pdf">SHA3-Standard</a> \n
+ * KAT: <a href="https://csrc.nist.gov/CSRC/media/Projects/Cryptographic-Standards-and-Guidelines/documents/examples/SHA3-256_Msg0.pdf">SHA256(0)</a> \n
+ * KAT: <a href="https://csrc.nist.gov/CSRC/media/Projects/Cryptographic-Standards-and-Guidelines/documents/examples/SHA3-256_1600.pdf">SHA256(1600)</a> \n
+ * KAT: <a href="https://www.di-mgt.com.au/sha_testvectors.html">SHA256(24, 448, 896)</a>
+ */
 int sha3_256_kat_test(void) {
 	int status = EXIT_SUCCESS;
 
@@ -500,17 +500,17 @@ int sha3_384_kat_test(void) {
 }
 
 /**
-* \brief Tests the 512 bit version of the keccak message digest for correct operation,
-* using selected vectors from NIST Fips202 and alternative references.
-*
-* \return Returns 1 for success, 0 for failure
-*
-* \remarks <b>Test References:</b> \n
-* Fips202: <a href="http://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.202.pdf">SHA3-Standard</a> \n
-* KAT: <a href="https://csrc.nist.gov/CSRC/media/Projects/Cryptographic-Standards-and-Guidelines/documents/examples/SHA3-512_Msg0.pdf">SHA512(0)</a> \n
-* KAT: <a href="https://csrc.nist.gov/CSRC/media/Projects/Cryptographic-Standards-and-Guidelines/documents/examples/SHA3-512_1600.pdf">SHA512(1600)</a> \n
-* KAT: <a href="https://www.di-mgt.com.au/sha_testvectors.html">SHA512(24, 448, 896)</a>
-*/
+ * \brief Tests the 512 bit version of the keccak message digest for correct operation,
+ * using selected vectors from NIST Fips202 and alternative references.
+ *
+ * \return Returns 1 for success, 0 for failure
+ *
+ * \remarks <b>Test References:</b> \n
+ * Fips202: <a href="http://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.202.pdf">SHA3-Standard</a> \n
+ * KAT: <a href="https://csrc.nist.gov/CSRC/media/Projects/Cryptographic-Standards-and-Guidelines/documents/examples/SHA3-512_Msg0.pdf">SHA512(0)</a> \n
+ * KAT: <a href="https://csrc.nist.gov/CSRC/media/Projects/Cryptographic-Standards-and-Guidelines/documents/examples/SHA3-512_1600.pdf">SHA512(1600)</a> \n
+ * KAT: <a href="https://www.di-mgt.com.au/sha_testvectors.html">SHA512(24, 448, 896)</a>
+ */
 int sha3_512_kat_test(void) {
 	int status = EXIT_SUCCESS;
 
@@ -634,7 +634,8 @@ int sha3_512_kat_test(void) {
 	size_t max_seglen = OQS_SHA3_SHA3_512_RATE - 1;
 	while (absorbed < sizeof(msg1600)) {
 		size_t seglen = sizeof(msg1600) - absorbed < max_seglen ?
-		                sizeof(msg1600) - absorbed : max_seglen;
+		                    sizeof(msg1600) - absorbed :
+		                    max_seglen;
 		OQS_SHA3_sha3_512_inc_absorb(&state, msg1600 + absorbed, seglen);
 		absorbed += seglen;
 	}
@@ -731,16 +732,16 @@ int sha3_512_kat_test(void) {
 }
 
 /**
-* \brief Tests the 128 bit version of the SHAKE XOF function for correct operation,
-* using selected vectors from the NIST reference package.
-*
-* \return Returns 1 for success, 0 for failure
-*
-* \remarks <b>Test References:</b> \n
-* SP800-185: <a href="http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-185.pdf">SHA-3 Derived Functions</a> \n
-* KAT: <a href="https://csrc.nist.gov/CSRC/media/Projects/Cryptographic-Standards-and-Guidelines/documents/examples/SHAKE128_Msg0.pdf">SHAKE128(0)</a> \n
-* KAT: <a href="https://csrc.nist.gov/CSRC/media/Projects/Cryptographic-Standards-and-Guidelines/documents/examples/SHAKE128_Msg1600.pdf">SHAKE128(1600)</a>
-*/
+ * \brief Tests the 128 bit version of the SHAKE XOF function for correct operation,
+ * using selected vectors from the NIST reference package.
+ *
+ * \return Returns 1 for success, 0 for failure
+ *
+ * \remarks <b>Test References:</b> \n
+ * SP800-185: <a href="http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-185.pdf">SHA-3 Derived Functions</a> \n
+ * KAT: <a href="https://csrc.nist.gov/CSRC/media/Projects/Cryptographic-Standards-and-Guidelines/documents/examples/SHAKE128_Msg0.pdf">SHAKE128(0)</a> \n
+ * KAT: <a href="https://csrc.nist.gov/CSRC/media/Projects/Cryptographic-Standards-and-Guidelines/documents/examples/SHAKE128_Msg1600.pdf">SHAKE128(1600)</a>
+ */
 int shake_128_kat_test(void) {
 	int status = EXIT_SUCCESS;
 
@@ -966,16 +967,16 @@ int shake_128_kat_test(void) {
 }
 
 /**
-* \brief Tests the 256 bit version of the SHAKE XOF function for correct operation,
-* using selected vectors from the NIST reference package.
-*
-* \return Returns 1 for success, 0 for failure
-*
-* \remarks <b>Test References:</b> \n
-* SP800-185: <a href="http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-185.pdf">SHA-3 Derived Functions</a> \n
-* KAT: <a href="https://csrc.nist.gov/CSRC/media/Projects/Cryptographic-Standards-and-Guidelines/documents/examples/SHAKE256_Msg0.pdf">SHAKE256(0)</a> \n
-* KAT: <a href="https://csrc.nist.gov/CSRC/media/Projects/Cryptographic-Standards-and-Guidelines/documents/examples/SHAKE256_Msg1600.pdf">SHAKE256(1600)</a>
-*/
+ * \brief Tests the 256 bit version of the SHAKE XOF function for correct operation,
+ * using selected vectors from the NIST reference package.
+ *
+ * \return Returns 1 for success, 0 for failure
+ *
+ * \remarks <b>Test References:</b> \n
+ * SP800-185: <a href="http://nvlpubs.nist.gov/nistpubs/SpecialPublications/NIST.SP.800-185.pdf">SHA-3 Derived Functions</a> \n
+ * KAT: <a href="https://csrc.nist.gov/CSRC/media/Projects/Cryptographic-Standards-and-Guidelines/documents/examples/SHAKE256_Msg0.pdf">SHAKE256(0)</a> \n
+ * KAT: <a href="https://csrc.nist.gov/CSRC/media/Projects/Cryptographic-Standards-and-Guidelines/documents/examples/SHAKE256_Msg1600.pdf">SHAKE256(1600)</a>
+ */
 int shake_256_kat_test(void) {
 	int status = EXIT_SUCCESS;
 
@@ -1201,15 +1202,15 @@ int shake_256_kat_test(void) {
 }
 
 /**
-* \brief Tests the four way parallel version of the SHAKE XOF function for correct operation,
-* using selected vectors from the NIST reference package.
-*
-* \return Returns 1 for success, 0 for failure
-*
-* \remarks <b>Test References:</b> \n
-* KAT: <a href="https://csrc.nist.gov/CSRC/media/Projects/Cryptographic-Standards-and-Guidelines/documents/examples/SHAKE128_Msg0.pdf">SHAKE128(0)</a> \n
-* KAT: <a href="https://csrc.nist.gov/CSRC/media/Projects/Cryptographic-Standards-and-Guidelines/documents/examples/SHAKE128_Msg1600.pdf">SHAKE128(1600)</a>
-*/
+ * \brief Tests the four way parallel version of the SHAKE XOF function for correct operation,
+ * using selected vectors from the NIST reference package.
+ *
+ * \return Returns 1 for success, 0 for failure
+ *
+ * \remarks <b>Test References:</b> \n
+ * KAT: <a href="https://csrc.nist.gov/CSRC/media/Projects/Cryptographic-Standards-and-Guidelines/documents/examples/SHAKE128_Msg0.pdf">SHAKE128(0)</a> \n
+ * KAT: <a href="https://csrc.nist.gov/CSRC/media/Projects/Cryptographic-Standards-and-Guidelines/documents/examples/SHAKE128_Msg1600.pdf">SHAKE128(1600)</a>
+ */
 int shake_128_x4_kat_test(void) {
 	int status = EXIT_SUCCESS;
 
@@ -1376,15 +1377,15 @@ int shake_128_x4_kat_test(void) {
 }
 
 /**
-* \brief Tests the four way parallel version of the SHAKE-256 XOF function for correct operation,
-* using selected vectors from the NIST reference package.
-*
-* \return Returns 1 for success, 0 for failure
-*
-* \remarks <b>Test References:</b> \n
-* KAT: <a href="https://csrc.nist.gov/CSRC/media/Projects/Cryptographic-Standards-and-Guidelines/documents/examples/SHAKE128_Msg0.pdf">SHAKE128(0)</a> \n
-* KAT: <a href="https://csrc.nist.gov/CSRC/media/Projects/Cryptographic-Standards-and-Guidelines/documents/examples/SHAKE128_Msg1600.pdf">SHAKE128(1600)</a>
-*/
+ * \brief Tests the four way parallel version of the SHAKE-256 XOF function for correct operation,
+ * using selected vectors from the NIST reference package.
+ *
+ * \return Returns 1 for success, 0 for failure
+ *
+ * \remarks <b>Test References:</b> \n
+ * KAT: <a href="https://csrc.nist.gov/CSRC/media/Projects/Cryptographic-Standards-and-Guidelines/documents/examples/SHAKE128_Msg0.pdf">SHAKE128(0)</a> \n
+ * KAT: <a href="https://csrc.nist.gov/CSRC/media/Projects/Cryptographic-Standards-and-Guidelines/documents/examples/SHAKE128_Msg1600.pdf">SHAKE128(1600)</a>
+ */
 int shake_256_x4_kat_test(void) {
 	int status = EXIT_SUCCESS;
 
@@ -1580,8 +1581,8 @@ static void sha3_trigger_dispatcher(void) {
 #endif
 
 /**
-* \brief Run the SHA3 and SHAKE KAT tests
-*/
+ * \brief Run the SHA3 and SHAKE KAT tests
+ */
 int main(UNUSED int argc, UNUSED char **argv) {
 	int ret = EXIT_SUCCESS;
 

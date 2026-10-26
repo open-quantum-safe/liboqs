@@ -98,13 +98,13 @@ static inline void aes192_armv8_encrypt_x4(const unsigned char *rkeys, const uns
 }
 
 void oqs_aes192_enc_sch_block_armv8(const uint8_t *plaintext, const void *_schedule, uint8_t *ciphertext) {
-	const unsigned char *schedule = (const unsigned char *) ((const aes192ctx_nobitslice *) _schedule)->sk_exp;
+	const unsigned char *schedule = (const unsigned char *)((const aes192ctx_nobitslice *)_schedule)->sk_exp;
 	aes192_armv8_encrypt(schedule, plaintext, ciphertext);
 }
 
 void oqs_aes192_ecb_enc_sch_armv8(const uint8_t *plaintext, const size_t plaintext_len, const void *schedule, uint8_t *ciphertext) {
 	assert(plaintext_len % 16 == 0);
-	const unsigned char *rkeys = (const unsigned char *) ((const aes192ctx_nobitslice *) schedule)->sk_exp;
+	const unsigned char *rkeys = (const unsigned char *)((const aes192ctx_nobitslice *)schedule)->sk_exp;
 	const size_t nblocks = plaintext_len / 16;
 	size_t block = 0;
 

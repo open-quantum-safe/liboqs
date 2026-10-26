@@ -353,7 +353,7 @@ OQS_API int OQS_SIG_STFL_alg_is_enabled(const char *method_name) {
 		return 0;
 #endif
 	}
-//#ifdef OQS_ENABLE_SIG_STFL_LMS
+	//#ifdef OQS_ENABLE_SIG_STFL_LMS
 	else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_lms_sha256_h5_w1)) {
 #ifdef OQS_ENABLE_SIG_STFL_lms_sha256_h5_w1
 		return 1;
@@ -561,7 +561,7 @@ OQS_API int OQS_SIG_STFL_alg_is_enabled(const char *method_name) {
 		return 0;
 #endif
 	}
-//#endif //OQS_ENABLE_SIG_STFL_LMS
+	//#endif //OQS_ENABLE_SIG_STFL_LMS
 	else {
 		return 0;
 	}
@@ -795,7 +795,7 @@ OQS_API OQS_SIG_STFL *OQS_SIG_STFL_new(const char *method_name) {
 		return NULL;
 #endif
 	}
-//#ifdef OQS_ENABLE_SIG_STFL_LMS
+	//#ifdef OQS_ENABLE_SIG_STFL_LMS
 	else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_lms_sha256_h5_w1)) {
 #ifdef OQS_ENABLE_SIG_STFL_lms_sha256_h5_w1
 		return OQS_SIG_STFL_alg_lms_sha256_h5_w1_new();
@@ -917,7 +917,7 @@ OQS_API OQS_SIG_STFL *OQS_SIG_STFL_new(const char *method_name) {
 		return NULL;
 #endif
 	}
-//2-Level LMS
+	//2-Level LMS
 	else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_lms_sha256_h5_w8_h5_w8)) {
 #ifdef OQS_ENABLE_SIG_STFL_lms_sha256_h5_w8_h5_w8
 		return OQS_SIG_STFL_alg_lms_sha256_h5_w8_h5_w8_new();
@@ -997,7 +997,7 @@ OQS_API OQS_SIG_STFL *OQS_SIG_STFL_new(const char *method_name) {
 		return NULL;
 #endif
 	}
-//#endif //OQS_ENABLE_SIG_STFL_LMS
+	//#endif //OQS_ENABLE_SIG_STFL_LMS
 	else {
 		return NULL;
 	}
@@ -1061,7 +1061,7 @@ OQS_API OQS_STATUS OQS_SIG_STFL_sigs_remaining(const OQS_SIG_STFL *sig, unsigned
 	} else {
 		return OQS_SUCCESS;
 	}
-#endif //OQS_ALLOW_STFL_KEY_AND_SIG_GEN 
+#endif //OQS_ALLOW_STFL_KEY_AND_SIG_GEN
 }
 
 OQS_API OQS_STATUS OQS_SIG_STFL_sigs_total(const OQS_SIG_STFL *sig, unsigned long long *max, const OQS_SIG_STFL_SECRET_KEY *secret_key) {
@@ -1314,7 +1314,7 @@ OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SIG_STFL_SECRET_KEY_new(const char *method_
 		return NULL;
 #endif
 	}
-//#ifdef OQS_ENABLE_SIG_STFL_LMS
+	//#ifdef OQS_ENABLE_SIG_STFL_LMS
 	else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_lms_sha256_h5_w1)) {
 #ifdef OQS_ENABLE_SIG_STFL_lms_sha256_h5_w1
 		return OQS_SECRET_KEY_LMS_SHA256_H5_W1_new();
@@ -1436,7 +1436,7 @@ OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SIG_STFL_SECRET_KEY_new(const char *method_
 		return NULL;
 #endif
 	}
-//2-Level LMS
+	//2-Level LMS
 	else if (0 == strcasecmp(method_name, OQS_SIG_STFL_alg_lms_sha256_h5_w8_h5_w8)) {
 #ifdef OQS_ENABLE_SIG_STFL_lms_sha256_h5_w8_h5_w8
 		return OQS_SECRET_KEY_LMS_SHA256_H5_W8_H5_W8_new();
@@ -1516,7 +1516,7 @@ OQS_API OQS_SIG_STFL_SECRET_KEY *OQS_SIG_STFL_SECRET_KEY_new(const char *method_
 		return NULL;
 #endif
 	}
-//#endif //OQS_ENABLE_SIG_STFL_LMS
+	//#endif //OQS_ENABLE_SIG_STFL_LMS
 	else {
 		return NULL;
 	}
