@@ -39,9 +39,9 @@ extern int PQCHQC_HQC3_C_crypto_kem_enc(uint8_t *ct, uint8_t *ss, const uint8_t 
 extern int PQCHQC_HQC3_C_crypto_kem_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
 
 OQS_API OQS_STATUS OQS_KEM_hqc_3_keypair_derand(uint8_t *public_key, uint8_t *secret_key, const uint8_t *seed) {
-	(void)public_key;
-	(void)secret_key;
-	(void)seed;
+	(void) public_key;
+	(void) secret_key;
+	(void) seed;
 	return OQS_ERROR;
 }
 
@@ -50,10 +50,10 @@ OQS_API OQS_STATUS OQS_KEM_hqc_3_keypair(uint8_t *public_key, uint8_t *secret_ke
 }
 
 OQS_API OQS_STATUS OQS_KEM_hqc_3_encaps_derand(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key, const uint8_t *seed) {
-	(void)ciphertext;
-	(void)shared_secret;
-	(void)public_key;
-	(void)seed;
+	(void) ciphertext;
+	(void) shared_secret;
+	(void) public_key;
+	(void) seed;
 	return OQS_ERROR;
 }
 

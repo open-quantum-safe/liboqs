@@ -64,7 +64,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		return OQS_SUCCESS;
 	} else if (0 == strcmp(sig->method_name, "Falcon-512")) {
 		// signed_msg = sig_len (2 bytes, big endian) || nonce (40 bytes) || msg || 0x29 || sig
-		const uint16_t signature_len_uint16 = (uint16_t)signature_len;
+		const uint16_t signature_len_uint16 = (uint16_t) signature_len;
 		*signed_msg_len = 2 + signature_len_uint16 + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
 		if (*signed_msg == NULL) {
@@ -75,7 +75,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		union {
 			uint16_t val;
 			uint8_t bytes[2];
-		} signature_len_be = {.val = UINT16_TO_BE(signature_len_uint16 - 40)};
+		} signature_len_be = { .val = UINT16_TO_BE(signature_len_uint16 - 40) };
 		memcpy(*signed_msg, &signature_len_be, 2);
 		memcpy(*signed_msg + 2, falc_salt, 40);
 		memcpy(*signed_msg + 42, msg, msg_len);
@@ -84,7 +84,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		return OQS_SUCCESS;
 	} else if (0 == strcmp(sig->method_name, "Falcon-1024")) {
 		// signed_msg = sig_len (2 bytes, big endian) || nonce (40 bytes) || msg || 0x2A || sig
-		const uint16_t signature_len_uint16 = (uint16_t)signature_len;
+		const uint16_t signature_len_uint16 = (uint16_t) signature_len;
 		*signed_msg_len = 2 + signature_len + msg_len;
 		*signed_msg = OQS_MEM_malloc(*signed_msg_len);
 		if (*signed_msg == NULL) {
@@ -95,7 +95,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		union {
 			uint16_t val;
 			uint8_t bytes[2];
-		} signature_len_be = {.val = UINT16_TO_BE(signature_len_uint16 - 40)};
+		} signature_len_be = { .val = UINT16_TO_BE(signature_len_uint16 - 40) };
 		memcpy(*signed_msg, &signature_len_be, 2);
 		memcpy(*signed_msg + 2, falc_salt, 40);
 		memcpy(*signed_msg + 42, msg, msg_len);
@@ -1121,7 +1121,8 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		}
 		memcpy(*signed_msg, msg, msg_len);
 		memcpy(*signed_msg + msg_len, signature, signature_len);
-		return OQS_SUCCESS;///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_COMBINE_MESSAGE_SIGNATURE_END
+		return OQS_SUCCESS;
+		///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_COMBINE_MESSAGE_SIGNATURE_END
 	} else {
 		return OQS_ERROR;
 	}
