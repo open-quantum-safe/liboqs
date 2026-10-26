@@ -2,11 +2,12 @@
 
 # SPDX-License-Identifier: MIT
 
-# usage: ./scripts/format_code.sh [--check]
+# usage: ./scripts/format_code.sh [--check] [file...]
 #
-# Formats C sources in src/ and tests/ according to .clang-format, skipping files
-# listed in .clang-format-ignore. With --check, files are left untouched and the
-# script exits non-zero if any file needs reformatting.
+# Formats C sources in src/ and tests/ (or only the given files, as paths relative
+# to the repository root) according to .clang-format, skipping files listed in
+# .clang-format-ignore. With --check, files are left untouched and the script
+# exits non-zero if any file needs reformatting.
 #
 # The clang-format version is pinned in requirements-linter.txt, since different versions
 # may format code differently; install it with
@@ -17,6 +18,7 @@ CLANG_FORMAT=${CLANG_FORMAT:-clang-format}
 
 if [ "$1" = "--check" ]; then
 	mode="--dry-run --Werror"
+	shift
 else
 	mode="-i"
 fi
@@ -34,7 +36,11 @@ fi
 found=$("$CLANG_FORMAT" --version | sed -n 's/.*clang-format version \([0-9.]*\).*/\1/p')
 
 # Run clang-format
-find src tests -name '*.[ch]' | xargs "$CLANG_FORMAT" $mode
+if [ $# -gt 0 ]; then
+	printf '%s\n' "$@" | xargs "$CLANG_FORMAT" $mode
+else
+	find src tests -name '*.[ch]' | xargs "$CLANG_FORMAT" $mode
+fi
 rv=$?
 
 # Different clang-format versions may format code differently, so flag a mismatch
