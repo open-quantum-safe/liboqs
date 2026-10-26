@@ -75,7 +75,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		union {
 			uint16_t val;
 			uint8_t bytes[2];
-		} signature_len_be = {.val = UINT16_TO_BE(signature_len_uint16 - 40)};
+		} signature_len_be = { .val = UINT16_TO_BE(signature_len_uint16 - 40) };
 		memcpy(*signed_msg, &signature_len_be, 2);
 		memcpy(*signed_msg + 2, falc_salt, 40);
 		memcpy(*signed_msg + 42, msg, msg_len);
@@ -95,7 +95,7 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		union {
 			uint16_t val;
 			uint8_t bytes[2];
-		} signature_len_be = {.val = UINT16_TO_BE(signature_len_uint16 - 40)};
+		} signature_len_be = { .val = UINT16_TO_BE(signature_len_uint16 - 40) };
 		memcpy(*signed_msg, &signature_len_be, 2);
 		memcpy(*signed_msg + 2, falc_salt, 40);
 		memcpy(*signed_msg + 42, msg, msg_len);
@@ -1241,7 +1241,8 @@ OQS_STATUS combine_message_signature(uint8_t **signed_msg, size_t *signed_msg_le
 		}
 		memcpy(*signed_msg, msg, msg_len);
 		memcpy(*signed_msg + msg_len, signature, signature_len);
-		return OQS_SUCCESS;///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_COMBINE_MESSAGE_SIGNATURE_END
+		return OQS_SUCCESS;
+		///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_COMBINE_MESSAGE_SIGNATURE_END
 	} else {
 		return OQS_ERROR;
 	}

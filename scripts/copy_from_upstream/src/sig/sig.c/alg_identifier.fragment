@@ -4,3 +4,4 @@
 		OQS_SIG_alg_{{ family['name'] }}_{{ scheme['alias_scheme'] }},
 {%- endif -%}
 {% endfor %}{% endfor %}
+		
