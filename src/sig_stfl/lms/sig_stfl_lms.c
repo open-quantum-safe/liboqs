@@ -49,9 +49,6 @@ OQS_STATUS OQS_SIG_STFL_alg_lms_sha256_h20_w8_h20_w8_keypair(uint8_t *public_key
 /* Convert LMS secret key object to byte string */
 static OQS_STATUS OQS_SECRET_KEY_LMS_serialize_key(uint8_t **sk_buf_ptr, size_t *sk_len, const OQS_SIG_STFL_SECRET_KEY *sk);
 
-/* Insert lms byte string in an LMS secret key object */
-static OQS_STATUS OQS_SECRET_KEY_LMS_deserialize_key(OQS_SIG_STFL_SECRET_KEY *sk, const uint8_t *sk_buf, const size_t sk_len, void *context);
-
 static void OQS_SECRET_KEY_LMS_set_store_cb(OQS_SIG_STFL_SECRET_KEY *sk, secure_store_sk store_cb, void *context);
 
 // ======================== LMS Maccros ======================== //
@@ -62,12 +59,29 @@ static void OQS_SECRET_KEY_LMS_set_store_cb(OQS_SIG_STFL_SECRET_KEY *sk, secure_
         sig->sigs_remaining = OQS_SIG_STFL_lms_sigs_left; \
         sig->sigs_total = OQS_SIG_STFL_lms_sigs_total; \
         sig->keypair = OQS_SIG_STFL_alg_lms_##lms_variant##_keypair; \
-        sig->sign = OQS_SIG_STFL_alg_lms_sign;
+        sig->sign = OQS_SIG_STFL_alg_lms_##lms_variant##_sign;
+#define LMS_SIGN_FN(lms_variant) \
+static OQS_STATUS OQS_SIG_STFL_alg_lms_##lms_variant##_sign(uint8_t *signature, size_t *signature_length, const uint8_t *message, size_t message_len, OQS_SIG_STFL_SECRET_KEY *secret_key) { \
+        return oqs_sig_stfl_lms_sign_with_oid(signature, signature_length, message, message_len, secret_key, OQS_LMS_ID_##lms_variant, OQS_SIG_STFL_alg_lms_##lms_variant##_length_signature); \
+} \
+
 #else
 #define LMS_SIGGEN(lms_variant, LMS_VARIANT)
+/* Verify-only builds never wire sig->sign, so the per-variant signing
+ * wrapper is not emitted at all. */
+#define LMS_SIGN_FN(lms_variant)
 #endif
 // generator for all alg-specific functions:
 #define LMS_ALG(lms_variant, LMS_VARIANT) \
+LMS_SIGN_FN(lms_variant) \
+static OQS_STATUS OQS_SIG_STFL_alg_lms_##lms_variant##_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key) { \
+        return oqs_sig_stfl_lms_verify_with_oid(message, message_len, signature, signature_len, public_key, OQS_LMS_ID_##lms_variant, OQS_SIG_STFL_alg_lms_##lms_variant##_length_signature); \
+} \
+\
+static OQS_STATUS OQS_SECRET_KEY_LMS_##LMS_VARIANT##_deserialize_key(OQS_SIG_STFL_SECRET_KEY *sk, const uint8_t *sk_buf, const size_t sk_len, void *context) { \
+        return oqs_deserialize_lms_key(sk, sk_buf, sk_len, context, OQS_LMS_ID_##lms_variant); \
+} \
+\
 OQS_SIG_STFL *OQS_SIG_STFL_alg_lms_##lms_variant##_new(void) { \
 \
         OQS_SIG_STFL *sig = (OQS_SIG_STFL *)OQS_MEM_calloc(1, sizeof(OQS_SIG_STFL)); \
@@ -86,7 +100,7 @@ OQS_SIG_STFL *OQS_SIG_STFL_alg_lms_##lms_variant##_new(void) { \
         sig->length_secret_key = OQS_SIG_STFL_alg_lms_length_private_key; \
         sig->length_signature = OQS_SIG_STFL_alg_lms_##lms_variant##_length_signature; \
 \
-        sig->verify = OQS_SIG_STFL_alg_lms_verify; \
+        sig->verify = OQS_SIG_STFL_alg_lms_##lms_variant##_verify; \
 \
         return sig;\
 } \
@@ -114,7 +128,7 @@ OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_LMS_##LMS_VARIANT##_new(void) {\
 \
         sk->serialize_key = OQS_SECRET_KEY_LMS_serialize_key;\
 \
-        sk->deserialize_key = OQS_SECRET_KEY_LMS_deserialize_key;\
+        sk->deserialize_key = OQS_SECRET_KEY_LMS_##LMS_VARIANT##_deserialize_key;\
 \
         sk->lock_key = NULL;\
 \
@@ -269,26 +283,33 @@ void OQS_SECRET_KEY_LMS_free(OQS_SIG_STFL_SECRET_KEY *sk) {
 
 /* Convert LMS secret key object to byte string */
 static OQS_STATUS OQS_SECRET_KEY_LMS_serialize_key(uint8_t **sk_buf_ptr, size_t *sk_len, const OQS_SIG_STFL_SECRET_KEY *sk) {
-	OQS_STATUS status;
-	if (sk->lock_key && sk->mutex) {
-		sk->lock_key(sk->mutex);
+	OQS_STATUS status = OQS_ERROR;
+
+	if (sk == NULL || sk_buf_ptr == NULL || sk_len == NULL) {
+		return OQS_ERROR;
+	}
+	*sk_buf_ptr = NULL;
+	*sk_len = 0;
+
+	if (OQS_SIG_STFL_SECRET_KEY_lock(sk) != OQS_SUCCESS) {
+		return OQS_ERROR;
 	}
 
 	status = oqs_serialize_lms_key(sk_buf_ptr, sk_len, sk);
 
-	if (sk->unlock_key && sk->mutex) {
-		sk->unlock_key(sk->mutex);
+	if (OQS_SIG_STFL_SECRET_KEY_unlock(sk) != OQS_SUCCESS) {
+		if (*sk_buf_ptr != NULL) {
+			OQS_MEM_secure_free(*sk_buf_ptr, *sk_len);
+			*sk_buf_ptr = NULL;
+			*sk_len = 0;
+		}
+		return OQS_ERROR;
 	}
 	return status;
 }
 
-/* Insert lms byte string in an LMS secret key object */
-static OQS_STATUS OQS_SECRET_KEY_LMS_deserialize_key(OQS_SIG_STFL_SECRET_KEY *sk, const uint8_t *sk_buf, const size_t sk_len, void *context) {
-	return oqs_deserialize_lms_key(sk, sk_buf, sk_len, context);
-}
-
 static void OQS_SECRET_KEY_LMS_set_store_cb(OQS_SIG_STFL_SECRET_KEY *sk, secure_store_sk store_cb, void *context) {
-	if (sk && store_cb && context) {
+	if (sk && store_cb) {
 		oqs_lms_key_set_store_cb(sk, store_cb, context);
 	}
 }

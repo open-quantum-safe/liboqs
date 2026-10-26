@@ -664,11 +664,11 @@ OQS_API void OQS_SIG_STFL_SECRET_KEY_SET_mutex(OQS_SIG_STFL_SECRET_KEY *sk, void
 /**
  * Lock the secret key to ensure exclusive access in a concurrent environment.
  *
- * If the `mutex` is not set, this lock operation will fail.
+ * If only part of the `lock`, `unlock`, and `mutex` tuple is set, this lock operation will fail.
  * This lock operation is essential in multi-threaded or multi-process contexts
  * to prevent simultaneous Signing operations that could compromise the stateful signature security.
  *
- * @warning If the `lock` function is set and `mutex` is not set, this lock operation will fail.
+ * @warning If only part of the `lock`, `unlock`, and `mutex` tuple is set, this lock operation will fail.
  *
  * @param[in] sk Pointer to the secret key to be locked.
  * @return OQS_SUCCESS if the lock is successfully applied; OQS_ERROR otherwise.
@@ -677,9 +677,9 @@ OQS_API void OQS_SIG_STFL_SECRET_KEY_SET_mutex(OQS_SIG_STFL_SECRET_KEY *sk, void
  *       In a concurrent environment, the user is responsible for locking and unlocking the private key,
  *       to make sure that only one thread can access the private key during a Signing operation.
  *
- * @note If the `lock` function and `mutex` are both set, proceed to lock the private key.
+ * @note If the `lock`, `unlock`, and `mutex` tuple is set, proceed to lock the private key.
  */
-OQS_STATUS OQS_SIG_STFL_SECRET_KEY_lock(OQS_SIG_STFL_SECRET_KEY *sk);
+OQS_STATUS OQS_SIG_STFL_SECRET_KEY_lock(const OQS_SIG_STFL_SECRET_KEY *sk);
 
 /**
  * Unlock the secret key, making it accessible to other processes.
@@ -688,7 +688,7 @@ OQS_STATUS OQS_SIG_STFL_SECRET_KEY_lock(OQS_SIG_STFL_SECRET_KEY *sk);
  * the secret key, as it allows a process to signal that it has finished using the key, so
  * others can safely use it.
  *
- * @warning If the `unlock` function is set and `mutex` is not set, this unlock operation will fail.
+ * @warning If only part of the `lock`, `unlock`, and `mutex` tuple is set, this unlock operation will fail.
  *
  * @param[in] sk Pointer to the secret key whose lock should be released.
  * @return OQS_SUCCESS if the lock was successfully released; otherwise, OQS_ERROR.
@@ -697,9 +697,9 @@ OQS_STATUS OQS_SIG_STFL_SECRET_KEY_lock(OQS_SIG_STFL_SECRET_KEY *sk);
  *       In a concurrent environment, the user is responsible for locking and unlocking the private key,
  *       to make sure that only one thread can access the private key during a Signing operation.
  *
- * @note If the `unlock` function and `mutex` are both set, proceed to unlock the private key.
+ * @note If the `lock`, `unlock`, and `mutex` tuple is set, proceed to unlock the private key.
  */
-OQS_STATUS OQS_SIG_STFL_SECRET_KEY_unlock(OQS_SIG_STFL_SECRET_KEY *sk);
+OQS_STATUS OQS_SIG_STFL_SECRET_KEY_unlock(const OQS_SIG_STFL_SECRET_KEY *sk);
 
 /**
  * Set the callback and context for securely storing a stateful secret key.

@@ -58,6 +58,17 @@ def test_sig_stfl(sig_stfl_name):
             [helpers.path_to_executable('test_sig_stfl'), sig_stfl_name],
             )
 
+@helpers.filtered_test
+@helpers.test_requires_build_options(
+    "OQS_ALLOW_LMS_KEY_AND_SIG_GEN",
+    "OQS_ENABLE_SIG_STFL_lms_sha256_h5_w1",
+    "OQS_ENABLE_SIG_STFL_lms_sha256_h5_w8",
+)
+def test_sig_stfl_lms_regressions():
+    helpers.run_subprocess(
+        [helpers.path_to_executable('test_sig_stfl_lms_regressions')],
+    )
+
 if __name__ == "__main__":
     import sys
     pytest.main(sys.argv)
