@@ -48,7 +48,7 @@ oqs-support-tier: 3
 upstream-maintenance: Best effort
 upstream-statement-url: null
 primary-upstream:
-  source: https://github.com/bhess/the-sqisign/commit/6ef779d332bf708556be205335974a8f3935da2a
+  source: https://github.com/bhess/the-sqisign/commit/f3fc04c67db10cb97388be4ceff191711ce44f77
     with copy_from_upstream patches
   spdx-license-identifier: Apache-2.0
 parameter-sets:

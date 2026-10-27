@@ -45,8 +45,6 @@ decode_digits(digit_t *x, const byte_t *enc, size_t nbytes, size_t ndigits)
 }
 
 // ibz_t: only works for positive inputs
-// Secret-key integers occupy FP_ENCODED_BYTES (ideal norm/x/y) or CHALLENGE_BYTES (basis matrix entries).
-// Both helpers round the larger encoding size up to a whole number of digit_t limbs for their workspace.
 
 static byte_t *
 sig_ibz_to_bytes(byte_t *enc, const ibz_t *x, size_t nbytes, bool sgn)
