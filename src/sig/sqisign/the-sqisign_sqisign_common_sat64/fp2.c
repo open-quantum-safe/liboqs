@@ -1,6 +1,5 @@
 #include "fp2.h"
 #include <encoded_sizes.h>
-#include <assert.h>
 #include <inttypes.h>
 
 /* Arithmetic modulo X^2 + 1 */
@@ -59,9 +58,8 @@ fp2_inv(fp2_t *x)
 void
 fp2_batched_inv(fp2_t *x, int len)
 {
-    // Largest SQIsign batch: curve C, two x-coordinates and nine z-coordinates in cubical_normalization_dlog.
-    assert(len >= 1 && len <= 12);
-    fp2_t t1[12], t2[12];
+    SQISIGN_VLA(fp2_t, t1, len);
+    SQISIGN_VLA(fp2_t, t2, len);
     fp2_t inverse;
 
     // x = x0,...,xn

@@ -585,12 +585,10 @@ mp_divmod_schoolbook(digit_t *q, digit_t *r, const digit_t *u, int ulen, const d
         return;
     }
 
-    // D2n1n can pass a 2n-limb dividend with n <= IBZ_NLIMBS; normalization adds one carry limb.
-    assert(vlen <= IBZ_NLIMBS && ulen <= 2 * IBZ_NLIMBS);
     unsigned shift = mp_clz_digit(v[vlen - 1]);
-    digit_t vn[IBZ_NLIMBS];
+    SQISIGN_VLA(digit_t, vn, vlen);
     mp_shl_words(vn, v, vlen, shift);
-    digit_t un[2 * IBZ_NLIMBS + 1];
+    SQISIGN_VLA(digit_t, un, ulen + 1);
     digit_t topcarry = mp_shl_words(un, u, ulen, shift);
     un[ulen] = topcarry;
 
@@ -792,26 +790,24 @@ static void mp_div_d2n1n(digit_t *Q, digit_t *R, const digit_t *A, const digit_t
 
 // Burnikel-Ziegler Alg.2 (D3n2n): divides a 3n-word A by a 2n-word B, B[2n-1] != 0,
 // producing a quotient Qhat of n+1 words and a remainder R of 2n words (0 <= R < B).
-// D2n1n halves its n before calling this helper, so n <= floor(IBZ_NLIMBS/2).
 static void
 mp_div_d3n2n(digit_t *Qhat, digit_t *R, const digit_t *A, const digit_t *B, int n)
 {
-    assert(n <= IBZ_NLIMBS / 2);
     const digit_t *B0 = B;
     const digit_t *B1 = B + n;
     const digit_t *A0 = A;
     const digit_t *AH = A + n;
 
-    digit_t R1[IBZ_NLIMBS / 2];
+    SQISIGN_VLA(digit_t, R1, n);
     mp_div_d2n1n(Qhat, R1, AH, B1, n);
 
     int L = 2 * n + 1;
-    digit_t Rbuf[IBZ_NLIMBS + 1];
+    SQISIGN_VLA(digit_t, Rbuf, L);
     memset(Rbuf, 0, (size_t)L * sizeof(digit_t));
     memcpy(Rbuf, A0, (size_t)n * sizeof(digit_t));
     memcpy(Rbuf + n, R1, (size_t)n * sizeof(digit_t));
 
-    digit_t prod[IBZ_NLIMBS + 1];
+    SQISIGN_VLA(digit_t, prod, L);
     mp_mul_raw(prod, Qhat, n + 1, B0, n);
 
     digit_t borrow = mp_sub_raw(Rbuf, L, Rbuf, L, prod, L);
@@ -830,7 +826,6 @@ mp_div_d3n2n(digit_t *Qhat, digit_t *R, const digit_t *A, const digit_t *B, int 
 static void
 mp_div_d2n1n(digit_t *Q, digit_t *R, const digit_t *A, const digit_t *B, int n)
 {
-    assert(n <= IBZ_NLIMBS);
     if (!MP_BZ_SHOULD_RECURSE(n)) {
         mp_divmod_schoolbook(Q, R, A, 2 * n, B, n);
         return;
@@ -839,14 +834,15 @@ mp_div_d2n1n(digit_t *Q, digit_t *R, const digit_t *A, const digit_t *B, int n)
     const digit_t *A0 = A;
     const digit_t *A1 = A + n2;
 
-    digit_t Q1[IBZ_NLIMBS / 2 + 1], R1[IBZ_NLIMBS];
+    SQISIGN_VLA(digit_t, Q1, n2 + 1);
+    SQISIGN_VLA(digit_t, R1, n);
     mp_div_d3n2n(Q1, R1, A1, B, n2);
 
-    digit_t AA[IBZ_NLIMBS + IBZ_NLIMBS / 2];
+    SQISIGN_VLA(digit_t, AA, n + n2);
     memcpy(AA, A0, (size_t)n2 * sizeof(digit_t));
     memcpy(AA + n2, R1, (size_t)n * sizeof(digit_t));
 
-    digit_t Q2[IBZ_NLIMBS / 2 + 1];
+    SQISIGN_VLA(digit_t, Q2, n2 + 1);
     mp_div_d3n2n(Q2, R, AA, B, n2);
 
     memset(Q, 0, (size_t)(n + 1) * sizeof(digit_t));
@@ -856,22 +852,21 @@ mp_div_d2n1n(digit_t *Q, digit_t *R, const digit_t *A, const digit_t *B, int n)
 
 // Burnikel-Ziegler's unsigned division of u by v (non-CT), via blockwise long division
 // using mp_div_d2n1n as the "single big digit" quotient step (block size n = vlen).
-// u and v have at most IBZ_NLIMBS words (including ulen < vlen, or leading zero words in u).
+// u may have any length >= 1 word (including ulen < vlen, or leading zero words).
 // v must be trimmed to its true significant length (v[vlen-1] != 0).
 static void
 mp_div_unsigned(digit_t *q, digit_t *r, const digit_t *u, int ulen, const digit_t *v, int vlen)
 {
     assert(vlen >= 1);
     assert(v[vlen - 1] != 0);
-    assert(ulen <= IBZ_NLIMBS && vlen <= IBZ_NLIMBS);
     int n = vlen;
 
     unsigned shift = mp_clz_digit(v[n - 1]);
-    digit_t vn[IBZ_NLIMBS];
+    SQISIGN_VLA(digit_t, vn, n);
     mp_shl_words(vn, v, n, shift);
 
     int un_len = ulen + 1;
-    digit_t un[IBZ_NLIMBS + 1];
+    SQISIGN_VLA(digit_t, un, un_len);
     digit_t topcarry = mp_shl_words(un, u, ulen, shift);
     un[ulen] = topcarry;
 
@@ -883,11 +878,12 @@ mp_div_unsigned(digit_t *q, digit_t *r, const digit_t *u, int ulen, const digit_
 
     memset(q, 0, (size_t)qbuf_len * sizeof(digit_t));
 
-    digit_t rem[IBZ_NLIMBS];
+    SQISIGN_VLA(digit_t, rem, n);
     memset(rem, 0, (size_t)n * sizeof(digit_t));
 
+    SQISIGN_VLA(digit_t, window, 2 * n);
+    SQISIGN_VLA(digit_t, qi, n + 1);
     for (int i = t - 1; i >= 0; i--) {
-        digit_t window[2 * IBZ_NLIMBS];
         for (int k = 0; k < n; k++) {
             int j = i * n + k;
             window[k] = (j < un_len) ? un[j] : 0;
@@ -902,7 +898,6 @@ mp_div_unsigned(digit_t *q, digit_t *r, const digit_t *u, int ulen, const digit_
             continue;
         }
         memcpy(window + n, rem, (size_t)n * sizeof(digit_t));
-        digit_t qi[IBZ_NLIMBS + 1];
         mp_div_d2n1n(qi, rem, window, vn, n);
         mp_add_inplace_at(q, qbuf_len, qi, n + 1, i * n);
     }
@@ -910,8 +905,6 @@ mp_div_unsigned(digit_t *q, digit_t *r, const digit_t *u, int ulen, const digit_
 }
 
 // Returns the exact word count mp_div_unsigned for q (non-CT).
-// Rounding ulen+1 up to a multiple of vlen, then adding one, gives at most
-// ulen + vlen + 1 <= 2*IBZ_NLIMBS + 1 words, including block padding and carry.
 static int
 mp_div_qlen(int ulen, int vlen)
 {
@@ -979,8 +972,8 @@ ibz_div(ibz_t *quotient, ibz_t *remainder, const ibz_t *a, const ibz_t *b)
     } else {
         int qbuf_len = mp_div_qlen(ulen, vlen);
 
-        digit_t qbuf[2 * IBZ_NLIMBS + 1];
-        digit_t rbuf[IBZ_NLIMBS];
+        SQISIGN_VLA(digit_t, qbuf, qbuf_len);
+        SQISIGN_VLA(digit_t, rbuf, vlen);
         mp_div_unsigned(qbuf, rbuf, abs_a.limbs, ulen, abs_b.limbs, vlen);
 
         int qcopy = int_min(qbuf_len, L);
@@ -1209,11 +1202,13 @@ ibz_mod(ibz_t *r, const ibz_t *a, const ibz_t *b)
     if (a_lt_b) {
         memcpy(r->limbs, abs_a.limbs, (size_t)ulen * sizeof(digit_t));
     } else if (!MP_BZ_SHOULD_RECURSE(vlen)) {
-        digit_t qscratch[IBZ_NLIMBS];
+        SQISIGN_VLA(digit_t, qscratch, ulen - vlen + 1);
         mp_divmod_schoolbook(qscratch, r->limbs, abs_a.limbs, ulen, abs_b.limbs, vlen);
     } else {
-        digit_t qbuf[2 * IBZ_NLIMBS + 1];
-        digit_t rbuf[IBZ_NLIMBS];
+        int qbuf_len = mp_div_qlen(ulen, vlen);
+
+        SQISIGN_VLA(digit_t, qbuf, qbuf_len);
+        SQISIGN_VLA(digit_t, rbuf, vlen);
         mp_div_unsigned(qbuf, rbuf, abs_a.limbs, ulen, abs_b.limbs, vlen);
         memcpy(r->limbs, rbuf, (size_t)vlen * sizeof(digit_t));
     }
@@ -2044,7 +2039,6 @@ mp_lehmer_inner(ddigit_t x, ddigit_t y, sdigit_t *A_out, sdigit_t *B_out, sdigit
 }
 
 // result = A*u + B*v: A, B are signed single-digit values and u, v are nonnegative len1/len2-word.
-// Multiplication by a single digit needs at most IBZ_NLIMBS+1 limbs; adding the products needs one more.
 static void
 mp_lehmer_combine(digit_t *result,
                   int reslen,
@@ -2055,16 +2049,17 @@ mp_lehmer_combine(digit_t *result,
                   const digit_t *v,
                   int len2)
 {
-    assert(len1 <= IBZ_NLIMBS && len2 <= IBZ_NLIMBS && reslen <= IBZ_NLIMBS + 2);
     int neg1 = (A < 0), neg2 = (B < 0);
     assert(!(neg1 && neg2));
     digit_t abs1 = (digit_t)(neg1 ? -A : A);
     digit_t abs2 = (digit_t)(neg2 ? -B : B);
 
-    digit_t term1[IBZ_NLIMBS + 2], term2[IBZ_NLIMBS + 2];
+    SQISIGN_VLA(digit_t, term1, reslen);
+    SQISIGN_VLA(digit_t, term2, reslen);
     memset(term1, 0, (size_t)reslen * sizeof(digit_t));
     memset(term2, 0, (size_t)reslen * sizeof(digit_t));
-    digit_t tmp1[IBZ_NLIMBS + 1], tmp2[IBZ_NLIMBS + 1];
+    SQISIGN_VLA(digit_t, tmp1, len1 + 1);
+    SQISIGN_VLA(digit_t, tmp2, len2 + 1);
     mp_mul_raw(tmp1, u, len1, &abs1, 1);
     mp_mul_raw(tmp2, v, len2, &abs2, 1);
     int c1 = int_min(len1 + 1, reslen);
@@ -2119,7 +2114,8 @@ ibz_gcd(ibz_t *gcd, const ibz_t *a, const ibz_t *b)
     ibz_cneg(&abs_a, a, a_neg);
     ibz_cneg(&abs_b, b, b_neg);
 
-    digit_t u[IBZ_NLIMBS], v[IBZ_NLIMBS];
+    SQISIGN_VLA(digit_t, u, L);
+    SQISIGN_VLA(digit_t, v, L);
     if (mp_compare(abs_a.limbs, abs_b.limbs, (unsigned int)L) >= 0) {
         memcpy(u, abs_a.limbs, (size_t)L * sizeof(digit_t));
         memcpy(v, abs_b.limbs, (size_t)L * sizeof(digit_t));
@@ -2137,6 +2133,11 @@ ibz_gcd(ibz_t *gcd, const ibz_t *a, const ibz_t *b)
         vlen--;
     }
 
+    // ulen, vlen <= L: division needs at most 2*L+1 limbs, Lehmer combinations L+2.
+    SQISIGN_VLA(digit_t, qbuf, 2 * L + 1);
+    SQISIGN_VLA(digit_t, rbuf, L);
+    SQISIGN_VLA(digit_t, new_u, L + 2);
+    SQISIGN_VLA(digit_t, new_v, L + 2);
     while (1) {
         if (v[vlen - 1] == 0) {
             break;
@@ -2154,8 +2155,6 @@ ibz_gcd(ibz_t *gcd, const ibz_t *a, const ibz_t *b)
         }
 
         if (steps == 0) {
-            digit_t qbuf[2 * IBZ_NLIMBS + 1];
-            digit_t rbuf[IBZ_NLIMBS];
             mp_div_unsigned(qbuf, rbuf, u, ulen, v, vlen);
 
             memcpy(u, v, (size_t)vlen * sizeof(digit_t));
@@ -2164,7 +2163,6 @@ ibz_gcd(ibz_t *gcd, const ibz_t *a, const ibz_t *b)
             memset(v + vlen, 0, (size_t)(L - vlen) * sizeof(digit_t));
         } else {
             int reslen = ((ulen > vlen) ? ulen : vlen) + 2;
-            digit_t new_u[IBZ_NLIMBS + 2], new_v[IBZ_NLIMBS + 2];
             mp_lehmer_combine(new_u, reslen, A, u, ulen, B, v, vlen);
             mp_lehmer_combine(new_v, reslen, C, u, ulen, D, v, vlen);
 
@@ -2208,7 +2206,7 @@ mp_mul_small_signed(ibz_t *prod, sdigit_t coef, const ibz_t *x)
     ibz_cneg(&abs_x, x, x_neg);
 
     int xlen = NUM_LIMBS(abs_x.bitlen);
-    digit_t result[IBZ_NLIMBS + 1];
+    SQISIGN_VLA(digit_t, result, xlen + 1);
     mp_mul_raw(result, abs_x.limbs, xlen, &abs_coef, 1);
 
     int result_bitlen = abs_x.bitlen + digit_bitlen(abs_coef) - 1;
@@ -2237,7 +2235,8 @@ ibz_xgcd(ibz_t *gcd, ibz_t *u, ibz_t *v, const ibz_t *a, const ibz_t *b)
     ibz_cneg(&abs_a, a, a_neg);
     ibz_cneg(&abs_b, b, b_neg);
 
-    digit_t ru[IBZ_NLIMBS], rv[IBZ_NLIMBS];
+    SQISIGN_VLA(digit_t, ru, L);
+    SQISIGN_VLA(digit_t, rv, L);
     ibz_t cu_a = { 0 }, cu_b = { 0 }, cv_a = { 0 }, cv_b = { 0 };
     if (mp_compare(abs_a.limbs, abs_b.limbs, (unsigned int)L) >= 0) {
         memcpy(ru, abs_a.limbs, (size_t)L * sizeof(digit_t));
@@ -2264,6 +2263,11 @@ ibz_xgcd(ibz_t *gcd, ibz_t *u, ibz_t *v, const ibz_t *a, const ibz_t *b)
         vlen--;
     }
 
+    // ulen, vlen <= L: division needs at most 2*L+1 limbs, Lehmer combinations L+2.
+    SQISIGN_VLA(digit_t, qbuf, 2 * L + 1);
+    SQISIGN_VLA(digit_t, rbuf, L);
+    SQISIGN_VLA(digit_t, new_ru, L + 2);
+    SQISIGN_VLA(digit_t, new_rv, L + 2);
     while (1) {
         if (rv[vlen - 1] == 0) {
             break;
@@ -2282,8 +2286,6 @@ ibz_xgcd(ibz_t *gcd, ibz_t *u, ibz_t *v, const ibz_t *a, const ibz_t *b)
 
         if (steps == 0) {
             int qbuf_len = mp_div_qlen(ulen, vlen);
-            digit_t qbuf[2 * IBZ_NLIMBS + 1];
-            digit_t rbuf[IBZ_NLIMBS];
             mp_div_unsigned(qbuf, rbuf, ru, ulen, rv, vlen);
 
             int qlen = qbuf_len;
@@ -2313,7 +2315,6 @@ ibz_xgcd(ibz_t *gcd, ibz_t *u, ibz_t *v, const ibz_t *a, const ibz_t *b)
             memset(rv + vlen, 0, (size_t)(L - vlen) * sizeof(digit_t));
         } else {
             int reslen = ((ulen > vlen) ? ulen : vlen) + 2;
-            digit_t new_ru[IBZ_NLIMBS + 2], new_rv[IBZ_NLIMBS + 2];
             mp_lehmer_combine(new_ru, reslen, A, ru, ulen, B, rv, vlen);
             mp_lehmer_combine(new_rv, reslen, C, ru, ulen, D, rv, vlen);
 
@@ -2468,7 +2469,8 @@ ibz_invmod(ibz_t *inv, const ibz_t *a, const ibz_t *mod)
     ibz_cneg(&abs_a, a, a_neg);
     ibz_copy(&abs_mod, mod);
 
-    digit_t u[IBZ_NLIMBS], v[IBZ_NLIMBS];
+    SQISIGN_VLA(digit_t, u, L);
+    SQISIGN_VLA(digit_t, v, L);
     ibz_t cu = { 0 }, cv = { 0 };
     if (mp_compare(abs_a.limbs, abs_mod.limbs, (unsigned int)L) >= 0) {
         memcpy(u, abs_a.limbs, (size_t)L * sizeof(digit_t));
@@ -2491,6 +2493,11 @@ ibz_invmod(ibz_t *inv, const ibz_t *a, const ibz_t *mod)
         vlen--;
     }
 
+    // ulen, vlen <= L: division needs at most 2*L+1 limbs, Lehmer combinations L+2.
+    SQISIGN_VLA(digit_t, qbuf, 2 * L + 1);
+    SQISIGN_VLA(digit_t, rbuf, L);
+    SQISIGN_VLA(digit_t, new_u, L + 2);
+    SQISIGN_VLA(digit_t, new_v, L + 2);
     while (1) {
         if (v[vlen - 1] == 0) {
             break;
@@ -2509,8 +2516,6 @@ ibz_invmod(ibz_t *inv, const ibz_t *a, const ibz_t *mod)
 
         if (steps == 0) {
             int qbuf_len = mp_div_qlen(ulen, vlen);
-            digit_t qbuf[2 * IBZ_NLIMBS + 1];
-            digit_t rbuf[IBZ_NLIMBS];
             mp_div_unsigned(qbuf, rbuf, u, ulen, v, vlen);
 
             int qlen = qbuf_len;
@@ -2531,7 +2536,6 @@ ibz_invmod(ibz_t *inv, const ibz_t *a, const ibz_t *mod)
             memset(v + vlen, 0, (size_t)(L - vlen) * sizeof(digit_t));
         } else {
             int reslen = ((ulen > vlen) ? ulen : vlen) + 2;
-            digit_t new_u[IBZ_NLIMBS + 2], new_v[IBZ_NLIMBS + 2];
             mp_lehmer_combine(new_u, reslen, A, u, ulen, B, v, vlen);
             mp_lehmer_combine(new_v, reslen, C, u, ulen, D, v, vlen);
 
@@ -2664,9 +2668,7 @@ mp_mul_high(digit_t *r, const digit_t *a, int la, const digit_t *b, int lb, unsi
     if (c0 < 0)
         c0 = 0; // keep + 2 >= la + lb: degenerates to the exact full product, then truncated
     int next = la + lb - c0;
-    // ibz_sqrt_floor uses keep = 2*L+2, L <= ceil(IBZ_NLIMBS/2)+1; allow two guard limbs.
-    digit_t ext[2 * ((IBZ_NLIMBS + 1) / 2 + 1) + 4];
-    assert(next <= (int)(sizeof(ext) / sizeof(*ext)));
+    SQISIGN_VLA(digit_t, ext, next);
     memset(ext, 0, (size_t)next * sizeof(digit_t));
     for (int i = 0; i < la; i++) {
         int j0 = (c0 > i) ? c0 - i : 0;
@@ -2734,11 +2736,6 @@ ibz_sqrt_floor(ibz_t *sqrt, const ibz_t *a)
     if (b_eff == 0) {
         ibz_set(sqrt, 0, 1);
     } else {
-        // m = ceil(n_eff/2), with n_eff <= IBZ_NLIMBS for an ibz_t input.
-        enum
-        {
-            MAX_M = (IBZ_NLIMBS + 1) / 2
-        };
         int n_eff = NUM_LIMBS(b_eff);
         unsigned int m = (n_eff + 1) / 2; // the value part of A is 2m limbs wide, and so is the squaring at the end
 
@@ -2751,7 +2748,7 @@ ibz_sqrt_floor(ibz_t *sqrt, const ibz_t *a)
         int off = 2 * m - n_eff;
         int tb = t - NUM_BITS_LIMB * off;
 
-        digit_t A[2 * MAX_M + 2];
+        SQISIGN_VLA(digit_t, A, 2 * m + 2);
         memset(A, 0, (size_t)(off + 2) * sizeof(digit_t));
         memcpy(A + 2 + off, a->limbs, (size_t)n_eff * sizeof(digit_t)); // last read of a: sqrt may alias it
         if (tb != 0) // mp_shiftl is only defined for shifts in [1, R-1]
@@ -2759,14 +2756,17 @@ ibz_sqrt_floor(ibz_t *sqrt, const ibz_t *a)
         assert(A[2 * m + 1] >= ((digit_t)1) << (NUM_BITS_LIMB - 2)); // alpha >= 1/4
 
         // Step 2: seed at L = 1 (frac R-2), embedded into L = 2 by scaling with 2^R
-        digit_t Y[MAX_M + 1];
+        SQISIGN_VLA(digit_t, Y, m + 1);
         Y[0] = 0;
         Y[1] = digit_rsqrt_seed(A[2 * m + 1]);
         unsigned int L = 2;
 
         // Step 3: Newton stages. The first pass is a refresh at L = 2, which squares the seed's error; after that
         // the width grows as fast as the guard limb allows, Lout <= 2L - 1, and stops at m + 1.
-        digit_t S[2 * (MAX_M + 1)], T[2 * (MAX_M + 1) + 2], h[2 * (MAX_M + 1) + 2], U[3 * (MAX_M + 1)];
+        SQISIGN_VLA(digit_t, S, 2 * (m + 1));
+        SQISIGN_VLA(digit_t, T, 2 * (m + 1) + 2);
+        SQISIGN_VLA(digit_t, h, 2 * (m + 1) + 2);
+        SQISIGN_VLA(digit_t, U, 3 * (m + 1));
         const digit_t margin = 64;
         unsigned int Lout = 2;
         do {
@@ -2790,14 +2790,15 @@ ibz_sqrt_floor(ibz_t *sqrt, const ibz_t *a)
 
         // Step 4: multiply through, then correct. A_f is the top m+1 limbs of A.
         const digit_t *A_f = A + (m + 1);
-        digit_t P[2 * (MAX_M + 1)];
+        SQISIGN_VLA(digit_t, P, 2 * (m + 1));
         mp_mul_raw(P, A_f, m + 1, Y, m + 1);
         digit_t *sh = P + (m + 1); // drop m+1 limbs, then R-2 bits, leaving Shat in sh[0 .. m-1]
         mp_shiftr(sh, (unsigned int)(NUM_BITS_LIMB - 2), (unsigned int)(m + 1));
         assert(sh[m] == 0);
 
         digit_t *Av = A + 2; // the 2m-limb value of A, holding the remainder A - Shat^2 from here on
-        digit_t ssq[2 * MAX_M], d[2 * MAX_M];
+        SQISIGN_VLA(digit_t, ssq, 2 * m);
+        SQISIGN_VLA(digit_t, d, 2 * m);
         const digit_t one = 1, two = 2;
         mp_mul_raw(ssq, sh, m, sh, m);
         assert(mp_compare(Av, ssq, (unsigned int)(2 * m)) >= 0); // Shat is one-sided, so this cannot borrow
