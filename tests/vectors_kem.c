@@ -423,7 +423,7 @@ static OQS_STATUS kem_strcmp_vector(const char *method_name,
 	uint8_t *dk = OQS_MEM_malloc(kem->length_secret_key);
 	uint8_t *k = OQS_MEM_malloc(kem->length_shared_secret);
 
-	if ((ek == NULL) || (k == NULL)) {
+	if ((ek == NULL) || (dk == NULL) || (k == NULL)) {
 		fprintf(stderr, "[vectors_kem] %s ERROR: OQS_MEM_malloc failed!\n", method_name);
 		goto err;
 	}
