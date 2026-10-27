@@ -61,9 +61,9 @@ sig_ibz_to_bytes(byte_t *enc, const ibz_t *x, size_t nbytes, bool sgn)
         assert(ibz_cmp(&abs, &bnd) < 0);
     }
 #endif
-    digit_t d[NLIMBS(8 * MAXB(FP_ENCODED_BYTES, CHALLENGE_BYTES))];
-    assert(nbytes <= sizeof(d));
-    memset(d, 0, sizeof(d));
+    const size_t digits = (nbytes + sizeof(digit_t) - 1) / sizeof(digit_t);
+    SQISIGN_VLA(digit_t, d, digits);
+    memset(d, 0, digits * sizeof(*d));
     assert(ibz_is_positive(x));
     assert(ibz_bitsize(x) < (int)(nbytes + sizeof(digit_t) - 1) * 8);
     // non-negative, straightforward.
@@ -78,9 +78,8 @@ sig_ibz_from_bytes(ibz_t *x, const byte_t *enc, size_t nbytes)
     assert(nbytes > 0);
     const size_t ndigits = (nbytes + sizeof(digit_t) - 1) / sizeof(digit_t);
     assert(ndigits > 0);
-    digit_t d[NLIMBS(8 * MAXB(FP_ENCODED_BYTES, CHALLENGE_BYTES))];
-    assert(ndigits <= sizeof(d) / sizeof(*d));
-    memset(d, 0, sizeof(d));
+    SQISIGN_VLA(digit_t, d, ndigits);
+    memset(d, 0, ndigits * sizeof(*d));
     decode_digits(d, enc, nbytes, ndigits);
     // non-negative
     ibz_copy_digits(x, d, ndigits);

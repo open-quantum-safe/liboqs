@@ -55,13 +55,13 @@ iso_isogeny_2chain_with_strategy(ec_curve_t *curve, const ec_point_t *kernel, co
     ec_point_t A24;
     ec_copy_point(&A24, &curve->A24);
 
-    if (isog_len < 2 || isog_len > TORSION_EVEN_POWER || isog_len % 2)
-        return -1;
+    int space = 1;
+    for (int i = 1; i < isog_len; i *= 2)
+        ++space;
 
-    // Stack of remaining kernel points and their associated orders.
-    // isog_len <= TORSION_EVEN_POWER <= bitlength(p), so halving needs at most LOG2P+1 entries.
-    ec_point_t splits[LOG2P + 1];
-    uint16_t todo[LOG2P + 1];
+    // Stack of remaining kernel points and their associated orders
+    SQISIGN_VLA(ec_point_t, splits, space);
+    SQISIGN_VLA(uint16_t, todo, space);
     splits[0] = *kernel;
     todo[0] = isog_len;
 
@@ -79,7 +79,7 @@ iso_isogeny_2chain_with_strategy(ec_curve_t *curve, const ec_point_t *kernel, co
             assert(todo[current] >= 3);
             // A new split will be added
             ++current;
-            assert(current < LOG2P + 1);
+            assert(current < space);
             // We set the seed of the new split to be computed and saved
             ec_copy_point(&splits[current], &splits[current - 1]);
             // if we copied from the very first element, then we perform one additional doubling

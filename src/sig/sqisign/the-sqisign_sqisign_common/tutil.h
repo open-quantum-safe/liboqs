@@ -6,6 +6,10 @@
 
 #if defined(_MSC_VER)
 #include <intrin.h>
+#include <malloc.h>
+#define SQISIGN_VLA(type, name, count) type *name = (type *)_alloca(sizeof(type) * (count))
+#else
+#define SQISIGN_VLA(type, name, count) type name[count]
 #endif
 
 // Count leading zeros in a nonzero 64-bit word.
