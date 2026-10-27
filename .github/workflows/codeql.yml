@@ -1,0 +1,62 @@
+name: CodeQL custom queries
+
+permissions:
+  contents: read
+
+# Runs liboqs's own CodeQL queries (.github/codeql/queries) and fails if any of
+# them reports a result. Results are not uploaded to code scanning: this
+# repository uses CodeQL default setup, which rejects CodeQL SARIF uploads from
+# other workflows.
+on:
+  workflow_call:
+  workflow_dispatch:
+
+jobs:
+
+  query-tests:
+    name: CodeQL query unit tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # pin@v4
+      - name: Set up CodeQL CLI
+        id: init
+        uses: github/codeql-action/init@2892aa5e19bbd11bc0cff5427e3b750a04d9e3c2 # v4.38.2
+        with:
+          languages: cpp
+          build-mode: none
+      - name: Run query unit tests
+        env:
+          CODEQL: ${{ steps.init.outputs.codeql-path }}
+        run: '"$CODEQL" test run .github/codeql/test'
+
+  analyze:
+    name: CodeQL custom queries
+    runs-on: ubuntu-latest
+    env:
+      # Works around a crash while finalizing the database (see #2415).
+      CODEQL_EXTRACTOR_CPP_TRAP_CACHING: false
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # pin@v4
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@2892aa5e19bbd11bc0cff5427e3b750a04d9e3c2 # v4.38.2
+        with:
+          languages: cpp
+          build-mode: manual
+          config-file: ./.github/codeql/codeql-config.yml
+      - name: Build liboqs
+        # CodeQL only sees compiled code: build the default algorithms, with
+        # OpenSSL backing every primitive that supports it. On x86_64 runners
+        # OQS_DIST_BUILD forces OQS_USE_AES_OPENSSL off, so aes_ossl.c is not
+        # analysed.
+        run: |
+          cmake -S . -B build -DOQS_USE_AES_OPENSSL=ON -DOQS_USE_SHA2_OPENSSL=ON -DOQS_USE_SHA3_OPENSSL=ON
+          cmake --build build --parallel "$(nproc)"
+      - name: Run CodeQL queries
+        uses: github/codeql-action/analyze@2892aa5e19bbd11bc0cff5427e3b750a04d9e3c2 # v4.38.2
+        with:
+          upload: false
+          output: sarif-results
+      - name: Report results
+        run: python3 .github/codeql/report_results.py sarif-results/*.sarif
