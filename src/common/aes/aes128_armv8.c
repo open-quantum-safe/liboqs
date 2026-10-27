@@ -149,35 +149,6 @@ static inline void aes128_armv8_ctr_blocks_x4(uint8_t blocks[64], const uint8_t 
 	}
 }
 
-void oqs_aes128_ctr_enc_sch_upd_blks_armv8(void *schedule, uint8_t *out, size_t out_blks) {
-	aes128ctx *ctx = (aes128ctx *) schedule;
-	const unsigned char *rkeys = (const unsigned char *) ctx->sk_exp;
-	uint8_t *block = ctx->iv;
-	uint8_t blocks[64];
-	uint32_t ctr;
-	uint32_t ctr_be;
-	memcpy(&ctr_be, &block[12], 4);
-	ctr = BE_TO_UINT32(ctr_be);
-	while (out_blks >= 4) {
-		aes128_armv8_ctr_blocks_x4(blocks, block, ctr);
-		aes128_armv8_encrypt_x4(rkeys, blocks, out);
-		out += 64;
-		out_blks -= 4;
-		ctr += 4;
-	}
-	while (out_blks >= 1) {
-		ctr_be = UINT32_TO_BE(ctr);
-		memcpy(&block[12], (uint8_t *) &ctr_be, 4);
-		aes128_armv8_encrypt(rkeys, block, out);
-		out += 16;
-		out_blks--;
-		ctr++;
-	}
-	/* Leave the counter of the next block in the schedule for the next call. */
-	ctr_be = UINT32_TO_BE(ctr);
-	memcpy(&block[12], (uint8_t *) &ctr_be, 4);
-}
-
 void oqs_aes128_ctr_enc_sch_armv8(const uint8_t *iv, const size_t iv_len, const void *schedule, uint8_t *out, size_t out_len) {
 	const unsigned char *rkeys = (const unsigned char *) ((const aes128ctx *) schedule)->sk_exp;
 	uint8_t blocks[64];
