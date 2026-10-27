@@ -21,14 +21,22 @@ crypto_sign_keypair(unsigned char *pk, unsigned char *sk)
 
 SQISIGN_API
 int
-crypto_sign_signature(unsigned char *sig, size_t *siglen, const unsigned char *m, size_t mlen, const unsigned char *sk)
+crypto_sign_signature(unsigned char *sig,
+                      unsigned long long *siglen,
+                      const unsigned char *m,
+                      unsigned long long mlen,
+                      const unsigned char *sk)
 {
     return sqisign_sign_signature(sig, siglen, m, mlen, sk);
 }
 
 SQISIGN_API
 int
-crypto_sign(unsigned char *sm, size_t *smlen, const unsigned char *m, size_t mlen, const unsigned char *sk)
+crypto_sign(unsigned char *sm,
+            unsigned long long *smlen,
+            const unsigned char *m,
+            unsigned long long mlen,
+            const unsigned char *sk)
 {
     return sqisign_sign(sm, smlen, m, mlen, sk);
 }
@@ -37,9 +45,9 @@ crypto_sign(unsigned char *sm, size_t *smlen, const unsigned char *m, size_t mle
 SQISIGN_API
 int
 crypto_sign_verify(const unsigned char *sig,
-                   size_t siglen,
+                   unsigned long long siglen,
                    const unsigned char *m,
-                   size_t mlen,
+                   unsigned long long mlen,
                    const unsigned char *pk)
 {
     return sqisign_verify(sig, siglen, m, mlen, pk);
@@ -47,7 +55,11 @@ crypto_sign_verify(const unsigned char *sig,
 
 SQISIGN_API
 int
-crypto_sign_open(unsigned char *m, size_t *mlen, const unsigned char *sm, size_t smlen, const unsigned char *pk)
+crypto_sign_open(unsigned char *m,
+                 unsigned long long *mlen,
+                 const unsigned char *sm,
+                 unsigned long long smlen,
+                 const unsigned char *pk)
 {
     return sqisign_open(m, mlen, sm, smlen, pk);
 }
