@@ -3,7 +3,7 @@ upstreams:
     name: the-sqisign
     git_url: https://github.com/bhess/the-sqisign.git
     git_branch: liboqs-staging
-    git_commit: 0b72bceea0e7df9a4c975b5d8d1bb4e22be8d4d7
+    git_commit: 18e62a39d9a5e38e308116240826940a7f52f6e4
     sig_scheme_path: '.'
     sig_meta_path: 'integration/liboqs/{pqclean_scheme}.yml'
     common_meta_path: 'integration/liboqs/META_Common.yml'
