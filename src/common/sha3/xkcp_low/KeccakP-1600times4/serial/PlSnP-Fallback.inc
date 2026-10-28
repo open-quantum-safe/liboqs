@@ -210,7 +210,7 @@ void PlSnP_PermuteAll_4rounds(void *states)
 }
 #endif
 
-void PlSnP_ExtractBytes(void *states, unsigned int instanceIndex, unsigned char *data, unsigned int offset, unsigned int length)
+void PlSnP_ExtractBytes(const void *states, unsigned int instanceIndex, unsigned char *data, unsigned int offset, unsigned int length)
 {
     #if (PlSnP_baseParallelism == 1)
         SnP_ExtractBytes(stateWithIndex(instanceIndex), data, offset, length);
@@ -219,7 +219,7 @@ void PlSnP_ExtractBytes(void *states, unsigned int instanceIndex, unsigned char 
     #endif
 }
 
-void PlSnP_ExtractLanesAll(void *states, unsigned char *data, unsigned int laneCount, unsigned int laneOffset)
+void PlSnP_ExtractLanesAll(const void *states, unsigned char *data, unsigned int laneCount, unsigned int laneOffset)
 {
     unsigned int i;
 
@@ -233,7 +233,7 @@ void PlSnP_ExtractLanesAll(void *states, unsigned char *data, unsigned int laneC
     }
 }
 
-void PlSnP_ExtractAndAddBytes(void *states, unsigned int instanceIndex, const unsigned char *input, unsigned char *output, unsigned int offset, unsigned int length)
+void PlSnP_ExtractAndAddBytes(const void *states, unsigned int instanceIndex, const unsigned char *input, unsigned char *output, unsigned int offset, unsigned int length)
 {
     #if (PlSnP_baseParallelism == 1)
         SnP_ExtractAndAddBytes(stateWithIndex(instanceIndex), input, output, offset, length);
@@ -242,7 +242,7 @@ void PlSnP_ExtractAndAddBytes(void *states, unsigned int instanceIndex, const un
     #endif
 }
 
-void PlSnP_ExtractAndAddLanesAll(void *states, const unsigned char *input, unsigned char *output, unsigned int laneCount, unsigned int laneOffset)
+void PlSnP_ExtractAndAddLanesAll(const void *states, const unsigned char *input, unsigned char *output, unsigned int laneCount, unsigned int laneOffset)
 {
     unsigned int i;
 
