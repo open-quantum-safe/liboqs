@@ -1,7 +1,9 @@
 # SPDX-License-Identifier: MIT
 from pathlib import Path
 
-from jinja2 import Environment
+import pytest
+
+Environment = pytest.importorskip("jinja2").Environment
 
 
 TEMPLATES = (
