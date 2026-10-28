@@ -601,8 +601,8 @@ static inline void aes256_ctr_upd_blks(unsigned char *out, size_t outblks, aes25
 
 	br_range_dec32le(ivw, 4, iv);
 
-	memcpy(ivw +  4, ivw, 3 * sizeof(uint32_t));
-	memcpy(ivw +  8, ivw, 3 * sizeof(uint32_t));
+	memmove(ivw +  4, ivw, 3 * sizeof(uint32_t));
+	memmove(ivw +  8, ivw, 3 * sizeof(uint32_t));
 	memcpy(ivw + 12, ivw, 3 * sizeof(uint32_t));
 	cc = br_swap32(ivw[3]);
 	ivw[ 7] = br_swap32(cc + 1);
@@ -637,8 +637,8 @@ static void aes_ctr(unsigned char *out, size_t outlen, const unsigned char *iv, 
 	} else {
 		exit(EXIT_FAILURE);
 	}
-	memcpy(ivw +  4, ivw, 3 * sizeof(uint32_t));
-	memcpy(ivw +  8, ivw, 3 * sizeof(uint32_t));
+	memmove(ivw +  4, ivw, 3 * sizeof(uint32_t));
+	memmove(ivw +  8, ivw, 3 * sizeof(uint32_t));
 	memcpy(ivw + 12, ivw, 3 * sizeof(uint32_t));
 	cc = br_swap32(ivw[3]);
 	ivw[ 7] = br_swap32(cc + 1);
