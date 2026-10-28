@@ -190,7 +190,10 @@ void sha2_256_update(sha2_256_t *sha, const uint8_t *m, size_t m_sz)
 
   if (m_sz < l)
   {
-    memcpy(mp + sha->i, m, m_sz);
+    if (m_sz > 0)
+    {
+      memcpy(mp + sha->i, m, m_sz);
+    }
     sha->i += m_sz;
     return;
   }
@@ -209,7 +212,10 @@ void sha2_256_update(sha2_256_t *sha, const uint8_t *m, size_t m_sz)
     m_sz -= 64;
     m += 64;
   }
-  memcpy(mp, m, m_sz);
+  if (m_sz > 0)
+  {
+    memcpy(mp, m, m_sz);
+  }
   sha->i = m_sz;
 }
 
