@@ -59,6 +59,15 @@ if(NOT WIN32)
 
     set(UNIX_TESTS test_aes test_hash test_sha3 speed_common)
 
+    if(OQS_ENABLE_SIG_SLH_DSA)
+        add_executable(test_slh_dsa_sha2 test_slh_dsa_sha2.c
+                       ../src/sig/slh_dsa/slh_dsa_c/sha2_256.c
+                       ../src/sig/slh_dsa/slh_dsa_c/sha2_512.c)
+        target_include_directories(test_slh_dsa_sha2 PRIVATE ../src/sig/slh_dsa/slh_dsa_c)
+        target_link_libraries(test_slh_dsa_sha2 PRIVATE ${TEST_DEPS})
+        list(APPEND UNIX_TESTS test_slh_dsa_sha2)
+    endif()
+
     set(PYTHON3_EXEC python3)
 else()
     set(PYTHON3_EXEC python)
