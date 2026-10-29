@@ -1,0 +1,104 @@
+#include <stdio.h>
+#include "internal.h"
+
+void
+ibz_mat_2x2_print(const ibz_mat_2x2_t *mat)
+{
+    printf("matrix: ");
+    for (int i = 0; i < 2; i++) {
+        for (int j = 0; j < 2; j++) {
+            ibz_print(&(mat->m[i][j]), 10);
+            printf(" ");
+        }
+        printf("\n        ");
+    }
+    printf("\n");
+}
+
+void
+ibz_mat_4x4_print(const ibz_mat_4x4_t *mat)
+{
+    printf("matrix: ");
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 4; j++) {
+            ibz_print(&(mat->m[i][j]), 10);
+            printf(" ");
+        }
+        printf("\n        ");
+    }
+    printf("\n");
+}
+
+void
+ibz_vec_2_print(const ibz_vec_2_t *vec)
+{
+    printf("vector: ");
+    for (int i = 0; i < 2; i++) {
+        ibz_print(&(vec->v[i]), 10);
+        printf(" ");
+    }
+    printf("\n\n");
+}
+
+void
+ibz_vec_4_print(const ibz_vec_4_t *vec)
+{
+    printf("vector: ");
+    for (int i = 0; i < 4; i++) {
+        ibz_print(&(vec->v[i]), 10);
+        printf(" ");
+    }
+    printf("\n\n");
+}
+
+void
+quat_lattice_print(const quat_lattice_t *lat)
+{
+    printf("lattice\n");
+    printf("denominator: ");
+    ibz_print(&(lat->denom), 10);
+    printf("\n");
+    printf("basis: ");
+    for (int i = 0; i < 4; i++) {
+        for (int j = 0; j < 4; j++) {
+            ibz_print(&((lat->basis).m[i][j]), 10);
+            printf(" ");
+        }
+        printf("\n       ");
+    }
+    printf("\n");
+}
+
+void
+quat_alg_print(const quat_alg_t *alg)
+{
+    printf("quaternion algebra ramified at ");
+    ibz_print(&(alg->p), 10);
+    printf(" and infinity\n\n");
+}
+
+void
+quat_alg_elem_print(const quat_alg_elem_t *elem)
+{
+    printf("denominator: ");
+    ibz_print(&(elem->denom), 10);
+    printf("\n");
+    printf("coordinates: ");
+    for (int i = 0; i < 4; i++) {
+        ibz_print(&((elem->coord).v[i]), 10);
+        printf(" ");
+    }
+    printf("\n\n");
+}
+
+void
+quat_ideal_print(const quat_ideal_t *ideal)
+{
+    printf("Ideal\nn ");
+    ibz_print(&ideal->norm, 10);
+    printf("\nx ");
+    ibz_print(&ideal->x, 10);
+    printf("\ny ");
+    ibz_print(&ideal->y, 10);
+    printf("\n\n");
+}
