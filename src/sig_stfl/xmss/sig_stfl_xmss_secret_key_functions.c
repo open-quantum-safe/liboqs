@@ -27,7 +27,7 @@ extern inline OQS_SIG_STFL_SECRET_KEY *OQS_SECRET_KEY_XMSS_new(size_t length_sec
 	sk->deserialize_key = OQS_SECRET_KEY_XMSS_deserialize_key;
 
 	// Initialize the key with length_secret_key amount of bytes.
-	sk->secret_key_data = (uint8_t *)OQS_MEM_malloc(sk->length_secret_key * sizeof(uint8_t));
+	sk->secret_key_data = (uint8_t *) OQS_MEM_malloc(sk->length_secret_key * sizeof(uint8_t));
 
 	if (sk->secret_key_data == NULL) {
 		OQS_MEM_insecure_free(sk);

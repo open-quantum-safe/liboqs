@@ -25,7 +25,7 @@
 
 #include <oqs/oqs.h>
 
-#if defined(OQS_ALLOW_LMS_KEY_AND_SIG_GEN) && \
+#if defined(OQS_ALLOW_LMS_KEY_AND_SIG_GEN) &&        \
     defined(OQS_ENABLE_SIG_STFL_lms_sha256_h5_w1) && \
     defined(OQS_ENABLE_SIG_STFL_lms_sha256_h5_w8)
 #define OQS_LMS_REGRESSIONS_ENABLED 1
@@ -50,16 +50,16 @@ static int failures = 0;
 #ifdef OQS_LMS_REGRESSIONS_ENABLED
 /* context points to a size_t counting how many times the callback ran */
 static OQS_STATUS store_success(uint8_t *sk_buf, size_t sk_buf_len, void *context) {
-	(void)sk_buf;
-	(void)sk_buf_len;
-	(*(size_t *)context)++;
+	(void) sk_buf;
+	(void) sk_buf_len;
+	(*(size_t *) context)++;
 	return OQS_SUCCESS;
 }
 
 static OQS_STATUS store_failure(uint8_t *sk_buf, size_t sk_buf_len, void *context) {
-	(void)sk_buf;
-	(void)sk_buf_len;
-	(*(size_t *)context)++;
+	(void) sk_buf;
+	(void) sk_buf_len;
+	(*(size_t *) context)++;
 	return OQS_ERROR;
 }
 
@@ -89,14 +89,14 @@ static int guarded_buffer_init(guarded_buffer *guard) {
 	if (page_size <= 0) {
 		return 0;
 	}
-	guard->mapping_len = (size_t)page_size * 2U;
+	guard->mapping_len = (size_t) page_size * 2U;
 	guard->mapping = mmap(NULL, guard->mapping_len, PROT_READ | PROT_WRITE,
 	                      MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
 	if (guard->mapping == MAP_FAILED) {
 		guard->mapping = NULL;
 		return 0;
 	}
-	if (mprotect(guard->mapping + page_size, (size_t)page_size, PROT_NONE) != 0) {
+	if (mprotect(guard->mapping + page_size, (size_t) page_size, PROT_NONE) != 0) {
 		munmap(guard->mapping, guard->mapping_len);
 		guard->mapping = NULL;
 		return 0;
@@ -127,7 +127,7 @@ static void test_lms_contracts(void) {
 	unsigned long long total = 0;
 	size_t store_success_calls = 0, store_failure_calls = 0;
 #if !defined(_WIN32)
-	guarded_buffer guard = {0};
+	guarded_buffer guard = { 0 };
 #endif
 
 	large_sig = OQS_SIG_STFL_new(OQS_SIG_STFL_alg_lms_sha256_h5_w1);
@@ -137,7 +137,7 @@ static void test_lms_contracts(void) {
 	error_sk = OQS_SIG_STFL_SECRET_KEY_new(OQS_SIG_STFL_alg_lms_sha256_h5_w8);
 	exhaustion_sk = OQS_SIG_STFL_SECRET_KEY_new(OQS_SIG_STFL_alg_lms_sha256_h5_w8);
 	REQUIRE(large_sig != NULL && small_sig != NULL && large_sk != NULL &&
-	        small_sk != NULL && error_sk != NULL && exhaustion_sk != NULL,
+	            small_sk != NULL && error_sk != NULL && exhaustion_sk != NULL,
 	        "LMS object construction");
 
 	large_pk = OQS_MEM_malloc(large_sig->length_public_key);
@@ -145,7 +145,8 @@ static void test_lms_contracts(void) {
 	small_pk = OQS_MEM_malloc(small_sig->length_public_key);
 	small_signature = OQS_MEM_malloc(small_sig->length_signature + 32U);
 	REQUIRE(large_pk != NULL && large_signature != NULL && small_pk != NULL &&
-	        small_signature != NULL, "LMS buffer allocation");
+	            small_signature != NULL,
+	        "LMS buffer allocation");
 
 	REQUIRE(OQS_SIG_STFL_keypair(large_sig, large_pk, large_sk) == OQS_SUCCESS,
 	        "LMS large keypair");

@@ -33,7 +33,7 @@
 
 /* Identifying the CPU is expensive so we cache the results in cpu_ext_data */
 #if defined(OQS_DIST_BUILD)
-static unsigned int cpu_ext_data[OQS_CPU_EXT_COUNT] = {0};
+static unsigned int cpu_ext_data[OQS_CPU_EXT_COUNT] = { 0 };
 #if defined(OQS_USE_PTHREADS)
 static pthread_once_t once_control = PTHREAD_ONCE_INIT;
 #endif
@@ -226,10 +226,10 @@ OQS_API int OQS_CPU_has_extension(OQS_CPU_EXT ext) {
 	}
 #endif
 	if (0 < ext && ext < OQS_CPU_EXT_COUNT) {
-		return (int)cpu_ext_data[ext];
+		return (int) cpu_ext_data[ext];
 	}
 #else
-	(void)ext;
+	(void) ext;
 #endif
 	return 0;
 }
@@ -261,11 +261,11 @@ OQS_API int OQS_MEM_secure_bcmp(const void *a, const void *b, size_t len) {
 	uint8_t r = 0;
 
 	for (size_t i = 0; i < len; i++) {
-		r |= ((const uint8_t *)a)[i] ^ ((const uint8_t *)b)[i];
+		r |= ((const uint8_t *) a)[i] ^ ((const uint8_t *) b)[i];
 	}
 
 	// We have 0 <= r < 256, and unsigned int is at least 16 bits.
-	return 1 & ((-(unsigned int)r) >> 8);
+	return 1 & ((-(unsigned int) r) >> 8);
 }
 
 OQS_API void OQS_MEM_cleanse(void *ptr, size_t len) {
@@ -281,7 +281,7 @@ OQS_API void OQS_MEM_cleanse(void *ptr, size_t len) {
 #elif defined(OQS_HAVE_EXPLICIT_MEMSET)
 	explicit_memset(ptr, 0, len);
 #elif defined(__STDC_LIB_EXT1__) || defined(OQS_HAVE_MEMSET_S)
-	if (0U < len && memset_s(ptr, (rsize_t)len, 0, (rsize_t)len) != 0) {
+	if (0U < len && memset_s(ptr, (rsize_t) len, 0, (rsize_t) len) != 0) {
 		abort();
 	}
 #else
@@ -325,7 +325,7 @@ void *OQS_MEM_aligned_alloc(size_t alignment, size_t size) {
 	if (!buffer) {
 		return NULL;
 	}
-	uint8_t *ptr = (uint8_t *)(((uintptr_t)(buffer) + offset) & ~(alignment - 1));
+	uint8_t *ptr = (uint8_t *) (((uintptr_t) (buffer) + offset) & ~(alignment - 1));
 	ptrdiff_t diff = ptr - buffer;
 	if (diff > UINT8_MAX) {
 		// Free and return NULL if alignment is too large
@@ -334,7 +334,7 @@ void *OQS_MEM_aligned_alloc(size_t alignment, size_t size) {
 		return NULL;
 	}
 	// Store the difference so that the free function can use it
-	ptr[-1] = (uint8_t)diff;
+	ptr[-1] = (uint8_t) diff;
 	return ptr;
 #elif defined(OQS_HAVE_ALIGNED_ALLOC) // glibc and other implementations providing aligned_alloc
 	return aligned_alloc(alignment, size);
@@ -384,7 +384,7 @@ void *OQS_MEM_aligned_alloc(size_t alignment, size_t size) {
 	}
 
 	// Align the pointer returned to the user.
-	uint8_t *ptr = (uint8_t *)(((uintptr_t)(buffer) + offset) & ~(alignment - 1));
+	uint8_t *ptr = (uint8_t *) (((uintptr_t) (buffer) + offset) & ~(alignment - 1));
 	ptrdiff_t diff = ptr - buffer;
 	if (diff > UINT8_MAX) {
 		// This should never happen in our code, but just to be safe
@@ -452,7 +452,7 @@ OQS_API char *OQS_MEM_strdup(const char *str) {
 	return OSSL_FUNC(CRYPTO_strdup)(str, OPENSSL_FILE, OPENSSL_LINE);
 #elif defined(OQS_EMBEDDED_BUILD)
 	size_t len = strlen(str) + 1;
-	char *dup = (char *)malloc(len); // IGNORE memory-check
+	char *dup = (char *) malloc(len); // IGNORE memory-check
 	if (dup != NULL) {
 		memcpy(dup, str, len);
 	}

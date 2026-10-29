@@ -22,8 +22,8 @@
 
 static OQS_STATUS do_nothing_save(uint8_t *key_buf, size_t buf_len,
                                   void *context) {
-	(void)(context);
-	(void)(buf_len);
+	(void) (context);
+	(void) (buf_len);
 	return key_buf != NULL ? OQS_SUCCESS : OQS_ERROR;
 }
 
@@ -42,7 +42,7 @@ int FindMarker(FILE *infile, const char *marker) {
 
 	for (i = 0; i < len; i++) {
 		curr_line = fgetc(infile);
-		line[i] = (char)curr_line;
+		line[i] = (char) curr_line;
 		if (curr_line == EOF) {
 			return 0;
 		}
@@ -58,7 +58,7 @@ int FindMarker(FILE *infile, const char *marker) {
 			line[i] = line[i + 1];
 		}
 		curr_line = fgetc(infile);
-		line[len - 1] = (char)curr_line;
+		line[len - 1] = (char) curr_line;
 		if (curr_line == EOF) {
 			return 0;
 		}
@@ -102,7 +102,7 @@ size_t ReadHex(FILE *infile, unsigned char *a, unsigned long Length,
 	}
 	OQS_MEM_cleanse(a, Length);
 	started = 0;
-	if (FindMarker(infile, str))
+	if (FindMarker(infile, str)) {
 		while ((ch = fgetc(infile)) != EOF) {
 			if (!isxdigit(ch)) {
 				if (!started) {
@@ -117,23 +117,22 @@ size_t ReadHex(FILE *infile, unsigned char *a, unsigned long Length,
 			}
 			started = 1;
 			if ((ch >= '0') && (ch <= '9')) {
-				ich = (unsigned char)ch - '0';
+				ich = (unsigned char) ch - '0';
 			} else if ((ch >= 'A') && (ch <= 'F')) {
-				ich = (unsigned char)ch - 'A' + 10;
+				ich = (unsigned char) ch - 'A' + 10;
 			} else if ((ch >= 'a') && (ch <= 'f')) {
-				ich = (unsigned char)ch - 'a' + 10;
+				ich = (unsigned char) ch - 'a' + 10;
 			} else {
 				// shouldn't ever get here
 				ich = 0;
 			}
 
 			for (i = 0; i < Length - 1; i++) {
-				a[i] = (unsigned char)(a[i] << 4)
-				       | (unsigned char)(a[i + 1] >> 4);
+				a[i] = (unsigned char) (a[i] << 4) | (unsigned char) (a[i + 1] >> 4);
 			}
-			a[Length - 1]
-			    = (unsigned char)(a[Length - 1] << 4) | (unsigned char)ich;
-		} else {
+			a[Length - 1] = (unsigned char) (a[Length - 1] << 4) | (unsigned char) ich;
+		}
+	} else {
 		return 0;
 	}
 
@@ -436,7 +435,7 @@ static OQS_STATUS test_lms_kat(const char *method_name, const char *katfile) {
 
 	public_key = OQS_MEM_malloc(sig->length_public_key);
 	sm = OQS_MEM_malloc(sig->length_signature);
-	msg = OQS_MEM_malloc((unsigned long)msg_len);
+	msg = OQS_MEM_malloc((unsigned long) msg_len);
 
 	if ((!msg || !sm || !public_key)) {
 		fprintf(stderr, "ERROR: unable to allocate memory.\n");
@@ -458,8 +457,7 @@ static OQS_STATUS test_lms_kat(const char *method_name, const char *katfile) {
 		goto err;
 	}
 
-	if ((public_key_len > sig->length_public_key)
-	        || (!ReadHex(fp_rsp, public_key, public_key_len, "pk = "))) {
+	if ((public_key_len > sig->length_public_key) || (!ReadHex(fp_rsp, public_key, public_key_len, "pk = "))) {
 		fprintf(stderr, "ERROR: unable to read 'pk' from <%s>\n", katfile);
 		goto err;
 	}

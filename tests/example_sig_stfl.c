@@ -16,8 +16,8 @@
 #define MESSAGE_LEN 50
 
 static OQS_STATUS do_nothing_save(uint8_t *key_buf, size_t buf_len, void *context) {
-	(void)(context);
-	(void)(buf_len);
+	(void) (context);
+	(void) (buf_len);
 	return key_buf != NULL ? OQS_SUCCESS : OQS_ERROR;
 }
 
@@ -82,7 +82,7 @@ static OQS_STATUS stfl_example(char *method_name) {
 	 * secret keys are one time use only. So after a signature gen
 	 * the secret key most be advanced to the next
 	 */
-	OQS_SIG_STFL_SECRET_KEY_SET_store_cb(secret_key, do_nothing_save, (void *)sk_fname);
+	OQS_SIG_STFL_SECRET_KEY_SET_store_cb(secret_key, do_nothing_save, (void *) sk_fname);
 
 	/*
 	 * Generate key pair
@@ -109,7 +109,7 @@ static OQS_STATUS stfl_example(char *method_name) {
 
 	printf("[Stateful signature]  %s operations completed.\n", method_name);
 err:
-//cleanup
+	//cleanup
 	OQS_MEM_insecure_free(public_key);
 	OQS_MEM_insecure_free(sk_fname);
 	OQS_MEM_secure_free(message, message_len);
@@ -129,7 +129,7 @@ int main(void) {
 		OQS_destroy();
 		return EXIT_FAILURE;
 	}
-	if (stfl_example((char *)"XMSS-SHA2_10_256") == OQS_ERROR && stfl_example((char *)"LMS_SHA256_H10_W4") == OQS_ERROR) {
+	if (stfl_example((char *) "XMSS-SHA2_10_256") == OQS_ERROR && stfl_example((char *) "LMS_SHA256_H10_W4") == OQS_ERROR) {
 		OQS_destroy();
 		return EXIT_SUCCESS;
 	} else {
@@ -145,8 +145,8 @@ int main(void) {
 		OQS_destroy();
 		return EXIT_FAILURE;
 	}
-	xmss_status = stfl_example((char *)"XMSS-SHA2_10_256");
-	lms_status = stfl_example((char *)"LMS_SHA256_H10_W4");
+	xmss_status = stfl_example((char *) "XMSS-SHA2_10_256");
+	lms_status = stfl_example((char *) "LMS_SHA256_H10_W4");
 	OQS_destroy();
 
 #ifndef OQS_ALLOW_XMSS_KEY_AND_SIG_GEN

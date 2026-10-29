@@ -23,8 +23,8 @@ typedef struct {
 
 // From crypto_core/aes256encrypt/dolbeau/aesenc-int
 static inline void aes256ni_setkey_encrypt(const unsigned char *key, __m128i rkeys[15]) {
-	__m128i key0 = _mm_loadu_si128((const __m128i *)(key + 0));
-	__m128i key1 = _mm_loadu_si128((const __m128i *)(key + 16));
+	__m128i key0 = _mm_loadu_si128((const __m128i *) (key + 0));
+	__m128i key1 = _mm_loadu_si128((const __m128i *) (key + 16));
 	__m128i temp0, temp1, temp2, temp4;
 	int idx = 0;
 
@@ -90,7 +90,7 @@ void oqs_aes256_load_iv_ni(const uint8_t *iv, size_t iv_len, void *_schedule) {
 		const int32_t *ivi = (const int32_t *) iv;
 		ctx->iv = _mm_shuffle_epi8(_mm_set_epi32(0, ivi[2], ivi[1], ivi[0]), idx);
 	} else if (iv_len == 16) {
-		ctx->iv = _mm_shuffle_epi8(_mm_loadu_si128((const __m128i *)iv), idx);
+		ctx->iv = _mm_shuffle_epi8(_mm_loadu_si128((const __m128i *) iv), idx);
 	} else {
 		exit(EXIT_FAILURE);
 	}
@@ -98,7 +98,7 @@ void oqs_aes256_load_iv_ni(const uint8_t *iv, size_t iv_len, void *_schedule) {
 
 void oqs_aes256_load_iv_u64_ni(uint64_t iv, void *_schedule) {
 	aes256ctx *ctx = _schedule;
-	ctx->iv = _mm_loadl_epi64((__m128i *)&iv);
+	ctx->iv = _mm_loadl_epi64((__m128i *) &iv);
 }
 
 void oqs_aes256_free_schedule_ni(void *schedule) {
@@ -125,7 +125,7 @@ static inline void aes256ni_encrypt(const __m128i rkeys[15], __m128i nv, unsigne
 	temp = _mm_aesenc_si128(temp, rkeys[12]);
 	temp = _mm_aesenc_si128(temp, rkeys[13]);
 	temp = _mm_aesenclast_si128(temp, rkeys[14]);
-	_mm_storeu_si128((__m128i *)(out), temp);
+	_mm_storeu_si128((__m128i *) (out), temp);
 }
 
 // 4x interleaved encryption
@@ -160,15 +160,15 @@ static inline void aes256ni_encrypt_x4(const __m128i rkeys[15], __m128i n0, __m1
 	temp2 = _mm_aesenclast_si128(temp2, rkeys[14]);
 	temp3 = _mm_aesenclast_si128(temp3, rkeys[14]);
 
-	_mm_storeu_si128((__m128i *)(out + 0), temp0);
-	_mm_storeu_si128((__m128i *)(out + 16), temp1);
-	_mm_storeu_si128((__m128i *)(out + 32), temp2);
-	_mm_storeu_si128((__m128i *)(out + 48), temp3);
+	_mm_storeu_si128((__m128i *) (out + 0), temp0);
+	_mm_storeu_si128((__m128i *) (out + 16), temp1);
+	_mm_storeu_si128((__m128i *) (out + 32), temp2);
+	_mm_storeu_si128((__m128i *) (out + 48), temp3);
 }
 
 void oqs_aes256_enc_sch_block_ni(const uint8_t *plaintext, const void *_schedule, uint8_t *ciphertext) {
 	const __m128i *schedule = ((const aes256ctx *) _schedule)->sk_exp;
-	aes256ni_encrypt(schedule, _mm_loadu_si128((const __m128i *)plaintext), ciphertext);
+	aes256ni_encrypt(schedule, _mm_loadu_si128((const __m128i *) plaintext), ciphertext);
 }
 
 void oqs_aes256_ecb_enc_sch_ni(const uint8_t *plaintext, const size_t plaintext_len, const void *schedule, uint8_t *ciphertext) {
@@ -180,10 +180,10 @@ void oqs_aes256_ecb_enc_sch_ni(const uint8_t *plaintext, const size_t plaintext_
 	for (; block + 4 <= nblocks; block += 4) {
 		const uint8_t *in = plaintext + (16 * block);
 		aes256ni_encrypt_x4(rkeys,
-		                    _mm_loadu_si128((const __m128i *)(in + 0)),
-		                    _mm_loadu_si128((const __m128i *)(in + 16)),
-		                    _mm_loadu_si128((const __m128i *)(in + 32)),
-		                    _mm_loadu_si128((const __m128i *)(in + 48)),
+		                    _mm_loadu_si128((const __m128i *) (in + 0)),
+		                    _mm_loadu_si128((const __m128i *) (in + 16)),
+		                    _mm_loadu_si128((const __m128i *) (in + 32)),
+		                    _mm_loadu_si128((const __m128i *) (in + 48)),
 		                    ciphertext + (16 * block));
 	}
 	for (; block < nblocks; block++) {
@@ -221,7 +221,7 @@ void oqs_aes256_ctr_enc_sch_ni(const uint8_t *iv, const size_t iv_len, const voi
 		const int32_t *ivi = (const int32_t *) iv;
 		block = _mm_set_epi32(0, ivi[2], ivi[1], ivi[0]);
 	} else if (iv_len == 16) {
-		block = _mm_loadu_si128((const __m128i *)iv);
+		block = _mm_loadu_si128((const __m128i *) iv);
 	} else {
 		exit(EXIT_FAILURE);
 	}

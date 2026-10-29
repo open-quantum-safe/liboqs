@@ -64,9 +64,9 @@ extern int libjade_kyber512_avx2_dec(uint8_t *ss, const uint8_t *ct, const uint8
 
 
 OQS_API OQS_STATUS OQS_KEM_kyber_512_keypair_derand(uint8_t *public_key, uint8_t *secret_key, const uint8_t *seed) {
-	(void)public_key;
-	(void)secret_key;
-	(void)seed;
+	(void) public_key;
+	(void) secret_key;
+	(void) seed;
 	return OQS_ERROR;
 }
 
@@ -113,10 +113,10 @@ OQS_API OQS_STATUS OQS_KEM_kyber_512_keypair(uint8_t *public_key, uint8_t *secre
 }
 
 OQS_API OQS_STATUS OQS_KEM_kyber_512_encaps_derand(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key, const uint8_t *seed) {
-	(void)ciphertext;
-	(void)shared_secret;
-	(void)public_key;
-	(void)seed;
+	(void) ciphertext;
+	(void) shared_secret;
+	(void) public_key;
+	(void) seed;
 	return OQS_ERROR;
 }
 

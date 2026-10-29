@@ -17,15 +17,15 @@
 #include <string.h>
 
 static uint32_t load_bigendian_32(const uint8_t *x) {
-	return (uint32_t)(x[3]) | (((uint32_t)(x[2])) << 8) |
-	       (((uint32_t)(x[1])) << 16) | (((uint32_t)(x[0])) << 24);
+	return (uint32_t) (x[3]) | (((uint32_t) (x[2])) << 8) |
+	       (((uint32_t) (x[1])) << 16) | (((uint32_t) (x[0])) << 24);
 }
 
 static uint64_t load_bigendian_64(const uint8_t *x) {
-	return (uint64_t)(x[7]) | (((uint64_t)(x[6])) << 8) |
-	       (((uint64_t)(x[5])) << 16) | (((uint64_t)(x[4])) << 24) |
-	       (((uint64_t)(x[3])) << 32) | (((uint64_t)(x[2])) << 40) |
-	       (((uint64_t)(x[1])) << 48) | (((uint64_t)(x[0])) << 56);
+	return (uint64_t) (x[7]) | (((uint64_t) (x[6])) << 8) |
+	       (((uint64_t) (x[5])) << 16) | (((uint64_t) (x[4])) << 24) |
+	       (((uint64_t) (x[3])) << 32) | (((uint64_t) (x[2])) << 40) |
+	       (((uint64_t) (x[1])) << 48) | (((uint64_t) (x[0])) << 56);
 }
 
 static void store_bigendian_32(uint8_t *x, uint64_t u) {
@@ -137,7 +137,7 @@ static void store_bigendian_64(uint8_t *x, uint64_t u) {
     a = T1 + T2;
 
 static size_t crypto_hashblocks_sha256_c(uint8_t *statebytes,
-        const uint8_t *in, size_t inlen) {
+                                         const uint8_t *in, size_t inlen) {
 	uint32_t state[8];
 	uint32_t a;
 	uint32_t b;
@@ -168,16 +168,16 @@ static size_t crypto_hashblocks_sha256_c(uint8_t *statebytes,
 	state[7] = h;
 
 	while (inlen >= 64) {
-		uint32_t w0  = load_bigendian_32(in + 0);
-		uint32_t w1  = load_bigendian_32(in + 4);
-		uint32_t w2  = load_bigendian_32(in + 8);
-		uint32_t w3  = load_bigendian_32(in + 12);
-		uint32_t w4  = load_bigendian_32(in + 16);
-		uint32_t w5  = load_bigendian_32(in + 20);
-		uint32_t w6  = load_bigendian_32(in + 24);
-		uint32_t w7  = load_bigendian_32(in + 28);
-		uint32_t w8  = load_bigendian_32(in + 32);
-		uint32_t w9  = load_bigendian_32(in + 36);
+		uint32_t w0 = load_bigendian_32(in + 0);
+		uint32_t w1 = load_bigendian_32(in + 4);
+		uint32_t w2 = load_bigendian_32(in + 8);
+		uint32_t w3 = load_bigendian_32(in + 12);
+		uint32_t w4 = load_bigendian_32(in + 16);
+		uint32_t w5 = load_bigendian_32(in + 20);
+		uint32_t w6 = load_bigendian_32(in + 24);
+		uint32_t w7 = load_bigendian_32(in + 28);
+		uint32_t w8 = load_bigendian_32(in + 32);
+		uint32_t w9 = load_bigendian_32(in + 36);
 		uint32_t w10 = load_bigendian_32(in + 40);
 		uint32_t w11 = load_bigendian_32(in + 44);
 		uint32_t w12 = load_bigendian_32(in + 48);
@@ -294,7 +294,7 @@ static size_t crypto_hashblocks_sha256_c(uint8_t *statebytes,
 }
 
 static size_t crypto_hashblocks_sha512_c(uint8_t *statebytes,
-        const uint8_t *in, size_t inlen) {
+                                         const uint8_t *in, size_t inlen) {
 	uint64_t state[8];
 	uint64_t a;
 	uint64_t b;
@@ -750,7 +750,7 @@ void oqs_sha2_sha256_inc_finalize_c(uint8_t *out, sha256ctx *state, const uint8_
 
 void oqs_sha2_sha224_inc_finalize_c(uint8_t *out, sha224ctx *state, const uint8_t *in, size_t inlen) {
 	uint8_t tmp[32];
-	oqs_sha2_sha256_inc_finalize_c(tmp, (sha256ctx *)state, in, inlen);
+	oqs_sha2_sha256_inc_finalize_c(tmp, (sha256ctx *) state, in, inlen);
 
 	for (size_t i = 0; i < 28; ++i) {
 		out[i] = tmp[i];
@@ -809,7 +809,7 @@ void oqs_sha2_sha512_inc_finalize_c(uint8_t *out, sha512ctx *state, const uint8_
 
 void oqs_sha2_sha384_inc_finalize_c(uint8_t *out, sha384ctx *state, const uint8_t *in, size_t inlen) {
 	uint8_t tmp[64];
-	oqs_sha2_sha512_inc_finalize_c(tmp, (sha512ctx *)state, in, inlen);
+	oqs_sha2_sha512_inc_finalize_c(tmp, (sha512ctx *) state, in, inlen);
 
 	for (size_t i = 0; i < 48; ++i) {
 		out[i] = tmp[i];

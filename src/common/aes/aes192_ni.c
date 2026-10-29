@@ -37,9 +37,9 @@ static inline void KEY_192_ASSIST(__m128i *temp1, __m128i *temp2, __m128i *temp3
     _mm_castpd_si128(_mm_shuffle_pd(_mm_castsi128_pd(a), _mm_castsi128_pd(b), imm))
 
 static inline void aes192ni_setkey_encrypt(const unsigned char *key, __m128i rkeys[13]) {
-	__m128i temp1 = _mm_loadu_si128((const __m128i *)(key + 0));
+	__m128i temp1 = _mm_loadu_si128((const __m128i *) (key + 0));
 	/* Load the remaining 8 key bytes without reading past the 24-byte key. */
-	__m128i temp3 = _mm_loadl_epi64((const __m128i *)(key + 16));
+	__m128i temp3 = _mm_loadl_epi64((const __m128i *) (key + 16));
 	__m128i temp2;
 
 	rkeys[0] = temp1;
@@ -105,7 +105,7 @@ static inline void aes192ni_encrypt(const __m128i rkeys[13], __m128i nv, unsigne
 	temp = _mm_aesenc_si128(temp, rkeys[10]);
 	temp = _mm_aesenc_si128(temp, rkeys[11]);
 	temp = _mm_aesenclast_si128(temp, rkeys[12]);
-	_mm_storeu_si128((__m128i *)(out), temp);
+	_mm_storeu_si128((__m128i *) (out), temp);
 }
 
 // 4x interleaved encryption
@@ -138,15 +138,15 @@ static inline void aes192ni_encrypt_x4(const __m128i rkeys[13], __m128i n0, __m1
 	temp2 = _mm_aesenclast_si128(temp2, rkeys[12]);
 	temp3 = _mm_aesenclast_si128(temp3, rkeys[12]);
 
-	_mm_storeu_si128((__m128i *)(out + 0), temp0);
-	_mm_storeu_si128((__m128i *)(out + 16), temp1);
-	_mm_storeu_si128((__m128i *)(out + 32), temp2);
-	_mm_storeu_si128((__m128i *)(out + 48), temp3);
+	_mm_storeu_si128((__m128i *) (out + 0), temp0);
+	_mm_storeu_si128((__m128i *) (out + 16), temp1);
+	_mm_storeu_si128((__m128i *) (out + 32), temp2);
+	_mm_storeu_si128((__m128i *) (out + 48), temp3);
 }
 
 void oqs_aes192_enc_sch_block_ni(const uint8_t *plaintext, const void *_schedule, uint8_t *ciphertext) {
 	const __m128i *schedule = ((const aes192ctx *) _schedule)->sk_exp;
-	aes192ni_encrypt(schedule, _mm_loadu_si128((const __m128i *)plaintext), ciphertext);
+	aes192ni_encrypt(schedule, _mm_loadu_si128((const __m128i *) plaintext), ciphertext);
 }
 
 void oqs_aes192_ecb_enc_sch_ni(const uint8_t *plaintext, const size_t plaintext_len, const void *schedule, uint8_t *ciphertext) {
@@ -158,10 +158,10 @@ void oqs_aes192_ecb_enc_sch_ni(const uint8_t *plaintext, const size_t plaintext_
 	for (; block + 4 <= nblocks; block += 4) {
 		const uint8_t *in = plaintext + (16 * block);
 		aes192ni_encrypt_x4(rkeys,
-		                    _mm_loadu_si128((const __m128i *)(in + 0)),
-		                    _mm_loadu_si128((const __m128i *)(in + 16)),
-		                    _mm_loadu_si128((const __m128i *)(in + 32)),
-		                    _mm_loadu_si128((const __m128i *)(in + 48)),
+		                    _mm_loadu_si128((const __m128i *) (in + 0)),
+		                    _mm_loadu_si128((const __m128i *) (in + 16)),
+		                    _mm_loadu_si128((const __m128i *) (in + 32)),
+		                    _mm_loadu_si128((const __m128i *) (in + 48)),
 		                    ciphertext + (16 * block));
 	}
 	for (; block < nblocks; block++) {

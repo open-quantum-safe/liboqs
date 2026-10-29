@@ -17,14 +17,14 @@ struct key_schedule {
 };
 
 static inline void br_enc64be(unsigned char *dst, uint64_t x) {
-	dst[7] = (unsigned char)(x >> 56);
-	dst[6] = (unsigned char)(x >> 48);
-	dst[5] = (unsigned char)(x >> 40);
-	dst[4] = (unsigned char)(x >> 32);
-	dst[3] = (unsigned char)(x >> 24);
-	dst[2] = (unsigned char)(x >> 16);
-	dst[1] = (unsigned char)(x >>  8);
-	dst[0] = (unsigned char)x;
+	dst[7] = (unsigned char) (x >> 56);
+	dst[6] = (unsigned char) (x >> 48);
+	dst[5] = (unsigned char) (x >> 40);
+	dst[4] = (unsigned char) (x >> 32);
+	dst[3] = (unsigned char) (x >> 24);
+	dst[2] = (unsigned char) (x >> 16);
+	dst[1] = (unsigned char) (x >> 8);
+	dst[0] = (unsigned char) x;
 }
 
 static void AES128_ECB_load_schedule(const uint8_t *key, void **schedule) {
@@ -85,7 +85,7 @@ static void AES128_CTR_inc_stream_iv(const uint8_t *iv, size_t iv_len, const voi
 	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_EncryptInit_ex)(ctr_ctx, oqs_aes_128_ctr(), NULL, ks->key, iv_ctr));
 
 	SIZE_T_TO_INT_OR_EXIT(out_len, out_len_input_int)
-	memset(out, 0, (size_t)out_len_input_int);
+	memset(out, 0, (size_t) out_len_input_int);
 	int out_len_output;
 	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_EncryptUpdate)(ctr_ctx, out, &out_len_output, out, out_len_input_int));
 	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_EncryptFinal_ex)(ctr_ctx, out + out_len_output, &out_len_output));
@@ -209,7 +209,7 @@ static void AES256_CTR_inc_stream_iv(const uint8_t *iv, size_t iv_len, const voi
 	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_EncryptInit_ex)(ctr_ctx, oqs_aes_256_ctr(), NULL, ks->key, iv_ctr));
 
 	SIZE_T_TO_INT_OR_EXIT(out_len, out_len_input_int)
-	memset(out, 0, (size_t)out_len_input_int);
+	memset(out, 0, (size_t) out_len_input_int);
 	int out_len_output;
 	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_EncryptUpdate)(ctr_ctx, out, &out_len_output, out, out_len_input_int));
 	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_EncryptFinal_ex)(ctr_ctx, out + out_len_output, &out_len_output));
@@ -221,7 +221,7 @@ static void AES256_CTR_inc_stream_blks(void *schedule, uint8_t *out, size_t out_
 	struct key_schedule *ks = (struct key_schedule *) schedule;
 	int out_len_output;
 	SIZE_T_TO_INT_OR_EXIT(out_len, out_len_input_int);
-	memset(out, 0, (size_t)out_len_input_int);
+	memset(out, 0, (size_t) out_len_input_int);
 	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_EncryptUpdate)(ks->ctx, out, &out_len_output, out, (int) out_len));
 }
 

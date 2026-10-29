@@ -110,17 +110,17 @@ This project is not commercially supported. All guidelines and goals for liboqs 
 
 	On Ubuntu:
 
-		sudo apt install astyle cmake gcc ninja-build libssl-dev unzip xsltproc doxygen graphviz valgrind
+		sudo apt install cmake gcc ninja-build libssl-dev unzip xsltproc doxygen graphviz valgrind
 		python3 -m venv .venv
 		source .venv/bin/activate
-		pip install --require-hashes -r requirements.txt
+		pip install --require-hashes -r requirements.txt -r requirements-linter.txt
 
 	On macOS, using a package manager of your choice (we've picked Homebrew):
 
-		brew install cmake ninja openssl@3 wget doxygen graphviz astyle valgrind
+		brew install cmake ninja openssl@3 wget doxygen graphviz valgrind
 		python3 -m venv .venv
 		source .venv/bin/activate
-		pip install --require-hashes -r requirements.txt
+		pip install --require-hashes -r requirements.txt -r requirements-linter.txt
 
 	Using Nix:
 

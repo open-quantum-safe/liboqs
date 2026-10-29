@@ -254,7 +254,7 @@ cleanup:
 static void TEST_SIG_randombytes(uint8_t *random_array, size_t bytes_to_read) {
 	// We can't make direct calls to the system randombytes on some platforms,
 	// so we have to swap out the OQS_randombytes provider.
-	(void)OQS_randombytes_switch_algorithm("system");
+	(void) OQS_randombytes_switch_algorithm("system");
 	OQS_randombytes(random_array, bytes_to_read);
 	OQS_randombytes_custom_algorithm(&TEST_SIG_randombytes);
 
@@ -321,20 +321,20 @@ int main(int argc, char **argv) {
 	}
 
 	/* by default, flip 50 random bits of the message and signature (to test EUF-CMA and SUF-CMA, respectively) */
-	bool bitflips_all[2] = {false, false};
-	size_t bitflips[2] = {50, 50};
+	bool bitflips_all[2] = { false, false };
+	size_t bitflips[2] = { 50, 50 };
 	if (argc >= 3) {
 		if (strcmp(argv[2], "all") == 0) {
 			bitflips_all[0] = true;
 		} else {
-			bitflips[0] = (size_t)strtol(argv[2], NULL, 10);
+			bitflips[0] = (size_t) strtol(argv[2], NULL, 10);
 		}
 	}
 	if (argc >= 4) {
 		if (strcmp(argv[3], "all") == 0) {
 			bitflips_all[1] = true;
 		} else {
-			bitflips[1] = (size_t)strtol(argv[3], NULL, 10);
+			bitflips[1] = (size_t) strtol(argv[3], NULL, 10);
 		}
 	}
 	if (argc >= 5) {
@@ -354,7 +354,7 @@ int main(int argc, char **argv) {
 			OQS_destroy();
 			return EXIT_FAILURE;
 		}
-		ctx_step_override = (size_t)v;
+		ctx_step_override = (size_t) v;
 	}
 
 #ifdef OQS_ENABLE_TEST_CONSTANT_TIME
@@ -371,9 +371,9 @@ int main(int argc, char **argv) {
 #if OQS_USE_PTHREADS && !defined(OQS_ENABLE_TEST_CONSTANT_TIME)
 #define MAX_LEN_SIG_NAME_ 64
 	// don't run algorithms with large stack usage in threads
-	char no_thread_sig_patterns[][MAX_LEN_SIG_NAME_]  = {"MAYO-5", "cross-rsdp-128-small", "cross-rsdp-192-small", "cross-rsdp-256-balanced", "cross-rsdp-256-small", "cross-rsdpg-192-small", "cross-rsdpg-256-small", "SNOVA_III_K", "SNOVA_III_K_AES", "SNOVA_III_B", "SNOVA_III_B_AES", "SNOVA_III_S", "SNOVA_III_S_AES", "SNOVA_V_K", "SNOVA_V_K_AES", "SNOVA_V_B", "SNOVA_V_B_AES", "SNOVA_V_S", "SNOVA_V_S_AES", "mqom3_cat1_gf16_fast_ct", "mqom3_cat1_gf16_fast_ot", "mqom3_cat1_gf16_short_ct", "mqom3_cat1_gf16_short_ot", "mqom3_cat1_gf2_shorter_ct", "mqom3_cat1_gf2_shorter_ot", "mqom3_cat3_gf16_fast_ct", "mqom3_cat3_gf16_fast_ot", "mqom3_cat3_gf16_short_ct", "mqom3_cat3_gf16_short_ot", "mqom3_cat3_gf2_shorter_ct", "mqom3_cat3_gf2_shorter_ot", "mqom3_cat5_gf16_fast_ct", "mqom3_cat5_gf16_fast_ot", "mqom3_cat5_gf16_short_ct", "mqom3_cat5_gf16_short_ot", "mqom3_cat5_gf2_shorter_ct", "mqom3_cat5_gf2_shorter_ot"};
+	char no_thread_sig_patterns[][MAX_LEN_SIG_NAME_] = { "MAYO-5", "cross-rsdp-128-small", "cross-rsdp-192-small", "cross-rsdp-256-balanced", "cross-rsdp-256-small", "cross-rsdpg-192-small", "cross-rsdpg-256-small", "SNOVA_III_K", "SNOVA_III_K_AES", "SNOVA_III_B", "SNOVA_III_B_AES", "SNOVA_III_S", "SNOVA_III_S_AES", "SNOVA_V_K", "SNOVA_V_K_AES", "SNOVA_V_B", "SNOVA_V_B_AES", "SNOVA_V_S", "SNOVA_V_S_AES", "mqom3_cat1_gf16_fast_ct", "mqom3_cat1_gf16_fast_ot", "mqom3_cat1_gf16_short_ct", "mqom3_cat1_gf16_short_ot", "mqom3_cat1_gf2_shorter_ct", "mqom3_cat1_gf2_shorter_ot", "mqom3_cat3_gf16_fast_ct", "mqom3_cat3_gf16_fast_ot", "mqom3_cat3_gf16_short_ct", "mqom3_cat3_gf16_short_ot", "mqom3_cat3_gf2_shorter_ct", "mqom3_cat3_gf2_shorter_ot", "mqom3_cat5_gf16_fast_ct", "mqom3_cat5_gf16_fast_ot", "mqom3_cat5_gf16_short_ct", "mqom3_cat5_gf16_short_ot", "mqom3_cat5_gf2_shorter_ct", "mqom3_cat5_gf2_shorter_ot" };
 	int test_in_thread = 1;
-	for (size_t i = 0 ; i < sizeof(no_thread_sig_patterns) / MAX_LEN_SIG_NAME_; ++i) {
+	for (size_t i = 0; i < sizeof(no_thread_sig_patterns) / MAX_LEN_SIG_NAME_; ++i) {
 		if ((strncmp(alg_name, "SLH_DSA", 7) == 0) || (strstr(alg_name, no_thread_sig_patterns[i]) != NULL)) {
 			test_in_thread = 0;
 			break;
@@ -381,7 +381,7 @@ int main(int argc, char **argv) {
 	}
 	if (test_in_thread) {
 		pthread_t thread;
-		struct thread_data td = {.alg_name = alg_name, .bitflips_all = bitflips_all, .bitflips = bitflips, .rc = OQS_ERROR, .extended_tests = (bool)extended_tests, .ctx_step_override = ctx_step_override};
+		struct thread_data td = { .alg_name = alg_name, .bitflips_all = bitflips_all, .bitflips = bitflips, .rc = OQS_ERROR, .extended_tests = (bool) extended_tests, .ctx_step_override = ctx_step_override };
 		int trc = pthread_create(&thread, NULL, test_wrapper, &td);
 		if (trc) {
 			fprintf(stderr, "ERROR: Creating pthread\n");
@@ -391,10 +391,10 @@ int main(int argc, char **argv) {
 		pthread_join(thread, NULL);
 		rc = td.rc;
 	} else {
-		rc = sig_test_correctness(alg_name, bitflips_all, bitflips, (bool)extended_tests, ctx_step_override);
+		rc = sig_test_correctness(alg_name, bitflips_all, bitflips, (bool) extended_tests, ctx_step_override);
 	}
 #else
-	rc = sig_test_correctness(alg_name, bitflips_all, bitflips, (bool)extended_tests, ctx_step_override);
+	rc = sig_test_correctness(alg_name, bitflips_all, bitflips, (bool) extended_tests, ctx_step_override);
 #endif
 	if (rc != OQS_SUCCESS) {
 		OQS_destroy();

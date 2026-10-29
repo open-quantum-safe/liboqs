@@ -43,17 +43,17 @@ OQS_API OQS_STATUS OQS_KEM_ntru_hrss1373_keypair(uint8_t *public_key, uint8_t *s
 }
 
 OQS_API OQS_STATUS OQS_KEM_ntru_hrss1373_keypair_derand(uint8_t *public_key, uint8_t *secret_key, const uint8_t *seed) {
-	(void)public_key;
-	(void)secret_key;
-	(void)seed;
+	(void) public_key;
+	(void) secret_key;
+	(void) seed;
 	return OQS_ERROR;
 }
 
 OQS_API OQS_STATUS OQS_KEM_ntru_hrss1373_encaps_derand(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key, const uint8_t *seed) {
-	(void)ciphertext;
-	(void)shared_secret;
-	(void)public_key;
-	(void)seed;
+	(void) ciphertext;
+	(void) shared_secret;
+	(void) public_key;
+	(void) seed;
 	return OQS_ERROR;
 }
 

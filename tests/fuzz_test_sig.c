@@ -31,13 +31,13 @@ void fuzz_rand(uint8_t *random_array, size_t bytes_to_read);
 
 void fuzz_rand(uint8_t *random_array, size_t bytes_to_read) {
 	for (size_t i = 0; i < bytes_to_read; i++) {
-		random_array[i] = (uint8_t)rand();
+		random_array[i] = (uint8_t) rand();
 	}
 }
 
 fuzz_ctx_t init_fuzz_context(const uint8_t *data, size_t data_len) {
 
-	fuzz_ctx_t ctx = {{0, 0}, NULL, 0};
+	fuzz_ctx_t ctx = { { 0, 0 }, NULL, 0 };
 	if (data_len > sizeof(fuzz_init_ctx_t)) {
 		memcpy(&ctx.init, data, sizeof(fuzz_init_ctx_t));
 		ctx.data = data + sizeof(fuzz_init_ctx_t);
@@ -80,7 +80,7 @@ static OQS_STATUS fuzz_sig(const uint8_t *data, size_t data_len) {
 	secret_key = malloc(sig->length_secret_key);
 	signature = malloc(sig->length_signature);
 	if ((public_key == NULL) || (secret_key == NULL) || (ctx.data == NULL) ||
-	        (signature == NULL)) {
+	    (signature == NULL)) {
 		fprintf(stderr, "ERROR: malloc failed!\n");
 		cleanup_heap(public_key, secret_key, signature, sig);
 		return OQS_ERROR;
@@ -123,7 +123,7 @@ void cleanup_heap(uint8_t *public_key, uint8_t *secret_key, uint8_t *signature,
 
 int LLVMFuzzerTestOneInput(const char *data, size_t size) {
 	OQS_init();
-	if (OQS_ERROR == fuzz_sig((const uint8_t *)data, size)) {
+	if (OQS_ERROR == fuzz_sig((const uint8_t *) data, size)) {
 		// If we get an error prune testcase from corpus.
 		return -1;
 	}

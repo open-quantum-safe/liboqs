@@ -1,0 +1,33 @@
+# SPDX-License-Identifier: MIT
+#
+# liboqs C code style. Requires clang-format >= 20.
+# Run ./scripts/format_code.sh to format, or ./scripts/format_code.sh --check to verify.
+
+BasedOnStyle: Google
+IndentCaseLabels: false
+UseTab: ForIndentation
+IndentWidth: 4
+TabWidth: 4
+ContinuationIndentWidth: 4
+PointerAlignment: Right
+DerivePointerAlignment: false
+InsertBraces: true
+LineEnding: LF
+ColumnLimit: 0
+SortIncludes: Never
+SkipMacroDefinitionBody: true
+AlwaysBreakBeforeMultilineStrings: false
+BreakBeforeTernaryOperators: false
+SpaceAfterCStyleCast: true
+Cpp11BracedListStyle: false
+SpacesBeforeTrailingComments: 1
+AlignTrailingComments: false
+SpacesInLineCommentPrefix:
+  Minimum: 0
+  Maximum: -1
+ReflowComments: IndentOnly
+KeepEmptyLines:
+  AtEndOfFile: true
+  AtStartOfBlock: true
+  AtStartOfFile: true
+MaxEmptyLinesToKeep: 2

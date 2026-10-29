@@ -90,10 +90,10 @@ static void keccak_x4_inc_absorb(uint64_t *s, uint32_t r,
 	uint64_t c = r - s[100];
 
 	if (s[100] && inlen >= c) {
-		(*Keccak_X4_AddBytes_ptr)(s, 0, in0, (unsigned int)s[100], (unsigned int)c);
-		(*Keccak_X4_AddBytes_ptr)(s, 1, in1, (unsigned int)s[100], (unsigned int)c);
-		(*Keccak_X4_AddBytes_ptr)(s, 2, in2, (unsigned int)s[100], (unsigned int)c);
-		(*Keccak_X4_AddBytes_ptr)(s, 3, in3, (unsigned int)s[100], (unsigned int)c);
+		(*Keccak_X4_AddBytes_ptr)(s, 0, in0, (unsigned int) s[100], (unsigned int) c);
+		(*Keccak_X4_AddBytes_ptr)(s, 1, in1, (unsigned int) s[100], (unsigned int) c);
+		(*Keccak_X4_AddBytes_ptr)(s, 2, in2, (unsigned int) s[100], (unsigned int) c);
+		(*Keccak_X4_AddBytes_ptr)(s, 3, in3, (unsigned int) s[100], (unsigned int) c);
 		(*Keccak_X4_Permute_ptr)(s);
 		inlen -= c;
 		in0 += c;
@@ -104,10 +104,10 @@ static void keccak_x4_inc_absorb(uint64_t *s, uint32_t r,
 	}
 
 	while (inlen >= r) {
-		(*Keccak_X4_AddBytes_ptr)(s, 0, in0, 0, (unsigned int)r);
-		(*Keccak_X4_AddBytes_ptr)(s, 1, in1, 0, (unsigned int)r);
-		(*Keccak_X4_AddBytes_ptr)(s, 2, in2, 0, (unsigned int)r);
-		(*Keccak_X4_AddBytes_ptr)(s, 3, in3, 0, (unsigned int)r);
+		(*Keccak_X4_AddBytes_ptr)(s, 0, in0, 0, (unsigned int) r);
+		(*Keccak_X4_AddBytes_ptr)(s, 1, in1, 0, (unsigned int) r);
+		(*Keccak_X4_AddBytes_ptr)(s, 2, in2, 0, (unsigned int) r);
+		(*Keccak_X4_AddBytes_ptr)(s, 3, in3, 0, (unsigned int) r);
 		(*Keccak_X4_Permute_ptr)(s);
 		inlen -= r;
 		in0 += r;
@@ -116,23 +116,23 @@ static void keccak_x4_inc_absorb(uint64_t *s, uint32_t r,
 		in3 += r;
 	}
 
-	(*Keccak_X4_AddBytes_ptr)(s, 0, in0, (unsigned int)s[100], (unsigned int)inlen);
-	(*Keccak_X4_AddBytes_ptr)(s, 1, in1, (unsigned int)s[100], (unsigned int)inlen);
-	(*Keccak_X4_AddBytes_ptr)(s, 2, in2, (unsigned int)s[100], (unsigned int)inlen);
-	(*Keccak_X4_AddBytes_ptr)(s, 3, in3, (unsigned int)s[100], (unsigned int)inlen);
+	(*Keccak_X4_AddBytes_ptr)(s, 0, in0, (unsigned int) s[100], (unsigned int) inlen);
+	(*Keccak_X4_AddBytes_ptr)(s, 1, in1, (unsigned int) s[100], (unsigned int) inlen);
+	(*Keccak_X4_AddBytes_ptr)(s, 2, in2, (unsigned int) s[100], (unsigned int) inlen);
+	(*Keccak_X4_AddBytes_ptr)(s, 3, in3, (unsigned int) s[100], (unsigned int) inlen);
 	s[100] += inlen;
 }
 
 static void keccak_x4_inc_finalize(uint64_t *s, uint32_t r, uint8_t p) {
-	(*Keccak_X4_AddByte_ptr)(s, 0, p, (unsigned int)s[100]);
-	(*Keccak_X4_AddByte_ptr)(s, 1, p, (unsigned int)s[100]);
-	(*Keccak_X4_AddByte_ptr)(s, 2, p, (unsigned int)s[100]);
-	(*Keccak_X4_AddByte_ptr)(s, 3, p, (unsigned int)s[100]);
+	(*Keccak_X4_AddByte_ptr)(s, 0, p, (unsigned int) s[100]);
+	(*Keccak_X4_AddByte_ptr)(s, 1, p, (unsigned int) s[100]);
+	(*Keccak_X4_AddByte_ptr)(s, 2, p, (unsigned int) s[100]);
+	(*Keccak_X4_AddByte_ptr)(s, 3, p, (unsigned int) s[100]);
 
-	(*Keccak_X4_AddByte_ptr)(s, 0, 0x80, (unsigned int)(r - 1));
-	(*Keccak_X4_AddByte_ptr)(s, 1, 0x80, (unsigned int)(r - 1));
-	(*Keccak_X4_AddByte_ptr)(s, 2, 0x80, (unsigned int)(r - 1));
-	(*Keccak_X4_AddByte_ptr)(s, 3, 0x80, (unsigned int)(r - 1));
+	(*Keccak_X4_AddByte_ptr)(s, 0, 0x80, (unsigned int) (r - 1));
+	(*Keccak_X4_AddByte_ptr)(s, 1, 0x80, (unsigned int) (r - 1));
+	(*Keccak_X4_AddByte_ptr)(s, 2, 0x80, (unsigned int) (r - 1));
+	(*Keccak_X4_AddByte_ptr)(s, 3, 0x80, (unsigned int) (r - 1));
 
 	s[100] = 0;
 }
@@ -141,10 +141,10 @@ static void keccak_x4_inc_squeeze(uint8_t *out0, uint8_t *out1, uint8_t *out2, u
                                   size_t outlen, uint64_t *s, uint32_t r) {
 
 	while (outlen > s[100]) {
-		(*Keccak_X4_ExtractBytes_ptr)(s, 0, out0, (unsigned int)(r - s[100]), (unsigned int)s[100]);
-		(*Keccak_X4_ExtractBytes_ptr)(s, 1, out1, (unsigned int)(r - s[100]), (unsigned int)s[100]);
-		(*Keccak_X4_ExtractBytes_ptr)(s, 2, out2, (unsigned int)(r - s[100]), (unsigned int)s[100]);
-		(*Keccak_X4_ExtractBytes_ptr)(s, 3, out3, (unsigned int)(r - s[100]), (unsigned int)s[100]);
+		(*Keccak_X4_ExtractBytes_ptr)(s, 0, out0, (unsigned int) (r - s[100]), (unsigned int) s[100]);
+		(*Keccak_X4_ExtractBytes_ptr)(s, 1, out1, (unsigned int) (r - s[100]), (unsigned int) s[100]);
+		(*Keccak_X4_ExtractBytes_ptr)(s, 2, out2, (unsigned int) (r - s[100]), (unsigned int) s[100]);
+		(*Keccak_X4_ExtractBytes_ptr)(s, 3, out3, (unsigned int) (r - s[100]), (unsigned int) s[100]);
 		(*Keccak_X4_Permute_ptr)(s);
 		out0 += s[100];
 		out1 += s[100];
@@ -154,10 +154,10 @@ static void keccak_x4_inc_squeeze(uint8_t *out0, uint8_t *out1, uint8_t *out2, u
 		s[100] = r;
 	}
 
-	(*Keccak_X4_ExtractBytes_ptr)(s, 0, out0, (unsigned int)(r - s[100]), (unsigned int)outlen);
-	(*Keccak_X4_ExtractBytes_ptr)(s, 1, out1, (unsigned int)(r - s[100]), (unsigned int)outlen);
-	(*Keccak_X4_ExtractBytes_ptr)(s, 2, out2, (unsigned int)(r - s[100]), (unsigned int)outlen);
-	(*Keccak_X4_ExtractBytes_ptr)(s, 3, out3, (unsigned int)(r - s[100]), (unsigned int)outlen);
+	(*Keccak_X4_ExtractBytes_ptr)(s, 0, out0, (unsigned int) (r - s[100]), (unsigned int) outlen);
+	(*Keccak_X4_ExtractBytes_ptr)(s, 1, out1, (unsigned int) (r - s[100]), (unsigned int) outlen);
+	(*Keccak_X4_ExtractBytes_ptr)(s, 2, out2, (unsigned int) (r - s[100]), (unsigned int) outlen);
+	(*Keccak_X4_ExtractBytes_ptr)(s, 3, out3, (unsigned int) (r - s[100]), (unsigned int) outlen);
 
 	s[100] -= outlen;
 }
@@ -178,18 +178,18 @@ static void SHA3_shake128_x4(uint8_t *out0, uint8_t *out1, uint8_t *out2, uint8_
 static void SHA3_shake128_x4_inc_init(OQS_SHA3_shake128_x4_inc_ctx *state) {
 	state->ctx = OQS_MEM_aligned_alloc(KECCAK_X4_CTX_ALIGNMENT, KECCAK_X4_CTX_BYTES);
 	OQS_EXIT_IF_NULLPTR(state->ctx, "SHA3x4");
-	keccak_x4_inc_reset((uint64_t *)state->ctx);
+	keccak_x4_inc_reset((uint64_t *) state->ctx);
 }
 static void SHA3_shake128_x4_inc_absorb(OQS_SHA3_shake128_x4_inc_ctx *state, const uint8_t *in0, const uint8_t *in1, const uint8_t *in2, const uint8_t *in3, size_t inlen) {
-	keccak_x4_inc_absorb((uint64_t *)state->ctx, OQS_SHA3_SHAKE128_RATE, in0, in1, in2, in3, inlen);
+	keccak_x4_inc_absorb((uint64_t *) state->ctx, OQS_SHA3_SHAKE128_RATE, in0, in1, in2, in3, inlen);
 }
 
 static void SHA3_shake128_x4_inc_finalize(OQS_SHA3_shake128_x4_inc_ctx *state) {
-	keccak_x4_inc_finalize((uint64_t *)state->ctx, OQS_SHA3_SHAKE128_RATE, 0x1F);
+	keccak_x4_inc_finalize((uint64_t *) state->ctx, OQS_SHA3_SHAKE128_RATE, 0x1F);
 }
 
 static void SHA3_shake128_x4_inc_squeeze(uint8_t *out0, uint8_t *out1, uint8_t *out2, uint8_t *out3, size_t outlen, OQS_SHA3_shake128_x4_inc_ctx *state) {
-	keccak_x4_inc_squeeze(out0, out1, out2, out3, outlen, (uint64_t *)state->ctx, OQS_SHA3_SHAKE128_RATE);
+	keccak_x4_inc_squeeze(out0, out1, out2, out3, outlen, (uint64_t *) state->ctx, OQS_SHA3_SHAKE128_RATE);
 }
 
 static void SHA3_shake128_x4_inc_ctx_clone(OQS_SHA3_shake128_x4_inc_ctx *dest, const OQS_SHA3_shake128_x4_inc_ctx *src) {
@@ -201,7 +201,7 @@ static void SHA3_shake128_x4_inc_ctx_release(OQS_SHA3_shake128_x4_inc_ctx *state
 }
 
 static void SHA3_shake128_x4_inc_ctx_reset(OQS_SHA3_shake128_x4_inc_ctx *state) {
-	keccak_x4_inc_reset((uint64_t *)state->ctx);
+	keccak_x4_inc_reset((uint64_t *) state->ctx);
 }
 
 /********** SHAKE256 ***********/
@@ -220,19 +220,19 @@ static void SHA3_shake256_x4(uint8_t *out0, uint8_t *out1, uint8_t *out2, uint8_
 static void SHA3_shake256_x4_inc_init(OQS_SHA3_shake256_x4_inc_ctx *state) {
 	state->ctx = OQS_MEM_aligned_alloc(KECCAK_X4_CTX_ALIGNMENT, KECCAK_X4_CTX_BYTES);
 	OQS_EXIT_IF_NULLPTR(state->ctx, "SHA3x4");
-	keccak_x4_inc_reset((uint64_t *)state->ctx);
+	keccak_x4_inc_reset((uint64_t *) state->ctx);
 }
 
 static void SHA3_shake256_x4_inc_absorb(OQS_SHA3_shake256_x4_inc_ctx *state, const uint8_t *in0, const uint8_t *in1, const uint8_t *in2, const uint8_t *in3, size_t inlen) {
-	keccak_x4_inc_absorb((uint64_t *)state->ctx, OQS_SHA3_SHAKE256_RATE, in0, in1, in2, in3, inlen);
+	keccak_x4_inc_absorb((uint64_t *) state->ctx, OQS_SHA3_SHAKE256_RATE, in0, in1, in2, in3, inlen);
 }
 
 static void SHA3_shake256_x4_inc_finalize(OQS_SHA3_shake256_x4_inc_ctx *state) {
-	keccak_x4_inc_finalize((uint64_t *)state->ctx, OQS_SHA3_SHAKE256_RATE, 0x1F);
+	keccak_x4_inc_finalize((uint64_t *) state->ctx, OQS_SHA3_SHAKE256_RATE, 0x1F);
 }
 
 static void SHA3_shake256_x4_inc_squeeze(uint8_t *out0, uint8_t *out1, uint8_t *out2, uint8_t *out3, size_t outlen, OQS_SHA3_shake256_x4_inc_ctx *state) {
-	keccak_x4_inc_squeeze(out0, out1, out2, out3, outlen, (uint64_t *)state->ctx, OQS_SHA3_SHAKE256_RATE);
+	keccak_x4_inc_squeeze(out0, out1, out2, out3, outlen, (uint64_t *) state->ctx, OQS_SHA3_SHAKE256_RATE);
 }
 
 static void SHA3_shake256_x4_inc_ctx_clone(OQS_SHA3_shake256_x4_inc_ctx *dest, const OQS_SHA3_shake256_x4_inc_ctx *src) {
@@ -244,7 +244,7 @@ static void SHA3_shake256_x4_inc_ctx_release(OQS_SHA3_shake256_x4_inc_ctx *state
 }
 
 static void SHA3_shake256_x4_inc_ctx_reset(OQS_SHA3_shake256_x4_inc_ctx *state) {
-	keccak_x4_inc_reset((uint64_t *)state->ctx);
+	keccak_x4_inc_reset((uint64_t *) state->ctx);
 }
 
 struct OQS_SHA3_x4_callbacks sha3_x4_default_callbacks = {

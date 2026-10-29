@@ -124,7 +124,8 @@ OQS_API const char *OQS_SIG_alg_identifier(size_t i) {
 		OQS_SIG_alg_mqom_mqom3_cat5_gf16_short_ct,
 		OQS_SIG_alg_mqom_mqom3_cat5_gf16_short_ot,
 		OQS_SIG_alg_mqom_mqom3_cat5_gf2_shorter_ct,
-		OQS_SIG_alg_mqom_mqom3_cat5_gf2_shorter_ot,///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALG_IDENTIFIER_END
+		OQS_SIG_alg_mqom_mqom3_cat5_gf2_shorter_ot,
+		///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALG_IDENTIFIER_END
 		///// OQS_COPY_FROM_SLH_DSA_FRAGMENT_ALGID_START
 		OQS_SIG_alg_slh_dsa_pure_sha2_128s,
 		OQS_SIG_alg_slh_dsa_pure_sha2_128f,
@@ -1070,8 +1071,8 @@ OQS_API int OQS_SIG_alg_is_enabled(const char *method_name) {
 #else
 		return 0;
 #endif
-///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ENABLED_CASE_END
-///// OQS_COPY_FROM_SLH_DSA_FRAGMENT_ENABLED_START
+		///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ENABLED_CASE_END
+		///// OQS_COPY_FROM_SLH_DSA_FRAGMENT_ENABLED_START
 	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_slh_dsa_pure_sha2_128s)) {
 #ifdef OQS_ENABLE_SIG_slh_dsa_pure_sha2_128s
 		return 1;
@@ -2789,8 +2790,8 @@ OQS_API OQS_SIG *OQS_SIG_new(const char *method_name) {
 #else
 		return NULL;
 #endif
-///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_NEW_CASE_END
-///// OQS_COPY_FROM_SLH_DSA_FRAGMENT_SIGNEW_START
+		///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_NEW_CASE_END
+		///// OQS_COPY_FROM_SLH_DSA_FRAGMENT_SIGNEW_START
 	} else if (0 == strcasecmp(method_name, OQS_SIG_alg_slh_dsa_pure_sha2_128s)) {
 #ifdef OQS_ENABLE_SIG_slh_dsa_pure_sha2_128s
 		return OQS_SIG_slh_dsa_pure_sha2_128s_new();

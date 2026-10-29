@@ -20,9 +20,9 @@
 #include <oqs/sha2.h>
 #include <oqs/sha3.h>
 
-static const uint8_t test_aes128_key[] = {0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f};
-static const uint8_t test_aes192_key[] = {0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17};
-static const uint8_t test_aes256_key[] = {0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 0x19, 0x1a, 0x1b, 0x1c, 0x1d, 0x1e, 0x1f};
+static const uint8_t test_aes128_key[] = { 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f };
+static const uint8_t test_aes192_key[] = { 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17 };
+static const uint8_t test_aes256_key[] = { 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f, 0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 0x19, 0x1a, 0x1b, 0x1c, 0x1d, 0x1e, 0x1f };
 
 static OQS_STATUS speed_aes128(uint64_t duration, size_t message_len) {
 	uint8_t *message = NULL;
@@ -314,7 +314,7 @@ int main(int argc, char **argv) {
 		}
 		if ((strcmp(argv[i], "--duration") == 0) || (strcmp(argv[i], "-d") == 0)) {
 			if (i < argc - 1) {
-				duration = (uint64_t)strtol(argv[i + 1], NULL, 10);
+				duration = (uint64_t) strtol(argv[i + 1], NULL, 10);
 				if (duration > 0) {
 					i += 1;
 					continue;
@@ -322,7 +322,7 @@ int main(int argc, char **argv) {
 			}
 		} else if ((strcmp(argv[i], "--msglen") == 0) || (strcmp(argv[i], "-m") == 0)) {
 			if (i < argc - 1) {
-				message_len = (size_t)strtol(argv[i + 1], NULL, 10);
+				message_len = (size_t) strtol(argv[i + 1], NULL, 10);
 				if (message_len > 0) {
 					i += 1;
 					continue;
@@ -330,7 +330,7 @@ int main(int argc, char **argv) {
 			}
 		} else if ((strcmp(argv[i], "--outlen") == 0) || (strcmp(argv[i], "-o") == 0)) {
 			if (i < argc - 1) {
-				output_len = (size_t)strtol(argv[i + 1], NULL, 10);
+				output_len = (size_t) strtol(argv[i + 1], NULL, 10);
 				if (output_len > 0) {
 					i += 1;
 					continue;
@@ -371,7 +371,7 @@ int main(int argc, char **argv) {
 	PRINT_TIMER_HEADER
 	if (single_alg != NULL) {
 		if (strcmp(single_alg, "aes128") == 0) {
-			if ( message_len % 16 != 0 ) {
+			if (message_len % 16 != 0) {
 				fprintf(stderr, "ERROR: message length must be multiple of 16 for AES\n");
 				ret = EXIT_FAILURE;
 			} else {
@@ -381,7 +381,7 @@ int main(int argc, char **argv) {
 				}
 			}
 		} else if (strcmp(single_alg, "aes192") == 0) {
-			if ( message_len % 16 != 0 ) {
+			if (message_len % 16 != 0) {
 				fprintf(stderr, "ERROR: message length must be multiple of 16 for AES\n");
 				ret = EXIT_FAILURE;
 			} else {
@@ -391,7 +391,7 @@ int main(int argc, char **argv) {
 				}
 			}
 		} else if (strcmp(single_alg, "aes256") == 0) {
-			if ( message_len % 16 != 0 ) {
+			if (message_len % 16 != 0) {
 				fprintf(stderr, "ERROR: message length must be multiple of 16 for AES\n");
 				ret = EXIT_FAILURE;
 			} else {
@@ -435,7 +435,7 @@ int main(int argc, char **argv) {
 			return EXIT_FAILURE;
 		}
 	} else {
-		if ( message_len % 16 != 0 ) {
+		if (message_len % 16 != 0) {
 			fprintf(stderr, "ERROR: message length must be multiple of 16 for AES\n");
 			ret = EXIT_FAILURE;
 		} else {
@@ -482,7 +482,6 @@ int main(int argc, char **argv) {
 		if (rc != OQS_SUCCESS) {
 			ret = EXIT_FAILURE;
 		}
-
 	}
 	PRINT_TIMER_FOOTER
 

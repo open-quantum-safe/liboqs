@@ -55,7 +55,7 @@ int FindMarker(FILE *infile, const char *marker) {
 
 	for (i = 0; i < len; i++) {
 		curr_line = fgetc(infile);
-		line[i] = (char)curr_line;
+		line[i] = (char) curr_line;
 		if (curr_line == EOF) {
 			return 0;
 		}
@@ -71,7 +71,7 @@ int FindMarker(FILE *infile, const char *marker) {
 			line[i] = line[i + 1];
 		}
 		curr_line = fgetc(infile);
-		line[len - 1] = (char)curr_line;
+		line[len - 1] = (char) curr_line;
 		if (curr_line == EOF) {
 			return 0;
 		}
@@ -96,7 +96,7 @@ int ReadHex(FILE *infile, unsigned char *a, unsigned long Length, char *str) {
 	}
 	OQS_MEM_cleanse(a, Length);
 	started = 0;
-	if (FindMarker(infile, str))
+	if (FindMarker(infile, str)) {
 		while ((ch = fgetc(infile)) != EOF) {
 			if (!isxdigit(ch)) {
 				if (!started) {
@@ -111,11 +111,11 @@ int ReadHex(FILE *infile, unsigned char *a, unsigned long Length, char *str) {
 			}
 			started = 1;
 			if ((ch >= '0') && (ch <= '9')) {
-				ich = (unsigned char)ch - '0';
+				ich = (unsigned char) ch - '0';
 			} else if ((ch >= 'A') && (ch <= 'F')) {
-				ich = (unsigned char)ch - 'A' + 10;
+				ich = (unsigned char) ch - 'A' + 10;
 			} else if ((ch >= 'a') && (ch <= 'f')) {
-				ich = (unsigned char)ch - 'a' + 10;
+				ich = (unsigned char) ch - 'a' + 10;
 			} else {
 				// shouldn't ever get here
 				ich = 0;
@@ -125,7 +125,8 @@ int ReadHex(FILE *infile, unsigned char *a, unsigned long Length, char *str) {
 				a[i] = (unsigned char) (a[i] << 4) | (unsigned char) (a[i + 1] >> 4);
 			}
 			a[Length - 1] = (unsigned char) (a[Length - 1] << 4) | (unsigned char) ich;
-		} else {
+		}
+	} else {
 		return 0;
 	}
 
@@ -169,10 +170,10 @@ static OQS_STATUS lock_sk_key(void *mutex) {
 		return OQS_ERROR;
 	}
 
-	if (pthread_mutex_lock((pthread_mutex_t *)mutex)) {
+	if (pthread_mutex_lock((pthread_mutex_t *) mutex)) {
 		return OQS_ERROR;
 	}
-	return  OQS_SUCCESS;
+	return OQS_SUCCESS;
 }
 
 static OQS_STATUS unlock_sk_key(void *mutex) {
@@ -180,10 +181,10 @@ static OQS_STATUS unlock_sk_key(void *mutex) {
 		return OQS_ERROR;
 	}
 
-	if (pthread_mutex_unlock((pthread_mutex_t *)mutex)) {
+	if (pthread_mutex_unlock((pthread_mutex_t *) mutex)) {
 		return OQS_ERROR;
 	}
-	return  OQS_SUCCESS;
+	return OQS_SUCCESS;
 }
 #else
 static OQS_STATUS lock_sk_key(UNUSED void *mutex) {
@@ -216,12 +217,12 @@ OQS_STATUS sig_stfl_keypair_from_KATs(OQS_SIG_STFL *sig, uint8_t *public_key, OQ
 	}
 
 	// Grab the pk and sk from KAT file
-	if (!ReadHex(fp_rsp, public_key, sig->length_public_key, (char *)"pk = ")) {
+	if (!ReadHex(fp_rsp, public_key, sig->length_public_key, (char *) "pk = ")) {
 		fprintf(stderr, "ERROR: unable to read 'pk' from <%s>\n", katfile);
 		goto err;
 	}
 
-	if (!ReadHex(fp_rsp, secret_key->secret_key_data, sig->length_secret_key, (char *)"sk = ")) {
+	if (!ReadHex(fp_rsp, secret_key->secret_key_data, sig->length_secret_key, (char *) "sk = ")) {
 		fprintf(stderr, "ERROR: unable to read 'sk' from <%s>\n", katfile);
 		goto err;
 	}
@@ -252,7 +253,7 @@ cleanup:
  * XMSSMT-SHAKE_60/3_256
  */
 OQS_STATUS sig_stfl_KATs_keygen(OQS_SIG_STFL *sig, uint8_t *public_key, OQS_SIG_STFL_SECRET_KEY *secret_key, const char *katfile) {
-	if (sig == NULL || public_key == NULL || secret_key == NULL ) {
+	if (sig == NULL || public_key == NULL || secret_key == NULL) {
 		return OQS_ERROR;
 	}
 
@@ -346,7 +347,7 @@ from_kats:
 
 from_keygen:
 #endif //OQS_ENABLE_SIG_STFL_XMSS
-	(void)(katfile);
+	(void) (katfile);
 	return sig_stfl_keypair_from_keygen(sig, public_key, secret_key);
 }
 
@@ -418,9 +419,9 @@ static char *convert_method_name_to_file_name(const char *method_name) {
 
 /* Store callback for keys that must never reach signing; discards instead of writing a file. */
 static OQS_STATUS discard_secret_key(uint8_t *key_buf, size_t buf_len, void *context) {
-	(void)key_buf;
-	(void)buf_len;
-	(void)context;
+	(void) key_buf;
+	(void) buf_len;
+	(void) context;
 	return OQS_SUCCESS;
 }
 #endif
@@ -454,7 +455,7 @@ static OQS_STATUS test_invalid_sig(const char *method_name) {
 		return OQS_ERROR;
 	}
 #ifndef OQS_ENABLE_SIG_STFL_XMSS
-	(void)method_name;
+	(void) method_name;
 	return OQS_SUCCESS;
 #else
 	OQS_SIG_STFL *sig = OQS_SIG_STFL_new(method_name);
@@ -462,11 +463,11 @@ static OQS_STATUS test_invalid_sig(const char *method_name) {
 		return OQS_ERROR;
 	}
 
-	uint8_t pk[TEST_INVALID_SIG_PK_LEN] = {0};
-	pk[TEST_XMSS_OID_LEN - 1] = (uint8_t)TEST_XMSS_OID_SHA2_10_256;
+	uint8_t pk[TEST_INVALID_SIG_PK_LEN] = { 0 };
+	pk[TEST_XMSS_OID_LEN - 1] = (uint8_t) TEST_XMSS_OID_SHA2_10_256;
 
 	uint8_t message[] = "test";
-	uint8_t malicious_sig[TEST_INVALID_SIG_MALICIOUS_SIG_LEN] = {0};
+	uint8_t malicious_sig[TEST_INVALID_SIG_MALICIOUS_SIG_LEN] = { 0 };
 
 	// Sub-case 1 (GHSA-wf7v-fhxj-73m2): caller-supplied signature_len shorter than the
 	// declared algorithm's expected size. Must be rejected by the wrapper length check.
@@ -518,7 +519,7 @@ static OQS_STATUS test_invalid_sig(const char *method_name) {
 		return OQS_ERROR;
 	}
 	memset(sk_buf, 0, sig->length_secret_key);
-	sk_buf[TEST_XMSS_OID_LEN - 1] = (uint8_t)foreign_oid;
+	sk_buf[TEST_XMSS_OID_LEN - 1] = (uint8_t) foreign_oid;
 
 	status = OQS_SIG_STFL_SECRET_KEY_deserialize(foreign_sk, sk_buf, sig->length_secret_key, NULL);
 	if (status == OQS_SUCCESS) {
@@ -527,7 +528,7 @@ static OQS_STATUS test_invalid_sig(const char *method_name) {
 		/* Acceptance by any of the three consumers is the failure being tested for, so it
 		 * must leave status == OQS_SUCCESS for the check below to flag. */
 		if (OQS_SIG_STFL_sigs_remaining(sig, &dummy, foreign_sk) == OQS_SUCCESS ||
-		        OQS_SIG_STFL_sigs_total(sig, &dummy, foreign_sk) == OQS_SUCCESS) {
+		    OQS_SIG_STFL_sigs_total(sig, &dummy, foreign_sk) == OQS_SUCCESS) {
 			status = OQS_SUCCESS;
 		} else {
 			size_t foreign_sig_len = 0;
@@ -562,7 +563,7 @@ static OQS_STATUS test_invalid_sig_lms(const char *method_name) {
 		return OQS_ERROR;
 	}
 #ifndef OQS_ENABLE_SIG_STFL_LMS
-	(void)method_name;
+	(void) method_name;
 	return OQS_SUCCESS;
 #else
 	OQS_SIG_STFL *sig = OQS_SIG_STFL_new(method_name);
@@ -572,7 +573,7 @@ static OQS_STATUS test_invalid_sig_lms(const char *method_name) {
 
 	/* hss_validate_signature_init derives every parameter from the pk and
 	 * signature bytes, so one well-formed single-level pk covers all variants. */
-	uint8_t pk[TEST_INVALID_SIG_LMS_PK_LEN] = {0};
+	uint8_t pk[TEST_INVALID_SIG_LMS_PK_LEN] = { 0 };
 	pk[TEST_LMS_LEVELS_OFFSET] = 1;
 	pk[TEST_LMS_TYPE_OFFSET] = TEST_LMS_TYPE_SHA256_H5;
 	pk[TEST_LMS_OTS_TYPE_OFFSET] = TEST_LMOTS_TYPE_SHA256_N32_W2;
@@ -681,7 +682,7 @@ static OQS_STATUS sig_stfl_test_correctness(const char *method_name, const char 
 
 	/* set context and secure store callback */
 	context = strdup(((file_store)));
-	OQS_SIG_STFL_SECRET_KEY_SET_store_cb(secret_key, save_secret_key, (void *)context);
+	OQS_SIG_STFL_SECRET_KEY_SET_store_cb(secret_key, save_secret_key, (void *) context);
 
 	/*
 	 * The lock, unlock and mutex must be set together or not at all; a partial
@@ -872,14 +873,14 @@ static OQS_STATUS sig_stfl_test_secret_key(const char *method_name, const char *
 	/*
 	 * Get max num signature and the amount remaining
 	 */
-	rc = OQS_SIG_STFL_sigs_total((const OQS_SIG_STFL *)sig_obj, &max_num_sigs, (const OQS_SIG_STFL_SECRET_KEY *)sk);
+	rc = OQS_SIG_STFL_sigs_total((const OQS_SIG_STFL *) sig_obj, &max_num_sigs, (const OQS_SIG_STFL_SECRET_KEY *) sk);
 	OQS_TEST_CT_DECLASSIFY(&rc, sizeof(rc));
 	if (rc != OQS_SUCCESS) {
 		fprintf(stderr, "OQS STFL key: Failed to get max number of sig from %s.\n", method_name);
 		goto err;
 	}
 
-	rc = OQS_SIG_STFL_sigs_remaining((const OQS_SIG_STFL *)sig_obj, &num_sig_left, (const OQS_SIG_STFL_SECRET_KEY *)sk);
+	rc = OQS_SIG_STFL_sigs_remaining((const OQS_SIG_STFL *) sig_obj, &num_sig_left, (const OQS_SIG_STFL_SECRET_KEY *) sk);
 	OQS_TEST_CT_DECLASSIFY(&rc, sizeof(rc));
 	if (rc != OQS_SUCCESS) {
 		fprintf(stderr, "OQS STFL key: Failed to get the remaining number of sig from %s.\n", method_name);
@@ -892,7 +893,7 @@ static OQS_STATUS sig_stfl_test_secret_key(const char *method_name, const char *
 		goto err;
 	}
 
-	file_store_name  = convert_method_name_to_file_name(sig_obj->method_name);
+	file_store_name = convert_method_name_to_file_name(sig_obj->method_name);
 	if (oqs_fstore("sk", file_store_name, to_file_sk_buf, to_file_sk_len) != OQS_SUCCESS) {
 		goto err;
 	}
@@ -905,7 +906,7 @@ static OQS_STATUS sig_stfl_test_secret_key(const char *method_name, const char *
 	/* set context and secure store callback */
 	if (sk->set_scrt_key_store_cb != NULL) {
 		context = strdup(file_store_name);
-		sk->set_scrt_key_store_cb(sk, save_secret_key, (void *)context);
+		sk->set_scrt_key_store_cb(sk, save_secret_key, (void *) context);
 	}
 
 	/* read secret key from disk */
@@ -925,7 +926,7 @@ static OQS_STATUS sig_stfl_test_secret_key(const char *method_name, const char *
 	}
 
 	context_2 = strdup(file_store_name);
-	rc = OQS_SIG_STFL_SECRET_KEY_deserialize(sk_from_file, from_file_sk_buf, from_file_sk_len, (void *)context_2);
+	rc = OQS_SIG_STFL_SECRET_KEY_deserialize(sk_from_file, from_file_sk_buf, from_file_sk_len, (void *) context_2);
 	OQS_TEST_CT_DECLASSIFY(&rc, sizeof(rc));
 	if (rc != OQS_SUCCESS) {
 		fprintf(stderr, "OQS restore %s from file failed.\n", method_name);
@@ -957,7 +958,7 @@ static void TEST_SIG_STFL_randombytes(uint8_t *random_array, size_t bytes_to_rea
 	// We can't make direct calls to the system randombytes on some platforms,
 	// so we have to swap out the OQS_randombytes provider.
 
-	(void)OQS_randombytes_switch_algorithm("system");
+	(void) OQS_randombytes_switch_algorithm("system");
 	OQS_randombytes(random_array, bytes_to_read);
 	OQS_randombytes_custom_algorithm(&TEST_SIG_STFL_randombytes);
 
@@ -982,9 +983,9 @@ static OQS_STATUS sig_stfl_test_query_key(const char *method_name) {
 	printf("Testing stateful Signature Verification %s\n", method_name);
 	printf("================================================================================\n");
 
-	if ( lock_test_sk == NULL || lock_test_sig_obj == NULL ||
-	        signature_1 == NULL || signature_2 == NULL ||
-	        lock_test_public_key == NULL) {
+	if (lock_test_sk == NULL || lock_test_sig_obj == NULL ||
+	    signature_1 == NULL || signature_2 == NULL ||
+	    lock_test_public_key == NULL) {
 		return OQS_ERROR;
 	}
 
@@ -1035,27 +1036,27 @@ static OQS_STATUS sig_stfl_test_sig_gen(const char *method_name) {
 	printf("Testing stateful Signature Generation %s\n", method_name);
 	printf("================================================================================\n");
 
-	if ( lock_test_sk == NULL || lock_test_sig_obj == NULL) {
+	if (lock_test_sk == NULL || lock_test_sig_obj == NULL) {
 		return OQS_ERROR;
 	}
 
 	key_store_name = convert_method_name_to_file_name(method_name);
 	/* set context and secure store callback */
 	context = strdup(((key_store_name)));
-	OQS_SIG_STFL_SECRET_KEY_SET_store_cb(lock_test_sk, save_secret_key, (void *)context);
+	OQS_SIG_STFL_SECRET_KEY_SET_store_cb(lock_test_sk, save_secret_key, (void *) context);
 
 	/*
 	 * Get max num signature and the amount remaining
 	 */
 	unsigned long long num_sig_left = 0, max_num_sigs = 0;
-	rc = OQS_SIG_STFL_sigs_total((const OQS_SIG_STFL *)lock_test_sig_obj, &max_num_sigs, (const OQS_SIG_STFL_SECRET_KEY *)lock_test_sk);
+	rc = OQS_SIG_STFL_sigs_total((const OQS_SIG_STFL *) lock_test_sig_obj, &max_num_sigs, (const OQS_SIG_STFL_SECRET_KEY *) lock_test_sk);
 	OQS_TEST_CT_DECLASSIFY(&rc, sizeof(rc));
 	if (rc != OQS_SUCCESS) {
 		fprintf(stderr, "OQS STFL key: Failed to get max number of sig from %s.\n", method_name);
 		goto err;
 	}
 
-	rc = OQS_SIG_STFL_sigs_remaining((const OQS_SIG_STFL *)lock_test_sig_obj, &num_sig_left, (const OQS_SIG_STFL_SECRET_KEY *)lock_test_sk);
+	rc = OQS_SIG_STFL_sigs_remaining((const OQS_SIG_STFL *) lock_test_sig_obj, &num_sig_left, (const OQS_SIG_STFL_SECRET_KEY *) lock_test_sk);
 	OQS_TEST_CT_DECLASSIFY(&rc, sizeof(rc));
 	if (rc != OQS_SUCCESS) {
 		fprintf(stderr, "OQS STFL key: Failed to get the remaining number of sig from %s.\n", method_name);
@@ -1079,14 +1080,14 @@ static OQS_STATUS sig_stfl_test_sig_gen(const char *method_name) {
 	 * Get max num signature and the amount remaining
 	 */
 	num_sig_left = 0, max_num_sigs = 0;
-	rc = OQS_SIG_STFL_sigs_total((const OQS_SIG_STFL *)lock_test_sig_obj, &max_num_sigs, (const OQS_SIG_STFL_SECRET_KEY *)lock_test_sk);
+	rc = OQS_SIG_STFL_sigs_total((const OQS_SIG_STFL *) lock_test_sig_obj, &max_num_sigs, (const OQS_SIG_STFL_SECRET_KEY *) lock_test_sk);
 	OQS_TEST_CT_DECLASSIFY(&rc, sizeof(rc));
 	if (rc != OQS_SUCCESS) {
 		fprintf(stderr, "OQS STFL key: Failed to get max number of sig from %s.\n", method_name);
 		goto err;
 	}
 
-	rc = OQS_SIG_STFL_sigs_remaining((const OQS_SIG_STFL *)lock_test_sig_obj, &num_sig_left, (const OQS_SIG_STFL_SECRET_KEY *)lock_test_sk);
+	rc = OQS_SIG_STFL_sigs_remaining((const OQS_SIG_STFL *) lock_test_sig_obj, &num_sig_left, (const OQS_SIG_STFL_SECRET_KEY *) lock_test_sk);
 	OQS_TEST_CT_DECLASSIFY(&rc, sizeof(rc));
 	if (rc != OQS_SUCCESS) {
 		fprintf(stderr, "OQS STFL key: Failed to get the remaining number of sig from %s.\n", method_name);
@@ -1114,14 +1115,14 @@ static OQS_STATUS sig_stfl_test_sig_gen(const char *method_name) {
 	 * Get max num signature and the amount remaining
 	 */
 	num_sig_left = 0, max_num_sigs = 0;
-	rc = OQS_SIG_STFL_sigs_total((const OQS_SIG_STFL *)lock_test_sig_obj, &max_num_sigs, (const OQS_SIG_STFL_SECRET_KEY *)lock_test_sk);
+	rc = OQS_SIG_STFL_sigs_total((const OQS_SIG_STFL *) lock_test_sig_obj, &max_num_sigs, (const OQS_SIG_STFL_SECRET_KEY *) lock_test_sk);
 	OQS_TEST_CT_DECLASSIFY(&rc, sizeof(rc));
 	if (rc != OQS_SUCCESS) {
 		fprintf(stderr, "OQS STFL key: Failed to get max number of sig from %s.\n", method_name);
 		goto err;
 	}
 
-	rc = OQS_SIG_STFL_sigs_remaining((const OQS_SIG_STFL *)lock_test_sig_obj, &num_sig_left, (const OQS_SIG_STFL_SECRET_KEY *)lock_test_sk);
+	rc = OQS_SIG_STFL_sigs_remaining((const OQS_SIG_STFL *) lock_test_sig_obj, &num_sig_left, (const OQS_SIG_STFL_SECRET_KEY *) lock_test_sk);
 	OQS_TEST_CT_DECLASSIFY(&rc, sizeof(rc));
 	if (rc != OQS_SUCCESS) {
 		fprintf(stderr, "OQS STFL key: Failed to get the remaining number of sig from %s.\n", method_name);
@@ -1196,7 +1197,7 @@ static OQS_STATUS sig_stfl_test_secret_key_lock(const char *method_name, const c
 	/* set context and secure store callback */
 	if (lock_test_sk->set_scrt_key_store_cb) {
 		lock_test_context = convert_method_name_to_file_name(method_name);
-		lock_test_sk->set_scrt_key_store_cb(lock_test_sk, save_secret_key, (void *)lock_test_context);
+		lock_test_sk->set_scrt_key_store_cb(lock_test_sk, save_secret_key, (void *) lock_test_context);
 	}
 
 	return OQS_SUCCESS;
@@ -1271,7 +1272,7 @@ void *test_secret_key_wrapper(void *arg) {
  * When key and signature generation is off
  * these operations should fail. So flip the results.
  */
-static OQS_STATUS update_test_result( OQS_STATUS rc, int xmss_or_lms) {
+static OQS_STATUS update_test_result(OQS_STATUS rc, int xmss_or_lms) {
 	OQS_STATUS rc_update = rc;
 	if (xmss_or_lms) {
 		;
@@ -1296,7 +1297,7 @@ static OQS_STATUS update_test_result( OQS_STATUS rc, int xmss_or_lms) {
 }
 
 int main(int argc, char **argv) {
-	OQS_STATUS  rc = OQS_ERROR, rc1 = OQS_ERROR, rc2 = OQS_SUCCESS;
+	OQS_STATUS rc = OQS_ERROR, rc1 = OQS_ERROR, rc2 = OQS_SUCCESS;
 	OQS_init();
 	rc = oqs_fstore_init();
 	if (rc != OQS_SUCCESS) {
@@ -1337,20 +1338,20 @@ int main(int argc, char **argv) {
 	}
 
 	/* by default, flip 50 random bits of the message and signature (to test EUF-CMA and SUF-CMA, respectively) */
-	bool bitflips_all[2] = {false, false};
-	size_t bitflips[2] = {50, 50};
+	bool bitflips_all[2] = { false, false };
+	size_t bitflips[2] = { 50, 50 };
 	if (argc >= 4) {
 		if (strcmp(argv[2], "all") == 0) {
 			bitflips_all[0] = true;
 		} else {
-			bitflips[0] = (size_t)strtol(argv[3], NULL, 10);
+			bitflips[0] = (size_t) strtol(argv[3], NULL, 10);
 		}
 	}
 	if (argc == 5) {
 		if (strcmp(argv[3], "all") == 0) {
 			bitflips_all[1] = true;
 		} else {
-			bitflips[1] = (size_t)strtol(argv[4], NULL, 10);
+			bitflips[1] = (size_t) strtol(argv[4], NULL, 10);
 		}
 	}
 
@@ -1398,18 +1399,18 @@ int main(int argc, char **argv) {
 	pthread_t sign_key_thread;
 	pthread_t query_key_thread;
 
-	thread_data_t td = {.alg_name = alg_name, .katfile = katfile, .bitflips_all = bitflips_all, .bitflips = bitflips, .rc = OQS_ERROR, .rc2 = OQS_SUCCESS};
-	thread_data_t td_2 = {.alg_name = alg_name, .katfile = katfile, .bitflips_all = bitflips_all, .bitflips = bitflips, .rc = OQS_ERROR, .rc2 = OQS_SUCCESS};
+	thread_data_t td = { .alg_name = alg_name, .katfile = katfile, .bitflips_all = bitflips_all, .bitflips = bitflips, .rc = OQS_ERROR, .rc2 = OQS_SUCCESS };
+	thread_data_t td_2 = { .alg_name = alg_name, .katfile = katfile, .bitflips_all = bitflips_all, .bitflips = bitflips, .rc = OQS_ERROR, .rc2 = OQS_SUCCESS };
 
-	lock_test_data_t td_create = {.alg_name = alg_name, .katfile = katfile, .rc = OQS_ERROR};
-	lock_test_data_t td_sign = {.alg_name = alg_name, .katfile = katfile, .rc = OQS_ERROR};
-	lock_test_data_t td_query = {.alg_name = alg_name, .katfile = katfile, .rc = OQS_ERROR};
+	lock_test_data_t td_create = { .alg_name = alg_name, .katfile = katfile, .rc = OQS_ERROR };
+	lock_test_data_t td_sign = { .alg_name = alg_name, .katfile = katfile, .rc = OQS_ERROR };
+	lock_test_data_t td_query = { .alg_name = alg_name, .katfile = katfile, .rc = OQS_ERROR };
 
-	pthread_mutex_t *test_sk_lock_local = (pthread_mutex_t *)OQS_MEM_malloc(sizeof(pthread_mutex_t));
+	pthread_mutex_t *test_sk_lock_local = (pthread_mutex_t *) OQS_MEM_malloc(sizeof(pthread_mutex_t));
 	if (test_sk_lock_local == NULL) {
 		goto err;
 	}
-	pthread_mutex_t *sk_lock_local = (pthread_mutex_t *)OQS_MEM_malloc(sizeof(pthread_mutex_t));
+	pthread_mutex_t *sk_lock_local = (pthread_mutex_t *) OQS_MEM_malloc(sizeof(pthread_mutex_t));
 	if (sk_lock_local == NULL) {
 		OQS_MEM_insecure_free(test_sk_lock_local);
 		goto err;
@@ -1487,12 +1488,12 @@ int main(int argc, char **argv) {
 	rc_query = update_test_result(rc_query, is_xmss);
 #else
 	rc_create = rc_sign = rc_query = OQS_SUCCESS;
-	(void)td_create;
-	(void)td_sign;
-	(void)td_query;
-	(void)create_key_thread;
-	(void)sign_key_thread;
-	(void)query_key_thread;
+	(void) td_create;
+	(void) td_sign;
+	(void) td_query;
+	(void) create_key_thread;
+	(void) sign_key_thread;
+	(void) query_key_thread;
 #endif
 
 err:

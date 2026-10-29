@@ -19,9 +19,9 @@
 
 OQS_STATUS dummy_secure_storage(uint8_t *sk_buf, size_t sk_buf_len, void *context) {
 	// suppress unused parameter warning
-	(void)(sk_buf);
-	(void)(sk_buf_len);
-	(void)(context);
+	(void) (sk_buf);
+	(void) (sk_buf_len);
+	(void) (context);
 	return OQS_SUCCESS;
 }
 
@@ -105,8 +105,7 @@ static OQS_STATUS sig_speed_wrapper(const char *method_name, uint64_t duration, 
 				printf("keygen error. Exiting.\n");
 				exit(-1);
 			}
-			secret_key = reset_secret_key(sig, secret_key);
-		})
+			secret_key = reset_secret_key(sig, secret_key); })
 		// benchmark sign: need to generate new secret key after available signatures have been exhausted
 		unsigned long long max_sigs;
 		OQS_SIG_STFL_sigs_total(sig, &max_sigs, secret_key);
@@ -115,8 +114,7 @@ static OQS_STATUS sig_speed_wrapper(const char *method_name, uint64_t duration, 
 				printf("sign error. Exiting.\n");
 				exit(-1);
 			}
-			OQS_SIG_STFL_keypair(sig, public_key, secret_key);
-		})
+			OQS_SIG_STFL_keypair(sig, public_key, secret_key); })
 		// benchmark verification
 		TIME_OPERATION_SECONDS({ OQS_SIG_STFL_verify(sig, message, message_len, signature, signature_len, public_key); }, "verify", duration)
 	} else {
@@ -197,7 +195,7 @@ int main(int argc, char **argv) {
 			}
 		} else if ((strcmp(argv[i], "--duration") == 0) || (strcmp(argv[i], "-d") == 0)) {
 			if (i < argc - 1) {
-				duration = (uint64_t)strtol(argv[i + 1], NULL, 10);
+				duration = (uint64_t) strtol(argv[i + 1], NULL, 10);
 				if (duration > 0) {
 					i += 1;
 					continue;
