@@ -54,6 +54,8 @@ The `local_testing_example.sh` script demonstrates how to use `ct_test.sh` to ru
 
 The `ct-tooling.yml` workflow also uses `ct_test.sh` to execute CT tests in CI on user-selected algorithms (via workflow inputs) when the workflow is manually triggered on GitHub Actions.
 
+Note that Valgrind-Varlat and MemSan are alternative, mutually exclusive backends due to their architectural design: MemSan compiles with `clang -fsanitize=memory` and executes directly, whereas Valgrind compiles normally and executes inside the Valgrind VM. Running a MemSan-instrumented binary inside Valgrind is invalid due to shadow memory conflicts, so users will only ever enable one of them at a time.
+
 ### Configuration
 For Valgrind-Varlat configuration, see: [Valgrind-Varlat's README](tools/valgrind_varlat/README.md)
 For MemSan configuration, see: [MemSan's README](tools/memsan/README.md)
