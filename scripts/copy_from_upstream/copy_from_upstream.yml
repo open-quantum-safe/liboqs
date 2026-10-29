@@ -122,6 +122,7 @@ kems:
     name: classic_mceliece
     default_implementation: clean
     upstream_location: pqclean
+    disable_by_default: True
     schemes:
       -
         scheme: "348864"

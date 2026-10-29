@@ -147,7 +147,7 @@ endif()
 cmake_dependent_option(OQS_ENABLE_KEM_ntru_hrss1373 "" ON "OQS_ENABLE_KEM_NTRU" OFF)
 
 ##### OQS_COPY_FROM_UPSTREAM_FRAGMENT_ADD_ENABLE_BY_ALG_START
-option(OQS_ENABLE_KEM_CLASSIC_MCELIECE "Enable classic_mceliece algorithm family" ON)
+option(OQS_ENABLE_KEM_CLASSIC_MCELIECE "Enable classic_mceliece algorithm family" OFF)
 cmake_dependent_option(OQS_ENABLE_KEM_classic_mceliece_348864 "" ON "OQS_ENABLE_KEM_CLASSIC_MCELIECE" OFF)
 cmake_dependent_option(OQS_ENABLE_KEM_classic_mceliece_348864f "" ON "OQS_ENABLE_KEM_CLASSIC_MCELIECE" OFF)
 cmake_dependent_option(OQS_ENABLE_KEM_classic_mceliece_460896 "" ON "OQS_ENABLE_KEM_CLASSIC_MCELIECE" OFF)
