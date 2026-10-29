@@ -42,12 +42,6 @@ FUNC(int, EVP_MD_CTX_copy_ex, (EVP_MD_CTX *out, const EVP_MD_CTX *in),
 VOID_FUNC(void, EVP_MD_CTX_free, (EVP_MD_CTX *ctx), (ctx))
 FUNC(EVP_MD_CTX *, EVP_MD_CTX_new, (void), ())
 FUNC(int, EVP_MD_CTX_reset, (EVP_MD_CTX *ctx), (ctx))
-FUNC(const EVP_CIPHER *, EVP_aes_128_ecb, (void), ())
-FUNC(const EVP_CIPHER *, EVP_aes_128_ctr, (void), ())
-FUNC(const EVP_CIPHER *, EVP_aes_192_ecb, (void), ())
-FUNC(const EVP_CIPHER *, EVP_aes_256_ecb, (void), ())
-FUNC(const EVP_CIPHER *, EVP_aes_256_ctr, (void), ())
-#if OPENSSL_VERSION_NUMBER >= 0x30000000L
 FUNC(EVP_CIPHER *, EVP_CIPHER_fetch,
      (OSSL_LIB_CTX *ctx, const char *algorithm, const char *properties),
      (ctx, algorithm, properties))
@@ -56,16 +50,6 @@ FUNC(EVP_MD *, EVP_MD_fetch,
      (OSSL_LIB_CTX *ctx, const char *algorithm, const char *properties),
      (ctx, algorithm, properties))
 VOID_FUNC(void, EVP_MD_free, (EVP_MD *md), (md))
-#else
-FUNC(const EVP_MD *, EVP_sha256, (void), ())
-FUNC(const EVP_MD *, EVP_sha384, (void), ())
-FUNC(const EVP_MD *, EVP_sha3_256, (void), ())
-FUNC(const EVP_MD *, EVP_sha3_384, (void), ())
-FUNC(const EVP_MD *, EVP_sha3_512, (void), ())
-FUNC(const EVP_MD *, EVP_sha512, (void), ())
-FUNC(const EVP_MD *, EVP_shake128, (void), ())
-FUNC(const EVP_MD *, EVP_shake256, (void), ())
-#endif
 VOID_FUNC(void, OPENSSL_cleanse, (void *ptr, size_t len), (ptr, len))
 FUNC(int, RAND_bytes, (unsigned char *buf, int num), (buf, num))
 FUNC(int, RAND_poll, (void), ())

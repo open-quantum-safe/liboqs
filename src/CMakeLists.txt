@@ -175,7 +175,7 @@ write_basic_package_version_file(
 )
 
 if(OQS_USE_OPENSSL)
-    set(_oqs_pkgconfig_requires_private openssl)
+    set(_oqs_pkgconfig_requires_private "openssl >= 3.0")
 endif()
 
 # generate pkg-config file

@@ -34,7 +34,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # pin@v4
       - name: Install dependencies
-        run: env HOMEBREW_NO_AUTO_UPDATE=1 brew install ninja && pip3 install --require-hashes --break-system-packages -r .github/workflows/requirements.txt
+        run: env HOMEBREW_NO_AUTO_UPDATE=1 brew install ninja openssl@3 && pip3 install --require-hashes --break-system-packages -r .github/workflows/requirements.txt
       - name: Get system information
         run: sysctl -a | grep machdep.cpu
       - name: Configure
