@@ -1,0 +1,83 @@
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Cond
+   ...
+   fun:mlk_rej_uniform
+   ...
+   fun:kem_test_correctness
+   fun:test_wrapper
+   fun:start_thread
+   fun:clone
+}
+
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Value8
+   ...
+   fun:mlk_rej_uniform
+   ...
+   fun:kem_test_correctness
+   fun:test_wrapper
+   fun:start_thread
+   fun:clone
+}
+
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Cond
+   ...
+   fun:PQCP_MLKEM_NATIVE_MLKEM*_dec
+   ...
+   fun:kem_test_correctness
+   fun:test_wrapper
+   fun:start_thread
+   fun:clone
+}
+
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Cond
+   ...
+   fun:PQCP_MLKEM_NATIVE_MLKEM*_X86_64_poly_rej_uniform*
+   ...
+   fun:kem_test_correctness
+   fun:test_wrapper
+   fun:start_thread
+   fun:clone
+}
+
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Value8
+   ...
+   fun:PQCP_MLKEM_NATIVE_MLKEM*_X86_64_poly_rej_uniform*
+   ...
+   fun:kem_test_correctness
+   fun:test_wrapper
+   fun:start_thread
+   fun:clone
+}
+
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Cond
+   ...
+   fun:mlk_check_sk
+   ...
+   fun:kem_test_correctness
+   fun:test_wrapper
+   fun:start_thread
+   fun:clone
+}
+
+{
+   <insert_a_suppression_name_here>
+   Memcheck:Value8
+   ...
+   fun:_mm_set_epi64x
+   ...
+   fun:kem_test_correctness
+   fun:test_wrapper
+   fun:start_thread
+   fun:clone
+}
