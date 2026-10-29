@@ -117,7 +117,7 @@ static void probe_digest_squeeze(void) {
 	if (probe == NULL) {
 		return;
 	}
-	if (OSSL_FUNC(EVP_DigestInit_ex)(probe, oqs_shake128(), NULL) == 1) {
+	if (OSSL_FUNC(EVP_DigestInit_ex2)(probe, oqs_shake128(), NULL) == 1) {
 		unsigned char scratch[1];
 		if (OSSL_FUNC(EVP_DigestSqueeze)(probe, scratch, sizeof(scratch)) == 1) {
 			oqs_ossl_squeeze_works = 1;

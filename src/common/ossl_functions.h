@@ -15,8 +15,9 @@ FUNC(int, EVP_DigestFinalXOF, (EVP_MD_CTX *ctx, unsigned char *md, size_t len),
      (ctx, md, len))
 FUNC(int, EVP_DigestFinal_ex,
      (EVP_MD_CTX *ctx, unsigned char *md, unsigned int *s), (ctx, md, s))
-FUNC(int, EVP_DigestInit_ex,
-     (EVP_MD_CTX *ctx, const EVP_MD *type, ENGINE *impl), (ctx, type, impl))
+FUNC(int, EVP_DigestInit_ex2,
+     (EVP_MD_CTX *ctx, const EVP_MD *type, const OSSL_PARAM params[]),
+     (ctx, type, params))
 FUNC(int, EVP_DigestUpdate, (EVP_MD_CTX *ctx, const void *d, size_t cnt),
      (ctx, d, cnt))
 #if OPENSSL_VERSION_NUMBER >= 0x30300000L
@@ -29,10 +30,11 @@ OPTIONAL_FUNC(int, EVP_DigestSqueeze,
 #endif
 FUNC(int, EVP_EncryptFinal_ex,
      (EVP_CIPHER_CTX *ctx, unsigned char *out, int *outl), (ctx, out, outl))
-FUNC(int, EVP_EncryptInit_ex,
-     (EVP_CIPHER_CTX *ctx, const EVP_CIPHER *cipher, ENGINE *impl,
-      const unsigned char *key, const unsigned char *iv),
-     (ctx, cipher, impl, key, iv))
+FUNC(int, EVP_EncryptInit_ex2,
+     (EVP_CIPHER_CTX *ctx, const EVP_CIPHER *cipher,
+      const unsigned char *key, const unsigned char *iv,
+      const OSSL_PARAM params[]),
+     (ctx, cipher, key, iv, params))
 FUNC(int, EVP_EncryptUpdate,
      (EVP_CIPHER_CTX *ctx, unsigned char *out, int *outl,
       const unsigned char *in, int inl),

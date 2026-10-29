@@ -40,10 +40,10 @@ static void SHA3_shake128_x4_inc_init(OQS_SHA3_shake128_x4_inc_ctx *state) {
 	s->mdctx1 = OSSL_FUNC(EVP_MD_CTX_new)();
 	s->mdctx2 = OSSL_FUNC(EVP_MD_CTX_new)();
 	s->mdctx3 = OSSL_FUNC(EVP_MD_CTX_new)();
-	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_DigestInit_ex)(s->mdctx0, oqs_shake128(), NULL));
-	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_DigestInit_ex)(s->mdctx1, oqs_shake128(), NULL));
-	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_DigestInit_ex)(s->mdctx2, oqs_shake128(), NULL));
-	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_DigestInit_ex)(s->mdctx3, oqs_shake128(), NULL));
+	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_DigestInit_ex2)(s->mdctx0, oqs_shake128(), NULL));
+	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_DigestInit_ex2)(s->mdctx1, oqs_shake128(), NULL));
+	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_DigestInit_ex2)(s->mdctx2, oqs_shake128(), NULL));
+	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_DigestInit_ex2)(s->mdctx3, oqs_shake128(), NULL));
 	s->n_out = 0;
 }
 
@@ -73,7 +73,7 @@ static void SHA3_shake128_x4_inc_squeeze(uint8_t *out0, uint8_t *out1, uint8_t *
 	EVP_MD_CTX *clone;
 
 	clone = OSSL_FUNC(EVP_MD_CTX_new)();
-	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_DigestInit_ex)(clone, oqs_shake128(), NULL));
+	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_DigestInit_ex2)(clone, oqs_shake128(), NULL));
 	if (s->n_out == 0) {
 		OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_MD_CTX_copy_ex)(clone, s->mdctx0));
 		OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_DigestFinalXOF)(clone, out0, outlen));
@@ -129,10 +129,10 @@ static void SHA3_shake128_x4_inc_ctx_reset(OQS_SHA3_shake128_x4_inc_ctx *state) 
 	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_MD_CTX_reset)(s->mdctx1));
 	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_MD_CTX_reset)(s->mdctx2));
 	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_MD_CTX_reset)(s->mdctx3));
-	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_DigestInit_ex)(s->mdctx0, oqs_shake128(), NULL));
-	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_DigestInit_ex)(s->mdctx1, oqs_shake128(), NULL));
-	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_DigestInit_ex)(s->mdctx2, oqs_shake128(), NULL));
-	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_DigestInit_ex)(s->mdctx3, oqs_shake128(), NULL));
+	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_DigestInit_ex2)(s->mdctx0, oqs_shake128(), NULL));
+	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_DigestInit_ex2)(s->mdctx1, oqs_shake128(), NULL));
+	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_DigestInit_ex2)(s->mdctx2, oqs_shake128(), NULL));
+	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_DigestInit_ex2)(s->mdctx3, oqs_shake128(), NULL));
 	s->n_out = 0;
 }
 
@@ -164,10 +164,10 @@ static void SHA3_shake256_x4_inc_init(OQS_SHA3_shake256_x4_inc_ctx *state) {
 	s->mdctx1 = OSSL_FUNC(EVP_MD_CTX_new)();
 	s->mdctx2 = OSSL_FUNC(EVP_MD_CTX_new)();
 	s->mdctx3 = OSSL_FUNC(EVP_MD_CTX_new)();
-	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_DigestInit_ex)(s->mdctx0, oqs_shake256(), NULL));
-	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_DigestInit_ex)(s->mdctx1, oqs_shake256(), NULL));
-	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_DigestInit_ex)(s->mdctx2, oqs_shake256(), NULL));
-	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_DigestInit_ex)(s->mdctx3, oqs_shake256(), NULL));
+	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_DigestInit_ex2)(s->mdctx0, oqs_shake256(), NULL));
+	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_DigestInit_ex2)(s->mdctx1, oqs_shake256(), NULL));
+	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_DigestInit_ex2)(s->mdctx2, oqs_shake256(), NULL));
+	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_DigestInit_ex2)(s->mdctx3, oqs_shake256(), NULL));
 	s->n_out = 0;
 }
 
@@ -197,7 +197,7 @@ static void SHA3_shake256_x4_inc_squeeze(uint8_t *out0, uint8_t *out1, uint8_t *
 	EVP_MD_CTX *clone;
 
 	clone = OSSL_FUNC(EVP_MD_CTX_new)();
-	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_DigestInit_ex)(clone, oqs_shake256(), NULL));
+	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_DigestInit_ex2)(clone, oqs_shake256(), NULL));
 	if (s->n_out == 0) {
 		OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_MD_CTX_copy_ex)(clone, s->mdctx0));
 		OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_DigestFinalXOF)(clone, out0, outlen));
@@ -253,10 +253,10 @@ static void SHA3_shake256_x4_inc_ctx_reset(OQS_SHA3_shake256_x4_inc_ctx *state) 
 	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_MD_CTX_reset)(s->mdctx1));
 	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_MD_CTX_reset)(s->mdctx2));
 	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_MD_CTX_reset)(s->mdctx3));
-	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_DigestInit_ex)(s->mdctx0, oqs_shake256(), NULL));
-	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_DigestInit_ex)(s->mdctx1, oqs_shake256(), NULL));
-	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_DigestInit_ex)(s->mdctx2, oqs_shake256(), NULL));
-	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_DigestInit_ex)(s->mdctx3, oqs_shake256(), NULL));
+	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_DigestInit_ex2)(s->mdctx0, oqs_shake256(), NULL));
+	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_DigestInit_ex2)(s->mdctx1, oqs_shake256(), NULL));
+	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_DigestInit_ex2)(s->mdctx2, oqs_shake256(), NULL));
+	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_DigestInit_ex2)(s->mdctx3, oqs_shake256(), NULL));
 	s->n_out = 0;
 }
 

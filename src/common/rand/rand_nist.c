@@ -46,7 +46,7 @@ static void AES256_ECB(unsigned char *key, unsigned char *ctr, unsigned char *bu
 	ctx = OSSL_FUNC(EVP_CIPHER_CTX_new)();
 	OQS_EXIT_IF_NULLPTR(ctx, "OpenSSL");
 
-	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_EncryptInit_ex)(ctx, oqs_aes_256_ecb(), NULL, key, NULL));
+	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_EncryptInit_ex2)(ctx, oqs_aes_256_ecb(), key, NULL, NULL));
 	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_EncryptUpdate)(ctx, buffer, &len, ctr, 16));
 
 	/* Clean up */
