@@ -5,6 +5,13 @@
 
 set(_{{ family|upper }}_OBJS "")
 
+{%- if family == "ml_dsa" %}
+
+if(OQS_MEMOPT_BUILD)
+    add_compile_definitions(MLD_CONFIG_REDUCE_RAM)
+endif()
+{%- endif %}
+
 {%- if common_deps is defined %}
     {%- for common_dep in common_deps %}
         {%- if not common_dep['include_only'] %}
