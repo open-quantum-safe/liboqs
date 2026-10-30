@@ -247,6 +247,13 @@ void oqs_sha2_sha224_inc_finalize_armv8(uint8_t *out, sha224ctx *state, const ui
 }
 
 void oqs_sha2_sha256_inc_blocks_armv8(sha256ctx *state, const uint8_t *in, size_t inblocks) {
+	/* No complete blocks to process; leave any buffered partial data for
+	 * inc_finalize. Returning here also avoids the buf_len - data_len
+	 * underflow below when inblocks == 0 and data_len > 0. */
+	if (inblocks == 0) {
+		return;
+	}
+
 	uint64_t bytes = load_bigendian_64(state->ctx + 32);
 	const uint8_t *new_in;
 	size_t buf_len = 64 * inblocks;
