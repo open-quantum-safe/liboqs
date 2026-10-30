@@ -138,6 +138,18 @@ if(${OQS_USE_ICICLE})
     target_link_libraries(oqs PRIVATE icicle::icicle_pqc_package)
 endif()
 
+# SDitH (and potentially other algorithms) reference log2() and friends from
+# libm. Link it to the oqs target so the dependency propagates to consumers:
+# static builds otherwise fail to resolve these symbols at final link. The
+# PRIVATE dependency is recorded in the exported target for STATIC liboqs (as
+# libcrypto already is) and baked in as DT_NEEDED for SHARED liboqs. libm lives
+# in the CRT on Windows, so find_library() returns NOTFOUND there and is skipped.
+find_library(OQS_LIBM m)
+if(OQS_LIBM)
+    target_link_libraries(oqs PRIVATE ${OQS_LIBM})
+    target_link_libraries(oqs-internal PRIVATE ${OQS_LIBM})
+endif()
+
 target_include_directories(oqs
                            PUBLIC
                            "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>"
@@ -189,6 +201,10 @@ write_basic_package_version_file(
 
 if(OQS_USE_OPENSSL)
     set(_oqs_pkgconfig_requires_private openssl)
+endif()
+
+if(OQS_LIBM)
+    set(_oqs_pkgconfig_libs_private "-lm")
 endif()
 
 # generate pkg-config file
