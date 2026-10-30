@@ -1,0 +1,110 @@
+# Codecov configuration. Coverage is uploaded by .github/workflows/code-coverage.yml
+# under one flag per measurement scope (see CI.md):
+#   default - default-enabled algorithms, fast test subset (PRs, commits to main)
+#   full    - every algorithm liboqs carries, full test suite (weekly)
+# Only 'full' is a project-wide number that is comparable over time.
+
+codecov:
+  # Report coverage even when unrelated CI jobs fail.
+  require_ci_to_pass: false
+
+coverage:
+  status:
+    # Informational only; does not block the CI status
+    project:
+      default:
+        flags: [default]
+        informational: true 
+    patch:
+      default:
+        flags: [default]
+        informational: true
+
+comment:
+  layout: "condensed_header, condensed_files, condensed_footer"
+  hide_project_coverage: true # show only coverage over changed files
+
+flag_management:
+  default_rules:
+    # Since coverage is run weekly, use the last available result for each flag
+    carryforward: true
+
+ignore:
+  - "tests/**"
+
+component_management:
+  default_rules:
+    # Components use the 'full' scope only, so each family's figure comes from
+    # one complete weekly run rather than a mix of the latest 'default' upload
+    # and carried-forward 'full' data.
+    flag_regexes: ["^full$"]
+  individual_components:
+    - component_id: common
+      name: Common (AES, SHA-2, SHA-3, RNG)
+      paths: ["src/common/**"]
+    - component_id: api
+      name: KEM/SIG/SIG_STFL API
+      paths: ["src/kem/kem.c", "src/sig/sig.c", "src/sig_stfl/sig_stfl.c"]
+    # KEMs
+    - component_id: kem_bike
+      name: BIKE
+      paths: ["src/kem/bike/**"]
+    - component_id: kem_classic_mceliece
+      name: Classic McEliece
+      paths: ["src/kem/classic_mceliece/**"]
+    - component_id: kem_frodokem
+      name: FrodoKEM
+      paths: ["src/kem/frodokem/**"]
+    - component_id: kem_hqc
+      name: HQC
+      paths: ["src/kem/hqc/**"]
+    - component_id: kem_kyber
+      name: Kyber
+      paths: ["src/kem/kyber/**"]
+    - component_id: kem_ml_kem
+      name: ML-KEM
+      paths: ["src/kem/ml_kem/**"]
+    - component_id: kem_ntru
+      name: NTRU
+      paths: ["src/kem/ntru/**"]
+    - component_id: kem_ntruprime
+      name: NTRU Prime
+      paths: ["src/kem/ntruprime/**"]
+    # Signatures
+    - component_id: sig_cross
+      name: CROSS
+      paths: ["src/sig/cross/**"]
+    - component_id: sig_falcon
+      name: Falcon
+      paths: ["src/sig/falcon/**"]
+    - component_id: sig_mayo
+      name: MAYO
+      paths: ["src/sig/mayo/**"]
+    - component_id: sig_ml_dsa
+      name: ML-DSA
+      paths: ["src/sig/ml_dsa/**"]
+    - component_id: sig_mqom
+      name: MQOM
+      paths: ["src/sig/mqom/**"]
+    - component_id: sig_qruov
+      name: QR-UOV
+      paths: ["src/sig/qruov/**"]
+    - component_id: sig_sdith
+      name: SDitH
+      paths: ["src/sig/sdith/**"]
+    - component_id: sig_slh_dsa
+      name: SLH-DSA
+      paths: ["src/sig/slh_dsa/**"]
+    - component_id: sig_snova
+      name: SNOVA
+      paths: ["src/sig/snova/**"]
+    - component_id: sig_uov
+      name: UOV
+      paths: ["src/sig/uov/**"]
+    # Stateful signatures
+    - component_id: sig_stfl_lms
+      name: LMS
+      paths: ["src/sig_stfl/lms/**"]
+    - component_id: sig_stfl_xmss
+      name: XMSS
+      paths: ["src/sig_stfl/xmss/**"]

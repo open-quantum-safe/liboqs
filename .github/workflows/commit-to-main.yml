@@ -14,7 +14,9 @@ jobs:
 
   code-coverage:
     uses: ./.github/workflows/code-coverage.yml
-    secrets: inherit
+    permissions:
+      contents: read
+      id-token: write
 
   scorecard:
     uses: ./.github/workflows/supplychain.yml

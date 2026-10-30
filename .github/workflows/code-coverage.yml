@@ -3,7 +3,7 @@ name: Code coverage tests
 permissions:
   contents: read
 
-# The 'scope' input selects what is measured (see CI.md):
+# The 'scope' input selects what is measured (see CI.md and .github/codecov.yml):
 # - default: default-enabled algorithms and a fast test subset (PRs, commits to main)
 # - full: every algorithm liboqs carries and the full test suite (weekly)
 on:
@@ -78,19 +78,37 @@ jobs:
           $SCOPE_TESTS
       - name: Run lcov
         run: lcov -d . -c -o lcov.info --exclude /usr/lib,/usr/include --ignore-errors unused,inconsistent
-      - name: Upload to coveralls.io
-        uses: coverallsapp/github-action@8d6379e14d29928660c4ba802d8e85393440b329 # pin@v2.3.8
+      - name: Store lcov report
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
-          flag-name: ${{ matrix.id }}
-          parallel: true
+          name: lcov-${{ inputs.scope }}-${{ matrix.id }}
+          path: lcov.info
+          retention-days: 7
 
-  finish:
+  upload:
+    name: Upload coverage to Codecov (${{ inputs.scope }})
     needs: coverage
-    if: ${{ always() }}
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write # let worker upload to liboqs' Codecov
     steps:
-      - name: Finish coveralls.io
-        uses: coverallsapp/github-action@8d6379e14d29928660c4ba802d8e85393440b329 # pin@v2.3.8
+      - name: Checkout code
+        # Codecov maps report paths onto the files tracked in the repository.
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # pin@v4
         with:
-          parallel-finished: true
-          carry-forward: "x64-generic,x64-distbuild,arm64-distbuild"
+          persist-credentials: false
+      - name: Download lcov reports
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # pin@v8.0.2
+        with:
+          pattern: lcov-${{ inputs.scope }}-*
+          path: coverage
+      - name: Upload to Codecov
+        uses: codecov/codecov-action@303a32d7a59b442fa8d48b6a1cc6825c09c847a5 # pin@v7.1.1
+        with:
+          directory: coverage
+          flags: ${{ inputs.scope }}
+          name: ${{ inputs.scope }}
+          use_oidc: true
+          version: v11.3.1 # Pin the CLI that the action downloads
+          fail_ci_if_error: true
