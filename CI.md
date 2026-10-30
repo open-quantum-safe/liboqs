@@ -72,7 +72,8 @@ Codecov also reports it per algorithm family as components.
 Files under `tests/` count toward neither scope.
 
 Results are uploaded only when all three configurations succeed; otherwise Codecov carries the previous result forward.
-Codecov is configured in [`.github/codecov.yml`](.github/codecov.yml); adding an algorithm family requires adding a component there.
+Codecov is configured in [`.github/codecov.yml`](.github/codecov.yml).
+Each algorithm family needs a component there, which [`ALGORITHMS.md`](ALGORITHMS.md) shows as a coverage badge; `tests/test_alg_support_generators.py` fails if one is missing.
 To measure the full scope on demand, trigger this workflow manually with `scope` set to `full`.
 
 #### <a name="<platform>.yml"></a> Individual platform tests (`<platform>.yml`)

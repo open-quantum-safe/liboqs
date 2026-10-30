@@ -219,5 +219,6 @@ The header of [`tests/test_constant_time.py`](../../tests/test_constant_time.py)
 4. In the upstream repo, add the glue that routes RNG/hash/AES onto liboqs and namespaces symbols (see [Integration Glue Code](#integration-glue-code)); list the glue files in `sources`
 5. If the algorithm has shared code across implementations, set up common dependencies
 6. Fill the algorithm datasheet `docs/algorithms/<kem|sig>/<family>.yml` — including the maintenance fields `upstream-maintenance`, `upstream-statement-url`, and `oqs-support-tier` (see [`ALGORITHMS.md`](../../ALGORITHMS.md)); `copy` renders these into the `README.md`/`ALGORITHMS.md` support tables. Submitters are invited to add a code-owner entry for their algorithm in [`.github/CODEOWNERS`](../../.github/CODEOWNERS) (e.g. `/src/<kem|sig>/<family> @your-handle`) to stay in the loop; if the algorithm is to be listed at Tier 1, such an entry is required
-7. Run `python3 copy_from_upstream.py copy`, then `python3 copy_from_upstream.py verify`
-8. Run `test_constant_time`; document any non-constant-time behaviour as described in [Constant-Time Testing](#constant-time-testing)
+7. Add a component for the family to [`.github/codecov.yml`](../../.github/codecov.yml) (`component_id: <kem|sig>_<family>`, `paths: ["src/<kem|sig>/<family>/**"]`); it backs the coverage badge in `ALGORITHMS.md`, and `tests/test_alg_support_generators.py` fails without it
+8. Run `python3 copy_from_upstream.py copy`, then `python3 copy_from_upstream.py verify`
+9. Run `test_constant_time`; document any non-constant-time behaviour as described in [Constant-Time Testing](#constant-time-testing)

@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: MIT
 """Tests for the algorithm-support generators under scripts/."""
 
+import glob
 import os
 import sys
 
@@ -9,7 +10,7 @@ import pytest
 LIBOQS_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 sys.path.insert(0, os.path.join(LIBOQS_ROOT, "scripts"))
 
-pytest.importorskip("yaml")
+yaml = pytest.importorskip("yaml")
 
 import update_alg_support_table as uast  # noqa: E402
 
@@ -130,3 +131,53 @@ def test_algorithms_md_family_row():
     assert "portable" in cols["Optimization targets"]
     assert "x86_64 (avx2)" in cols["Optimization targets"]
     assert cols["OQS tier"] == "Tier 1 (Core)"
+    assert cols["Coverage"] == "—"
+
+
+def test_algorithms_md_family_row_coverage_badge():
+    mod = _load_algorithms_md_module()
+    algdata = {
+        "name": "Foo",
+        "primary-upstream": {"source": "https://github.com/example/foo"},
+        "parameter-sets": [],
+    }
+    cols = dict(zip(mod.HEADER, mod.family_row(algdata, "kem", "foo")))
+    assert "badge.svg?component=kem_foo" in cols["Coverage"]
+    assert cols["Coverage"].endswith("/tree/main/src/kem/foo)")
+
+
+ALG_CATEGORIES = ["kem", "sig", "sig_stfl"]
+
+
+def _codecov_components():
+    with open(os.path.join(LIBOQS_ROOT, ".github", "codecov.yml")) as f:
+        config = yaml.safe_load(f)
+    components = config["component_management"]["individual_components"]
+    return {c["component_id"]: c["paths"] for c in components}
+
+
+@pytest.mark.parametrize("cat", ALG_CATEGORIES)
+def test_codecov_component_per_algorithm_family(cat):
+    # ALGORITHMS.md links a coverage badge per family to these components.
+    mod = _load_algorithms_md_module()
+    components = _codecov_components()
+    src_dir = os.path.join(LIBOQS_ROOT, "src", cat)
+    families = sorted(e.name for e in os.scandir(src_dir) if e.is_dir())
+    assert families
+    for family in families:
+        component = mod.coverage_component_id(cat, family)
+        assert component in components, (
+            f"src/{cat}/{family}/ has no Codecov component '{component}' in .github/codecov.yml"
+        )
+        assert components[component] == [f"src/{cat}/{family}/**"]
+
+
+@pytest.mark.parametrize("cat", ALG_CATEGORIES)
+def test_algorithm_datasheets_match_source_dirs(cat):
+    # The coverage badge derives its component from the datasheet file name.
+    doc_dir = os.path.join(LIBOQS_ROOT, "docs", "algorithms", cat)
+    for path in glob.glob(os.path.join(doc_dir, "*.yml")):
+        family = os.path.splitext(os.path.basename(path))[0]
+        assert os.path.isdir(os.path.join(LIBOQS_ROOT, "src", cat, family)), (
+            f"{os.path.relpath(path, LIBOQS_ROOT)} has no matching src/{cat}/{family}/"
+        )
