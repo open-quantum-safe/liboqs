@@ -84,15 +84,25 @@ OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_verify(XMSS_UNUSED_ATT const uint8_t *m
 }
 
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sigs_remaining(unsigned long long *remain, const OQS_SIG_STFL_SECRET_KEY *secret_key) {
+	OQS_STATUS status = OQS_SUCCESS;
 	if (remain == NULL || secret_key == NULL || secret_key->secret_key_data == NULL) {
 		return OQS_ERROR;
 	}
 
-	if (xmss_remaining_signatures(remain, secret_key->secret_key_data)) {
+	/* Read the leaf index under the lock, consistently with a concurrent signer */
+	if (OQS_SECRET_KEY_XMSS_acquire_lock(secret_key) != OQS_SUCCESS) {
 		return OQS_ERROR;
 	}
 
-	return OQS_SUCCESS;
+	if (xmss_remaining_signatures(remain, secret_key->secret_key_data)) {
+		status = OQS_ERROR;
+	}
+
+	if (OQS_SECRET_KEY_XMSS_release_lock(secret_key) != OQS_SUCCESS) {
+		return OQS_ERROR;
+	}
+
+	return status;
 }
 
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_xmss_sigs_total(unsigned long long *total, const OQS_SIG_STFL_SECRET_KEY *secret_key) {
