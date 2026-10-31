@@ -139,15 +139,17 @@ if(${OQS_USE_ICICLE})
 endif()
 
 # SDitH (and potentially other algorithms) reference log2() and friends from
-# libm. Link it to the oqs target so the dependency propagates to consumers:
-# static builds otherwise fail to resolve these symbols at final link. The
-# PRIVATE dependency is recorded in the exported target for STATIC liboqs (as
-# libcrypto already is) and baked in as DT_NEEDED for SHARED liboqs. libm lives
-# in the CRT on Windows, so find_library() returns NOTFOUND there and is skipped.
-find_library(OQS_LIBM m)
-if(OQS_LIBM)
-    target_link_libraries(oqs PRIVATE ${OQS_LIBM})
-    target_link_libraries(oqs-internal PRIVATE ${OQS_LIBM})
+# libm. Declare it as a PRIVATE dependency so the requirement propagates to
+# consumers: static builds otherwise fail to resolve these symbols at their
+# final link. Use the bare "m" link item rather than an absolute path from
+# find_library() so (a) the exported target stays relocatable instead of baking
+# in the builder's libm path, and (b) cross-compiling consumers resolve libm
+# from their own sysroot/linker search path. MSVC keeps the math functions in
+# the CRT and ships no separate m library, so it is skipped.
+if(NOT MSVC)
+    target_link_libraries(oqs PRIVATE m)
+    target_link_libraries(oqs-internal PRIVATE m)
+    set(_oqs_pkgconfig_libs_private "-lm")
 endif()
 
 target_include_directories(oqs
@@ -201,10 +203,6 @@ write_basic_package_version_file(
 
 if(OQS_USE_OPENSSL)
     set(_oqs_pkgconfig_requires_private openssl)
-endif()
-
-if(OQS_LIBM)
-    set(_oqs_pkgconfig_libs_private "-lm")
 endif()
 
 # generate pkg-config file
