@@ -27,6 +27,16 @@ endif()
 
 {%- for scheme in schemes -%}
     {%- for impl in scheme['metadata']['implementations'] -%}
+        {%- set has_sources = namespace(value=impl['sources']|length > 0) %}
+        {%- if common_deps is defined %}
+            {%- for cdep in common_deps %}
+                {%- if cdep['include_only'] and 'common_dep' in impl and cdep['name'] in impl['common_dep'] and cdep['sources_addl']|length > 0 %}
+                    {%- set has_sources.value = true %}
+                {%- endif %}
+            {%- endfor %}
+        {%- endif %}
+        {%- if impl['name'] == scheme['default_implementation'] or impl['name'] in ('cuda', 'icicle_cuda') or has_sources.value %}
+
         {%- if impl['name'] == scheme['default_implementation'] %}
 
 if(OQS_ENABLE_KEM_{{ family }}_{{ scheme['scheme_c'] }}{%- if 'alias_scheme' in scheme %} OR OQS_ENABLE_KEM_{{ family }}_{{ scheme['alias_scheme'] }}{%- endif %})
@@ -86,6 +96,7 @@ if(OQS_ENABLE_KEM_{{ family }}_{{ scheme['scheme_c'] }}_{{ impl['name'] }}{%- if
         {%- endif %}{# cupqc #}
     set(_{{ family|upper }}_OBJS ${_{{ family|upper }}_OBJS} $<TARGET_OBJECTS:{{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }}>)
 endif()
+        {%- endif %}
     {%- endfor -%}
 {%- endfor %}
 
