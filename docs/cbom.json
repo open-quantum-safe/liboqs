@@ -2,23 +2,23 @@
   "$schema": "https://raw.githubusercontent.com/CycloneDX/specification/1.6/schema/bom-1.6.schema.json",
   "bomFormat": "CycloneDX",
   "specVersion": "1.6",
-  "serialNumber": "urn:uuid:1902a28f-41dc-40cb-9f24-b45e8980ad1c",
+  "serialNumber": "urn:uuid:4e62f6f6-3bfa-4129-8c7b-cbfaf6ec7243",
   "version": 1,
   "metadata": {
-    "timestamp": "2026-10-21T19:46:14.525685+00:00",
+    "timestamp": "2026-11-01T17:03:39.474432+00:00",
     "component": {
       "type": "library",
-      "bom-ref": "pkg:github/open-quantum-safe/liboqs@eb61e0df7fb9eb34d0a1d54f16b2c5a5085c467c",
+      "bom-ref": "pkg:github/open-quantum-safe/liboqs@57928f0c669c1d4fd7c5b6d1cd59e0681531d151",
       "name": "liboqs",
-      "version": "eb61e0df7fb9eb34d0a1d54f16b2c5a5085c467c"
+      "version": "57928f0c669c1d4fd7c5b6d1cd59e0681531d151"
     }
   },
   "components": [
     {
       "type": "library",
-      "bom-ref": "pkg:github/open-quantum-safe/liboqs@eb61e0df7fb9eb34d0a1d54f16b2c5a5085c467c",
+      "bom-ref": "pkg:github/open-quantum-safe/liboqs@57928f0c669c1d4fd7c5b6d1cd59e0681531d151",
       "name": "liboqs",
-      "version": "eb61e0df7fb9eb34d0a1d54f16b2c5a5085c467c"
+      "version": "57928f0c669c1d4fd7c5b6d1cd59e0681531d151"
     },
     {
       "type": "cryptographic-asset",
@@ -2397,6 +2397,246 @@
           ],
           "nistQuantumSecurityLevel": 5,
           "implementationPlatform": "x86_64"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:FAEST-128S:ref:generic",
+      "name": "FAEST",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "FAEST-128S",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:FAEST-128F:ref:generic",
+      "name": "FAEST",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "FAEST-128F",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:FAEST-EM-128S:ref:generic",
+      "name": "FAEST",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "FAEST-EM-128S",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:FAEST-EM-128F:ref:generic",
+      "name": "FAEST",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "FAEST-EM-128F",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 1,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:FAEST-192S:ref:generic",
+      "name": "FAEST",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "FAEST-192S",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:FAEST-192F:ref:generic",
+      "name": "FAEST",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "FAEST-192F",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:FAEST-EM-192S:ref:generic",
+      "name": "FAEST",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "FAEST-EM-192S",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:FAEST-EM-192F:ref:generic",
+      "name": "FAEST",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "FAEST-EM-192F",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 3,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:FAEST-256S:ref:generic",
+      "name": "FAEST",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "FAEST-256S",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:FAEST-256F:ref:generic",
+      "name": "FAEST",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "FAEST-256F",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:FAEST-EM-256S:ref:generic",
+      "name": "FAEST",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "FAEST-EM-256S",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "generic"
+        }
+      }
+    },
+    {
+      "type": "cryptographic-asset",
+      "bom-ref": "alg:FAEST-EM-256F:ref:generic",
+      "name": "FAEST",
+      "cryptoProperties": {
+        "assetType": "algorithm",
+        "algorithmProperties": {
+          "parameterSetIdentifier": "FAEST-EM-256F",
+          "primitive": "signature",
+          "executionEnvironment": "software-plain-ram",
+          "cryptoFunctions": [
+            "keygen",
+            "sign",
+            "verify"
+          ],
+          "nistQuantumSecurityLevel": 5,
+          "implementationPlatform": "generic"
         }
       }
     },
@@ -10647,7 +10887,7 @@
   ],
   "dependencies": [
     {
-      "ref": "pkg:github/open-quantum-safe/liboqs@eb61e0df7fb9eb34d0a1d54f16b2c5a5085c467c",
+      "ref": "pkg:github/open-quantum-safe/liboqs@57928f0c669c1d4fd7c5b6d1cd59e0681531d151",
       "provides": [
         "alg:BIKE-L1:master:x86_64",
         "alg:BIKE-L3:master:x86_64",
@@ -10768,6 +11008,18 @@
         "alg:cross-rsdpg-256-fast:avx2:x86_64",
         "alg:cross-rsdpg-256-small:clean:generic",
         "alg:cross-rsdpg-256-small:avx2:x86_64",
+        "alg:FAEST-128S:ref:generic",
+        "alg:FAEST-128F:ref:generic",
+        "alg:FAEST-EM-128S:ref:generic",
+        "alg:FAEST-EM-128F:ref:generic",
+        "alg:FAEST-192S:ref:generic",
+        "alg:FAEST-192F:ref:generic",
+        "alg:FAEST-EM-192S:ref:generic",
+        "alg:FAEST-EM-192F:ref:generic",
+        "alg:FAEST-256S:ref:generic",
+        "alg:FAEST-256F:ref:generic",
+        "alg:FAEST-EM-256S:ref:generic",
+        "alg:FAEST-EM-256F:ref:generic",
         "alg:Falcon-512:clean:generic",
         "alg:Falcon-512:avx2:x86_64",
         "alg:Falcon-512:aarch64:armv8-a",
@@ -11913,6 +12165,90 @@
       "ref": "alg:cross-rsdpg-256-small:avx2:x86_64",
       "dependsOn": [
         "alg:sha3"
+      ]
+    },
+    {
+      "ref": "alg:FAEST-128S:ref:generic",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:FAEST-128F:ref:generic",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:FAEST-EM-128S:ref:generic",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:FAEST-EM-128F:ref:generic",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:FAEST-192S:ref:generic",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:FAEST-192F:ref:generic",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:FAEST-EM-192S:ref:generic",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:FAEST-EM-192F:ref:generic",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:FAEST-256S:ref:generic",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:FAEST-256F:ref:generic",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:FAEST-EM-256S:ref:generic",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
+      ]
+    },
+    {
+      "ref": "alg:FAEST-EM-256F:ref:generic",
+      "dependsOn": [
+        "alg:sha3",
+        "alg:aes"
       ]
     },
     {
