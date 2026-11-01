@@ -19,6 +19,21 @@ def test_kem_leak(kem_name):
 @pytest.mark.parametrize('sig_name', helpers.available_sigs_by_name())
 def test_sig_leak(sig_name):
     if ("SLH_DSA" in sig_name): pytest.skip()
+    # FAEST signing is extremely slow under valgrind and blows the 60-minute
+    # PR-CI test budget; its leak coverage runs in the env-gated extended test
+    # below instead (mirrors SLH-DSA).
+    if ("FAEST" in sig_name): pytest.skip()
+    if not(helpers.is_sig_enabled_by_name(sig_name)): pytest.skip('Not enabled')
+    if sys.platform != "linux" or os.system("grep ubuntu /etc/os-release") != 0 or os.system("uname -a | grep x86_64") != 0: pytest.skip('Leak testing not supported on this platform')
+    helpers.run_subprocess(
+        ["valgrind", "-s", "--error-exitcode=1", "--leak-check=full", "--show-leak-kinds=all", "--max-stackframe=20480000", helpers.path_to_executable('test_sig'), sig_name],
+    )
+
+@pytest.mark.skipif("FAEST_LEAK_TEST" not in os.environ, reason="FAEST leak testing only performed in extended tests")
+@helpers.filtered_test
+@pytest.mark.parametrize('sig_name', helpers.available_sigs_by_name())
+def test_faest_leak(sig_name):
+    if (not ("FAEST" in sig_name)): pytest.skip()
     if not(helpers.is_sig_enabled_by_name(sig_name)): pytest.skip('Not enabled')
     if sys.platform != "linux" or os.system("grep ubuntu /etc/os-release") != 0 or os.system("uname -a | grep x86_64") != 0: pytest.skip('Leak testing not supported on this platform')
     helpers.run_subprocess(
