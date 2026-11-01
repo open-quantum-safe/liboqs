@@ -7,10 +7,6 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
-#ifndef OQS
-#define OQS
-#endif
-
 #include <oqs/aes.h>
 #include <oqs/oqsconfig.h>
 #include <oqs/common.h>
