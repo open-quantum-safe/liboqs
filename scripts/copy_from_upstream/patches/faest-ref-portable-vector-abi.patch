@@ -1,11 +1,11 @@
 diff --git a/compat.h b/compat.h
-index 2b8fa62a7..7c97d9439 100644
+index b3187eb..3ef89b5 100644
 --- a/compat.h
 +++ b/compat.h
 @@ -73,7 +73,13 @@
  
  #define faest_aligned_alloc(alignment, size) aligned_alloc((alignment), (size))
- #define faest_aligned_free(ptr) free((ptr)) // IGNORE memory-check
+ #define faest_aligned_free(ptr) free((ptr))
 -#else
 +// liboqs: under -DOQS these are provided below via OQS_MEM_aligned_alloc/free,
 +// and compat.c does not build its fallback (see its !defined(OQS) guard), so
@@ -36,7 +36,7 @@ index 2b8fa62a7..7c97d9439 100644
  
  #if defined(OQS)
 diff --git a/macros.h b/macros.h
-index 29fddc110..730a0da6e 100644
+index adfd82a..412ec48 100644
 --- a/macros.h
 +++ b/macros.h
 @@ -205,10 +205,16 @@
