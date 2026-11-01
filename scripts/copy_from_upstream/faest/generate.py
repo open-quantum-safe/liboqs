@@ -333,7 +333,11 @@ def generate_vole_tables(faest_ref: Path, parameters_h: str) -> dict[Path, str]:
                 [str(exe), "--preset", preset, "--emit-c", str(dest)],
                 check=True,
             )
-            outputs[GENERATED / f"tables_{preset}.h"] = dest.read_text()
+            # Prepend an SPDX header: these generated tables are checked by
+            # tests/test_spdx.sh (unlike the src/ copies, which are ignored).
+            outputs[GENERATED / f"tables_{preset}.h"] = (
+                "/* SPDX-License-Identifier: MIT */\n" + dest.read_text()
+            )
         return outputs
 
 
