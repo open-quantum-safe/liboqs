@@ -6,7 +6,7 @@
 #include <config.h>
 #endif
 
-#if defined(_WIN32) && !defined(HAVE_OPENSSL)
+#if defined(_WIN32) && !defined(HAVE_OPENSSL) && !defined(OQS)
 #if !defined(_WIN32_WINNT)
 #define _WIN32_WINNT 0x0601
 #elif _WIN32_WINNT < 0x0601
@@ -26,7 +26,7 @@
 #endif
 #if defined(HAVE_OPENSSL)
 #include <openssl/evp.h>
-#elif defined(_WIN32)
+#elif defined(_WIN32) && !defined(OQS)
 #include <windows.h>
 #endif
 #include <string.h>
