@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1793496237053,
+  "lastUpdate": 1793496355172,
   "repoUrl": "https://github.com/open-quantum-safe/liboqs",
   "entries": {
     "Dilithium2": [
@@ -178430,6 +178430,46 @@ window.BENCHMARK_DATA = {
             "value": 1612987,
             "unit": "cycles",
             "extra": "Target platform: x86_64-Linux-6.17.0-1022-azure | Compiler: gcc (13.3.0) | Compile options: [-Wa,--noexecstack;-fomit-frame-pointer;-fdata-sections;-ffunction-sections;-Wl,--gc-sections;-Wbad-function-cast] | OQS version: 0.16.0 (major: 0, minor: 16, patch: 0) | Git commit: e1f480f382d9443c4412133b55948374c77a5c21 | OpenSSL enabled: Yes (OpenSSL 3.0.13 30 Jan 2024) | AES: NI | SHA-2: OpenSSL | SHA-3: AVX2 | OQS build flags: OQS_DIST_BUILD OQS_LIBJADE_BUILD OQS_OPT_TARGET=generic CMAKE_BUILD_TYPE=Release | CPU exts active: ADX AES AVX AVX2 BMI1 BMI2 PCLMULQDQ POPCNT SSE SSE2 SSE3 | "
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "name": "baentsch",
+            "username": "baentsch",
+            "email": "57787676+baentsch@users.noreply.github.com"
+          },
+          "committer": {
+            "name": "baentsch",
+            "username": "baentsch",
+            "email": "57787676+baentsch@users.noreply.github.com"
+          },
+          "id": "e77d81dab791c13bf1c4e5d9a7160c403be9bbe0",
+          "message": "add libm reference for correct downstream linking\n\nSigned-off-by: baentsch <57787676+baentsch@users.noreply.github.com>",
+          "timestamp": "2026-10-30T21:21:18Z",
+          "url": "https://github.com/open-quantum-safe/liboqs/commit/e77d81dab791c13bf1c4e5d9a7160c403be9bbe0"
+        },
+        "date": 1793496353279,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "cross-rsdp-192-fast keypair",
+            "value": 74577,
+            "unit": "cycles",
+            "extra": "Target platform: x86_64-Linux-7.0.0-1017-azure | Compiler: gcc (15.2.0) | Compile options: [-Wa,--noexecstack;-fomit-frame-pointer;-fdata-sections;-ffunction-sections;-Wl,--gc-sections;-Wbad-function-cast] | OQS version: 0.16.0 (major: 0, minor: 16, patch: 0) | Git commit: e77d81dab791c13bf1c4e5d9a7160c403be9bbe0 | OpenSSL enabled: Yes (OpenSSL 3.5.5 27 Jan 2026) | AES: NI | SHA-2: OpenSSL | SHA-3: AVX512VL | OQS build flags: OQS_DIST_BUILD OQS_LIBJADE_BUILD OQS_OPT_TARGET=generic CMAKE_BUILD_TYPE=Release | CPU exts active: ADX AES AVX AVX2 AVX512 BMI1 BMI2 PCLMULQDQ VPCLMULQDQ POPCNT SSE SSE2 SSE3 | "
+          },
+          {
+            "name": "cross-rsdp-192-fast sign",
+            "value": 1776182,
+            "unit": "cycles",
+            "extra": "Target platform: x86_64-Linux-7.0.0-1017-azure | Compiler: gcc (15.2.0) | Compile options: [-Wa,--noexecstack;-fomit-frame-pointer;-fdata-sections;-ffunction-sections;-Wl,--gc-sections;-Wbad-function-cast] | OQS version: 0.16.0 (major: 0, minor: 16, patch: 0) | Git commit: e77d81dab791c13bf1c4e5d9a7160c403be9bbe0 | OpenSSL enabled: Yes (OpenSSL 3.5.5 27 Jan 2026) | AES: NI | SHA-2: OpenSSL | SHA-3: AVX512VL | OQS build flags: OQS_DIST_BUILD OQS_LIBJADE_BUILD OQS_OPT_TARGET=generic CMAKE_BUILD_TYPE=Release | CPU exts active: ADX AES AVX AVX2 AVX512 BMI1 BMI2 PCLMULQDQ VPCLMULQDQ POPCNT SSE SSE2 SSE3 | "
+          },
+          {
+            "name": "cross-rsdp-192-fast verify",
+            "value": 1036338,
+            "unit": "cycles",
+            "extra": "Target platform: x86_64-Linux-7.0.0-1017-azure | Compiler: gcc (15.2.0) | Compile options: [-Wa,--noexecstack;-fomit-frame-pointer;-fdata-sections;-ffunction-sections;-Wl,--gc-sections;-Wbad-function-cast] | OQS version: 0.16.0 (major: 0, minor: 16, patch: 0) | Git commit: e77d81dab791c13bf1c4e5d9a7160c403be9bbe0 | OpenSSL enabled: Yes (OpenSSL 3.5.5 27 Jan 2026) | AES: NI | SHA-2: OpenSSL | SHA-3: AVX512VL | OQS build flags: OQS_DIST_BUILD OQS_LIBJADE_BUILD OQS_OPT_TARGET=generic CMAKE_BUILD_TYPE=Release | CPU exts active: ADX AES AVX AVX2 AVX512 BMI1 BMI2 PCLMULQDQ VPCLMULQDQ POPCNT SSE SSE2 SSE3 | "
           }
         ]
       }
