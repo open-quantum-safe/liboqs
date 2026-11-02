@@ -29,7 +29,7 @@ implementations:
     signature_keypair: PQCLEAN_FAEST_EM_128S_REF_crypto_sign_keypair
     signature_signature: PQCLEAN_FAEST_EM_128S_REF_crypto_sign_signature
     signature_verify: PQCLEAN_FAEST_EM_128S_REF_crypto_sign_verify
-    compile_opts: -DOQS -DHAVE_CONFIG_H
+    compile_opts: -DOQS -DHAVE_CONFIG_H -DFAEST_STATIC
     sources: api.h crypto_sign.c faest_em_128s.c faest_em_128s.h
     common_dep: faest_common faest_common_headers
     no-secret-dependent-branching-claimed: true

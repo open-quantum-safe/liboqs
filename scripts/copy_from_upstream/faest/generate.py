@@ -374,7 +374,7 @@ implementations:
     signature_keypair: {ns}_crypto_sign_keypair
     signature_signature: {ns}_crypto_sign_signature
     signature_verify: {ns}_crypto_sign_verify
-    compile_opts: -DOQS -DHAVE_CONFIG_H
+    compile_opts: -DOQS -DHAVE_CONFIG_H -DFAEST_STATIC
     sources: api.h crypto_sign.c faest_{ps['param_l']}.c faest_{ps['param_l']}.h
     common_dep: faest_common faest_common_headers
     no-secret-dependent-branching-claimed: true
@@ -404,7 +404,7 @@ def generate_meta_common_yml() -> str:
   - name: faest_common
     folder_name: .
     sources: {sources}
-    compile_opts: -DOQS -DHAVE_CONFIG_H
+    compile_opts: -DOQS -DHAVE_CONFIG_H -DFAEST_STATIC
     include_only: false
   - name: faest_common_headers
     folder_name: .
