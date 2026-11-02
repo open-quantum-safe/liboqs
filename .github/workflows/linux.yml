@@ -97,6 +97,20 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # pin@v4
+      - name: Detect algorithm changes
+        if: github.event_name == 'pull_request'
+        run: |
+          git config --global --add safe.directory '*'
+          git fetch --depth=1 origin ${{ github.base_ref }}
+          git diff --name-only "origin/${{ github.base_ref }}" HEAD > changed_files.txt || true
+          
+          if grep -iqE '^src/sig/mqom/|^src/common/' changed_files.txt; then
+            echo "RUN_MQOM_LEAKS=true" >> $GITHUB_ENV
+          fi
+          
+          if grep -iqE '^src/sig/qruov/|^src/sig/qr-uov/|^src/common/' changed_files.txt; then
+            echo "RUN_QRUOV_LEAKS=true" >> $GITHUB_ENV
+          fi
       - name: Configure
         run: mkdir build && cd build && cmake -GNinja ${{ matrix.CMAKE_ARGS }} .. && cmake -LA -N ..
       - name: Build

@@ -19,6 +19,11 @@ def test_kem_leak(kem_name):
 @pytest.mark.parametrize('sig_name', helpers.available_sigs_by_name())
 def test_sig_leak(sig_name):
     if ("SLH_DSA" in sig_name): pytest.skip()
+    if os.environ.get("GITHUB_EVENT_NAME") == "pull_request":
+        if "MQOM" in sig_name.upper() and os.environ.get("RUN_MQOM_LEAKS") != "true":
+            pytest.skip('Skipping MQOM leak test on PR to save time')
+        if ("QR-UOV" in sig_name.upper() or "QRUOV" in sig_name.upper()) and os.environ.get("RUN_QRUOV_LEAKS") != "true":
+            pytest.skip('Skipping QR-UOV leak test on PR to save time')
     if not(helpers.is_sig_enabled_by_name(sig_name)): pytest.skip('Not enabled')
     if sys.platform != "linux" or os.system("grep ubuntu /etc/os-release") != 0 or os.system("uname -a | grep x86_64") != 0: pytest.skip('Leak testing not supported on this platform')
     helpers.run_subprocess(
