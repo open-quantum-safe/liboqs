@@ -71,6 +71,7 @@ upstreams:
     sig_meta_path: 'integration/liboqs/{pretty_name_full}_META.yml'
     sig_scheme_path: '.'
     preserve_folder_structure: True
+    patches: [mldsa-native-memopt-compile-opts.patch]
   -
     name: pqmayo
     git_url: https://github.com/PQCMayo/MAYO-C.git
