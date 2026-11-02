@@ -218,7 +218,7 @@ static void aes_encrypt(const aes_round_keys_t* keys, aes_block_t state, unsigne
 #if defined(FAEST_TESTS)
 void aes128_encrypt_block(const aes_round_keys_t* key, const uint8_t* plaintext,
                           uint8_t* ciphertext) {
-  aes_block_t state;
+  aes_block_t state = {0};
   load_state(state, plaintext, AES_BLOCK_WORDS);
   aes_encrypt(key, state, AES_BLOCK_WORDS, AES_ROUNDS_128);
   store_state(ciphertext, state, AES_BLOCK_WORDS);
@@ -226,7 +226,7 @@ void aes128_encrypt_block(const aes_round_keys_t* key, const uint8_t* plaintext,
 
 void aes192_encrypt_block(const aes_round_keys_t* key, const uint8_t* plaintext,
                           uint8_t* ciphertext) {
-  aes_block_t state;
+  aes_block_t state = {0};
   load_state(state, plaintext, AES_BLOCK_WORDS);
   aes_encrypt(key, state, AES_BLOCK_WORDS, AES_ROUNDS_192);
   store_state(ciphertext, state, AES_BLOCK_WORDS);
@@ -234,7 +234,7 @@ void aes192_encrypt_block(const aes_round_keys_t* key, const uint8_t* plaintext,
 
 void aes256_encrypt_block(const aes_round_keys_t* key, const uint8_t* plaintext,
                           uint8_t* ciphertext) {
-  aes_block_t state;
+  aes_block_t state = {0};
   load_state(state, plaintext, AES_BLOCK_WORDS);
   aes_encrypt(key, state, AES_BLOCK_WORDS, AES_ROUNDS_256);
   store_state(ciphertext, state, AES_BLOCK_WORDS);
@@ -243,7 +243,7 @@ void aes256_encrypt_block(const aes_round_keys_t* key, const uint8_t* plaintext,
 
 void rijndael192_encrypt_block(const aes_round_keys_t* key, const uint8_t* plaintext,
                                uint8_t* ciphertext) {
-  aes_block_t state;
+  aes_block_t state = {0};
   load_state(state, plaintext, RIJNDAEL_BLOCK_WORDS_192);
   aes_encrypt(key, state, RIJNDAEL_BLOCK_WORDS_192, AES_ROUNDS_192);
   store_state(ciphertext, state, RIJNDAEL_BLOCK_WORDS_192);
@@ -251,7 +251,7 @@ void rijndael192_encrypt_block(const aes_round_keys_t* key, const uint8_t* plain
 
 void rijndael256_encrypt_block(const aes_round_keys_t* key, const uint8_t* plaintext,
                                uint8_t* ciphertext) {
-  aes_block_t state;
+  aes_block_t state = {0};
   load_state(state, plaintext, RIJNDAEL_BLOCK_WORDS_256);
   aes_encrypt(key, state, RIJNDAEL_BLOCK_WORDS_256, AES_ROUNDS_256);
   store_state(ciphertext, state, RIJNDAEL_BLOCK_WORDS_256);
@@ -720,23 +720,37 @@ ATTR_TARGET_AESNI_AVX2 static void prg_4_aesni_avx_256(const uint8_t* key, const
 
 static void generic_prg(const uint8_t* key, uint8_t* internal_iv, uint8_t* out, unsigned int seclvl,
                         size_t outlen) {
-  generic_aes_ecb_t ctx;
-  int ret = generic_aes_ecb_new(&ctx, key, seclvl);
-  assert(ret == 0);
-  (void)ret;
+  // liboqs scan-build mitigation (NOT a known runtime bug): upstream expresses
+  // "these calls cannot fail" with assert(ret == 0). Under the clang static
+  // analyzer (and any NDEBUG build) those asserts vanish, so the analyzer walks
+  // the failure paths and reports ctx->sched as a garbage value and `out` as a
+  // possible NULL dereference (core.uninitialized.Branch / core.NonNullParamChecker).
+  // Zero-initialising ctx and converting the asserts into explicit early returns
+  // makes those paths well-defined without altering behaviour on the real,
+  // never-failing call sequence. Left for faest-ref upstream / ashman-p to decide
+  // how to handle permanently.
+  generic_aes_ecb_t ctx = {0};
+  if (!key || !internal_iv || !out) {
+    return;
+  }
+  if (generic_aes_ecb_new(&ctx, key, seclvl) != 0) {
+    return;
+  }
 
   for (size_t idx = 0; idx < outlen / IV_SIZE; idx += 1, out += IV_SIZE) {
-    ret = generic_aes_ecb_encrypt(&ctx, out, internal_iv, 1);
-    assert(ret == 0);
-    (void)ret;
+    if (generic_aes_ecb_encrypt(&ctx, out, internal_iv, 1) != 0) {
+      generic_aes_ecb_free(&ctx);
+      return;
+    }
     aes_increment_iv(internal_iv);
   }
 
   if (outlen % IV_SIZE) {
     uint8_t last_block[IV_SIZE];
-    ret = generic_aes_ecb_encrypt(&ctx, last_block, internal_iv, 1);
-    assert(ret == 0);
-    (void)ret;
+    if (generic_aes_ecb_encrypt(&ctx, last_block, internal_iv, 1) != 0) {
+      generic_aes_ecb_free(&ctx);
+      return;
+    }
     memcpy(out, last_block, outlen % IV_SIZE);
   }
 
@@ -946,7 +960,13 @@ void aes_extend_witness_7(uint8_t* w, const uint8_t* key, const uint8_t* in,
   // common part for AES-128, EM-128, EM-192, EM-256, first part for AES-192 and AES-256
   {
     // line 16
-    aes_block_t state;
+    // liboqs scan-build: zero-init (NOT a known runtime bug). load_state fills
+    // only `block_words` columns of the max-sized block, which the analyzer
+    // cannot correlate with the equally bounded reads in the round functions, so
+    // it reports a false-positive uninitialised read via add_round_key ->
+    // xor_small_u8_array_inplace. Left for faest-ref upstream / ashman-p to
+    // decide how to handle permanently.
+    aes_block_t state = {0};
     load_state(state, in, block_words);
 
     // line 17
@@ -977,7 +997,7 @@ void aes_extend_witness_7(uint8_t* w, const uint8_t* key, const uint8_t* in,
     buf[0] ^= 0x1;
 
     // line 16
-    aes_block_t state;
+    aes_block_t state = {0}; // liboqs scan-build: zero-init; see generic_prg / witness note above
     load_state(state, buf, block_words);
 
     // line 17
@@ -1169,7 +1189,7 @@ int generic_aes_ecb_encrypt(generic_aes_ecb_t* ctx, uint8_t* ciphertext, const u
   switch (ctx->seclvl) {
   case 256: {
     for (; blocks; --blocks, plaintext += IV_SIZE, ciphertext += IV_SIZE) {
-      aes_block_t state;
+      aes_block_t state = {0}; // liboqs scan-build: zero-init; see generic_prg note above
       load_state(state, plaintext, AES_BLOCK_WORDS);
       aes_encrypt(&ctx->round_keys, state, AES_BLOCK_WORDS, AES_ROUNDS_256);
       store_state(ciphertext, state, AES_BLOCK_WORDS);
@@ -1177,7 +1197,7 @@ int generic_aes_ecb_encrypt(generic_aes_ecb_t* ctx, uint8_t* ciphertext, const u
   }
   case 192: {
     for (; blocks; --blocks, plaintext += IV_SIZE, ciphertext += IV_SIZE) {
-      aes_block_t state;
+      aes_block_t state = {0}; // liboqs scan-build: zero-init; see generic_prg note above
       load_state(state, plaintext, AES_BLOCK_WORDS);
       aes_encrypt(&ctx->round_keys, state, AES_BLOCK_WORDS, AES_ROUNDS_192);
       store_state(ciphertext, state, AES_BLOCK_WORDS);
@@ -1185,7 +1205,7 @@ int generic_aes_ecb_encrypt(generic_aes_ecb_t* ctx, uint8_t* ciphertext, const u
   }
   default: {
     for (; blocks; --blocks, plaintext += IV_SIZE, ciphertext += IV_SIZE) {
-      aes_block_t state;
+      aes_block_t state = {0}; // liboqs scan-build: zero-init; see generic_prg note above
       load_state(state, plaintext, AES_BLOCK_WORDS);
       aes_encrypt(&ctx->round_keys, state, AES_BLOCK_WORDS, AES_ROUNDS_128);
       store_state(ciphertext, state, AES_BLOCK_WORDS);
