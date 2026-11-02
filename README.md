@@ -127,7 +127,7 @@ This project is not commercially supported. All guidelines and goals for liboqs 
 
 	    nix develop
 
-	Note that, if you want liboqs to use OpenSSL for various symmetric crypto algorithms (AES, SHA-2, etc.) then you must have OpenSSL installed (version 3.x recommended; EOL version 1.1.1 also still possible).
+	Note that, if you want liboqs to use OpenSSL for various symmetric crypto algorithms (AES, SHA-2, etc.) then you must have OpenSSL 3.0 or newer installed.
 
 2. Get the source:
 

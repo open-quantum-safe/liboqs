@@ -31,7 +31,7 @@ endif()
 
 # List oqs-internal after oqs so that oqs has linking precedence.
 if(${OQS_USE_OPENSSL})
-    find_package(OpenSSL 1.1.1 REQUIRED)
+    find_package(OpenSSL 3.0 REQUIRED)
     set(TEST_DEPS oqs oqs-internal ${LIBM} OpenSSL::Crypto)
 else()
     set(TEST_DEPS oqs oqs-internal ${LIBM})
