@@ -31,7 +31,7 @@ implementations:
     signature_verify: PQCLEAN_FAEST_EM_256F_REF_crypto_sign_verify
     compile_opts: -DOQS -DHAVE_CONFIG_H
     sources: api.h crypto_sign.c faest_em_256f.c faest_em_256f.h
-    common_dep: faest_common
+    common_dep: faest_common faest_common_headers
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: true

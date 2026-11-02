@@ -376,7 +376,7 @@ implementations:
     signature_verify: {ns}_crypto_sign_verify
     compile_opts: -DOQS -DHAVE_CONFIG_H
     sources: api.h crypto_sign.c faest_{ps['param_l']}.c faest_{ps['param_l']}.h
-    common_dep: faest_common
+    common_dep: faest_common faest_common_headers
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: true
@@ -386,10 +386,29 @@ implementations:
 
 def generate_meta_common_yml() -> str:
     sources = " ".join(COMMON_SOURCES)
+    # The common crypto core is parameter-set independent, so it must be compiled
+    # exactly once (include_only: false) instead of inlined into every variant's
+    # object library -- otherwise every non-static symbol is defined once per
+    # parameter set and the shared-library link fails with duplicate symbols.
+    # A companion headers-only dep (include_only: true) supplies the include path
+    # the per-variant glue needs, mirroring the sdith integration.
+    header_sources = " ".join(
+        [
+            f"{LIBOQS_PREFIX}/generated/config.h",
+            f"{LIBOQS_PREFIX}/generated/parameters.h",
+        ]
+        + [f"{LIBOQS_PREFIX}/generated/tables_{preset}.h" for preset in TABLE_PRESETS]
+        + COMMON_HEADERS
+    )
     return f"""commons:
   - name: faest_common
     folder_name: .
     sources: {sources}
+    compile_opts: -DOQS -DHAVE_CONFIG_H
+    include_only: false
+  - name: faest_common_headers
+    folder_name: .
+    sources: {header_sources}
     include_only: true
 """
 
