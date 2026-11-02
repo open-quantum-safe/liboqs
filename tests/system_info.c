@@ -294,10 +294,12 @@ static void print_oqs_configuration(void) {
 #ifdef CMAKE_BUILD_TYPE
 	printf("CMAKE_BUILD_TYPE=%s ", CMAKE_BUILD_TYPE);
 #else
+	// clang-format off
 #ifdef OQS_DEBUG_BUILD
 	guard against impossible configuration (no CMAKE_BUILD_TYPE but DEBUG_BUILD)
 #endif
 	printf("CMAKE_BUILD_TYPE=Release ");
+	// clang-format on
 #endif
 	printf("\n");
 }

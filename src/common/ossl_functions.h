@@ -6,6 +6,7 @@
 // code by defining the FUNC macro, so no header guard should be
 // added here.
 
+// clang-format off
 VOID_FUNC(void, ERR_clear_error, (void), ())
 VOID_FUNC(void, ERR_print_errors_fp, (FILE *fp), (fp))
 VOID_FUNC(void, EVP_CIPHER_CTX_free, (EVP_CIPHER_CTX *c), (c))
@@ -61,3 +62,4 @@ FUNC(void *, CRYPTO_malloc, (size_t num, const char *file, int line), (num, file
 FUNC(void *, CRYPTO_zalloc, (size_t num, const char *file, int line), (num, file, line))
 FUNC(char *, CRYPTO_strdup, (const char *str, const char *file, int line), (str, file, line))
 VOID_FUNC(void, CRYPTO_free, (void *ptr, const char *file, int line), (ptr, file, line))
+// clang-format on

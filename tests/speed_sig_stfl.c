@@ -100,6 +100,7 @@ static OQS_STATUS sig_speed_wrapper(const char *method_name, uint64_t duration, 
 	if (!doFullCycle) {
 		// benchmark keygen: need to reset secret key between calls
 		OQS_STATUS status = 0;
+		// clang-format off
 		TIME_OPERATION_SECONDS_MAXIT({ status = OQS_SIG_STFL_keypair(sig, public_key, secret_key); }, "keypair", duration, 1, {
 			if (status != OQS_SUCCESS) {
 				printf("keygen error. Exiting.\n");
@@ -117,6 +118,7 @@ static OQS_STATUS sig_speed_wrapper(const char *method_name, uint64_t duration, 
 			}
 			OQS_SIG_STFL_keypair(sig, public_key, secret_key);
 		})
+		// clang-format on
 		// benchmark verification
 		TIME_OPERATION_SECONDS({ OQS_SIG_STFL_verify(sig, message, message_len, signature, signature_len, public_key); }, "verify", duration)
 	} else {

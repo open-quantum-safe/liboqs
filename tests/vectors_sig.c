@@ -185,16 +185,20 @@ static void hexStringToByteArray(const char *hexString, uint8_t *byteArray) {
 
 /* ML_DSA-specific functions */
 static inline bool is_ml_dsa(const char *method_name) {
+	// clang-format off
 	return (0 == strcmp(method_name, OQS_SIG_alg_ml_dsa_44))
 	       || (0 == strcmp(method_name, OQS_SIG_alg_ml_dsa_65))
 	       || (0 == strcmp(method_name, OQS_SIG_alg_ml_dsa_87));
+	// clang-format on
 }
 
 /* ML_DSA-specific extmu functions */
 static inline bool is_ml_dsa_extmu(const char *method_name) {
+	// clang-format off
 	return (0 == strcmp(method_name, OQS_SIG_alg_ml_dsa_44_extmu))
 	       || (0 == strcmp(method_name, OQS_SIG_alg_ml_dsa_65_extmu))
 	       || (0 == strcmp(method_name, OQS_SIG_alg_ml_dsa_87_extmu));
+	// clang-format on
 }
 
 static void MLDSA_randombytes_init(const uint8_t *entropy_input, const uint8_t *personalization_string) {

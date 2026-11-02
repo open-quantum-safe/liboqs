@@ -43,9 +43,11 @@ extern int PQCP_MLKEM_NATIVE_MLKEM1024_C_check_sk(const uint8_t *sk);
 
 /* MLKEM-specific functions */
 static inline bool is_ml_kem(const char *method_name) {
+	// clang-format off
 	return (0 == strcmp(method_name, OQS_KEM_alg_ml_kem_512))
 	       || (0 == strcmp(method_name, OQS_KEM_alg_ml_kem_768))
 	       || (0 == strcmp(method_name, OQS_KEM_alg_ml_kem_1024));
+	// clang-format on
 }
 
 static void fprintBstr(FILE *fp, const char *S, const uint8_t *A, size_t L) {
