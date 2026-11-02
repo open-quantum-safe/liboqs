@@ -93,7 +93,7 @@ def parse_meson_parameter_sets(meson_path: Path) -> list[dict[str, object]]:
     parameter_sets: list[dict[str, object]] = []
     set_re = re.compile(r"^\s*param_\w+\.set\('([^']+)',\s*(.+)\)\s*$")
 
-    for line in meson_path.read_text().splitlines():
+    for line in meson_path.read_text(encoding="utf-8").splitlines():
         if re.match(r"^param_\w+ = configuration_data\(\)", line):
             current = {}
             continue
@@ -218,7 +218,7 @@ COMMON_SOURCES = [
 
 
 def render_template(template_path: Path, mapping: dict[str, str]) -> str:
-    content = template_path.read_text()
+    content = template_path.read_text(encoding="utf-8")
     for key, value in mapping.items():
         content = content.replace(f"@{key}@", value)
     return content
@@ -291,7 +291,7 @@ def generate_parameters_h(parameter_sets: list[dict]) -> str:
 
 
 def generate_config_h() -> str:
-    return (TEMPLATES / "config.h.in").read_text()
+    return (TEMPLATES / "config.h.in").read_text(encoding="utf-8")
 
 
 def cxx_compiler() -> str:
@@ -307,7 +307,7 @@ def generate_vole_tables(faest_ref: Path, parameters_h: str) -> dict[Path, str]:
     with tempfile.TemporaryDirectory(prefix="faest-tables-") as tmp:
         tmpdir = Path(tmp)
         (tmpdir / "tables").mkdir()
-        (tmpdir / "parameters.h").write_text(parameters_h)
+        (tmpdir / "parameters.h").write_text(parameters_h, encoding="utf-8")
         shutil.copy(faest_ref / "macros.h", tmpdir / "macros.h")
         shutil.copy(faest_ref / "faest_defines.h", tmpdir / "faest_defines.h")
         shutil.copy(
@@ -336,7 +336,7 @@ def generate_vole_tables(faest_ref: Path, parameters_h: str) -> dict[Path, str]:
             # Prepend an SPDX header: these generated tables are checked by
             # tests/test_spdx.sh (unlike the src/ copies, which are ignored).
             outputs[GENERATED / f"tables_{preset}.h"] = (
-                "/* SPDX-License-Identifier: MIT */\n" + dest.read_text()
+                "/* SPDX-License-Identifier: MIT */\n" + dest.read_text(encoding="utf-8")
             )
         return outputs
 
@@ -533,13 +533,13 @@ def build_outputs(faest_ref: Path, parameter_sets: list[dict]) -> dict[Path, str
 def write_outputs(outputs: dict[Path, str]) -> None:
     for path, content in outputs.items():
         path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_text(content)
+        path.write_text(content, encoding="utf-8")
 
 
 def find_stale_outputs(outputs: dict[Path, str]) -> list[Path]:
     stale: list[Path] = []
     for path, content in outputs.items():
-        if not path.is_file() or path.read_text() != content:
+        if not path.is_file() or path.read_text(encoding="utf-8") != content:
             stale.append(path)
     return stale
 

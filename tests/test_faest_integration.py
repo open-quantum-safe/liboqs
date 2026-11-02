@@ -6,7 +6,12 @@ import subprocess
 from pathlib import Path
 
 import pytest
-import yaml
+
+# PyYAML is not available in every CI image (e.g. the Alpine/musl container).
+# This test only verifies that committed FAEST generator artifacts are current,
+# which is adequately covered by the images that do ship PyYAML, so skip rather
+# than hard-fail where the optional dependency is absent.
+yaml = pytest.importorskip("yaml")
 
 LIBOQS_ROOT = Path(__file__).resolve().parents[1]
 COPY_FROM_UPSTREAM = LIBOQS_ROOT / "scripts" / "copy_from_upstream"
