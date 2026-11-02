@@ -97,19 +97,26 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # pin@v4
+      # tests/test_leaks.py skips the slow MQOM and QR-UOV leak tests on PRs and feature-branch
+      # pushes unless this step finds changes to that algorithm or to shared code it depends on.
       - name: Detect algorithm changes
-        if: github.event_name == 'pull_request'
+        env:
+          BASE_REF: ${{ github.base_ref || 'main' }}
         run: |
+          SHARED='^(CMakeLists\.txt|\.CMake/|\.github/workflows/linux\.yml|src/[^/]*$|src/common/|src/sig/sig\.[ch]$|tests/(CMakeLists\.txt|helpers\.py|system_info\.c|test_helpers\.[ch]|test_leaks\.py|test_sig\.c)$)'
+          CHANGED="$RUNNER_TEMP/changed_files.txt"
           git config --global --add safe.directory '*'
-          git fetch --depth=1 origin ${{ github.base_ref }}
-          git diff --name-only "origin/${{ github.base_ref }}" HEAD > changed_files.txt || true
-          
-          if grep -iqE '^src/sig/mqom/|^src/common/' changed_files.txt; then
-            echo "RUN_MQOM_LEAKS=true" >> $GITHUB_ENV
-          fi
-          
-          if grep -iqE '^src/sig/qruov/|^src/sig/qr-uov/|^src/common/' changed_files.txt; then
-            echo "RUN_QRUOV_LEAKS=true" >> $GITHUB_ENV
+          if git fetch --depth=1 origin "$BASE_REF" && git diff --name-only "origin/$BASE_REF" HEAD > "$CHANGED"; then
+            if grep -qE "$SHARED|^src/sig/mqom/" "$CHANGED"; then
+              echo "RUN_MQOM_LEAKS=true" >> "$GITHUB_ENV"
+            fi
+            if grep -qE "$SHARED|^src/sig/qruov/" "$CHANGED"; then
+              echo "RUN_QRUOV_LEAKS=true" >> "$GITHUB_ENV"
+            fi
+          else
+            echo "::warning::Could not determine changed files; running all leak tests"
+            echo "RUN_MQOM_LEAKS=true" >> "$GITHUB_ENV"
+            echo "RUN_QRUOV_LEAKS=true" >> "$GITHUB_ENV"
           fi
       - name: Configure
         run: mkdir build && cd build && cmake -GNinja ${{ matrix.CMAKE_ARGS }} .. && cmake -LA -N ..
