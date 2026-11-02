@@ -76,10 +76,12 @@ typedef struct {
 } aes256ctx_nobitslice;
 
 static inline uint32_t br_dec32le(const unsigned char *src) {
+	// clang-format off
 	return (uint32_t)src[0]
 	       | ((uint32_t)src[1] << 8)
 	       | ((uint32_t)src[2] << 16)
 	       | ((uint32_t)src[3] << 24);
+	// clang-format on
 }
 
 
@@ -92,8 +94,10 @@ static void br_range_dec32le(uint32_t *v, size_t num, const unsigned char *src) 
 
 
 static inline uint32_t br_swap32(uint32_t x) {
+	// clang-format off
 	x = ((x & (uint32_t)0x00FF00FF) << 8)
 	    | ((x >> 8) & (uint32_t)0x00FF00FF);
+	// clang-format on
 	return (x << 16) | (x >> 16);
 }
 
@@ -424,6 +428,7 @@ static void br_aes_ct64_keysched(uint64_t *comp_skey, const unsigned char *key, 
 		q[6] = q[4];
 		q[7] = q[4];
 		br_aes_ct64_ortho(q);
+		// clang-format off
 		comp_skey[j + 0] =
 		    (q[0] & (uint64_t)0x1111111111111111)
 		    | (q[1] & (uint64_t)0x2222222222222222)
@@ -434,6 +439,7 @@ static void br_aes_ct64_keysched(uint64_t *comp_skey, const unsigned char *key, 
 		    | (q[5] & (uint64_t)0x2222222222222222)
 		    | (q[6] & (uint64_t)0x4444444444444444)
 		    | (q[7] & (uint64_t)0x8888888888888888);
+		// clang-format on
 	}
 }
 
@@ -478,6 +484,7 @@ static inline void shift_rows(uint64_t *q) {
 		uint64_t x;
 
 		x = q[i];
+		// clang-format off
 		q[i] = (x & (uint64_t)0x000000000000FFFF)
 		       | ((x & (uint64_t)0x00000000FFF00000) >> 4)
 		       | ((x & (uint64_t)0x00000000000F0000) << 12)
@@ -485,6 +492,7 @@ static inline void shift_rows(uint64_t *q) {
 		       | ((x & (uint64_t)0x000000FF00000000) << 8)
 		       | ((x & (uint64_t)0xF000000000000000) >> 12)
 		       | ((x & (uint64_t)0x0FFF000000000000) << 4);
+		// clang-format on
 	}
 }
 

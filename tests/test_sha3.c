@@ -1296,12 +1296,14 @@ int shake_128_x4_kat_test(void) {
 	OQS_SHA3_shake128_x4(output0, output1, output2, output3, sizeof(output0),
 	                     msg0, msg0, msg0, msg0, 0);
 
+	// clang-format off
 	if (are_equal8(output0, exp0, sizeof(exp0)) == EXIT_FAILURE
 	        || are_equal8(output1, exp0, sizeof(exp0)) == EXIT_FAILURE
 	        || are_equal8(output2, exp0, sizeof(exp0)) == EXIT_FAILURE
 	        || are_equal8(output3, exp0, sizeof(exp0)) == EXIT_FAILURE) {
 		status = EXIT_FAILURE;
 	}
+	// clang-format on
 
 	clear8(output0, sizeof(output0));
 	clear8(output1, sizeof(output1));
@@ -1310,12 +1312,14 @@ int shake_128_x4_kat_test(void) {
 	OQS_SHA3_shake128_x4(output0, output1, output2, output3, sizeof(output0),
 	                     msg1600, msg1600, msg1600, msg1600, sizeof(msg1600));
 
+	// clang-format off
 	if (are_equal8(output0, exp1600, sizeof(exp1600)) == EXIT_FAILURE
 	        || are_equal8(output1, exp1600, sizeof(exp1600)) == EXIT_FAILURE
 	        || are_equal8(output2, exp1600, sizeof(exp1600)) == EXIT_FAILURE
 	        || are_equal8(output3, exp1600, sizeof(exp1600)) == EXIT_FAILURE) {
 		status = EXIT_FAILURE;
 	}
+	// clang-format on
 
 	/* test incremental api */
 	clear8(output0, sizeof(output0));
@@ -1335,12 +1339,14 @@ int shake_128_x4_kat_test(void) {
 	                                 sizeof(output0) - offset128, &state);
 	OQS_SHA3_shake128_x4_inc_ctx_release(&state);
 
+	// clang-format off
 	if (are_equal8(output0, exp1600, sizeof(exp1600)) == EXIT_FAILURE
 	        || are_equal8(output1, exp1600, sizeof(exp1600)) == EXIT_FAILURE
 	        || are_equal8(output2, exp1600, sizeof(exp1600)) == EXIT_FAILURE
 	        || are_equal8(output3, exp1600, sizeof(exp1600)) == EXIT_FAILURE) {
 		status = EXIT_FAILURE;
 	}
+	// clang-format on
 
 	/* Verify that distinct non-uniform lane inputs produce distinct, correct
 	 * outputs. Lanes 0 and 2 absorb msg896; lanes 1 and 3 absorb the first
@@ -1356,6 +1362,7 @@ int shake_128_x4_kat_test(void) {
 	OQS_SHA3_shake128_x4_inc_squeeze(output0, output1, output2, output3, sizeof(exp_a), &state);
 	OQS_SHA3_shake128_x4_inc_ctx_release(&state);
 
+	// clang-format off
 	if (are_equal8(output0, exp_a, sizeof(exp_a)) == EXIT_FAILURE
 	        || are_equal8(output1, exp_b, sizeof(exp_b)) == EXIT_FAILURE
 	        || are_equal8(output2, exp_a, sizeof(exp_a)) == EXIT_FAILURE
@@ -1363,6 +1370,7 @@ int shake_128_x4_kat_test(void) {
 		printf("ERROR: SHAKE-128 x4 distinct-lane cross-validation failed\n");
 		status = EXIT_FAILURE;
 	}
+	// clang-format on
 
 	return status;
 }
@@ -1463,12 +1471,14 @@ int shake_256_x4_kat_test(void) {
 	OQS_SHA3_shake256_x4(output0, output1, output2, output3, sizeof(output0),
 	                     msg0, msg0, msg0, msg0, 0);
 
+	// clang-format off
 	if (are_equal8(output0, exp0, sizeof(exp0)) == EXIT_FAILURE
 	        || are_equal8(output1, exp0, sizeof(exp0)) == EXIT_FAILURE
 	        || are_equal8(output2, exp0, sizeof(exp0)) == EXIT_FAILURE
 	        || are_equal8(output3, exp0, sizeof(exp0)) == EXIT_FAILURE) {
 		status = EXIT_FAILURE;
 	}
+	// clang-format on
 
 	clear8(output0, sizeof(output0));
 	clear8(output1, sizeof(output1));
@@ -1477,12 +1487,14 @@ int shake_256_x4_kat_test(void) {
 	OQS_SHA3_shake256_x4(output0, output1, output2, output3, sizeof(output0),
 	                     msg1600, msg1600, msg1600, msg1600, sizeof(msg1600));
 
+	// clang-format off
 	if (are_equal8(output0, exp1600, sizeof(exp1600)) == EXIT_FAILURE
 	        || are_equal8(output1, exp1600, sizeof(exp1600)) == EXIT_FAILURE
 	        || are_equal8(output2, exp1600, sizeof(exp1600)) == EXIT_FAILURE
 	        || are_equal8(output3, exp1600, sizeof(exp1600)) == EXIT_FAILURE) {
 		status = EXIT_FAILURE;
 	}
+	// clang-format on
 
 	/* test incremental api */
 	clear8(output0, sizeof(output0));
@@ -1502,12 +1514,14 @@ int shake_256_x4_kat_test(void) {
 	                                 sizeof(output0) - offset256, &state);
 	OQS_SHA3_shake256_x4_inc_ctx_release(&state);
 
+	// clang-format off
 	if (are_equal8(output0, exp1600, sizeof(exp1600)) == EXIT_FAILURE
 	        || are_equal8(output1, exp1600, sizeof(exp1600)) == EXIT_FAILURE
 	        || are_equal8(output2, exp1600, sizeof(exp1600)) == EXIT_FAILURE
 	        || are_equal8(output3, exp1600, sizeof(exp1600)) == EXIT_FAILURE) {
 		status = EXIT_FAILURE;
 	}
+	// clang-format on
 
 	/* Verify that distinct non-uniform lane inputs produce distinct, correct
 	 * outputs. Lanes 0 and 2 absorb msg896; lanes 1 and 3 absorb the first
@@ -1523,6 +1537,7 @@ int shake_256_x4_kat_test(void) {
 	OQS_SHA3_shake256_x4_inc_squeeze(output0, output1, output2, output3, sizeof(exp_a), &state);
 	OQS_SHA3_shake256_x4_inc_ctx_release(&state);
 
+	// clang-format off
 	if (are_equal8(output0, exp_a, sizeof(exp_a)) == EXIT_FAILURE
 	        || are_equal8(output1, exp_b, sizeof(exp_b)) == EXIT_FAILURE
 	        || are_equal8(output2, exp_a, sizeof(exp_a)) == EXIT_FAILURE
@@ -1530,6 +1545,7 @@ int shake_256_x4_kat_test(void) {
 		printf("ERROR: SHAKE-256 x4 distinct-lane cross-validation failed\n");
 		status = EXIT_FAILURE;
 	}
+	// clang-format on
 
 	return status;
 }

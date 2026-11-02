@@ -11,6 +11,7 @@
 
 /* Helpers for identifying algorithms */
 static int is_mceliece(const char *method_name) {
+	// clang-format off
 	return ( !strcmp(method_name, OQS_KEM_alg_classic_mceliece_348864)
 	         || !strcmp(method_name, OQS_KEM_alg_classic_mceliece_348864f)
 	         || !strcmp(method_name, OQS_KEM_alg_classic_mceliece_460896)
@@ -21,6 +22,7 @@ static int is_mceliece(const char *method_name) {
 	         || !strcmp(method_name, OQS_KEM_alg_classic_mceliece_6960119f)
 	         || !strcmp(method_name, OQS_KEM_alg_classic_mceliece_8192128)
 	         || !strcmp(method_name, OQS_KEM_alg_classic_mceliece_8192128f) );
+	// clang-format on
 }
 
 /* OQS_KAT_PRNG interface implementation */
