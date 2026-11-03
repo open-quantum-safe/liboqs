@@ -50,55 +50,55 @@ extern int qruov_1q127L3_shake_avx2_crypto_sign_verify(const uint8_t *sig, size_
 
 OQS_API OQS_STATUS OQS_SIG_qruov_1q127L3shake_keypair(uint8_t *public_key, uint8_t *secret_key) {
 #if defined(OQS_ENABLE_SIG_qruov_1q127L3shake_opt)
-	return (OQS_STATUS) qruov_1q127L3_shake_opt_crypto_sign_keypair(public_key, secret_key);
+	return (OQS_STATUS)qruov_1q127L3_shake_opt_crypto_sign_keypair(public_key, secret_key);
 #elif defined(OQS_ENABLE_SIG_qruov_1q127L3shake_avx2)
 #if defined(OQS_DIST_BUILD)
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_BMI2) && OQS_CPU_has_extension(OQS_CPU_EXT_AES)) {
 #endif /* OQS_DIST_BUILD */
-		return (OQS_STATUS) qruov_1q127L3_shake_avx2_crypto_sign_keypair(public_key, secret_key);
+		return (OQS_STATUS)qruov_1q127L3_shake_avx2_crypto_sign_keypair(public_key, secret_key);
 #if defined(OQS_DIST_BUILD)
 	} else {
-		return (OQS_STATUS) qruov_1q127L3_shake_ref_crypto_sign_keypair(public_key, secret_key);
+		return (OQS_STATUS)qruov_1q127L3_shake_ref_crypto_sign_keypair(public_key, secret_key);
 	}
 #endif /* OQS_DIST_BUILD */
 #else
-	return (OQS_STATUS) qruov_1q127L3_shake_ref_crypto_sign_keypair(public_key, secret_key);
+	return (OQS_STATUS)qruov_1q127L3_shake_ref_crypto_sign_keypair(public_key, secret_key);
 #endif
 }
 
 OQS_API OQS_STATUS OQS_SIG_qruov_1q127L3shake_sign(uint8_t *signature, size_t *signature_len, const uint8_t *message, size_t message_len, const uint8_t *secret_key) {
 #if defined(OQS_ENABLE_SIG_qruov_1q127L3shake_opt)
-	return (OQS_STATUS) qruov_1q127L3_shake_opt_crypto_sign_signature(signature, signature_len, message, message_len, secret_key);
+	return (OQS_STATUS)qruov_1q127L3_shake_opt_crypto_sign_signature(signature, signature_len, message, message_len, secret_key);
 #elif defined(OQS_ENABLE_SIG_qruov_1q127L3shake_avx2)
 #if defined(OQS_DIST_BUILD)
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_BMI2) && OQS_CPU_has_extension(OQS_CPU_EXT_AES)) {
 #endif /* OQS_DIST_BUILD */
-		return (OQS_STATUS) qruov_1q127L3_shake_avx2_crypto_sign_signature(signature, signature_len, message, message_len, secret_key);
+		return (OQS_STATUS)qruov_1q127L3_shake_avx2_crypto_sign_signature(signature, signature_len, message, message_len, secret_key);
 #if defined(OQS_DIST_BUILD)
 	} else {
-		return (OQS_STATUS) qruov_1q127L3_shake_ref_crypto_sign_signature(signature, signature_len, message, message_len, secret_key);
+		return (OQS_STATUS)qruov_1q127L3_shake_ref_crypto_sign_signature(signature, signature_len, message, message_len, secret_key);
 	}
 #endif /* OQS_DIST_BUILD */
 #else
-	return (OQS_STATUS) qruov_1q127L3_shake_ref_crypto_sign_signature(signature, signature_len, message, message_len, secret_key);
+	return (OQS_STATUS)qruov_1q127L3_shake_ref_crypto_sign_signature(signature, signature_len, message, message_len, secret_key);
 #endif
 }
 
 OQS_API OQS_STATUS OQS_SIG_qruov_1q127L3shake_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key) {
 #if defined(OQS_ENABLE_SIG_qruov_1q127L3shake_opt)
-	return (OQS_STATUS) qruov_1q127L3_shake_opt_crypto_sign_verify(signature, signature_len, message, message_len, public_key);
+	return (OQS_STATUS)qruov_1q127L3_shake_opt_crypto_sign_verify(signature, signature_len, message, message_len, public_key);
 #elif defined(OQS_ENABLE_SIG_qruov_1q127L3shake_avx2)
 #if defined(OQS_DIST_BUILD)
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_BMI2) && OQS_CPU_has_extension(OQS_CPU_EXT_AES)) {
 #endif /* OQS_DIST_BUILD */
-		return (OQS_STATUS) qruov_1q127L3_shake_avx2_crypto_sign_verify(signature, signature_len, message, message_len, public_key);
+		return (OQS_STATUS)qruov_1q127L3_shake_avx2_crypto_sign_verify(signature, signature_len, message, message_len, public_key);
 #if defined(OQS_DIST_BUILD)
 	} else {
-		return (OQS_STATUS) qruov_1q127L3_shake_ref_crypto_sign_verify(signature, signature_len, message, message_len, public_key);
+		return (OQS_STATUS)qruov_1q127L3_shake_ref_crypto_sign_verify(signature, signature_len, message, message_len, public_key);
 	}
 #endif /* OQS_DIST_BUILD */
 #else
-	return (OQS_STATUS) qruov_1q127L3_shake_ref_crypto_sign_verify(signature, signature_len, message, message_len, public_key);
+	return (OQS_STATUS)qruov_1q127L3_shake_ref_crypto_sign_verify(signature, signature_len, message, message_len, public_key);
 #endif
 }
 

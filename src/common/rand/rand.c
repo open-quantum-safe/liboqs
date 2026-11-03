@@ -67,14 +67,14 @@ OQS_API void OQS_randombytes(uint8_t *random_array, size_t bytes_to_read) {
 #if defined(_WIN32)
 void OQS_randombytes_system(uint8_t *random_array, size_t bytes_to_read) {
 #if defined(OQS_HAVE_BCRYPT)
-	if (BCryptGenRandom(NULL, random_array, (ULONG) bytes_to_read,
+	if (BCryptGenRandom(NULL, random_array, (ULONG)bytes_to_read,
 	                    BCRYPT_USE_SYSTEM_PREFERRED_RNG) != STATUS_SUCCESS) {
 		exit(EXIT_FAILURE); // better to fail than to return bad random data
 	}
 #else
 	HCRYPTPROV hCryptProv;
 	if (!CryptAcquireContext(&hCryptProv, NULL, NULL, PROV_RSA_FULL, CRYPT_VERIFYCONTEXT) ||
-	        !CryptGenRandom(hCryptProv, (DWORD) bytes_to_read, random_array)) {
+	    !CryptGenRandom(hCryptProv, (DWORD)bytes_to_read, random_array)) {
 		exit(EXIT_FAILURE); // better to fail than to return bad random data
 	}
 	CryptReleaseContext(hCryptProv, 0);

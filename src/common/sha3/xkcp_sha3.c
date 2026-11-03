@@ -1,11 +1,11 @@
 /**
-* \file sha3_xkcp.c
-* \brief Implementation of the OQS SHA3 API using the XKCP low interface.
-* The high level keccak_absorb, squeezeblocks, etc. are based on fips202.c
-* from PQClean (https://github.com/PQClean/PQClean/tree/master/common)
-*
-* SPDX-License-Identifier: MIT
-*/
+ * \file sha3_xkcp.c
+ * \brief Implementation of the OQS SHA3 API using the XKCP low interface.
+ * The high level keccak_absorb, squeezeblocks, etc. are based on fips202.c
+ * from PQClean (https://github.com/PQClean/PQClean/tree/master/common)
+ *
+ * SPDX-License-Identifier: MIT
+ */
 
 #include "sha3.h"
 

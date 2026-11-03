@@ -47,14 +47,14 @@ OQS_API OQS_STATUS OQS_SIG_sdith_l1_gf2_short_keypair(uint8_t *public_key, uint8
 #if defined(OQS_DIST_BUILD)
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_AVX) && OQS_CPU_has_extension(OQS_CPU_EXT_AES) && OQS_CPU_has_extension(OQS_CPU_EXT_PCLMULQDQ)) {
 #endif /* OQS_DIST_BUILD */
-		return (OQS_STATUS) oqs_sig_pubapi_sdith_l1_gf2_short_avx2_crypto_sign_keypair(public_key, secret_key);
+		return (OQS_STATUS)oqs_sig_pubapi_sdith_l1_gf2_short_avx2_crypto_sign_keypair(public_key, secret_key);
 #if defined(OQS_DIST_BUILD)
 	} else {
-		return (OQS_STATUS) oqs_sig_pubapi_sdith_l1_gf2_short_crypto_sign_keypair(public_key, secret_key);
+		return (OQS_STATUS)oqs_sig_pubapi_sdith_l1_gf2_short_crypto_sign_keypair(public_key, secret_key);
 	}
 #endif /* OQS_DIST_BUILD */
 #else
-	return (OQS_STATUS) oqs_sig_pubapi_sdith_l1_gf2_short_crypto_sign_keypair(public_key, secret_key);
+	return (OQS_STATUS)oqs_sig_pubapi_sdith_l1_gf2_short_crypto_sign_keypair(public_key, secret_key);
 #endif
 }
 
@@ -63,14 +63,14 @@ OQS_API OQS_STATUS OQS_SIG_sdith_l1_gf2_short_sign(uint8_t *signature, size_t *s
 #if defined(OQS_DIST_BUILD)
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_AVX) && OQS_CPU_has_extension(OQS_CPU_EXT_AES) && OQS_CPU_has_extension(OQS_CPU_EXT_PCLMULQDQ)) {
 #endif /* OQS_DIST_BUILD */
-		return (OQS_STATUS) oqs_sig_pubapi_sdith_l1_gf2_short_avx2_crypto_sign_sign(signature, signature_len, message, message_len, secret_key);
+		return (OQS_STATUS)oqs_sig_pubapi_sdith_l1_gf2_short_avx2_crypto_sign_sign(signature, signature_len, message, message_len, secret_key);
 #if defined(OQS_DIST_BUILD)
 	} else {
-		return (OQS_STATUS) oqs_sig_pubapi_sdith_l1_gf2_short_crypto_sign_sign(signature, signature_len, message, message_len, secret_key);
+		return (OQS_STATUS)oqs_sig_pubapi_sdith_l1_gf2_short_crypto_sign_sign(signature, signature_len, message, message_len, secret_key);
 	}
 #endif /* OQS_DIST_BUILD */
 #else
-	return (OQS_STATUS) oqs_sig_pubapi_sdith_l1_gf2_short_crypto_sign_sign(signature, signature_len, message, message_len, secret_key);
+	return (OQS_STATUS)oqs_sig_pubapi_sdith_l1_gf2_short_crypto_sign_sign(signature, signature_len, message, message_len, secret_key);
 #endif
 }
 
@@ -79,14 +79,14 @@ OQS_API OQS_STATUS OQS_SIG_sdith_l1_gf2_short_verify(const uint8_t *message, siz
 #if defined(OQS_DIST_BUILD)
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_AVX) && OQS_CPU_has_extension(OQS_CPU_EXT_AES) && OQS_CPU_has_extension(OQS_CPU_EXT_PCLMULQDQ)) {
 #endif /* OQS_DIST_BUILD */
-		return (OQS_STATUS) oqs_sig_pubapi_sdith_l1_gf2_short_avx2_crypto_sign_verify(signature, signature_len, message, message_len, public_key);
+		return (OQS_STATUS)oqs_sig_pubapi_sdith_l1_gf2_short_avx2_crypto_sign_verify(signature, signature_len, message, message_len, public_key);
 #if defined(OQS_DIST_BUILD)
 	} else {
-		return (OQS_STATUS) oqs_sig_pubapi_sdith_l1_gf2_short_crypto_sign_verify(signature, signature_len, message, message_len, public_key);
+		return (OQS_STATUS)oqs_sig_pubapi_sdith_l1_gf2_short_crypto_sign_verify(signature, signature_len, message, message_len, public_key);
 	}
 #endif /* OQS_DIST_BUILD */
 #else
-	return (OQS_STATUS) oqs_sig_pubapi_sdith_l1_gf2_short_crypto_sign_verify(signature, signature_len, message, message_len, public_key);
+	return (OQS_STATUS)oqs_sig_pubapi_sdith_l1_gf2_short_crypto_sign_verify(signature, signature_len, message, message_len, public_key);
 #endif
 }
 

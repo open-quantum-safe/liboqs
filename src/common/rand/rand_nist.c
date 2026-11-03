@@ -63,10 +63,11 @@ void OQS_randombytes_nist_kat_init_256bit(const uint8_t *entropy_input, const ui
 	unsigned char seed_material[48];
 
 	memcpy(seed_material, entropy_input, 48);
-	if (personalization_string)
+	if (personalization_string) {
 		for (int i = 0; i < 48; i++) {
 			seed_material[i] ^= personalization_string[i];
 		}
+	}
 	OQS_MEM_cleanse(DRBG_ctx.Key, 32);
 	memset(DRBG_ctx.V, 0x00, 16);
 	AES256_CTR_DRBG_Update(seed_material, DRBG_ctx.Key, DRBG_ctx.V);
@@ -135,10 +136,11 @@ static void AES256_CTR_DRBG_Update(unsigned char *provided_data, unsigned char *
 
 		AES256_ECB(Key, V, temp + 16 * i);
 	}
-	if (provided_data != NULL)
+	if (provided_data != NULL) {
 		for (int i = 0; i < 48; i++) {
 			temp[i] ^= provided_data[i];
 		}
+	}
 	memcpy(Key, temp, 32);
 	memcpy(V, temp + 32, 16);
 }

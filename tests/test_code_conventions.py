@@ -29,15 +29,31 @@ def test_datasheet_sig(sig_name):
         ['grep', '-r', sig_name, 'docs/algorithms']
     )
 
-# Ensure astyle agrees with the formatting.
+# Ensure clang-format agrees with the formatting.
 @helpers.filtered_test
 @pytest.mark.skipif(sys.platform.startswith("win"), reason="Not needed on Windows")
 def test_style():
-
-    result = helpers.run_subprocess(
-        ['tests/run_astyle.sh']
+    helpers.run_subprocess(
+        ['scripts/format_code.sh', '--check']
     )
-    assert 'Formatted' not in result
+
+# Ensure all source files (except in repos directory) use UNIX line endings.
+@helpers.filtered_test
+@pytest.mark.skipif(sys.platform.startswith("win"), reason="Not needed on Windows")
+def test_line_endings():
+    crlf_files = []
+    for path, dirs, files in os.walk('.'):
+        dirs[:] = [d for d in dirs if d != 'repos']
+        for f in files:
+            if f.endswith(('.c', '.h', '.S')):
+                with open(os.path.join(path, f), 'rb') as fh:
+                    if b'\r\n' in fh.read():
+                        crlf_files.append(os.path.join(path, f))
+    if crlf_files:
+        print("The following files have non-UNIX line endings:")
+        print("\n".join(crlf_files))
+        print("To fix, consider running \"find src tests -name '*.[chS]' | xargs sed -i 's/\\r//'\".")
+        assert False
 
 @helpers.filtered_test
 @pytest.mark.skipif(sys.platform.startswith("win"), reason="Not needed on Windows")

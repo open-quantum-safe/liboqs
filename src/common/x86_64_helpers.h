@@ -27,7 +27,7 @@ typedef struct {
 static inline uint32_t xgetbv_eax(uint32_t xcr) {
 #if defined(__GNUC__) || defined(__clang__)
 	uint32_t eax;
-	__asm__ ( ".byte 0x0f, 0x01, 0xd0" : "=a"(eax) : "c"(xcr) : "edx");
+	__asm__(".byte 0x0f, 0x01, 0xd0" : "=a"(eax) : "c"(xcr) : "edx");
 	return eax;
 #elif defined(_MSC_VER)
 	return _xgetbv(xcr) & 0xFFFF;
@@ -49,7 +49,7 @@ static inline void cpuid(cpuid_out *out, const uint32_t eax_leaf) {
 
 #if defined(__GNUC__) || defined(__clang__)
 	uint32_t eax, ebx, ecx, edx;
-	__asm__("cpuid" : "=a"(eax), "=b"(ebx), "=c"(ecx), "=d"(edx) : "a"(eax_leaf), "c"(ecx_leaf) : );
+	__asm__("cpuid" : "=a"(eax), "=b"(ebx), "=c"(ecx), "=d"(edx) : "a"(eax_leaf), "c"(ecx_leaf) :);
 	out->eax = eax;
 	out->ebx = ebx;
 	out->ecx = ecx;

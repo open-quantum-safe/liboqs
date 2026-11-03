@@ -178,11 +178,11 @@ OQS_API OQS_STATUS OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_keypair_derand(ui
 	if ({%- for flag in impl['required_flags'] -%}OQS_CPU_has_extension(OQS_CPU_EXT_{{ flag|upper }}){%- if not loop.last %} && {% endif -%}{%- endfor -%}) {
 #endif /* OQS_DIST_BUILD */
     {%- endif %}
-	{% if 'required_flags' in impl and impl['required_flags'] %}	{% endif -%}return (OQS_STATUS) {{ impl['signature_keypair_derand'] }}(public_key, secret_key, seed);
+	{% if 'required_flags' in impl and impl['required_flags'] %}	{% endif -%}return (OQS_STATUS){{ impl['signature_keypair_derand'] }}(public_key, secret_key, seed);
     {%- if 'required_flags' in impl and impl['required_flags'] %}
 #if defined(OQS_DIST_BUILD)
 	} else {
-		return (OQS_STATUS) {{ scheme['metadata']['default_keypair_derand_signature'] }}(public_key, secret_key, seed);
+		return (OQS_STATUS){{ scheme['metadata']['default_keypair_derand_signature'] }}(public_key, secret_key, seed);
 	}
 #endif /* OQS_DIST_BUILD */
     {%- endif -%}
@@ -190,7 +190,7 @@ OQS_API OQS_STATUS OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_keypair_derand(ui
     {%- if scheme['metadata']['implementations']|rejectattr('name', 'equalto', scheme['default_implementation'])|selectattr('signature_keypair_derand')|list %}
 #else
     {%- endif %}
-	return (OQS_STATUS) {{ scheme['metadata']['default_keypair_derand_signature'] }}(public_key, secret_key, seed);
+	return (OQS_STATUS){{ scheme['metadata']['default_keypair_derand_signature'] }}(public_key, secret_key, seed);
     {%- if scheme['metadata']['implementations']|rejectattr('name', 'equalto', scheme['default_implementation'])|selectattr('signature_keypair_derand')|list %}
 #endif
     {%- endif %}
@@ -218,14 +218,14 @@ OQS_API OQS_STATUS OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_keypair(uint8_t *
 #endif /* OQS_DIST_BUILD */
         {%- endif -%}
         {%- if impl['name'] in scheme['libjade_implementations'] %}
-	{% if 'required_flags' in impl and impl['required_flags'] %}	{% endif -%}return (OQS_STATUS) libjade_{{ scheme['pqclean_scheme_c'] }}_{{ impl['name'] }}_keypair(public_key, secret_key);
+	{% if 'required_flags' in impl and impl['required_flags'] %}	{% endif -%}return (OQS_STATUS)libjade_{{ scheme['pqclean_scheme_c'] }}_{{ impl['name'] }}_keypair(public_key, secret_key);
         {%- else %}
-	{% if 'required_flags' in impl and impl['required_flags'] %}	{% endif -%}return (OQS_STATUS) PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ impl['name']|upper }}_crypto_kem_keypair(public_key, secret_key);
+	{% if 'required_flags' in impl and impl['required_flags'] %}	{% endif -%}return (OQS_STATUS)PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ impl['name']|upper }}_crypto_kem_keypair(public_key, secret_key);
         {%- endif %}
         {%- if 'required_flags' in impl and impl['required_flags'] %}
 #if defined(OQS_DIST_BUILD)
 	} else {
-		return (OQS_STATUS) libjade_{{ scheme['pqclean_scheme_c'] }}_ref_keypair(public_key, secret_key);
+		return (OQS_STATUS)libjade_{{ scheme['pqclean_scheme_c'] }}_ref_keypair(public_key, secret_key);
 	}
 #endif /* OQS_DIST_BUILD */
         {%- endif -%}
@@ -233,7 +233,7 @@ OQS_API OQS_STATUS OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_keypair(uint8_t *
     {%- if scheme['metadata']['implementations']|rejectattr('name', 'equalto', scheme['default_implementation'])|list %}
 #else
     {%- endif %}
-	return (OQS_STATUS) libjade_{{ scheme['pqclean_scheme_c'] }}_ref_keypair(public_key, secret_key);
+	return (OQS_STATUS)libjade_{{ scheme['pqclean_scheme_c'] }}_ref_keypair(public_key, secret_key);
     {%- if scheme['metadata']['implementations']|rejectattr('name', 'equalto', scheme['default_implementation'])|list %}
 #endif
     {%- endif %}
@@ -244,7 +244,7 @@ OQS_API OQS_STATUS OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_keypair(uint8_t *
     {%- for impl in scheme['metadata']['implementations'] if impl['name'] == 'cuda' %}
         {%- set ns.gpu_chain_open = true %}
 #if defined(OQS_USE_CUPQC) && defined(OQS_ENABLE_KEM_{{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }})
-	return (OQS_STATUS) {{ impl['signature_keypair'] }}(public_key, secret_key);
+	return (OQS_STATUS){{ impl['signature_keypair'] }}(public_key, secret_key);
     {%- endfor %}
     {%- for impl in scheme['metadata']['implementations'] if impl['name'] == 'icicle_cuda' %}
         {%- if ns.gpu_chain_open %}
@@ -253,7 +253,7 @@ OQS_API OQS_STATUS OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_keypair(uint8_t *
             {%- set ns.gpu_chain_open = true %}
 #if defined(OQS_USE_ICICLE) && defined(OQS_ENABLE_KEM_{{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }})
         {%- endif %}
-	return (OQS_STATUS) {{ impl['signature_keypair'] }}(public_key, secret_key);
+	return (OQS_STATUS){{ impl['signature_keypair'] }}(public_key, secret_key);
     {%- endfor %}
     {%- for impl in scheme['metadata']['implementations'] if (impl['name'] != scheme['default_implementation'] and impl['name'] != 'cuda' and impl['name'] != 'icicle_cuda') %}
     {%- if loop.first and ns.gpu_chain_open %}
@@ -269,14 +269,14 @@ OQS_API OQS_STATUS OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_keypair(uint8_t *
 #endif /* OQS_DIST_BUILD */
     {%- endif -%}
            {%- if impl['signature_keypair'] %}
-	{% if 'required_flags' in impl and impl['required_flags'] %}	{% endif -%}return (OQS_STATUS) {{ impl['signature_keypair'] }}(public_key, secret_key);
+	{% if 'required_flags' in impl and impl['required_flags'] %}	{% endif -%}return (OQS_STATUS){{ impl['signature_keypair'] }}(public_key, secret_key);
            {%- else %}
-	{% if 'required_flags' in impl and impl['required_flags'] %}	{% endif -%}return (OQS_STATUS) PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ impl['name']|upper }}_crypto_kem_keypair(public_key, secret_key);
+	{% if 'required_flags' in impl and impl['required_flags'] %}	{% endif -%}return (OQS_STATUS)PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ impl['name']|upper }}_crypto_kem_keypair(public_key, secret_key);
            {%- endif %}
     {%- if 'required_flags' in impl and impl['required_flags'] %}
 #if defined(OQS_DIST_BUILD)
 	} else {
-		return (OQS_STATUS) {{ scheme['metadata']['default_keypair_signature'] }}(public_key, secret_key);
+		return (OQS_STATUS){{ scheme['metadata']['default_keypair_signature'] }}(public_key, secret_key);
 	}
 #endif /* OQS_DIST_BUILD */
     {%- endif -%}
@@ -284,7 +284,7 @@ OQS_API OQS_STATUS OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_keypair(uint8_t *
     {%- if scheme['metadata']['implementations']|rejectattr('name', 'equalto', scheme['default_implementation'])|list %}
 #else
     {%- endif %}
-	return (OQS_STATUS) {{ scheme['metadata']['default_keypair_signature'] }}(public_key, secret_key);
+	return (OQS_STATUS){{ scheme['metadata']['default_keypair_signature'] }}(public_key, secret_key);
     {%- if scheme['metadata']['implementations']|rejectattr('name', 'equalto', scheme['default_implementation'])|list %}
 #endif
     {%- endif %}
@@ -306,11 +306,11 @@ OQS_API OQS_STATUS OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_encaps_derand(uin
 	if ({%- for flag in impl['required_flags'] -%}OQS_CPU_has_extension(OQS_CPU_EXT_{{ flag|upper }}){%- if not loop.last %} && {% endif -%}{%- endfor -%}) {
 #endif /* OQS_DIST_BUILD */
     {%- endif %}
-	{% if 'required_flags' in impl and impl['required_flags'] %}	{% endif -%}return (OQS_STATUS) {{ impl['signature_enc_derand'] }}(ciphertext, shared_secret, public_key, seed);
+	{% if 'required_flags' in impl and impl['required_flags'] %}	{% endif -%}return (OQS_STATUS){{ impl['signature_enc_derand'] }}(ciphertext, shared_secret, public_key, seed);
     {%- if 'required_flags' in impl and impl['required_flags'] %}
 #if defined(OQS_DIST_BUILD)
 	} else {
-		return (OQS_STATUS) {{ scheme['metadata']['default_enc_derand_signature'] }}(ciphertext, shared_secret, public_key, seed);
+		return (OQS_STATUS){{ scheme['metadata']['default_enc_derand_signature'] }}(ciphertext, shared_secret, public_key, seed);
 	}
 #endif /* OQS_DIST_BUILD */
     {%- endif -%}
@@ -318,7 +318,7 @@ OQS_API OQS_STATUS OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_encaps_derand(uin
     {%- if scheme['metadata']['implementations']|rejectattr('name', 'equalto', scheme['default_implementation'])|selectattr('signature_enc_derand')|list %}
 #else
     {%- endif %}
-	return (OQS_STATUS) {{ scheme['metadata']['default_enc_derand_signature'] }}(ciphertext, shared_secret, public_key, seed);
+	return (OQS_STATUS){{ scheme['metadata']['default_enc_derand_signature'] }}(ciphertext, shared_secret, public_key, seed);
     {%- if scheme['metadata']['implementations']|rejectattr('name', 'equalto', scheme['default_implementation'])|selectattr('signature_enc_derand')|list %}
 #endif
     {%- endif %}
@@ -347,14 +347,14 @@ OQS_API OQS_STATUS OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_encaps(uint8_t *c
 #endif /* OQS_DIST_BUILD */
         {%- endif -%}
         {%- if impl['name'] in scheme['libjade_implementations'] %}
-	{% if 'required_flags' in impl and impl['required_flags'] %}	{% endif -%}return (OQS_STATUS) libjade_{{ scheme['pqclean_scheme_c'] }}_{{ impl['name'] }}_enc(ciphertext, shared_secret, public_key);
+	{% if 'required_flags' in impl and impl['required_flags'] %}	{% endif -%}return (OQS_STATUS)libjade_{{ scheme['pqclean_scheme_c'] }}_{{ impl['name'] }}_enc(ciphertext, shared_secret, public_key);
         {%- else %}
-	{% if 'required_flags' in impl and impl['required_flags'] %}	{% endif -%}return (OQS_STATUS) PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ impl['name']|upper }}_crypto_kem_enc(ciphertext, shared_secret, public_key);
+	{% if 'required_flags' in impl and impl['required_flags'] %}	{% endif -%}return (OQS_STATUS)PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ impl['name']|upper }}_crypto_kem_enc(ciphertext, shared_secret, public_key);
         {%- endif %}
         {%- if 'required_flags' in impl and impl['required_flags'] %}
 #if defined(OQS_DIST_BUILD)
 	} else {
-		return (OQS_STATUS) libjade_{{ scheme['pqclean_scheme_c'] }}_ref_enc(ciphertext, shared_secret, public_key);
+		return (OQS_STATUS)libjade_{{ scheme['pqclean_scheme_c'] }}_ref_enc(ciphertext, shared_secret, public_key);
 	}
 #endif /* OQS_DIST_BUILD */
         {%- endif -%}
@@ -362,7 +362,7 @@ OQS_API OQS_STATUS OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_encaps(uint8_t *c
     {%- if scheme['metadata']['implementations']|rejectattr('name', 'equalto', scheme['default_implementation'])|list %}
 #else
     {%- endif %}
-	return (OQS_STATUS) libjade_{{ scheme['pqclean_scheme_c'] }}_ref_enc(ciphertext, shared_secret, public_key);
+	return (OQS_STATUS)libjade_{{ scheme['pqclean_scheme_c'] }}_ref_enc(ciphertext, shared_secret, public_key);
     {%- if scheme['metadata']['implementations']|rejectattr('name', 'equalto', scheme['default_implementation'])|list %}
 #endif 
     {%- endif %}
@@ -373,7 +373,7 @@ OQS_API OQS_STATUS OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_encaps(uint8_t *c
     {%- for impl in scheme['metadata']['implementations'] if impl['name'] == 'cuda' %}
         {%- set ns.gpu_chain_open = true %}
 #if defined(OQS_USE_CUPQC) && defined(OQS_ENABLE_KEM_{{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }})
-	return (OQS_STATUS) {{ impl['signature_enc'] }}(ciphertext, shared_secret, public_key);
+	return (OQS_STATUS){{ impl['signature_enc'] }}(ciphertext, shared_secret, public_key);
     {%- endfor %}
     {%- for impl in scheme['metadata']['implementations'] if impl['name'] == 'icicle_cuda' %}
         {%- if ns.gpu_chain_open %}
@@ -382,7 +382,7 @@ OQS_API OQS_STATUS OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_encaps(uint8_t *c
             {%- set ns.gpu_chain_open = true %}
 #if defined(OQS_USE_ICICLE) && defined(OQS_ENABLE_KEM_{{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }})
         {%- endif %}
-	return (OQS_STATUS) {{ impl['signature_enc'] }}(ciphertext, shared_secret, public_key);
+	return (OQS_STATUS){{ impl['signature_enc'] }}(ciphertext, shared_secret, public_key);
     {%- endfor %}
     {%- for impl in scheme['metadata']['implementations'] if (impl['name'] != scheme['default_implementation'] and impl['name'] != 'cuda' and impl['name'] != 'icicle_cuda') %}
     {%- if loop.first and ns.gpu_chain_open %}
@@ -398,14 +398,14 @@ OQS_API OQS_STATUS OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_encaps(uint8_t *c
 #endif /* OQS_DIST_BUILD */
     {%- endif -%}
            {%- if impl['signature_enc'] %}
-	{% if 'required_flags' in impl and impl['required_flags'] %}	{% endif -%}return (OQS_STATUS) {{ impl['signature_enc'] }}(ciphertext, shared_secret, public_key);
+	{% if 'required_flags' in impl and impl['required_flags'] %}	{% endif -%}return (OQS_STATUS){{ impl['signature_enc'] }}(ciphertext, shared_secret, public_key);
            {%- else %}
-	{% if 'required_flags' in impl and impl['required_flags'] %}	{% endif -%}return (OQS_STATUS) PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ impl['name']|upper }}_crypto_kem_enc(ciphertext, shared_secret, public_key);
+	{% if 'required_flags' in impl and impl['required_flags'] %}	{% endif -%}return (OQS_STATUS)PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ impl['name']|upper }}_crypto_kem_enc(ciphertext, shared_secret, public_key);
            {%- endif %}
     {%- if 'required_flags' in impl and impl['required_flags'] %}
 #if defined(OQS_DIST_BUILD)
 	} else {
-		return (OQS_STATUS) {{ scheme['metadata']['default_enc_signature'] }}(ciphertext, shared_secret, public_key);
+		return (OQS_STATUS){{ scheme['metadata']['default_enc_signature'] }}(ciphertext, shared_secret, public_key);
 	}
 #endif /* OQS_DIST_BUILD */
     {%- endif -%}
@@ -413,7 +413,7 @@ OQS_API OQS_STATUS OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_encaps(uint8_t *c
     {%- if scheme['metadata']['implementations']|rejectattr('name', 'equalto', scheme['default_implementation'])|list %}
 #else
     {%- endif %}
-	return (OQS_STATUS) {{ scheme['metadata']['default_enc_signature'] }}(ciphertext, shared_secret, public_key);
+	return (OQS_STATUS){{ scheme['metadata']['default_enc_signature'] }}(ciphertext, shared_secret, public_key);
     {%- if scheme['metadata']['implementations']|rejectattr('name', 'equalto', scheme['default_implementation'])|list %}
 #endif
     {%- endif %}
@@ -438,14 +438,14 @@ OQS_API OQS_STATUS OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_decaps(uint8_t *s
 #endif /* OQS_DIST_BUILD */
         {%- endif -%}
         {%- if impl['name'] in scheme['libjade_implementations'] %}
-	{% if 'required_flags' in impl and impl['required_flags'] %}	{% endif -%}return (OQS_STATUS) libjade_{{ scheme['pqclean_scheme_c'] }}_{{ impl['name'] }}_dec(shared_secret, ciphertext, secret_key);
+	{% if 'required_flags' in impl and impl['required_flags'] %}	{% endif -%}return (OQS_STATUS)libjade_{{ scheme['pqclean_scheme_c'] }}_{{ impl['name'] }}_dec(shared_secret, ciphertext, secret_key);
         {%- else %}
-	{% if 'required_flags' in impl and impl['required_flags'] %}	{% endif -%}return (OQS_STATUS) PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ impl['name']|upper }}_crypto_kem_dec(shared_secret, ciphertext, secret_key);
+	{% if 'required_flags' in impl and impl['required_flags'] %}	{% endif -%}return (OQS_STATUS)PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ impl['name']|upper }}_crypto_kem_dec(shared_secret, ciphertext, secret_key);
         {%- endif %}
         {%- if 'required_flags' in impl and impl['required_flags'] %}
 #if defined(OQS_DIST_BUILD)
 	} else {
-		return (OQS_STATUS) libjade_{{ scheme['pqclean_scheme_c'] }}_ref_dec(shared_secret, ciphertext, secret_key);
+		return (OQS_STATUS)libjade_{{ scheme['pqclean_scheme_c'] }}_ref_dec(shared_secret, ciphertext, secret_key);
 	}
 #endif /* OQS_DIST_BUILD */
         {%- endif -%}
@@ -453,7 +453,7 @@ OQS_API OQS_STATUS OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_decaps(uint8_t *s
     {%- if scheme['metadata']['implementations']|rejectattr('name', 'equalto', scheme['default_implementation'])|list %}
 #else
     {%- endif %}
-	return (OQS_STATUS) libjade_{{ scheme['pqclean_scheme_c'] }}_ref_dec(shared_secret, ciphertext, secret_key);
+	return (OQS_STATUS)libjade_{{ scheme['pqclean_scheme_c'] }}_ref_dec(shared_secret, ciphertext, secret_key);
     {%- if scheme['metadata']['implementations']|rejectattr('name', 'equalto', scheme['default_implementation'])|list %}
 #endif
     {%- endif %}
@@ -464,7 +464,7 @@ OQS_API OQS_STATUS OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_decaps(uint8_t *s
     {%- for impl in scheme['metadata']['implementations'] if impl['name'] == 'cuda' %}
         {%- set ns.gpu_chain_open = true %}
 #if defined(OQS_USE_CUPQC) && defined(OQS_ENABLE_KEM_{{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }})
-	return (OQS_STATUS) {{ impl['signature_dec'] }}(shared_secret, ciphertext, secret_key);
+	return (OQS_STATUS){{ impl['signature_dec'] }}(shared_secret, ciphertext, secret_key);
     {%- endfor %}
     {%- for impl in scheme['metadata']['implementations'] if impl['name'] == 'icicle_cuda' %}
         {%- if ns.gpu_chain_open %}
@@ -473,7 +473,7 @@ OQS_API OQS_STATUS OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_decaps(uint8_t *s
             {%- set ns.gpu_chain_open = true %}
 #if defined(OQS_USE_ICICLE) && defined(OQS_ENABLE_KEM_{{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }})
         {%- endif %}
-	return (OQS_STATUS) {{ impl['signature_dec'] }}(shared_secret, ciphertext, secret_key);
+	return (OQS_STATUS){{ impl['signature_dec'] }}(shared_secret, ciphertext, secret_key);
     {%- endfor %}
     {%- for impl in scheme['metadata']['implementations'] if (impl['name'] != scheme['default_implementation'] and impl['name'] != 'cuda' and impl['name'] != 'icicle_cuda') %}
     {%- if loop.first and ns.gpu_chain_open %}
@@ -489,14 +489,14 @@ OQS_API OQS_STATUS OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_decaps(uint8_t *s
 #endif /* OQS_DIST_BUILD */
     {%- endif -%}
            {%- if impl['signature_dec'] %}
-	{% if 'required_flags' in impl and impl['required_flags'] %}	{% endif -%}return (OQS_STATUS) {{ impl['signature_dec'] }}(shared_secret, ciphertext, secret_key);
+	{% if 'required_flags' in impl and impl['required_flags'] %}	{% endif -%}return (OQS_STATUS){{ impl['signature_dec'] }}(shared_secret, ciphertext, secret_key);
            {%- else %}
-	{% if 'required_flags' in impl and impl['required_flags'] %}	{% endif -%}return (OQS_STATUS) PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ impl['name']|upper }}_crypto_kem_dec(shared_secret, ciphertext, secret_key);
+	{% if 'required_flags' in impl and impl['required_flags'] %}	{% endif -%}return (OQS_STATUS)PQCLEAN_{{ scheme['pqclean_scheme_c']|upper }}_{{ impl['name']|upper }}_crypto_kem_dec(shared_secret, ciphertext, secret_key);
            {%- endif %}
     {%- if 'required_flags' in impl and impl['required_flags'] %}
 #if defined(OQS_DIST_BUILD)
 	} else {
-		return (OQS_STATUS) {{ scheme['metadata']['default_dec_signature'] }}(shared_secret, ciphertext, secret_key);
+		return (OQS_STATUS){{ scheme['metadata']['default_dec_signature'] }}(shared_secret, ciphertext, secret_key);
 	}
 #endif /* OQS_DIST_BUILD */
     {%- endif -%}
@@ -504,7 +504,7 @@ OQS_API OQS_STATUS OQS_KEM_{{ family }}_{{ scheme['scheme'] }}_decaps(uint8_t *s
     {%- if scheme['metadata']['implementations']|rejectattr('name', 'equalto', scheme['default_implementation'])|list %}
 #else
     {%- endif %}
-	return (OQS_STATUS) {{ scheme['metadata']['default_dec_signature'] }}(shared_secret, ciphertext, secret_key);
+	return (OQS_STATUS){{ scheme['metadata']['default_dec_signature'] }}(shared_secret, ciphertext, secret_key);
     {%- if scheme['metadata']['implementations']|rejectattr('name', 'equalto', scheme['default_implementation'])|list %}
 #endif
     {%- endif %}

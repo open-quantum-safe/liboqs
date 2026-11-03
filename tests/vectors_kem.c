@@ -43,9 +43,11 @@ extern int PQCP_MLKEM_NATIVE_MLKEM1024_C_check_sk(const uint8_t *sk);
 
 /* MLKEM-specific functions */
 static inline bool is_ml_kem(const char *method_name) {
+	// clang-format off
 	return (0 == strcmp(method_name, OQS_KEM_alg_ml_kem_512))
 	       || (0 == strcmp(method_name, OQS_KEM_alg_ml_kem_768))
 	       || (0 == strcmp(method_name, OQS_KEM_alg_ml_kem_1024));
+	// clang-format on
 }
 
 static void fprintBstr(FILE *fp, const char *S, const uint8_t *A, size_t L) {
@@ -62,11 +64,11 @@ static void fprintBstr(FILE *fp, const char *S, const uint8_t *A, size_t L) {
 
 static uint8_t hexCharToDecimal(char c) {
 	if (c >= '0' && c <= '9') {
-		return (uint8_t) (c - '0');
+		return (uint8_t)(c - '0');
 	} else if (c >= 'a' && c <= 'f') {
-		return (uint8_t) (c - 'a' + 10);
+		return (uint8_t)(c - 'a' + 10);
 	} else if (c >= 'A' && c <= 'F') {
-		return (uint8_t) (c - 'A' + 10);
+		return (uint8_t)(c - 'A' + 10);
 	} else {
 		fprintf(stderr, "Invalid hex character: %c\n", c);
 		return 0;
@@ -82,7 +84,7 @@ static void hexStringToByteArray(const char *hexString, uint8_t *byteArray) {
 	}
 
 	for (size_t i = 0, j = 0; i < len; i += 2, j++) {
-		byteArray[j] = (uint8_t) ((hexCharToDecimal(hexString[i]) << 4) | hexCharToDecimal(hexString[i + 1]));
+		byteArray[j] = (uint8_t)((hexCharToDecimal(hexString[i]) << 4) | hexCharToDecimal(hexString[i + 1]));
 	}
 }
 
@@ -107,7 +109,7 @@ uint8_t get_ml_kem_k(const char *method) {
 	} else if (0 == strcmp(method, OQS_KEM_alg_ml_kem_1024)) {
 		return 4;
 	} else {
-		return 0;  // Default/error case
+		return 0; // Default/error case
 	}
 }
 /* sanity check for private/decaps key as specified in section 7.3 of FIPS-203 */
@@ -118,7 +120,7 @@ static inline bool sanityCheckSK(const uint8_t *sk, const char *method_name) {
 		return false;
 	}
 	/* buffer to hold public key hash */
-	uint8_t pkdig[SHA3_256_OP_LEN] = {0};
+	uint8_t pkdig[SHA3_256_OP_LEN] = { 0 };
 	/* fetch the value of k according to the ML-KEM algorithm as per FIPS-203
 	K = 2 for ML-KEM-512, K = 3 for ML-KEM-768 & K = 4 for ML-KEM-1024 */
 	uint8_t K = get_ml_kem_k(method_name);
@@ -137,7 +139,7 @@ static inline bool sanityCheckSK(const uint8_t *sk, const char *method_name) {
 /* sanity check for public/encaps key as specified in section 7.2 of FIPS-203 */
 static inline bool sanityCheckPK(const uint8_t *pk, size_t pkLen, const char *method_name) {
 	/* sanity checks */
-	if ((NULL == pk) || (0 == pkLen) ||  (NULL == method_name) || (false == is_ml_kem(method_name))) {
+	if ((NULL == pk) || (0 == pkLen) || (NULL == method_name) || (false == is_ml_kem(method_name))) {
 		fprintf(stderr, "[vectors_kem] %s ERROR: inputs NULL or zero or invalid method !\n", method_name);
 		return false;
 	}
@@ -151,9 +153,9 @@ static inline bool sanityCheckPK(const uint8_t *pk, size_t pkLen, const char *me
 	}
 	/* buffer to hold decoded value. max value used, so same buffer could be used for ML-KEM versions
 	encaps key is of length 384K bytes(384K*8 bits). Grouped into 12-bit values, the buffer requires (384*K*8)/12 = 256*K entries of 12 bits */
-	uint16_t buffd[ML_KEM_N * ML_KEM_K_MAX] = {0};
+	uint16_t buffd[ML_KEM_N * ML_KEM_K_MAX] = { 0 };
 	/* buffer to hold encoded value */
-	uint8_t buffe[ML_KEM_1024_PK_SIZE - 32] = {0};
+	uint8_t buffe[ML_KEM_1024_PK_SIZE - 32] = { 0 };
 	uint16_t *buff_dec;
 	/* perform byte decoding as per Algo 6 of FIPS 203 */
 	for (i = 0; i < K; i++) {
@@ -496,24 +498,24 @@ static OQS_STATUS kem_keyCheck_vector(const char *method_name,
 #ifdef OQS_ENABLE_KEM_ml_kem_512
 	if (!strcmp(method_name, OQS_KEM_alg_ml_kem_512)) {
 		result = is_pk ?
-		         PQCP_MLKEM_NATIVE_MLKEM512_C_check_pk(key) :
-		         PQCP_MLKEM_NATIVE_MLKEM512_C_check_sk(key);
+		             PQCP_MLKEM_NATIVE_MLKEM512_C_check_pk(key) :
+		             PQCP_MLKEM_NATIVE_MLKEM512_C_check_sk(key);
 	}
 #endif
 
 #ifdef OQS_ENABLE_KEM_ml_kem_768
 	if (!strcmp(method_name, OQS_KEM_alg_ml_kem_768)) {
 		result = is_pk ?
-		         PQCP_MLKEM_NATIVE_MLKEM768_C_check_pk(key) :
-		         PQCP_MLKEM_NATIVE_MLKEM768_C_check_sk(key);
+		             PQCP_MLKEM_NATIVE_MLKEM768_C_check_pk(key) :
+		             PQCP_MLKEM_NATIVE_MLKEM768_C_check_sk(key);
 	}
 #endif
 
 #ifdef OQS_ENABLE_KEM_ml_kem_1024
 	if (!strcmp(method_name, OQS_KEM_alg_ml_kem_1024)) {
 		result = is_pk ?
-		         PQCP_MLKEM_NATIVE_MLKEM1024_C_check_pk(key) :
-		         PQCP_MLKEM_NATIVE_MLKEM1024_C_check_sk(key);
+		             PQCP_MLKEM_NATIVE_MLKEM1024_C_check_pk(key) :
+		             PQCP_MLKEM_NATIVE_MLKEM1024_C_check_sk(key);
 	}
 #endif
 
@@ -595,8 +597,8 @@ int main(int argc, char **argv) {
 		kg_sk = argv[5];
 
 		if (strlen(prng_output_stream) != 128 ||
-		        strlen(kg_pk) != 2 * kem->length_public_key ||
-		        strlen(kg_sk) != 2 * kem->length_secret_key) {
+		    strlen(kg_pk) != 2 * kem->length_public_key ||
+		    strlen(kg_sk) != 2 * kem->length_secret_key) {
 			rc = OQS_ERROR;
 			goto err;
 		}
@@ -624,9 +626,9 @@ int main(int argc, char **argv) {
 		encdec_aft_c = argv[6];
 
 		if (strlen(prng_output_stream) != 64 ||
-		        strlen(encdec_aft_c) != 2 * kem->length_ciphertext ||
-		        strlen(encdec_aft_k) != 2 * kem->length_shared_secret ||
-		        strlen(encdec_aft_pk) != 2 * kem->length_public_key) {
+		    strlen(encdec_aft_c) != 2 * kem->length_ciphertext ||
+		    strlen(encdec_aft_k) != 2 * kem->length_shared_secret ||
+		    strlen(encdec_aft_pk) != 2 * kem->length_public_key) {
 			rc = OQS_ERROR;
 			goto err;
 		}
@@ -654,8 +656,8 @@ int main(int argc, char **argv) {
 		encdec_val_c = argv[5];
 
 		if (strlen(encdec_val_c) != 2 * kem->length_ciphertext ||
-		        strlen(encdec_val_k) != 2 * kem->length_shared_secret ||
-		        strlen(encdec_val_sk) != 2 * kem->length_secret_key) {
+		    strlen(encdec_val_k) != 2 * kem->length_shared_secret ||
+		    strlen(encdec_val_sk) != 2 * kem->length_secret_key) {
 			rc = OQS_ERROR;
 			goto err;
 		}
@@ -682,9 +684,9 @@ int main(int argc, char **argv) {
 		strcmp_k = argv[6];
 
 		if (strlen(strcmp_seed) != 128 ||
-		        strlen(strcmp_ek) != 2 * kem->length_public_key ||
-		        strlen(strcmp_c) != 2 * kem->length_ciphertext ||
-		        strlen(strcmp_k) != 2 * kem->length_shared_secret) {
+		    strlen(strcmp_ek) != 2 * kem->length_public_key ||
+		    strlen(strcmp_c) != 2 * kem->length_ciphertext ||
+		    strlen(strcmp_k) != 2 * kem->length_shared_secret) {
 			rc = OQS_ERROR;
 			goto err;
 		}
@@ -696,7 +698,7 @@ int main(int argc, char **argv) {
 		strcmp_k_bytes = OQS_MEM_malloc(kem->length_shared_secret);
 
 		if ((strcmp_seed_bytes == NULL) || (strcmp_ek_bytes == NULL) ||
-		        (strcmp_c_bytes == NULL) || (strcmp_k_bytes == NULL)) {
+		    (strcmp_c_bytes == NULL) || (strcmp_k_bytes == NULL)) {
 			fprintf(stderr, "[vectors_kem] ERROR: OQS_MEM_malloc failed!\n");
 			rc = OQS_ERROR;
 			goto err;
@@ -725,7 +727,7 @@ int main(int argc, char **argv) {
 			goto err;
 		}
 
-		hexStringToByteArray(modOverflow_ek,  modOverflow_ek_bytes);
+		hexStringToByteArray(modOverflow_ek, modOverflow_ek_bytes);
 
 #ifdef OQS_ENABLE_KEM_ML_KEM
 		/* For modOverflow tests, we expect the key to be corrupted (expected_pass = false) */

@@ -109,7 +109,7 @@ static OQS_STATUS stfl_example(char *method_name) {
 
 	printf("[Stateful signature]  %s operations completed.\n", method_name);
 err:
-//cleanup
+	//cleanup
 	OQS_MEM_insecure_free(public_key);
 	OQS_MEM_insecure_free(sk_fname);
 	OQS_MEM_secure_free(message, message_len);

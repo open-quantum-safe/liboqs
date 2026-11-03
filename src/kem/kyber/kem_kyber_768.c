@@ -76,38 +76,38 @@ OQS_API OQS_STATUS OQS_KEM_kyber_768_keypair(uint8_t *public_key, uint8_t *secre
 #if defined(OQS_DIST_BUILD)
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_BMI2) && OQS_CPU_has_extension(OQS_CPU_EXT_POPCNT)) {
 #endif /* OQS_DIST_BUILD */
-		return (OQS_STATUS) libjade_kyber768_avx2_keypair(public_key, secret_key);
+		return (OQS_STATUS)libjade_kyber768_avx2_keypair(public_key, secret_key);
 #if defined(OQS_DIST_BUILD)
 	} else {
-		return (OQS_STATUS) libjade_kyber768_ref_keypair(public_key, secret_key);
+		return (OQS_STATUS)libjade_kyber768_ref_keypair(public_key, secret_key);
 	}
 #endif /* OQS_DIST_BUILD */
 #else
-	return (OQS_STATUS) libjade_kyber768_ref_keypair(public_key, secret_key);
+	return (OQS_STATUS)libjade_kyber768_ref_keypair(public_key, secret_key);
 #endif
 #else /*OQS_LIBJADE_BUILD && (OQS_ENABLE_LIBJADE_KEM_kyber_768)*/
 #if defined(OQS_ENABLE_KEM_kyber_768_avx2)
 #if defined(OQS_DIST_BUILD)
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_BMI2) && OQS_CPU_has_extension(OQS_CPU_EXT_POPCNT)) {
 #endif /* OQS_DIST_BUILD */
-		return (OQS_STATUS) pqcrystals_kyber768_avx2_keypair(public_key, secret_key);
+		return (OQS_STATUS)pqcrystals_kyber768_avx2_keypair(public_key, secret_key);
 #if defined(OQS_DIST_BUILD)
 	} else {
-		return (OQS_STATUS) pqcrystals_kyber768_ref_keypair(public_key, secret_key);
+		return (OQS_STATUS)pqcrystals_kyber768_ref_keypair(public_key, secret_key);
 	}
 #endif /* OQS_DIST_BUILD */
 #elif defined(OQS_ENABLE_KEM_kyber_768_aarch64)
 #if defined(OQS_DIST_BUILD)
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_ARM_NEON)) {
 #endif /* OQS_DIST_BUILD */
-		return (OQS_STATUS) PQCLEAN_KYBER768_AARCH64_crypto_kem_keypair(public_key, secret_key);
+		return (OQS_STATUS)PQCLEAN_KYBER768_AARCH64_crypto_kem_keypair(public_key, secret_key);
 #if defined(OQS_DIST_BUILD)
 	} else {
-		return (OQS_STATUS) pqcrystals_kyber768_ref_keypair(public_key, secret_key);
+		return (OQS_STATUS)pqcrystals_kyber768_ref_keypair(public_key, secret_key);
 	}
 #endif /* OQS_DIST_BUILD */
 #else
-	return (OQS_STATUS) pqcrystals_kyber768_ref_keypair(public_key, secret_key);
+	return (OQS_STATUS)pqcrystals_kyber768_ref_keypair(public_key, secret_key);
 #endif
 #endif /* OQS_LIBJADE_BUILD */
 }
@@ -126,38 +126,38 @@ OQS_API OQS_STATUS OQS_KEM_kyber_768_encaps(uint8_t *ciphertext, uint8_t *shared
 #if defined(OQS_DIST_BUILD)
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_BMI2) && OQS_CPU_has_extension(OQS_CPU_EXT_POPCNT)) {
 #endif /* OQS_DIST_BUILD */
-		return (OQS_STATUS) libjade_kyber768_avx2_enc(ciphertext, shared_secret, public_key);
+		return (OQS_STATUS)libjade_kyber768_avx2_enc(ciphertext, shared_secret, public_key);
 #if defined(OQS_DIST_BUILD)
 	} else {
-		return (OQS_STATUS) libjade_kyber768_ref_enc(ciphertext, shared_secret, public_key);
+		return (OQS_STATUS)libjade_kyber768_ref_enc(ciphertext, shared_secret, public_key);
 	}
 #endif /* OQS_DIST_BUILD */
 #else
-	return (OQS_STATUS) libjade_kyber768_ref_enc(ciphertext, shared_secret, public_key);
+	return (OQS_STATUS)libjade_kyber768_ref_enc(ciphertext, shared_secret, public_key);
 #endif
 #else /*OQS_LIBJADE_BUILD && (OQS_ENABLE_LIBJADE_KEM_kyber_768)*/
 #if defined(OQS_ENABLE_KEM_kyber_768_avx2)
 #if defined(OQS_DIST_BUILD)
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_BMI2) && OQS_CPU_has_extension(OQS_CPU_EXT_POPCNT)) {
 #endif /* OQS_DIST_BUILD */
-		return (OQS_STATUS) pqcrystals_kyber768_avx2_enc(ciphertext, shared_secret, public_key);
+		return (OQS_STATUS)pqcrystals_kyber768_avx2_enc(ciphertext, shared_secret, public_key);
 #if defined(OQS_DIST_BUILD)
 	} else {
-		return (OQS_STATUS) pqcrystals_kyber768_ref_enc(ciphertext, shared_secret, public_key);
+		return (OQS_STATUS)pqcrystals_kyber768_ref_enc(ciphertext, shared_secret, public_key);
 	}
 #endif /* OQS_DIST_BUILD */
 #elif defined(OQS_ENABLE_KEM_kyber_768_aarch64)
 #if defined(OQS_DIST_BUILD)
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_ARM_NEON)) {
 #endif /* OQS_DIST_BUILD */
-		return (OQS_STATUS) PQCLEAN_KYBER768_AARCH64_crypto_kem_enc(ciphertext, shared_secret, public_key);
+		return (OQS_STATUS)PQCLEAN_KYBER768_AARCH64_crypto_kem_enc(ciphertext, shared_secret, public_key);
 #if defined(OQS_DIST_BUILD)
 	} else {
-		return (OQS_STATUS) pqcrystals_kyber768_ref_enc(ciphertext, shared_secret, public_key);
+		return (OQS_STATUS)pqcrystals_kyber768_ref_enc(ciphertext, shared_secret, public_key);
 	}
 #endif /* OQS_DIST_BUILD */
 #else
-	return (OQS_STATUS) pqcrystals_kyber768_ref_enc(ciphertext, shared_secret, public_key);
+	return (OQS_STATUS)pqcrystals_kyber768_ref_enc(ciphertext, shared_secret, public_key);
 #endif
 #endif /* OQS_LIBJADE_BUILD */
 }
@@ -168,38 +168,38 @@ OQS_API OQS_STATUS OQS_KEM_kyber_768_decaps(uint8_t *shared_secret, const uint8_
 #if defined(OQS_DIST_BUILD)
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_BMI2) && OQS_CPU_has_extension(OQS_CPU_EXT_POPCNT)) {
 #endif /* OQS_DIST_BUILD */
-		return (OQS_STATUS) libjade_kyber768_avx2_dec(shared_secret, ciphertext, secret_key);
+		return (OQS_STATUS)libjade_kyber768_avx2_dec(shared_secret, ciphertext, secret_key);
 #if defined(OQS_DIST_BUILD)
 	} else {
-		return (OQS_STATUS) libjade_kyber768_ref_dec(shared_secret, ciphertext, secret_key);
+		return (OQS_STATUS)libjade_kyber768_ref_dec(shared_secret, ciphertext, secret_key);
 	}
 #endif /* OQS_DIST_BUILD */
 #else
-	return (OQS_STATUS) libjade_kyber768_ref_dec(shared_secret, ciphertext, secret_key);
+	return (OQS_STATUS)libjade_kyber768_ref_dec(shared_secret, ciphertext, secret_key);
 #endif
 #else /*OQS_LIBJADE_BUILD && (OQS_ENABLE_LIBJADE_KEM_kyber_768)*/
 #if defined(OQS_ENABLE_KEM_kyber_768_avx2)
 #if defined(OQS_DIST_BUILD)
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_BMI2) && OQS_CPU_has_extension(OQS_CPU_EXT_POPCNT)) {
 #endif /* OQS_DIST_BUILD */
-		return (OQS_STATUS) pqcrystals_kyber768_avx2_dec(shared_secret, ciphertext, secret_key);
+		return (OQS_STATUS)pqcrystals_kyber768_avx2_dec(shared_secret, ciphertext, secret_key);
 #if defined(OQS_DIST_BUILD)
 	} else {
-		return (OQS_STATUS) pqcrystals_kyber768_ref_dec(shared_secret, ciphertext, secret_key);
+		return (OQS_STATUS)pqcrystals_kyber768_ref_dec(shared_secret, ciphertext, secret_key);
 	}
 #endif /* OQS_DIST_BUILD */
 #elif defined(OQS_ENABLE_KEM_kyber_768_aarch64)
 #if defined(OQS_DIST_BUILD)
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_ARM_NEON)) {
 #endif /* OQS_DIST_BUILD */
-		return (OQS_STATUS) PQCLEAN_KYBER768_AARCH64_crypto_kem_dec(shared_secret, ciphertext, secret_key);
+		return (OQS_STATUS)PQCLEAN_KYBER768_AARCH64_crypto_kem_dec(shared_secret, ciphertext, secret_key);
 #if defined(OQS_DIST_BUILD)
 	} else {
-		return (OQS_STATUS) pqcrystals_kyber768_ref_dec(shared_secret, ciphertext, secret_key);
+		return (OQS_STATUS)pqcrystals_kyber768_ref_dec(shared_secret, ciphertext, secret_key);
 	}
 #endif /* OQS_DIST_BUILD */
 #else
-	return (OQS_STATUS) pqcrystals_kyber768_ref_dec(shared_secret, ciphertext, secret_key);
+	return (OQS_STATUS)pqcrystals_kyber768_ref_dec(shared_secret, ciphertext, secret_key);
 #endif
 #endif /* OQS_LIBJADE_BUILD */
 }
