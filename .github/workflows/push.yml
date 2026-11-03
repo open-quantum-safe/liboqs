@@ -36,6 +36,9 @@ jobs:
     needs: basic-checks
     if: contains( github.event.head_commit.message, '[code coverage]' )
     uses: ./.github/workflows/code-coverage.yml
+    permissions:
+      contents: read
+      id-token: write
 
   downstream-release-tests:
     needs: basic-checks

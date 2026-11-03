@@ -60,7 +60,9 @@ jobs:
     needs: check-push-result
     if: needs.check-push-result.outputs.skip_basic == 'false'
     uses: ./.github/workflows/code-coverage.yml
-    secrets: inherit
+    permissions:
+      contents: read
+      id-token: write
 
   nix-full-build:
     needs: check-push-result

@@ -5,7 +5,7 @@
 ALGORITHMS.md sits between the per-family README table and the per-algorithm
 pages under docs/algorithms/. Its purpose is to give a single-page view
 that's richer than README (NIST levels supported, constant-time coverage,
-formal-verification status, optimization targets) without the repetition
+formal-verification status, test coverage badge, optimization targets) without the repetition
 of a per-parameter-set table. Per-variant detail lives in the per-algorithm
 pages.
 
@@ -16,7 +16,7 @@ between the three OQS_TEMPLATE_FRAGMENT markers.
 
 import glob
 import os
-from typing import List
+from typing import List, Optional
 
 import yaml
 
@@ -35,8 +35,12 @@ HEADER = [
     "NIST levels",
     "Constant-time",
     "Formally verified",
+    "Coverage",
     "Optimization targets",
 ]
+
+CODECOV_BADGE_URL = "https://codecov.io/gh/open-quantum-safe/liboqs/branch/main/graph/badge.svg"
+CODECOV_TREE_URL = "https://app.codecov.io/gh/open-quantum-safe/liboqs/tree/main"
 
 FRAGMENTS = [
     ("kem", "KEM"),
@@ -113,7 +117,23 @@ def _opt_targets(algdata: dict) -> str:
     return ", ".join(parts) if parts else "—"
 
 
-def family_row(algdata: dict) -> List[str]:
+def coverage_component_id(cat: str, family: str) -> str:
+    """Codecov component for src/<cat>/<family>/, as defined in .github/codecov.yml."""
+    return f"{cat}_{family}"
+
+
+def _coverage_badge(cat: Optional[str], family: Optional[str]) -> str:
+    """Live badge for the weekly full-scope coverage of the family's source tree."""
+    if not cat or not family:
+        return "—"
+    component = coverage_component_id(cat, family)
+    return (
+        f"[![{component}]({CODECOV_BADGE_URL}?component={component})]"
+        f"({CODECOV_TREE_URL}/src/{cat}/{family})"
+    )
+
+
+def family_row(algdata: dict, cat: Optional[str] = None, family: Optional[str] = None) -> List[str]:
     return [
         algdata["name"],
         algdata.get("standardization-status", ""),
@@ -123,17 +143,20 @@ def family_row(algdata: dict) -> List[str]:
         _nist_levels(algdata),
         _ct_rollup(algdata),
         _fv_rollup(algdata),
+        _coverage_badge(cat, family),
         _opt_targets(algdata),
     ]
 
 
 def render_section(doc_dir: str) -> str:
+    cat = os.path.basename(os.path.normpath(doc_dir))
     yaml_paths = sorted(glob.glob(os.path.join(doc_dir, "*.yml")))
     rows = [HEADER]
     for p in yaml_paths:
         with open(p) as f:
             algdata = yaml.safe_load(f)
-        rows.append(family_row(algdata))
+        family = os.path.splitext(os.path.basename(p))[0]
+        rows.append(family_row(algdata, cat, family))
     import tabulate
     return tabulate.tabulate(rows, tablefmt="pipe", headers="firstrow")
 

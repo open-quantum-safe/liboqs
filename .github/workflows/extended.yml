@@ -554,59 +554,6 @@ jobs:
         timeout-minutes: 60
         run: mkdir -p tmp && python3 -m pytest --verbose --ignore=tests/test_code_conventions.py --ignore=tests/test_cmake_option_coverage.py --ignore=tests/test_kats_json.py --numprocesses=auto ${{ matrix.PYTEST_ARGS }}
 
-  full-code-coverage:
-    name: Run full code coverage with ACVP tests
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - id: x64-generic
-            runner: ubuntu-latest
-            CMAKE_ARGS: -DOQS_DIST_BUILD=OFF -DOQS_OPT_TARGET=generic
-          - id: x64-distbuild
-            runner: ubuntu-latest
-            CMAKE_ARGS: -DOQS_DIST_BUILD=ON
-          - id: arm64-distbuild
-            runner: ubuntu-24.04-arm
-            CMAKE_ARGS: -DOQS_DIST_BUILD=ON
-    container: openquantumsafe/ci-ubuntu-latest:latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # pin@v4
-      - name: Configure
-        run: |
-          mkdir build && cd build && \
-          cmake -GNinja -DCMAKE_BUILD_TYPE=Debug -DUSE_COVERAGE=ON ${{ matrix.CMAKE_ARGS }} .. && \
-          cmake -LA -N ..
-      - name: Build
-        run: ninja
-        working-directory: build
-      - name: Run tests
-        run: |
-          python3 -m pytest --verbose --numprocesses=logical --dist load --maxschedchunk=1 \
-          tests/test_acvp_vectors.py \
-          tests/test_cmdline.py \
-          tests/test_kat.py
-      - name: Run lcov
-        run: lcov -d . -c -o lcov.info --exclude /usr/lib,/usr/include --ignore-errors unused,inconsistent
-      - name: Upload to coveralls.io
-        uses: coverallsapp/github-action@8d6379e14d29928660c4ba802d8e85393440b329 # pin@v2.3.8
-        with:
-          flag-name: ${{ matrix.id }}
-          parallel: true
-
-  full-code-coverage-finish:
-    needs: full-code-coverage
-    if: ${{ always() }}
-    runs-on: ubuntu-latest
-    steps:
-      - name: Finish coveralls.io
-        uses: coverallsapp/github-action@8d6379e14d29928660c4ba802d8e85393440b329 # pin@v2.3.8
-        with:
-          parallel-finished: true
-          carry-forward: "x64-generic,x64-distbuild,arm64-distbuild"
-
   nix-full-build:
     name: Nix full flake build
     runs-on: ubuntu-latest

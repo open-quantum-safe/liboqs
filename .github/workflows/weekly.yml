@@ -22,6 +22,14 @@ jobs:
   extended-tests:
     uses: ./.github/workflows/extended.yml
 
+  full-code-coverage:
+    uses: ./.github/workflows/code-coverage.yml
+    with:
+      scope: full
+    permissions:
+      contents: read
+      id-token: write
+
   kem-continuous-benchmarking:
     uses: ./.github/workflows/kem-bench.yml
     permissions:

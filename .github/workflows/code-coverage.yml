@@ -3,33 +3,68 @@ name: Code coverage tests
 permissions:
   contents: read
 
-on: [workflow_call, workflow_dispatch]
+# The 'scope' input selects what is measured (see CI.md and .github/codecov.yml):
+# - default: default-enabled algorithms and a fast test subset (PRs, commits to main)
+# - full: every algorithm liboqs carries and the full test suite (weekly)
+on:
+  workflow_call:
+    inputs:
+      scope:
+        description: "Measurement scope: 'default' or 'full'"
+        type: string # workflow_call inputs can't be "choice"
+        default: default
+  workflow_dispatch:
+    inputs:
+      scope:
+        description: "Measurement scope"
+        type: choice
+        options: [default, full]
+        default: default
+
+env:
+  DEFAULT_CMAKE_ARGS: -DOQS_ENABLE_SIG_SLH_DSA=OFF
+  DEFAULT_TESTS: tests/test_cmdline.py tests/test_kat.py
+  # Enable everything that is disabled by default.
+  FULL_CMAKE_ARGS: >-
+    -DOQS_ENABLE_KEM_CLASSIC_MCELIECE=ON
+    -DOQS_ENABLE_SIG_STFL_XMSS=ON
+    -DOQS_ENABLE_SIG_STFL_LMS=ON
+    -DOQS_HAZARDOUS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN=ON
+  # Tests that reach library code the others do not. Tests that only repeat
+  # covered paths (e.g. test_kat_all, test_mem) run in the regular test workflows.
+  FULL_TESTS: >-
+    tests/test_cmdline.py
+    tests/test_kat.py
+    tests/test_acvp_vectors.py
+    tests/test_wycheproof_vectors.py
+    tests/test_hash.py
 
 jobs:
   coverage:
-    name: Run code coverage testing
+    name: Run code coverage testing (${{ inputs.scope }}, ${{ matrix.id }})
     strategy:
       matrix:
-        # The 'id' value for each job should be added to the 'carry-forward' string in the 'finish' job.
         include:
           - id: x64-generic
             runner: ubuntu-latest
-            CMAKE_ARGS: -DOQS_DIST_BUILD=OFF -DOQS_OPT_TARGET=generic -DOQS_ENABLE_SIG_SLH_DSA=OFF
+            CMAKE_ARGS: -DOQS_DIST_BUILD=OFF -DOQS_OPT_TARGET=generic
           - id: x64-distbuild
             runner: ubuntu-latest
-            CMAKE_ARGS: -DOQS_DIST_BUILD=ON -DOQS_ENABLE_SIG_SLH_DSA=OFF
+            CMAKE_ARGS: -DOQS_DIST_BUILD=ON
           - id: arm64-distbuild
             runner: ubuntu-24.04-arm
-            CMAKE_ARGS: -DOQS_DIST_BUILD=ON -DOQS_ENABLE_SIG_SLH_DSA=OFF
+            CMAKE_ARGS: -DOQS_DIST_BUILD=ON
     runs-on: ${{ matrix.runner }}
     container: openquantumsafe/ci-ubuntu-latest:latest
     steps:
       - name: Checkout code
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # pin@v4
       - name: Configure
+        env:
+          SCOPE_CMAKE_ARGS: ${{ inputs.scope == 'full' && env.FULL_CMAKE_ARGS || env.DEFAULT_CMAKE_ARGS }}
         run: |
           mkdir build && cd build && \
-          cmake -GNinja -DCMAKE_BUILD_TYPE=Debug -DUSE_COVERAGE=ON ${{ matrix.CMAKE_ARGS }} .. && \
+          cmake -GNinja -DCMAKE_BUILD_TYPE=Debug -DUSE_COVERAGE=ON ${{ matrix.CMAKE_ARGS }} $SCOPE_CMAKE_ARGS .. && \
           cmake -LA -N ..
       - name: Build
         run: ninja
@@ -37,25 +72,43 @@ jobs:
       - name: Run tests
         env:
           OQS_TEST_SIG_CTX_STEP: "255"
+          SCOPE_TESTS: ${{ inputs.scope == 'full' && env.FULL_TESTS || env.DEFAULT_TESTS }}
         run: |
           python3 -m pytest --verbose --numprocesses=logical --dist load --maxschedchunk=1 \
-          tests/test_cmdline.py \
-          tests/test_kat.py
+          $SCOPE_TESTS
       - name: Run lcov
         run: lcov -d . -c -o lcov.info --exclude /usr/lib,/usr/include --ignore-errors unused,inconsistent
-      - name: Upload to coveralls.io
-        uses: coverallsapp/github-action@8d6379e14d29928660c4ba802d8e85393440b329 # pin@v2.3.8
+      - name: Store lcov report
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
-          flag-name: ${{ matrix.id }}
-          parallel: true
+          name: lcov-${{ inputs.scope }}-${{ matrix.id }}
+          path: lcov.info
+          retention-days: 7
 
-  finish:
+  upload:
+    name: Upload coverage to Codecov (${{ inputs.scope }})
     needs: coverage
-    if: ${{ always() }}
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write # let worker upload to liboqs' Codecov
     steps:
-      - name: Finish coveralls.io
-        uses: coverallsapp/github-action@8d6379e14d29928660c4ba802d8e85393440b329 # pin@v2.3.8
+      - name: Checkout code
+        # Codecov maps report paths onto the files tracked in the repository.
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # pin@v4
         with:
-          parallel-finished: true
-          carry-forward: "x64-generic,x64-distbuild,arm64-distbuild"
+          persist-credentials: false
+      - name: Download lcov reports
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # pin@v8.0.2
+        with:
+          pattern: lcov-${{ inputs.scope }}-*
+          path: coverage
+      - name: Upload to Codecov
+        uses: codecov/codecov-action@303a32d7a59b442fa8d48b6a1cc6825c09c847a5 # pin@v7.1.1
+        with:
+          directory: coverage
+          flags: ${{ inputs.scope }}
+          name: ${{ inputs.scope }}
+          use_oidc: true
+          version: v11.3.1 # Pin the CLI that the action downloads
+          fail_ci_if_error: true

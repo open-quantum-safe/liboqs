@@ -36,7 +36,7 @@ It calls [platform tests](#platforms.yml), [code coverage tests](#code-coverage.
 #### <a name="weekly.yml"></a> Weekly workflow (`weekly.yml`)
 
 This workflow is triggered by a weekly schedule.
-It calls [extended tests](#extended.yml), [scorecard analysis](#scorecard.yml), and [continuous benchmarking](#kem-bench.yml-sig-bench.yml)
+It calls [extended tests](#extended.yml), [full-scope code coverage tests](#code-coverage.yml), [scorecard analysis](#scorecard.yml), and [continuous benchmarking](#kem-bench.yml-sig-bench.yml)
 
 #### <a name="release.yml"></a> Release workflow (`release.yml`)
 
@@ -55,7 +55,26 @@ This workflow runs a minimal set of tests that should pass before heavier tests 
 
 #### <a name="code-coverage.yml"></a> Code coverage tests (`code-coverage.yml`)
 
-This workflow runs code coverage tests and uploads the results to [Coveralls.io](https://coveralls.io/github/open-quantum-safe/liboqs).
+This workflow measures line coverage with gcov and lcov in a Debug build on three configurations (x86_64 generic, x86_64 distributable, and arm64 distributable), and uploads the combined result to [Codecov](https://app.codecov.io/gh/open-quantum-safe/liboqs).
+Its `scope` input selects what is measured, and each scope is uploaded under a Codecov flag of the same name:
+
+| Scope | Called by | Algorithms | Tests |
+|---|---|---|---|
+| `default` | pull requests, commits to `main`, "[code coverage]" | enabled by default, except SLH-DSA | `test_cmdline`, `test_kat` |
+| `full` | [weekly workflow](#weekly.yml) | all, including those disabled by default (Classic McEliece, XMSS, and LMS with stateful key and signature generation) | `default` tests plus `test_acvp_vectors`, `test_wycheproof_vectors`, `test_hash` |
+
+The `default` scope is a per-PR indicator only: its total changes whenever the set of algorithms enabled by default changes, so it is not comparable over time.
+On pull requests, Codecov reports patch coverage (the share of changed lines that are covered), which does not depend on that set.
+
+The `full` scope is the project-wide coverage figure, and the one to compare over time.
+The README badge shows Codecov's overall figure for `main`, which combines both scopes and closely tracks `full` because `full` covers a superset of `default` (flag-filtered badges render too slowly for GitHub's image proxy).
+Codecov also reports it per algorithm family as components.
+Files under `tests/` count toward neither scope.
+
+Results are uploaded only when all three configurations succeed; otherwise Codecov carries the previous result forward.
+Codecov is configured in [`.github/codecov.yml`](.github/codecov.yml).
+Each algorithm family needs a component there, which [`ALGORITHMS.md`](ALGORITHMS.md) shows as a coverage badge; `tests/test_alg_support_generators.py` fails if one is missing.
+To measure the full scope on demand, trigger this workflow manually with `scope` set to `full`.
 
 #### <a name="<platform>.yml"></a> Individual platform tests (`<platform>.yml`)
 
