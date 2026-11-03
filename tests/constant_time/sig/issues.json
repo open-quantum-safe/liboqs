@@ -213,5 +213,17 @@
   "QRUOV-5q31L3-aes": ["qruov"],
   "QRUOV-5q31L3-shake": ["qruov"],
   "QRUOV-5q7L10-aes": ["qruov"],
-  "QRUOV-5q7L10-shake": ["qruov"]
+  "QRUOV-5q7L10-shake": ["qruov"],
+  "SDitH3-L1-gf2-short": ["sdith"],
+  "SDitH3-L1-gf2-short-cipherpow": ["sdith"],
+  "SDitH3-L1-gf2-fast": ["sdith"],
+  "SDitH3-L1-gf2-fast-cipherpow": ["sdith"],
+  "SDitH3-L3-gf2-short": ["sdith"],
+  "SDitH3-L3-gf2-short-cipherpow": ["sdith"],
+  "SDitH3-L3-gf2-fast": ["sdith"],
+  "SDitH3-L3-gf2-fast-cipherpow": ["sdith"],
+  "SDitH3-L5-gf2-short": ["sdith"],
+  "SDitH3-L5-gf2-short-cipherpow": ["sdith"],
+  "SDitH3-L5-gf2-fast": ["sdith"],
+  "SDitH3-L5-gf2-fast-cipherpow": ["sdith"]
 }

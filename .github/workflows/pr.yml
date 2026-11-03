@@ -87,3 +87,7 @@ jobs:
       contents: read
       id-token: write
       security-events: write
+
+  codeql:
+    needs: check-push-result
+    uses: ./.github/workflows/codeql.yml

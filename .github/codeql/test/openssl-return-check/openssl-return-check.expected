@@ -1,0 +1,2 @@
+| test.c:22:2:22:18 | call to EVP_DigestInit_ex | Return value of EVP_DigestInit_ex() is discarded; check it with OQS_OPENSSL_GUARD. |
+| test.c:23:2:23:17 | call to EVP_DigestUpdate | Return value of EVP_DigestUpdate() is discarded; check it with OQS_OPENSSL_GUARD. |

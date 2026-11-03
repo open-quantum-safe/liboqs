@@ -1,0 +1,3 @@
+# Lets the test pack resolve the query pack locally.
+provide:
+  - "*/qlpack.yml"

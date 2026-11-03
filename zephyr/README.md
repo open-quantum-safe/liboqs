@@ -37,7 +37,10 @@ In the two provided sample applications (also see [Samples](#Samples)), a callba
 
 The port provides a variety of configurable options using Kconfig. Once you have the liboqs module enabled with `CONFIG_LIBOQS=y`, you can manually enable or disable specific KEM or Signature algorithms using the `LIBOQS_ENABLE_KEM_xxx` and `LIBOQS_ENABLE_SIG_xxx` options.
 
-The algorithms to be standardized by NIST are enabled by default, all others are disabled by default.
+Most algorithms to be standardized by NIST are enabled by default, all others are disabled by default.
+Some algorithms that are to be standardized which are disabled by default include:
+* UOV
+* SDitH due to large heap memory usage
 
 ### Supported architectures
 
