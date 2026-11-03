@@ -331,6 +331,33 @@ void oqs_lms_key_set_store_cb(OQS_SIG_STFL_SECRET_KEY *sk, secure_store_sk store
 
 // ---------------------------- FUNCTIONS INDEPENDENT OF VARIANT -----------------------------------------
 
+/**
+ * LMS/HSS signature generation, using the parameter set encoded in the secret key.
+ *
+ * This function is not bound to a parameter set. It does not check that the key's parameter set
+ * is the one the caller expects, and it cannot check the output against the size of `signature`.
+ * Prefer OQS_SIG_STFL_sign(), which rejects a key that does not match the OQS_SIG_STFL object
+ * and bounds the output by that object's `length_signature`.
+ *
+ * Caller is responsible for allocating at least as many bytes for `signature` as the signature
+ * length of the key's parameter set, given by the per-scheme compile-time macro
+ * `OQS_SIG_STFL_alg_lms_*_length_signature` or the `length_signature` member of the matching
+ * OQS_SIG_STFL object. A smaller buffer is overrun.
+ *
+ * The secret key must have a store callback set with OQS_SIG_STFL_SECRET_KEY_SET_store_cb().
+ * The updated key is stored before the signature is released; if storing fails, the signature
+ * is cleansed and OQS_ERROR is returned.
+ *
+ * @param[out] signature The signature on the message is represented as a byte string.
+ * @param[out] signature_length The length of the signature. Set to 0 if signing fails; not
+ *             written if a pointer argument is NULL or LMS key and signature generation is
+ *             not enabled.
+ * @param[in] message The message to sign is represented as a byte string.
+ * @param[in] message_len The length of the message to sign.
+ * @param[in] secret_key The secret key object pointer.
+ * @return OQS_SUCCESS or OQS_ERROR. Always OQS_ERROR when LMS key and signature generation
+ *         is not enabled.
+ */
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_sign(uint8_t *signature, size_t *signature_length, const uint8_t *message, size_t message_len, OQS_SIG_STFL_SECRET_KEY *secret_key);
 
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_verify(const uint8_t *message, size_t message_len, const uint8_t *signature, size_t signature_len, const uint8_t *public_key);
