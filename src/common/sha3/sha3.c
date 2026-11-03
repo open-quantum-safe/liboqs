@@ -8,7 +8,7 @@
 #include <pthread.h>
 #endif
 
-extern struct OQS_SHA3_callbacks sha3_default_callbacks;
+extern const struct OQS_SHA3_callbacks sha3_default_callbacks;
 
 static const struct OQS_SHA3_callbacks *callbacks = &sha3_default_callbacks;
 
@@ -28,6 +28,9 @@ static void init_callbacks(void) {
 		extern const struct OQS_SHA3_callbacks sha3_avx512vl_callbacks;
 		callbacks = &sha3_avx512vl_callbacks;
 	}
+#elif defined(OQS_USE_SHA3_AVX512VL) && defined(OQS_USE_AVX512_INSTRUCTIONS)
+	extern const struct OQS_SHA3_callbacks sha3_avx512vl_callbacks;
+	callbacks = &sha3_avx512vl_callbacks;
 #endif
 }
 

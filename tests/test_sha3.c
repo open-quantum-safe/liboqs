@@ -1534,76 +1534,27 @@ int shake_256_x4_kat_test(void) {
 	return status;
 }
 
-extern struct OQS_SHA3_callbacks sha3_default_callbacks;
+extern const struct OQS_SHA3_callbacks sha3_default_callbacks;
 
 static void override_SHA3_sha3_256_inc_init(OQS_SHA3_sha3_256_inc_ctx *state) {
 	sha3_callback_called = true;
 	sha3_default_callbacks.SHA3_sha3_256_inc_init(state);
 }
 
-extern struct OQS_SHA3_x4_callbacks sha3_x4_default_callbacks;
+extern const struct OQS_SHA3_x4_callbacks sha3_x4_default_callbacks;
 
 static void override_SHA3_shake128_x4_inc_init(OQS_SHA3_shake128_x4_inc_ctx *state) {
 	sha3_x4_callback_called = true;
 	sha3_x4_default_callbacks.SHA3_shake128_x4_inc_init(state);
 }
 
-#ifdef OQS_USE_SHA3_AVX512VL
 /**
- * \brief Trigger SHA3 internal callback dispatcher.
- *
- * First-use dispatch must not modify the default callback entries.
- */
-static int sha3_trigger_dispatcher(void) {
-	int status = EXIT_SUCCESS;
-	struct OQS_SHA3_callbacks sha3_callbacks_before = sha3_default_callbacks;
-	OQS_SHA3_sha3_256_inc_ctx state;
-
-	OQS_SHA3_sha3_256_inc_init(&state);
-	OQS_SHA3_sha3_256_inc_ctx_release(&state);
-	if (sha3_callbacks_before.SHA3_sha3_256_inc_init != sha3_default_callbacks.SHA3_sha3_256_inc_init) {
-		printf("Failure! SHA3 first-use dispatch modified the default callbacks\n");
-		status = EXIT_FAILURE;
-	}
-
-	struct OQS_SHA3_x4_callbacks sha3_x4_callbacks_before = sha3_x4_default_callbacks;
-	OQS_SHA3_shake128_x4_inc_ctx x4_state;
-
-	OQS_SHA3_shake128_x4_inc_init(&x4_state);
-	OQS_SHA3_shake128_x4_inc_ctx_release(&x4_state);
-	if (sha3_x4_callbacks_before.SHA3_shake128_x4_inc_init != sha3_x4_default_callbacks.SHA3_shake128_x4_inc_init) {
-		printf("Failure! SHA3-x4 first-use dispatch modified the default callbacks\n");
-		status = EXIT_FAILURE;
-	}
-
-	return status;
-}
-#endif
-
-/**
-* \brief Run the SHA3 and SHAKE KAT tests
+* \brief Run the SHA3 and SHAKE KAT tests through the currently installed callbacks
 */
-int main(UNUSED int argc, UNUSED char **argv) {
+static int run_kat_tests(const char *callbacks_name) {
 	int ret = EXIT_SUCCESS;
 
-#ifdef OQS_USE_SHA3_AVX512VL
-	/* set SHA3 default callbacks */
-	if (sha3_trigger_dispatcher() == EXIT_FAILURE) {
-		ret = EXIT_FAILURE;
-	}
-#endif
-	struct OQS_SHA3_callbacks sha3_callbacks = sha3_default_callbacks;
-
-	sha3_callbacks.SHA3_sha3_256_inc_init = override_SHA3_sha3_256_inc_init;
-	OQS_SHA3_set_callbacks(&sha3_callbacks);
-
-	struct OQS_SHA3_x4_callbacks sha3_x4_callbacks = sha3_x4_default_callbacks;
-
-	sha3_x4_callbacks.SHA3_shake128_x4_inc_init = override_SHA3_shake128_x4_inc_init;
-	OQS_SHA3_x4_set_callbacks(&sha3_x4_callbacks);
-
-	OQS_init();
-	print_system_info();
+	printf("Running known answer tests with %s callbacks\n", callbacks_name);
 
 	if (sha3_256_kat_test() == EXIT_SUCCESS) {
 		printf("Success! passed sha3-256 known answer tests \n");
@@ -1651,6 +1602,39 @@ int main(UNUSED int argc, UNUSED char **argv) {
 		printf("Success! passed four-way parallel shake-256 known answer tests \n");
 	} else {
 		printf("Failure! failed four-way parallel shake-256 known answer tests \n");
+		ret = EXIT_FAILURE;
+	}
+
+	return ret;
+}
+
+/**
+* \brief Run the SHA3 and SHAKE KAT tests
+*/
+int main(UNUSED int argc, UNUSED char **argv) {
+	int ret = EXIT_SUCCESS;
+
+	OQS_init();
+	print_system_info();
+
+	/* Test the backend selected at runtime (e.g. AVX512VL). */
+	if (run_kat_tests("library") == EXIT_FAILURE) {
+		ret = EXIT_FAILURE;
+	}
+
+	/* Test that application callbacks replace the selected backend. The
+	 * default tables are const, so backend selection cannot modify them. */
+	struct OQS_SHA3_callbacks sha3_callbacks = sha3_default_callbacks;
+
+	sha3_callbacks.SHA3_sha3_256_inc_init = override_SHA3_sha3_256_inc_init;
+	OQS_SHA3_set_callbacks(&sha3_callbacks);
+
+	struct OQS_SHA3_x4_callbacks sha3_x4_callbacks = sha3_x4_default_callbacks;
+
+	sha3_x4_callbacks.SHA3_shake128_x4_inc_init = override_SHA3_shake128_x4_inc_init;
+	OQS_SHA3_x4_set_callbacks(&sha3_x4_callbacks);
+
+	if (run_kat_tests("application") == EXIT_FAILURE) {
 		ret = EXIT_FAILURE;
 	}
 

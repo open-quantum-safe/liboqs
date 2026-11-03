@@ -241,7 +241,7 @@ static void SHA3_shake256_x4_inc_ctx_reset(OQS_SHA3_shake256_x4_inc_ctx *state) 
 	keccak_x4_inc_reset((uint64_t *)state->ctx);
 }
 
-struct OQS_SHA3_x4_callbacks sha3_x4_default_callbacks = {
+const struct OQS_SHA3_x4_callbacks sha3_x4_default_callbacks = {
 	SHA3_shake128_x4,
 	SHA3_shake128_x4_inc_init,
 	SHA3_shake128_x4_inc_absorb,

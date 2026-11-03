@@ -308,9 +308,9 @@ static void SHA3_shake256_inc_ctx_reset(OQS_SHA3_shake256_inc_ctx *state) {
 	s->n_out = 0;
 }
 
-extern struct OQS_SHA3_callbacks sha3_default_callbacks;
+extern const struct OQS_SHA3_callbacks sha3_default_callbacks;
 
-struct OQS_SHA3_callbacks sha3_default_callbacks = {
+const struct OQS_SHA3_callbacks sha3_default_callbacks = {
 	SHA3_sha3_256,
 	SHA3_sha3_256_inc_init,
 	SHA3_sha3_256_inc_absorb,
