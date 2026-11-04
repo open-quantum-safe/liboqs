@@ -1,5 +1,14 @@
 upstreams:
   -
+    name: the-sqisign
+    git_url: https://github.com/bhess/the-sqisign.git
+    git_branch: liboqs-staging
+    git_commit: 7ec3841037041b9dc047a0c432a4bf3ebe517af2
+    sig_scheme_path: '.'
+    sig_meta_path: 'integration/liboqs/{pqclean_scheme}.yml'
+    common_meta_path: 'integration/liboqs/META_Common.yml'
+    patches: [sqisign-mem.patch]
+  -
     name: pqc-hqc
     git_url: https://gitlab.com/pqc-hqc/hqc.git
     git_branch: next-release
@@ -97,8 +106,8 @@ upstreams:
   -
     name: qruov
     git_url: https://github.com/0rlych1kk4/round3.git
-    git_branch: refactor/liboqs-common-aes-upstream
-    git_commit: 0867cd0019dbcb031731b3d2815028ec5ddb27c6
+    git_branch: integration/qruov-aes-wrapper-combined
+    git_commit: 3965b56ca41484f6359ee71f1c508b1da7b77711
     sig_scheme_path: '.'
     sig_meta_path: 'integration/liboqs/{pretty_name_full}_META.yml'
     common_meta_path: 'integration/liboqs/META_Common.yml'
@@ -887,3 +896,23 @@ sigs:
         pqclean_scheme: l5_gf2_fast_cipherpow
         pretty_name_full: SDitH3-L5-gf2-fast-cipherpow
         signed_msg_order: msg_then_sig
+  -
+    name: sqisign
+    default_implementation: ref
+    upstream_location: the-sqisign
+    schemes:
+      -
+        scheme: "p324_3"
+        pqclean_scheme: sqisign_p324_3
+        pretty_name_full: SQIsign-p324-3
+        signed_msg_order: sig_then_msg
+      -
+        scheme: "p500_27"
+        pqclean_scheme: sqisign_p500_27
+        pretty_name_full: SQIsign-p500-27
+        signed_msg_order: sig_then_msg
+      -
+        scheme: "p664_17"
+        pqclean_scheme: sqisign_p664_17
+        pretty_name_full: SQIsign-p664-17
+        signed_msg_order: sig_then_msg
