@@ -33,7 +33,13 @@ endif()
 
 if(OQS_ENABLE_SIG_{{ family }}_{{ scheme['scheme_c'] }}{%- if 'alias_scheme' in scheme %} OR OQS_ENABLE_SIG_{{ family }}_{{ scheme['alias_scheme'] }}{%- endif %}{%- if has_extmu %} OR OQS_ENABLE_SIG_{{ family }}_{{ scheme['scheme_c'] }}_extmu{%- endif %})
     add_library({{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }} OBJECT sig_{{ family }}_{{ scheme['scheme'] }}.c {% for source_file in impl['sources']|sort -%}{{ impl['upstream']['name'] }}_{{ scheme['pqclean_scheme'] }}_{{ impl['name'] }}/{{ source_file }}{%- if not loop.last %} {% endif -%}{%- endfor -%}{%- if common_deps is defined %}{%- for cdep in common_deps %}{%- if cdep['include_only'] and 'common_dep' in impl and cdep['name'] in impl['common_dep'] %} {% for sf in cdep['sources_addl']|sort -%}{{ upstream_location }}_{{ cdep['name'] }}/{{ sf }}{%- if not loop.last %} {% endif -%}{%- endfor %}{%- endif %}{%- endfor %}{%- endif -%})
-           {%- if impl['compile_opts'] %}
+           {%- if impl['compile_opts_if_memopt'] %}{# has both compile_opts_if_memopt and compile_opts #}
+    if(OQS_MEMOPT_BUILD)
+        target_compile_options({{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }} PUBLIC {{ impl['compile_opts_if_memopt'] }})
+    else()
+        target_compile_options({{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }} PUBLIC {{ impl['compile_opts'] }})
+    endif()
+           {%- elif impl['compile_opts'] %}{# only has compile_opts #}
     target_compile_options({{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }} PUBLIC {{ impl['compile_opts'] }})
            {%- endif -%}
 
@@ -54,7 +60,13 @@ if(OQS_ENABLE_SIG_{{ family }}_{{ scheme['scheme_c'] }}_{{ impl['name'] }}{%- if
         {%- if impl['name'] != scheme['default_implementation'] and impl['required_flags'] %}
     target_compile_options({{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }} PRIVATE {%- for flag in impl['required_flags'] %}{%- if flag == 'arm_sha3' %} -march=armv8.2-a+crypto+sha3 {%- else -%}{%- if flag != 'arm_neon' %} -m{%- if flag == 'bmi1' -%} bmi {%- elif flag == 'sse4_1' -%} sse4.1  {%- elif flag == 'pclmulqdq' -%} pclmul {%- else -%}{{ flag }}{%- endif -%}{%- endif -%}{%- endif -%}{%- endfor -%})
         {%- endif %}
-        {%- if impl['compile_opts'] %}
+        {%- if impl['compile_opts_if_memopt'] %}{# has both compile_opts_if_memopt and compile_opts #}
+    if(OQS_MEMOPT_BUILD)
+        target_compile_options({{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }} PUBLIC {{ impl['compile_opts_if_memopt'] }})
+    else()
+        target_compile_options({{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }} PUBLIC {{ impl['compile_opts'] }})
+    endif()
+        {%- elif impl['compile_opts'] %}{# only has compile_opts #}
     target_compile_options({{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }} PUBLIC {{ impl['compile_opts'] }})
         {%- endif %}
     set(_{{ family|upper }}_OBJS ${_{{ family|upper }}_OBJS} $<TARGET_OBJECTS:{{ family }}_{{ scheme['scheme'] }}_{{ impl['name'] }}>)

@@ -70,6 +70,9 @@ Currently, these include
 
 All of these these are wrapped by [`platforms.yml`](#platforms.yml).
 
+To save time, `linux.yml` skips the slow MQOM and QR-UOV memory leak tests on pull requests and feature-branch pushes, unless the change touches that algorithm's directory or shared code it depends on (see the "Detect algorithm changes" step).
+They always run on pushes to `main`.
+
 #### <a name="platforms.yml"></a> All platform tests (`platforms.yml`)
 
 This workflow calls all of the [platform-specific tests](#<platform>.yml).

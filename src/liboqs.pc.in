@@ -8,3 +8,4 @@ Version: @OQS_VERSION_TEXT@
 Requires.private: @_oqs_pkgconfig_requires_private@
 Cflags: -I${includedir}
 Libs: -L${libdir} -loqs
+Libs.private: @_oqs_pkgconfig_libs_private@

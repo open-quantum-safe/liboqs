@@ -139,31 +139,21 @@ void oqs_aes128_enc_sch_block_ni(const uint8_t *plaintext, const void *_schedule
 
 void oqs_aes128_ecb_enc_sch_ni(const uint8_t *plaintext, const size_t plaintext_len, const void *schedule, uint8_t *ciphertext) {
 	assert(plaintext_len % 16 == 0);
-	for (size_t block = 0; block < plaintext_len / 16; block++) {
+	const __m128i *rkeys = ((const aes128ctx *) schedule)->sk_exp;
+	const size_t nblocks = plaintext_len / 16;
+	size_t block = 0;
+	/* Four blocks at a time with interleaved AESENC chains, then the remainder one at a time. */
+	for (; block + 4 <= nblocks; block += 4) {
+		const uint8_t *in = plaintext + (16 * block);
+		aes128ni_encrypt_x4(rkeys,
+		                    _mm_loadu_si128((const __m128i *)(in + 0)),
+		                    _mm_loadu_si128((const __m128i *)(in + 16)),
+		                    _mm_loadu_si128((const __m128i *)(in + 32)),
+		                    _mm_loadu_si128((const __m128i *)(in + 48)),
+		                    ciphertext + (16 * block));
+	}
+	for (; block < nblocks; block++) {
 		oqs_aes128_enc_sch_block_ni(plaintext + (16 * block), schedule, ciphertext + (16 * block));
-	}
-}
-
-void oqs_aes128_ctr_enc_sch_upd_blks_ni(void *schedule, uint8_t *out, size_t out_blks) {
-	aes128ctx *ctx = (aes128ctx *) schedule;
-	const __m128i mask = _mm_set_epi8(8, 9, 10, 11, 12, 13, 14, 15, 7, 6, 5, 4, 3, 2, 1, 0);
-
-	while (out_blks >= 4) {
-		__m128i nv0 = _mm_shuffle_epi8(ctx->iv, mask);
-		__m128i nv1 = _mm_shuffle_epi8(_mm_add_epi32(ctx->iv, _mm_set_epi64x(1, 0)), mask);
-		__m128i nv2 = _mm_shuffle_epi8(_mm_add_epi32(ctx->iv, _mm_set_epi64x(2, 0)), mask);
-		__m128i nv3 = _mm_shuffle_epi8(_mm_add_epi32(ctx->iv, _mm_set_epi64x(3, 0)), mask);
-		aes128ni_encrypt_x4(schedule, nv0, nv1, nv2, nv3, out);
-		ctx->iv = _mm_add_epi32(ctx->iv, _mm_set_epi64x(4, 0));
-		out += 64;
-		out_blks -= 4;
-	}
-	while (out_blks >= 1) {
-		__m128i nv0 = _mm_shuffle_epi8(ctx->iv, mask);
-		aes128ni_encrypt(schedule, nv0, out);
-		ctx->iv = _mm_add_epi32(ctx->iv, _mm_set_epi64x(1, 0));
-		out += 16;
-		out_blks--;
 	}
 }
 

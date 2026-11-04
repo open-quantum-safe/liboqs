@@ -1,0 +1,6 @@
+# Configuration for .github/workflows/codeql.yml: run only liboqs's own
+# queries. GitHub's stock suite already runs through CodeQL default setup.
+name: liboqs custom queries
+disable-default-queries: true
+queries:
+  - uses: ./.github/codeql/queries
