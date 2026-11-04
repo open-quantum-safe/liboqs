@@ -169,6 +169,9 @@ if (OQS_ENABLE_SIG_SLH_DSA)
 	            wrappers/pure/slh_dsa_pure_shake_256f.c
 	            wrappers/pure/slh_dsa_pure_shake_256s.c
 	            )
+    if(OQS_USE_SHA2_OPENSSL AND NOT OQS_DLOPEN_OPENSSL)
+        target_include_directories(slh_dsa_c PRIVATE ${OPENSSL_INCLUDE_DIR})
+    endif()
     target_include_directories(slh_dsa_c PRIVATE ${CMAKE_CURRENT_LIST_DIR}/slh_dsa_c)
     target_include_directories(slh_dsa_c PRIVATE ${CMAKE_CURRENT_LIST_DIR}/wrappers/pure)
     target_include_directories(slh_dsa_c PRIVATE ${CMAKE_CURRENT_LIST_DIR}/wrappers/prehash_sha2_224)
