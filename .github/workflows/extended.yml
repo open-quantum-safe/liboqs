@@ -58,7 +58,7 @@ jobs:
 
       - name: Upload valgrind_varlat logs
         if: always()
-        uses: actions/upload-artifact@1746f4ab65b179e0ea60a494b83293b640dd5bba # pin@v4
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # pin@v4
         with:
           name: valgrind_varlat_${{ matrix.type }}_${{ matrix.compiler }}_${{ matrix.liboqs_build }}_${{ matrix.opt_flag }}_logs
           path: |
@@ -90,7 +90,7 @@ jobs:
 
       - name: Upload valgrind logs
         if: always()
-        uses: actions/upload-artifact@1746f4ab65b179e0ea60a494b83293b640dd5bba # pin@v4
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # pin@v4
         with:
           name: valgrind_varlat_falcon_extended_tests_logs
           path: |

@@ -24,7 +24,7 @@ jobs:
     outputs:
       matrix: ${{ steps.algs.outputs.matrix }}
     steps:
-      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # pin@v4
       - run: python -m pip install --require-hashes -r .github/workflows/requirements.txt
       - name: Resolve algorithm list
         id: algs
@@ -71,7 +71,7 @@ jobs:
       max-parallel: 10
     steps:
       - name: Checkout code
-        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # pin@v4
 
       - name: Run valgrind_varlat tests
         shell: bash
@@ -86,7 +86,7 @@ jobs:
 
       - name: Upload valgrind_varlat logs
         if: always()
-        uses: actions/upload-artifact@1746f4ab65b179e0ea60a494b83293b640dd5bba # pin@v4
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # pin@v4
         with:
           name: valgrind_varlat_${{ matrix.algorithm }}_${{ matrix.compiler }}_${{ matrix.liboqs_build }}_${{ matrix.opt_flag }}_logs
           path: |
@@ -107,7 +107,7 @@ jobs:
       max-parallel: 10
     steps:
       - name: Checkout code
-        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # pin@v4
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # pin@v4
 
       - name: Install llvm-symbolizer
         run: apt-get update && apt-get install -y llvm
@@ -125,7 +125,7 @@ jobs:
 
       - name: Upload memsan logs
         if: always()
-        uses: actions/upload-artifact@1746f4ab65b179e0ea60a494b83293b640dd5bba # pin@v4
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # pin@v4
         with:
           name: memsan_${{ matrix.algorithm }}_${{ matrix.compiler }}_${{matrix.liboqs_build}}_${{ matrix.opt_flag }}_logs
           path: |
