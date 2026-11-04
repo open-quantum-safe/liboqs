@@ -62,12 +62,13 @@ static int do_sha256(void) {
 	OQS_SHA2_sha256_inc_init(&state);
 
 	// clone state
-	OQS_SHA2_sha256_ctx state2, state3, state4, state5, state6;
+	OQS_SHA2_sha256_ctx state2, state3, state4, state5, state6, state7;
 	OQS_SHA2_sha256_inc_ctx_clone(&state2, &state);
 	OQS_SHA2_sha256_inc_ctx_clone(&state3, &state);
 	OQS_SHA2_sha256_inc_ctx_clone(&state4, &state);
 	OQS_SHA2_sha256_inc_ctx_clone(&state5, &state);
 	OQS_SHA2_sha256_inc_ctx_clone(&state6, &state);
+	OQS_SHA2_sha256_inc_ctx_clone(&state7, &state);
 
 	// hash with first state
 	if (msg_len > 64) {
@@ -144,6 +145,21 @@ static int do_sha256(void) {
 		fprintf(stderr, "ERROR: Combined non-block size and block increments failed to match main API\n");
 		OQS_MEM_insecure_free(msg);
 		return -5;
+	}
+
+	// hash with a non-block-size increment followed by inc_blocks with zero
+	// complete blocks (a bulk chunk shorter than one block). The zero-block
+	// call must be a no-op and leave the buffered partial data for finalize.
+	{
+		size_t k = (msg_len < 10) ? msg_len : 10;
+		OQS_SHA2_sha256_inc(&state7, msg, k);
+		OQS_SHA2_sha256_inc_blocks(&state7, &msg[k], 0);
+		OQS_SHA2_sha256_inc_finalize(output_inc_2, &state7, &msg[k], msg_len - k);
+	}
+	if (memcmp(output, output_inc_2, 32) != 0) {
+		fprintf(stderr, "ERROR: Zero-block inc_blocks after a partial increment failed to match main API\n");
+		OQS_MEM_insecure_free(msg);
+		return -6;
 	}
 	//Test inc API
 	print_hex(output, 32);
