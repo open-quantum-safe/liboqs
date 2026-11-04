@@ -106,8 +106,8 @@ upstreams:
   -
     name: qruov
     git_url: https://github.com/0rlych1kk4/round3.git
-    git_branch: refactor/liboqs-signature-wrapper-dedup
-    git_commit: f296750f4793b8350bd2352ded890e9a811be42a
+    git_branch: integration/qruov-aes-wrapper-combined
+    git_commit: 3965b56ca41484f6359ee71f1c508b1da7b77711
     sig_scheme_path: '.'
     sig_meta_path: 'integration/liboqs/{pretty_name_full}_META.yml'
     common_meta_path: 'integration/liboqs/META_Common.yml'
