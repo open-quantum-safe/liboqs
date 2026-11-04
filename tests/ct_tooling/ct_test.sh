@@ -252,7 +252,9 @@ test() {
     return $RETVAL
 }
 
-get_available_algs() {
+# Lists every algorithm name in kem.h/sig.h, enabled or not
+# Safe to call before build().
+get_all_known_algs() {
     local ALG_TYPE="$1"
     local LIBOQS_DIR="$2"
 
@@ -261,6 +263,20 @@ sys.path.insert(0, 'tests')
 import helpers
 for alg in helpers.available_"$ALG_TYPE"s_by_name():
     print(alg)")
+}
+
+# Like get_all_known_algs, but only lists algorithms enabled in the build's oqsconfig.h
+# Must be called after build().
+get_enabled_algs() {
+    local ALG_TYPE="$1"
+    local LIBOQS_DIR="$2"
+
+    (cd "$LIBOQS_DIR" && python3 -c "import sys
+sys.path.insert(0, 'tests')
+import helpers
+for alg in helpers.available_"$ALG_TYPE"s_by_name():
+    if helpers.is_"$ALG_TYPE"_enabled_by_name(alg):
+        print(alg)")
 }
 
 # Read inputs from arguments
@@ -296,8 +312,8 @@ BUILD_DIR="$LIBOQS_DIR/build_$BUILD_NAME"
 
 # Export build dir for tests/helpers.py to find generated headers
 export OQS_BUILD_DIR="$BUILD_DIR"
-KEMS=$(get_available_algs kem "$LIBOQS_DIR")
-SIGS=$(get_available_algs sig "$LIBOQS_DIR")
+KEMS=$(get_all_known_algs kem "$LIBOQS_DIR")
+SIGS=$(get_all_known_algs sig "$LIBOQS_DIR")
 
 # Convert user-facing algorithm name to CMake OQS_MINIMAL_BUILD key
 # Some OQS API names don't match the CMake variable suffix directly (e.g. sntrup761 maps to OQS_ENABLE_KEM_ntruprime_sntrup761, OV-Is to OQS_ENABLE_SIG_uov_ov_Is)
@@ -335,14 +351,14 @@ RUN_SIGS=()
 
 case "$INPUT" in
     all)
-        RUN_KEMS=($KEMS)
-        RUN_SIGS=($SIGS)
+        RUN_KEMS=($(get_enabled_algs kem "$LIBOQS_DIR"))
+        RUN_SIGS=($(get_enabled_algs sig "$LIBOQS_DIR"))
         ;;
     kems)
-        RUN_KEMS=($KEMS)
+        RUN_KEMS=($(get_enabled_algs kem "$LIBOQS_DIR"))
         ;;
     sigs)
-        RUN_SIGS=($SIGS)
+        RUN_SIGS=($(get_enabled_algs sig "$LIBOQS_DIR"))
         ;;
     *)
         if echo "$KEMS" | grep -Fxq "$INPUT"; then
