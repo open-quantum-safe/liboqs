@@ -63,6 +63,7 @@ parameter-sets:
       - aes
     common-crypto:
     - SHA3: liboqs
+    - AES: liboqs
     no-secret-dependent-branching-claimed: false
     no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: false
@@ -147,6 +148,7 @@ parameter-sets:
       - aes
     common-crypto:
     - SHA3: liboqs
+    - AES: liboqs
     no-secret-dependent-branching-claimed: false
     no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: false
@@ -231,6 +233,7 @@ parameter-sets:
       - aes
     common-crypto:
     - SHA3: liboqs
+    - AES: liboqs
     no-secret-dependent-branching-claimed: false
     no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: false
@@ -315,6 +318,7 @@ parameter-sets:
       - aes
     common-crypto:
     - SHA3: liboqs
+    - AES: liboqs
     no-secret-dependent-branching-claimed: false
     no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: false
@@ -399,6 +403,7 @@ parameter-sets:
       - aes
     common-crypto:
     - SHA3: liboqs
+    - AES: liboqs
     no-secret-dependent-branching-claimed: false
     no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: false
@@ -483,6 +488,7 @@ parameter-sets:
       - aes
     common-crypto:
     - SHA3: liboqs
+    - AES: liboqs
     no-secret-dependent-branching-claimed: false
     no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: false
@@ -567,6 +573,7 @@ parameter-sets:
       - aes
     common-crypto:
     - SHA3: liboqs
+    - AES: liboqs
     no-secret-dependent-branching-claimed: false
     no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: false
@@ -651,6 +658,7 @@ parameter-sets:
       - aes
     common-crypto:
     - SHA3: liboqs
+    - AES: liboqs
     no-secret-dependent-branching-claimed: false
     no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: false
@@ -735,6 +743,7 @@ parameter-sets:
       - aes
     common-crypto:
     - SHA3: liboqs
+    - AES: liboqs
     no-secret-dependent-branching-claimed: false
     no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: false
@@ -819,6 +828,7 @@ parameter-sets:
       - aes
     common-crypto:
     - SHA3: liboqs
+    - AES: liboqs
     no-secret-dependent-branching-claimed: false
     no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: false
@@ -903,6 +913,7 @@ parameter-sets:
       - aes
     common-crypto:
     - SHA3: liboqs
+    - AES: liboqs
     no-secret-dependent-branching-claimed: false
     no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: false
@@ -987,6 +998,7 @@ parameter-sets:
       - aes
     common-crypto:
     - SHA3: liboqs
+    - AES: liboqs
     no-secret-dependent-branching-claimed: false
     no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: false
@@ -1071,6 +1083,7 @@ parameter-sets:
       - aes
     common-crypto:
     - SHA3: liboqs
+    - AES: liboqs
     no-secret-dependent-branching-claimed: false
     no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: false
@@ -1155,6 +1168,7 @@ parameter-sets:
       - aes
     common-crypto:
     - SHA3: liboqs
+    - AES: liboqs
     no-secret-dependent-branching-claimed: false
     no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: false
@@ -1239,6 +1253,7 @@ parameter-sets:
       - aes
     common-crypto:
     - SHA3: liboqs
+    - AES: liboqs
     no-secret-dependent-branching-claimed: false
     no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: false
