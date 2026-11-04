@@ -1,0 +1,5 @@
+name: liboqs/ci-queries-tests
+version: 0.0.0
+extractor: cpp
+dependencies:
+  liboqs/ci-queries: "*"

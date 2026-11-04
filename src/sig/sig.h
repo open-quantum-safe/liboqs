@@ -96,6 +96,66 @@ extern "C" {
 #define OQS_SIG_alg_cross_rsdpg_256_fast "cross-rsdpg-256-fast"
 /** Algorithm identifier for cross-rsdpg-256-small */
 #define OQS_SIG_alg_cross_rsdpg_256_small "cross-rsdpg-256-small"
+/** Algorithm identifier for QRUOV-1q7L10-aes */
+#define OQS_SIG_alg_qruov_1q7L10aes "QRUOV-1q7L10-aes"
+/** Algorithm identifier for QRUOV-1q7L10-shake */
+#define OQS_SIG_alg_qruov_1q7L10shake "QRUOV-1q7L10-shake"
+/** Algorithm identifier for QRUOV-1q31L3-aes */
+#define OQS_SIG_alg_qruov_1q31L3aes "QRUOV-1q31L3-aes"
+/** Algorithm identifier for QRUOV-1q31L3-shake */
+#define OQS_SIG_alg_qruov_1q31L3shake "QRUOV-1q31L3-shake"
+/** Algorithm identifier for QRUOV-1q31L10-aes */
+#define OQS_SIG_alg_qruov_1q31L10aes "QRUOV-1q31L10-aes"
+/** Algorithm identifier for QRUOV-1q31L10-shake */
+#define OQS_SIG_alg_qruov_1q31L10shake "QRUOV-1q31L10-shake"
+/** Algorithm identifier for QRUOV-1q127L3-aes */
+#define OQS_SIG_alg_qruov_1q127L3aes "QRUOV-1q127L3-aes"
+/** Algorithm identifier for QRUOV-1q127L3-shake */
+#define OQS_SIG_alg_qruov_1q127L3shake "QRUOV-1q127L3-shake"
+/** Algorithm identifier for QRUOV-1q127L10-aes */
+#define OQS_SIG_alg_qruov_1q127L10aes "QRUOV-1q127L10-aes"
+/** Algorithm identifier for QRUOV-1q127L10-shake */
+#define OQS_SIG_alg_qruov_1q127L10shake "QRUOV-1q127L10-shake"
+/** Algorithm identifier for QRUOV-3q7L10-aes */
+#define OQS_SIG_alg_qruov_3q7L10aes "QRUOV-3q7L10-aes"
+/** Algorithm identifier for QRUOV-3q7L10-shake */
+#define OQS_SIG_alg_qruov_3q7L10shake "QRUOV-3q7L10-shake"
+/** Algorithm identifier for QRUOV-3q31L3-aes */
+#define OQS_SIG_alg_qruov_3q31L3aes "QRUOV-3q31L3-aes"
+/** Algorithm identifier for QRUOV-3q31L3-shake */
+#define OQS_SIG_alg_qruov_3q31L3shake "QRUOV-3q31L3-shake"
+/** Algorithm identifier for QRUOV-3q31L10-aes */
+#define OQS_SIG_alg_qruov_3q31L10aes "QRUOV-3q31L10-aes"
+/** Algorithm identifier for QRUOV-3q31L10-shake */
+#define OQS_SIG_alg_qruov_3q31L10shake "QRUOV-3q31L10-shake"
+/** Algorithm identifier for QRUOV-3q127L3-aes */
+#define OQS_SIG_alg_qruov_3q127L3aes "QRUOV-3q127L3-aes"
+/** Algorithm identifier for QRUOV-3q127L3-shake */
+#define OQS_SIG_alg_qruov_3q127L3shake "QRUOV-3q127L3-shake"
+/** Algorithm identifier for QRUOV-3q127L10-aes */
+#define OQS_SIG_alg_qruov_3q127L10aes "QRUOV-3q127L10-aes"
+/** Algorithm identifier for QRUOV-3q127L10-shake */
+#define OQS_SIG_alg_qruov_3q127L10shake "QRUOV-3q127L10-shake"
+/** Algorithm identifier for QRUOV-5q7L10-aes */
+#define OQS_SIG_alg_qruov_5q7L10aes "QRUOV-5q7L10-aes"
+/** Algorithm identifier for QRUOV-5q7L10-shake */
+#define OQS_SIG_alg_qruov_5q7L10shake "QRUOV-5q7L10-shake"
+/** Algorithm identifier for QRUOV-5q31L3-aes */
+#define OQS_SIG_alg_qruov_5q31L3aes "QRUOV-5q31L3-aes"
+/** Algorithm identifier for QRUOV-5q31L3-shake */
+#define OQS_SIG_alg_qruov_5q31L3shake "QRUOV-5q31L3-shake"
+/** Algorithm identifier for QRUOV-5q31L10-aes */
+#define OQS_SIG_alg_qruov_5q31L10aes "QRUOV-5q31L10-aes"
+/** Algorithm identifier for QRUOV-5q31L10-shake */
+#define OQS_SIG_alg_qruov_5q31L10shake "QRUOV-5q31L10-shake"
+/** Algorithm identifier for QRUOV-5q127L3-aes */
+#define OQS_SIG_alg_qruov_5q127L3aes "QRUOV-5q127L3-aes"
+/** Algorithm identifier for QRUOV-5q127L3-shake */
+#define OQS_SIG_alg_qruov_5q127L3shake "QRUOV-5q127L3-shake"
+/** Algorithm identifier for QRUOV-5q127L10-aes */
+#define OQS_SIG_alg_qruov_5q127L10aes "QRUOV-5q127L10-aes"
+/** Algorithm identifier for QRUOV-5q127L10-shake */
+#define OQS_SIG_alg_qruov_5q127L10shake "QRUOV-5q127L10-shake"
 /** Algorithm identifier for OV-Is */
 #define OQS_SIG_alg_uov_ov_Is "OV-Is"
 /** Algorithm identifier for OV-Ip */
@@ -192,6 +252,36 @@ extern "C" {
 #define OQS_SIG_alg_mqom_mqom3_cat5_gf2_shorter_ct "mqom3_cat5_gf2_shorter_ct"
 /** Algorithm identifier for mqom3_cat5_gf2_shorter_ot */
 #define OQS_SIG_alg_mqom_mqom3_cat5_gf2_shorter_ot "mqom3_cat5_gf2_shorter_ot"
+/** Algorithm identifier for SDitH3-L1-gf2-short */
+#define OQS_SIG_alg_sdith_l1_gf2_short "SDitH3-L1-gf2-short"
+/** Algorithm identifier for SDitH3-L1-gf2-short-cipherpow */
+#define OQS_SIG_alg_sdith_l1_gf2_short_cipherpow "SDitH3-L1-gf2-short-cipherpow"
+/** Algorithm identifier for SDitH3-L1-gf2-fast */
+#define OQS_SIG_alg_sdith_l1_gf2_fast "SDitH3-L1-gf2-fast"
+/** Algorithm identifier for SDitH3-L1-gf2-fast-cipherpow */
+#define OQS_SIG_alg_sdith_l1_gf2_fast_cipherpow "SDitH3-L1-gf2-fast-cipherpow"
+/** Algorithm identifier for SDitH3-L3-gf2-short */
+#define OQS_SIG_alg_sdith_l3_gf2_short "SDitH3-L3-gf2-short"
+/** Algorithm identifier for SDitH3-L3-gf2-short-cipherpow */
+#define OQS_SIG_alg_sdith_l3_gf2_short_cipherpow "SDitH3-L3-gf2-short-cipherpow"
+/** Algorithm identifier for SDitH3-L3-gf2-fast */
+#define OQS_SIG_alg_sdith_l3_gf2_fast "SDitH3-L3-gf2-fast"
+/** Algorithm identifier for SDitH3-L3-gf2-fast-cipherpow */
+#define OQS_SIG_alg_sdith_l3_gf2_fast_cipherpow "SDitH3-L3-gf2-fast-cipherpow"
+/** Algorithm identifier for SDitH3-L5-gf2-short */
+#define OQS_SIG_alg_sdith_l5_gf2_short "SDitH3-L5-gf2-short"
+/** Algorithm identifier for SDitH3-L5-gf2-short-cipherpow */
+#define OQS_SIG_alg_sdith_l5_gf2_short_cipherpow "SDitH3-L5-gf2-short-cipherpow"
+/** Algorithm identifier for SDitH3-L5-gf2-fast */
+#define OQS_SIG_alg_sdith_l5_gf2_fast "SDitH3-L5-gf2-fast"
+/** Algorithm identifier for SDitH3-L5-gf2-fast-cipherpow */
+#define OQS_SIG_alg_sdith_l5_gf2_fast_cipherpow "SDitH3-L5-gf2-fast-cipherpow"
+/** Algorithm identifier for SQIsign-p324-3 */
+#define OQS_SIG_alg_sqisign_p324_3 "SQIsign-p324-3"
+/** Algorithm identifier for SQIsign-p500-27 */
+#define OQS_SIG_alg_sqisign_p500_27 "SQIsign-p500-27"
+/** Algorithm identifier for SQIsign-p664-17 */
+#define OQS_SIG_alg_sqisign_p664_17 "SQIsign-p664-17"
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALG_IDENTIFIER_END
 ///// OQS_COPY_FROM_SLH_DSA_FRAGMENT_ALGID_START
 /** Algorithm identifier for slh_dsa_pure_sha2_128s */
@@ -516,7 +606,7 @@ extern "C" {
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALGS_LENGTH_START
 
 /** Number of algorithm identifiers above. */
-#define OQS_SIG_algs_length 80 + OQS_SIG_SLH_DSA_algs_length
+#define OQS_SIG_algs_length 125 + OQS_SIG_SLH_DSA_algs_length
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALGS_LENGTH_END
 
 /**
@@ -776,6 +866,9 @@ OQS_API bool OQS_SIG_supports_ctx_str(const char *alg_name);
 #ifdef OQS_ENABLE_SIG_CROSS
 #include <oqs/sig_cross.h>
 #endif /* OQS_ENABLE_SIG_CROSS */
+#ifdef OQS_ENABLE_SIG_QRUOV
+#include <oqs/sig_qruov.h>
+#endif /* OQS_ENABLE_SIG_QRUOV */
 #ifdef OQS_ENABLE_SIG_UOV
 #include <oqs/sig_uov.h>
 #endif /* OQS_ENABLE_SIG_UOV */
@@ -785,6 +878,12 @@ OQS_API bool OQS_SIG_supports_ctx_str(const char *alg_name);
 #ifdef OQS_ENABLE_SIG_MQOM
 #include <oqs/sig_mqom.h>
 #endif /* OQS_ENABLE_SIG_MQOM */
+#ifdef OQS_ENABLE_SIG_SDITH
+#include <oqs/sig_sdith.h>
+#endif /* OQS_ENABLE_SIG_SDITH */
+#ifdef OQS_ENABLE_SIG_SQISIGN
+#include <oqs/sig_sqisign.h>
+#endif /* OQS_ENABLE_SIG_SQISIGN */
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_INCLUDE_END
 ///// OQS_COPY_FROM_SLH_DSA_FRAGMENT_INCLUDE_START
 #ifdef OQS_ENABLE_SIG_SLH_DSA

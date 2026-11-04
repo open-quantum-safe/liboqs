@@ -97,6 +97,27 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # pin@v4
+      # tests/test_leaks.py skips the slow MQOM and QR-UOV leak tests on PRs and feature-branch
+      # pushes unless this step finds changes to that algorithm or to shared code it depends on.
+      - name: Detect algorithm changes
+        env:
+          BASE_REF: ${{ github.base_ref || 'main' }}
+        run: |
+          SHARED='^(CMakeLists\.txt|\.CMake/|\.github/workflows/linux\.yml|src/[^/]*$|src/common/|src/sig/sig\.[ch]$|tests/(CMakeLists\.txt|helpers\.py|system_info\.c|test_helpers\.[ch]|test_leaks\.py|test_sig\.c)$)'
+          CHANGED="$RUNNER_TEMP/changed_files.txt"
+          git config --global --add safe.directory '*'
+          if git fetch --depth=1 origin "$BASE_REF" && git diff --name-only "origin/$BASE_REF" HEAD > "$CHANGED"; then
+            if grep -qE "$SHARED|^src/sig/mqom/" "$CHANGED"; then
+              echo "RUN_MQOM_LEAKS=true" >> "$GITHUB_ENV"
+            fi
+            if grep -qE "$SHARED|^src/sig/qruov/" "$CHANGED"; then
+              echo "RUN_QRUOV_LEAKS=true" >> "$GITHUB_ENV"
+            fi
+          else
+            echo "::warning::Could not determine changed files; running all leak tests"
+            echo "RUN_MQOM_LEAKS=true" >> "$GITHUB_ENV"
+            echo "RUN_QRUOV_LEAKS=true" >> "$GITHUB_ENV"
+          fi
       - name: Configure
         run: mkdir build && cd build && cmake -GNinja ${{ matrix.CMAKE_ARGS }} .. && cmake -LA -N ..
       - name: Build
@@ -112,14 +133,14 @@ jobs:
         timeout-minutes: 60
         env:
           OQS_TEST_SIG_CTX_STEP: "255"
-        run: mkdir -p tmp && python3 -m pytest --verbose --ignore=tests/test_code_conventions.py --ignore=tests/test_acvp_vectors.py --ignore=tests/test_wycheproof_vectors.py --numprocesses=logical --dist load --maxschedchunk=1 ${{ matrix.PYTEST_ARGS }}
+        run: mkdir -p tmp && python3 -m pytest --verbose --ignore=tests/test_code_conventions.py --ignore=tests/test_cmake_option_coverage.py --ignore=tests/test_kats_json.py --ignore=tests/test_acvp_vectors.py --ignore=tests/test_wycheproof_vectors.py --numprocesses=logical --dist load --maxschedchunk=1 ${{ matrix.PYTEST_ARGS }}
       - name: Package .deb
         if: matrix.name == 'jammy-std-openssl3'
         run: cpack
         working-directory: build
       - name: Retain .deb file
         if: matrix.name == 'jammy-std-openssl3'
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # pin@v4
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # pin@v4
         with:
           name: liboqs-openssl3-shared-x64
           path: build/*.deb
@@ -192,7 +213,7 @@ jobs:
         working-directory: build
       - name: Run tests
         timeout-minutes: 60
-        run: mkdir -p tmp && python3 -m pytest --verbose --ignore=tests/test_code_conventions.py --ignore=tests/test_leaks.py --ignore=tests/test_kat_all.py --ignore=tests/test_wycheproof_vectors.py --numprocesses=logical --dist load --maxschedchunk=1
+        run: mkdir -p tmp && python3 -m pytest --verbose --ignore=tests/test_code_conventions.py --ignore=tests/test_cmake_option_coverage.py --ignore=tests/test_kats_json.py --ignore=tests/test_leaks.py --ignore=tests/test_kat_all.py --ignore=tests/test_wycheproof_vectors.py --numprocesses=logical --dist load --maxschedchunk=1
 
   scan_build:
     runs-on: ubuntu-latest

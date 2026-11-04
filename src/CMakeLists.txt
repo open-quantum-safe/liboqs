@@ -59,6 +59,10 @@ if(OQS_ENABLE_SIG_CROSS)
     add_subdirectory(sig/cross)
     set(SIG_OBJS ${SIG_OBJS} ${CROSS_OBJS})
 endif()
+if(OQS_ENABLE_SIG_QRUOV)
+    add_subdirectory(sig/qruov)
+    set(SIG_OBJS ${SIG_OBJS} ${QRUOV_OBJS})
+endif()
 if(OQS_ENABLE_SIG_UOV)
     add_subdirectory(sig/uov)
     set(SIG_OBJS ${SIG_OBJS} ${UOV_OBJS})
@@ -71,7 +75,24 @@ if(OQS_ENABLE_SIG_MQOM)
     add_subdirectory(sig/mqom)
     set(SIG_OBJS ${SIG_OBJS} ${MQOM_OBJS})
 endif()
+if(OQS_ENABLE_SIG_SDITH)
+    add_subdirectory(sig/sdith)
+    set(SIG_OBJS ${SIG_OBJS} ${SDITH_OBJS})
+endif()
+if(OQS_ENABLE_SIG_SQISIGN)
+    add_subdirectory(sig/sqisign)
+    set(SIG_OBJS ${SIG_OBJS} ${SQISIGN_OBJS})
+endif()
 ##### OQS_COPY_FROM_UPSTREAM_FRAGMENT_ADD_ALG_OBJECTS_END
+
+# SDitH is imported upstream code that is not yet free of compiler warnings
+# This prevents those warnings from being treated as errors and blocking CI
+# In the future, we hope to remove this once the upstream code is cleaned up
+# Tracked by https://github.com/open-quantum-safe/liboqs/issues/2588
+if(OQS_ENABLE_SIG_SDITH)
+    get_property(_sdith_targets DIRECTORY sig/sdith PROPERTY BUILDSYSTEM_TARGETS)
+    set_target_properties(${_sdith_targets} PROPERTIES COMPILE_WARNING_AS_ERROR OFF)
+endif()
 
 if(OQS_ENABLE_SIG_SLH_DSA)
     add_subdirectory(sig/slh_dsa)
@@ -119,6 +140,20 @@ if(${OQS_USE_CUPQC})
 endif()
 if(${OQS_USE_ICICLE})
     target_link_libraries(oqs PRIVATE icicle::icicle_pqc_package)
+endif()
+
+# SDitH (and potentially other algorithms) reference log2() and friends from
+# libm. Declare it as a PRIVATE dependency so the requirement propagates to
+# consumers: static builds otherwise fail to resolve these symbols at their
+# final link. Use the bare "m" link item rather than an absolute path from
+# find_library() so (a) the exported target stays relocatable instead of baking
+# in the builder's libm path, and (b) cross-compiling consumers resolve libm
+# from their own sysroot/linker search path. MSVC keeps the math functions in
+# the CRT and ships no separate m library, so it is skipped.
+if(NOT MSVC)
+    target_link_libraries(oqs PRIVATE m)
+    target_link_libraries(oqs-internal PRIVATE m)
+    set(_oqs_pkgconfig_libs_private "-lm")
 endif()
 
 target_include_directories(oqs
@@ -171,7 +206,7 @@ write_basic_package_version_file(
 )
 
 if(OQS_USE_OPENSSL)
-    set(_oqs_pkgconfig_requires_private openssl)
+    set(_oqs_pkgconfig_requires_private "openssl >= 3.0")
 endif()
 
 # generate pkg-config file
