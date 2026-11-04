@@ -12582,7 +12582,8 @@
     {
       "ref": "alg:QRUOV-1q127L10-aes:avx2:x86_64",
       "dependsOn": [
-        "alg:sha3"
+        "alg:sha3",
+        "alg:aes"
       ]
     },
     {
@@ -12594,7 +12595,8 @@
     {
       "ref": "alg:QRUOV-1q127L3-aes:avx2:x86_64",
       "dependsOn": [
-        "alg:sha3"
+        "alg:sha3",
+        "alg:aes"
       ]
     },
     {
@@ -12606,7 +12608,8 @@
     {
       "ref": "alg:QRUOV-1q31L10-aes:avx2:x86_64",
       "dependsOn": [
-        "alg:sha3"
+        "alg:sha3",
+        "alg:aes"
       ]
     },
     {
@@ -12618,7 +12621,8 @@
     {
       "ref": "alg:QRUOV-1q31L3-aes:avx2:x86_64",
       "dependsOn": [
-        "alg:sha3"
+        "alg:sha3",
+        "alg:aes"
       ]
     },
     {
@@ -12630,7 +12634,8 @@
     {
       "ref": "alg:QRUOV-1q7L10-aes:avx2:x86_64",
       "dependsOn": [
-        "alg:sha3"
+        "alg:sha3",
+        "alg:aes"
       ]
     },
     {
@@ -12642,7 +12647,8 @@
     {
       "ref": "alg:QRUOV-3q127L10-aes:avx2:x86_64",
       "dependsOn": [
-        "alg:sha3"
+        "alg:sha3",
+        "alg:aes"
       ]
     },
     {
@@ -12654,7 +12660,8 @@
     {
       "ref": "alg:QRUOV-3q127L3-aes:avx2:x86_64",
       "dependsOn": [
-        "alg:sha3"
+        "alg:sha3",
+        "alg:aes"
       ]
     },
     {
@@ -12666,7 +12673,8 @@
     {
       "ref": "alg:QRUOV-3q31L10-aes:avx2:x86_64",
       "dependsOn": [
-        "alg:sha3"
+        "alg:sha3",
+        "alg:aes"
       ]
     },
     {
@@ -12678,7 +12686,8 @@
     {
       "ref": "alg:QRUOV-3q31L3-aes:avx2:x86_64",
       "dependsOn": [
-        "alg:sha3"
+        "alg:sha3",
+        "alg:aes"
       ]
     },
     {
@@ -12690,7 +12699,8 @@
     {
       "ref": "alg:QRUOV-3q7L10-aes:avx2:x86_64",
       "dependsOn": [
-        "alg:sha3"
+        "alg:sha3",
+        "alg:aes"
       ]
     },
     {
@@ -12702,7 +12712,8 @@
     {
       "ref": "alg:QRUOV-5q127L10-aes:avx2:x86_64",
       "dependsOn": [
-        "alg:sha3"
+        "alg:sha3",
+        "alg:aes"
       ]
     },
     {
@@ -12714,7 +12725,8 @@
     {
       "ref": "alg:QRUOV-5q127L3-aes:avx2:x86_64",
       "dependsOn": [
-        "alg:sha3"
+        "alg:sha3",
+        "alg:aes"
       ]
     },
     {
@@ -12726,7 +12738,8 @@
     {
       "ref": "alg:QRUOV-5q31L10-aes:avx2:x86_64",
       "dependsOn": [
-        "alg:sha3"
+        "alg:sha3",
+        "alg:aes"
       ]
     },
     {
@@ -12738,7 +12751,8 @@
     {
       "ref": "alg:QRUOV-5q31L3-aes:avx2:x86_64",
       "dependsOn": [
-        "alg:sha3"
+        "alg:sha3",
+        "alg:aes"
       ]
     },
     {
@@ -12750,7 +12764,8 @@
     {
       "ref": "alg:QRUOV-5q7L10-aes:avx2:x86_64",
       "dependsOn": [
-        "alg:sha3"
+        "alg:sha3",
+        "alg:aes"
       ]
     },
     {
