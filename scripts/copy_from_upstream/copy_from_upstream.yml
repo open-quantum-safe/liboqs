@@ -186,6 +186,8 @@ kems:
     name: hqc
     default_implementation: ref
     upstream_location: pqc-hqc
+    derandomized_keypair: true
+    derandomized_encaps: true
     schemes:
       -
         scheme: "1"

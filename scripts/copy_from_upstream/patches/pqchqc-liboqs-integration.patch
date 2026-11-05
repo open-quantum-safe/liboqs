@@ -1,6 +1,6 @@
 diff --git a/integrations/HQC-1_META.yml b/integrations/HQC-1_META.yml
 new file mode 100644
-index 0000000..92671f6
+index 0000000..3a655bf
 --- /dev/null
 +++ b/integrations/HQC-1_META.yml
 @@ -0,0 +1,59 @@
@@ -12,8 +12,8 @@ index 0000000..92671f6
 +length-ciphertext: 4433
 +length-secret-key: 32
 +length-shared-secret: 32
-+length-keypair-seed: 0
-+length-encaps-seed: 0
++length-keypair-seed: 32
++length-encaps-seed: 32
 +# NOTE: for test_kat (1 test case):
 +# head -8 kats/ref/hqc-1/PQCkemKAT_32.rsp | tail -6 | sha256sum
 +# for test_kat_all (100 test cases):
@@ -53,8 +53,8 @@ index 0000000..92671f6
 +  signature_keypair: PQCHQC_HQC1_C_crypto_kem_keypair
 +  signature_enc: PQCHQC_HQC1_C_crypto_kem_enc
 +  signature_dec: PQCHQC_HQC1_C_crypto_kem_dec
-+  signature_keypair_derand:
-+  signature_enc_derand:
++  signature_keypair_derand: PQCHQC_HQC1_C_crypto_kem_keypair_derand
++  signature_enc_derand: PQCHQC_HQC1_C_crypto_kem_enc_derand
 +  sources: src/ref/parsing.c src/ref/gf.c src/ref/vector.c src/ref/gf2x.c
 +    src/ref/reed_solomon.c src/ref/reed_muller.c src/ref/hqc.c src/ref/vector.h
 +    src/ref/hqc-1/reed_solomon.h src/ref/hqc-1/parameters.h src/ref/hqc.h
@@ -65,7 +65,7 @@ index 0000000..92671f6
 +    src/common/namespace.h src/common/randombytes.h
 diff --git a/integrations/HQC-3_META.yml b/integrations/HQC-3_META.yml
 new file mode 100644
-index 0000000..cc1ae6c
+index 0000000..337bc22
 --- /dev/null
 +++ b/integrations/HQC-3_META.yml
 @@ -0,0 +1,59 @@
@@ -77,8 +77,8 @@ index 0000000..cc1ae6c
 +length-ciphertext: 8978
 +length-secret-key: 32
 +length-shared-secret: 32
-+length-keypair-seed: 0
-+length-encaps-seed: 0
++length-keypair-seed: 32
++length-encaps-seed: 40
 +# NOTE: for test_kat (1 test case):
 +# head -8 kats/ref/hqc-3/PQCkemKAT_32.rsp | tail -6 | sha256sum
 +# for test_kat_all (100 test cases):
@@ -118,8 +118,8 @@ index 0000000..cc1ae6c
 +  signature_keypair: PQCHQC_HQC3_C_crypto_kem_keypair
 +  signature_enc: PQCHQC_HQC3_C_crypto_kem_enc
 +  signature_dec: PQCHQC_HQC3_C_crypto_kem_dec
-+  signature_keypair_derand:
-+  signature_enc_derand:
++  signature_keypair_derand: PQCHQC_HQC3_C_crypto_kem_keypair_derand
++  signature_enc_derand: PQCHQC_HQC3_C_crypto_kem_enc_derand
 +  sources: src/ref/parsing.c src/ref/gf.c src/ref/vector.c src/ref/gf2x.c
 +    src/ref/reed_solomon.c src/ref/reed_muller.c src/ref/hqc.c src/ref/vector.h
 +    src/ref/hqc-3/reed_solomon.h src/ref/hqc-3/parameters.h src/ref/hqc.h
@@ -130,7 +130,7 @@ index 0000000..cc1ae6c
 +    src/common/namespace.h src/common/randombytes.h
 diff --git a/integrations/HQC-5_META.yml b/integrations/HQC-5_META.yml
 new file mode 100644
-index 0000000..7629cd5
+index 0000000..721b856
 --- /dev/null
 +++ b/integrations/HQC-5_META.yml
 @@ -0,0 +1,59 @@
@@ -142,8 +142,8 @@ index 0000000..7629cd5
 +length-ciphertext: 14421
 +length-secret-key: 32
 +length-shared-secret: 32
-+length-keypair-seed: 0
-+length-encaps-seed: 0
++length-keypair-seed: 32
++length-encaps-seed: 48
 +# NOTE: for test_kat (1 test case):
 +# head -8 kats/ref/hqc-5/PQCkemKAT_32.rsp | tail -6 | sha256sum
 +# for test_kat_all (100 test cases):
@@ -183,8 +183,8 @@ index 0000000..7629cd5
 +  signature_keypair: PQCHQC_HQC5_C_crypto_kem_keypair
 +  signature_enc: PQCHQC_HQC5_C_crypto_kem_enc
 +  signature_dec: PQCHQC_HQC5_C_crypto_kem_dec
-+  signature_keypair_derand:
-+  signature_enc_derand:
++  signature_keypair_derand: PQCHQC_HQC5_C_crypto_kem_keypair_derand
++  signature_enc_derand: PQCHQC_HQC5_C_crypto_kem_enc_derand
 +  sources: src/ref/parsing.c src/ref/gf.c src/ref/vector.c src/ref/gf2x.c
 +    src/ref/reed_solomon.c src/ref/reed_muller.c src/ref/hqc.c src/ref/vector.h
 +    src/ref/hqc-5/reed_solomon.h src/ref/hqc-5/parameters.h src/ref/hqc.h
@@ -234,10 +234,10 @@ index 744d49d..861630b 100644
   * safer call to memset https://github.com/veorq/cryptocoding#problem-4
   */
 diff --git a/src/common/hqc-1/hqc-kem.h b/src/common/hqc-1/hqc-kem.h
-index 9719a4e..520fb23 100644
+index 9719a4e..e050a85 100644
 --- a/src/common/hqc-1/hqc-kem.h
 +++ b/src/common/hqc-1/hqc-kem.h
-@@ -7,6 +7,14 @@
+@@ -7,6 +7,16 @@
  #define HQC_KEM_H
  
  #include <stdint.h>
@@ -247,26 +247,30 @@ index 9719a4e..520fb23 100644
 +#define hqc_kem_encaps PQCHQC_NAMESPACE(hqc_kem_encaps)
 +#define hqc_kem_decaps PQCHQC_NAMESPACE(hqc_kem_decaps)
 +#define crypto_kem_keypair PQCHQC_NAMESPACE(crypto_kem_keypair)
++#define crypto_kem_keypair_derand PQCHQC_NAMESPACE(crypto_kem_keypair_derand)
 +#define crypto_kem_enc PQCHQC_NAMESPACE(crypto_kem_enc)
++#define crypto_kem_enc_derand PQCHQC_NAMESPACE(crypto_kem_enc_derand)
 +#define crypto_kem_dec PQCHQC_NAMESPACE(crypto_kem_dec)
  
  #define CRYPTO_ALGNAME "HQC-1"
  
-@@ -60,4 +68,9 @@ int8_t hqc_kem_encaps(uint8_t *K, uint8_t *c_kem, const uint8_t *ek_kem);
+@@ -60,4 +70,11 @@ int8_t hqc_kem_encaps(uint8_t *K, uint8_t *c_kem, const uint8_t *ek_kem);
   */
  int8_t hqc_kem_decaps(uint8_t *K_prime, const uint8_t *dk_kem, const uint8_t *c_kem);
  
-+/* liboqs: NIST-style (int-returning, ct/ss/pk-ordered) wrappers */
++/* liboqs: NIST-style (int-returning, ct/ss/pk-ordered) wrappers, incl. derandomized variants */
 +int crypto_kem_keypair(uint8_t *pk, uint8_t *sk);
++int crypto_kem_keypair_derand(uint8_t *pk, uint8_t *sk, const uint8_t *seed);
 +int crypto_kem_enc(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
++int crypto_kem_enc_derand(uint8_t *ct, uint8_t *ss, const uint8_t *pk, const uint8_t *seed);
 +int crypto_kem_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
 +
  #endif  // HQC_KEM_H
 diff --git a/src/common/hqc-3/hqc-kem.h b/src/common/hqc-3/hqc-kem.h
-index 47c5e21..7160ab2 100644
+index 47c5e21..e47f78e 100644
 --- a/src/common/hqc-3/hqc-kem.h
 +++ b/src/common/hqc-3/hqc-kem.h
-@@ -7,6 +7,14 @@
+@@ -7,6 +7,16 @@
  #define HQC_KEM_H
  
  #include <stdint.h>
@@ -276,26 +280,30 @@ index 47c5e21..7160ab2 100644
 +#define hqc_kem_encaps PQCHQC_NAMESPACE(hqc_kem_encaps)
 +#define hqc_kem_decaps PQCHQC_NAMESPACE(hqc_kem_decaps)
 +#define crypto_kem_keypair PQCHQC_NAMESPACE(crypto_kem_keypair)
++#define crypto_kem_keypair_derand PQCHQC_NAMESPACE(crypto_kem_keypair_derand)
 +#define crypto_kem_enc PQCHQC_NAMESPACE(crypto_kem_enc)
++#define crypto_kem_enc_derand PQCHQC_NAMESPACE(crypto_kem_enc_derand)
 +#define crypto_kem_dec PQCHQC_NAMESPACE(crypto_kem_dec)
  
  #define CRYPTO_ALGNAME "HQC-3"
  
-@@ -60,4 +68,9 @@ int8_t hqc_kem_encaps(uint8_t *K, uint8_t *c_kem, const uint8_t *ek_kem);
+@@ -60,4 +70,11 @@ int8_t hqc_kem_encaps(uint8_t *K, uint8_t *c_kem, const uint8_t *ek_kem);
   */
  int8_t hqc_kem_decaps(uint8_t *K_prime, const uint8_t *dk_kem, const uint8_t *c_kem);
  
-+/* liboqs: NIST-style (int-returning, ct/ss/pk-ordered) wrappers */
++/* liboqs: NIST-style (int-returning, ct/ss/pk-ordered) wrappers, incl. derandomized variants */
 +int crypto_kem_keypair(uint8_t *pk, uint8_t *sk);
++int crypto_kem_keypair_derand(uint8_t *pk, uint8_t *sk, const uint8_t *seed);
 +int crypto_kem_enc(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
++int crypto_kem_enc_derand(uint8_t *ct, uint8_t *ss, const uint8_t *pk, const uint8_t *seed);
 +int crypto_kem_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
 +
  #endif  // HQC_KEM_H
 diff --git a/src/common/hqc-5/hqc-kem.h b/src/common/hqc-5/hqc-kem.h
-index 2b35df4..61d617e 100644
+index 2b35df4..c067916 100644
 --- a/src/common/hqc-5/hqc-kem.h
 +++ b/src/common/hqc-5/hqc-kem.h
-@@ -7,6 +7,14 @@
+@@ -7,6 +7,16 @@
  #define HQC_KEM_H
  
  #include <stdint.h>
@@ -305,23 +313,27 @@ index 2b35df4..61d617e 100644
 +#define hqc_kem_encaps PQCHQC_NAMESPACE(hqc_kem_encaps)
 +#define hqc_kem_decaps PQCHQC_NAMESPACE(hqc_kem_decaps)
 +#define crypto_kem_keypair PQCHQC_NAMESPACE(crypto_kem_keypair)
++#define crypto_kem_keypair_derand PQCHQC_NAMESPACE(crypto_kem_keypair_derand)
 +#define crypto_kem_enc PQCHQC_NAMESPACE(crypto_kem_enc)
++#define crypto_kem_enc_derand PQCHQC_NAMESPACE(crypto_kem_enc_derand)
 +#define crypto_kem_dec PQCHQC_NAMESPACE(crypto_kem_dec)
  
  #define CRYPTO_ALGNAME "HQC-5"
  
-@@ -60,4 +68,9 @@ int8_t hqc_kem_encaps(uint8_t *K, uint8_t *c_kem, const uint8_t *ek_kem);
+@@ -60,4 +70,11 @@ int8_t hqc_kem_encaps(uint8_t *K, uint8_t *c_kem, const uint8_t *ek_kem);
   */
  int8_t hqc_kem_decaps(uint8_t *K_prime, const uint8_t *dk_kem, const uint8_t *c_kem);
  
-+/* liboqs: NIST-style (int-returning, ct/ss/pk-ordered) wrappers */
++/* liboqs: NIST-style (int-returning, ct/ss/pk-ordered) wrappers, incl. derandomized variants */
 +int crypto_kem_keypair(uint8_t *pk, uint8_t *sk);
++int crypto_kem_keypair_derand(uint8_t *pk, uint8_t *sk, const uint8_t *seed);
 +int crypto_kem_enc(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
++int crypto_kem_enc_derand(uint8_t *ct, uint8_t *ss, const uint8_t *pk, const uint8_t *seed);
 +int crypto_kem_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
 +
  #endif  // HQC_KEM_H
 diff --git a/src/common/hqc-kem.c b/src/common/hqc-kem.c
-index 47698f8..5e77be8 100644
+index 47698f8..3dc7ceb 100644
 --- a/src/common/hqc-kem.c
 +++ b/src/common/hqc-kem.c
 @@ -66,6 +66,7 @@ static int8_t hqc_kem_keygen_internal(uint8_t *ek_kem, uint8_t *dk_kem, const ui
@@ -340,7 +352,7 @@ index 47698f8..5e77be8 100644
      memset_zero(&ctx_kem, sizeof ctx_kem);
      memset_zero(dk_pke, sizeof dk_pke);
      memset_zero(sigma, sizeof sigma);
-@@ -335,3 +337,20 @@ static int8_t hqc_kem_decaps_internal(uint8_t *K_prime, const uint8_t *dk_kem, c
+@@ -335,3 +337,36 @@ static int8_t hqc_kem_decaps_internal(uint8_t *K_prime, const uint8_t *dk_kem, c
  int8_t hqc_kem_decaps(uint8_t *K_prime, const uint8_t *dk_kem, const uint8_t *c_kem) {
      return hqc_kem_decaps_internal(K_prime, dk_kem, c_kem);
  }
@@ -354,8 +366,24 @@ index 47698f8..5e77be8 100644
 +    return hqc_kem_keygen(pk, sk) == 0 ? 0 : -1;
 +}
 +
++/* seed: SEED_BYTES bytes (seed_kem) */
++int crypto_kem_keypair_derand(uint8_t *pk, uint8_t *sk, const uint8_t *seed) {
++    return hqc_kem_keygen_internal(pk, sk, seed) == 0 ? 0 : -1;
++}
++
 +int crypto_kem_enc(uint8_t *ct, uint8_t *ss, const uint8_t *pk) {
 +    return hqc_kem_encaps(ss, ct, pk) == 0 ? 0 : -1;
++}
++
++/* seed: PARAM_K bytes (m) || SALT_BYTES bytes (salt) */
++int crypto_kem_enc_derand(uint8_t *ct, uint8_t *ss, const uint8_t *pk, const uint8_t *seed) {
++    uint64_t m[(PARAM_K + 7) / 8] = {0}; /* m is used as uint64_t* downstream: keep it aligned */
++    uint8_t salt[SALT_BYTES] = {0};
++    memcpy(m, seed, PARAM_K);
++    memcpy(salt, seed + PARAM_K, SALT_BYTES);
++    int8_t ret = hqc_kem_encaps_internal(ss, ct, pk, (const uint8_t *)m, salt);
++    memset_zero(m, sizeof m);
++    return ret == 0 ? 0 : -1;
 +}
 +
 +int crypto_kem_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk) {

@@ -13,7 +13,9 @@
 #define hqc_kem_encaps PQCHQC_NAMESPACE(hqc_kem_encaps)
 #define hqc_kem_decaps PQCHQC_NAMESPACE(hqc_kem_decaps)
 #define crypto_kem_keypair PQCHQC_NAMESPACE(crypto_kem_keypair)
+#define crypto_kem_keypair_derand PQCHQC_NAMESPACE(crypto_kem_keypair_derand)
 #define crypto_kem_enc PQCHQC_NAMESPACE(crypto_kem_enc)
+#define crypto_kem_enc_derand PQCHQC_NAMESPACE(crypto_kem_enc_derand)
 #define crypto_kem_dec PQCHQC_NAMESPACE(crypto_kem_dec)
 
 #define CRYPTO_ALGNAME "HQC-5"
@@ -68,9 +70,11 @@ int8_t hqc_kem_encaps(uint8_t *K, uint8_t *c_kem, const uint8_t *ek_kem);
  */
 int8_t hqc_kem_decaps(uint8_t *K_prime, const uint8_t *dk_kem, const uint8_t *c_kem);
 
-/* liboqs: NIST-style (int-returning, ct/ss/pk-ordered) wrappers */
+/* liboqs: NIST-style (int-returning, ct/ss/pk-ordered) wrappers, incl. derandomized variants */
 int crypto_kem_keypair(uint8_t *pk, uint8_t *sk);
+int crypto_kem_keypair_derand(uint8_t *pk, uint8_t *sk, const uint8_t *seed);
 int crypto_kem_enc(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
+int crypto_kem_enc_derand(uint8_t *ct, uint8_t *ss, const uint8_t *pk, const uint8_t *seed);
 int crypto_kem_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
 
 #endif  // HQC_KEM_H

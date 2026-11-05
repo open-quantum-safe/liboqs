@@ -347,8 +347,24 @@ int crypto_kem_keypair(uint8_t *pk, uint8_t *sk) {
     return hqc_kem_keygen(pk, sk) == 0 ? 0 : -1;
 }
 
+/* seed: SEED_BYTES bytes (seed_kem) */
+int crypto_kem_keypair_derand(uint8_t *pk, uint8_t *sk, const uint8_t *seed) {
+    return hqc_kem_keygen_internal(pk, sk, seed) == 0 ? 0 : -1;
+}
+
 int crypto_kem_enc(uint8_t *ct, uint8_t *ss, const uint8_t *pk) {
     return hqc_kem_encaps(ss, ct, pk) == 0 ? 0 : -1;
+}
+
+/* seed: PARAM_K bytes (m) || SALT_BYTES bytes (salt) */
+int crypto_kem_enc_derand(uint8_t *ct, uint8_t *ss, const uint8_t *pk, const uint8_t *seed) {
+    uint64_t m[(PARAM_K + 7) / 8] = {0}; /* m is used as uint64_t* downstream: keep it aligned */
+    uint8_t salt[SALT_BYTES] = {0};
+    memcpy(m, seed, PARAM_K);
+    memcpy(salt, seed + PARAM_K, SALT_BYTES);
+    int8_t ret = hqc_kem_encaps_internal(ss, ct, pk, (const uint8_t *)m, salt);
+    memset_zero(m, sizeof m);
+    return ret == 0 ? 0 : -1;
 }
 
 int crypto_kem_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk) {
