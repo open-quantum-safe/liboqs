@@ -607,6 +607,13 @@ void oqs_sha2_sha512_inc_ctx_release_c(sha512ctx *state) {
 }
 
 void oqs_sha2_sha256_inc_blocks_c(sha256ctx *state, const uint8_t *in, size_t inblocks) {
+	/* No complete blocks to process; leave any buffered partial data for
+	 * inc_finalize. Returning here also avoids the tmp_buflen - data_len
+	 * underflow below when inblocks == 0 and data_len > 0. */
+	if (inblocks == 0) {
+		return;
+	}
+
 	uint64_t bytes = load_bigendian_64(state->ctx + 32);
 	size_t tmp_buflen = 64 * inblocks;
 	const uint8_t *new_in;

@@ -83,8 +83,6 @@
 #define crypto_sign_signature QRUOV_NAMESPACE(crypto_sign_signature)
 #define crypto_sign_verify QRUOV_NAMESPACE(crypto_sign_verify)
 
-#define AES128_CTR_Stream                    QRUOV_NAMESPACE(AES128_CTR_Stream)
-#define AES128_Key_Expansion                 QRUOV_NAMESPACE(AES128_Key_Expansion)
 #define evaluate                             QRUOV_NAMESPACE(evaluate)
 #define fq_eval_transpose_planes             QRUOV_NAMESPACE(fq_eval_transpose_planes)
 #define fql_aos_to_eval_transposed_soa       QRUOV_NAMESPACE(fql_aos_to_eval_transposed_soa)

@@ -436,7 +436,7 @@ def update_upstream_sig_alg_docs(liboqs_root, sigs, upstream_info, write_changes
                                 upstream_impl['supported_platforms'][i]['architecture'] = 'ARM64_V8'
                                 if 'asimd' in upstream_impl['supported_platforms'][i]['required_flags']:
                                     upstream_impl['supported_platforms'][i]['required_flags'].remove('asimd')
-                            if not upstream_impl['supported_platforms'][i]['required_flags']:
+                            if 'required_flags' in upstream_impl['supported_platforms'][i] and not upstream_impl['supported_platforms'][i]['required_flags']:
                                 del upstream_impl['supported_platforms'][i]['required_flags']
 
                         impl['supported-platforms'] = rhs_if_not_equal(impl['supported-platforms'], upstream_impl['supported_platforms'], "supported-platforms")

@@ -81,4 +81,10 @@ config LIBOQS_ENABLE_SIG_MQOM
 	default y
 	depends on LIBOQS
 
+config LIBOQS_ENABLE_SIG_SDITH
+	bool "Enable the SDitH signature algorithm"
+	default n
+	depends on LIBOQS
+	depends on 64BIT
+
 endmenu

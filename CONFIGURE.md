@@ -20,7 +20,8 @@ The following options can be passed to CMake before the build file generation pr
 - [OQS_SPEED_USE_ARM_PMU](#OQS_SPEED_USE_ARM_PMU)
 - [USE_COVERAGE](#USE_COVERAGE)
 - [USE_SANITIZER](#USE_SANITIZER)
-- [OQS_ENABLE_TEST_CONSTANT_TIME](#OQS_ENABLE_TEST_CONSTANT_TIME)
+- [OQS_ENABLE_TEST_CONSTANT_TIME_VALGRIND](#OQS_ENABLE_TEST_CONSTANT_TIME_VALGRIND)
+- [OQS_ENABLE_TEST_CONSTANT_TIME_MEMSAN](#OQS_ENABLE_TEST_CONSTANT_TIME_MEMSAN)
 - [OQS_STRICT_WARNINGS](#OQS_STRICT_WARNINGS)
 - [OQS_EMBEDDED_BUILD](#OQS_EMBEDDED_BUILD)
 - [OQS_MEMOPT_BUILD](#OQS_MEMOPT_BUILD)
@@ -81,7 +82,7 @@ Setting it to `OFF` together with [BUILD_SHARED_LIBS](#BUILD_SHARED_LIBS) `ON` i
 
 Note: `ALG` in `OQS_ENABLE_KEM_ALG/OQS_ENABLE_SIG_ALG/OQS_ENABLE_SIG_STFL_ALG` should be replaced with the specific algorithm name as demonstrated below.
 
-This can be set to `ON` or `OFF`, and is `ON` by default. When `OFF`, `ALG` and its code are excluded from the build process. When `ON`, made available are additional options whereby individual variants of `ALG` can be excluded from the build process. 
+This can be set to `ON` or `OFF`, and is `ON` by default, except for `OQS_ENABLE_KEM_CLASSIC_MCELIECE`, `OQS_ENABLE_SIG_STFL_XMSS`, and `OQS_ENABLE_SIG_STFL_LMS`, which are `OFF` by default. When `OFF`, `ALG` and its code are excluded from the build process. When `ON`, made available are additional options whereby individual variants of `ALG` can be excluded from the build process. 
 
 For example: if `OQS_ENABLE_KEM_BIKE` is set to `ON`, the options `OQS_ENABLE_KEM_bike_l1`, `OQS_ENABLE_KEM_bike_l3`, and `OQS_ENABLE_KEM_bike_l5` are made available (and are set to be `ON` by default).
 
@@ -93,7 +94,7 @@ For a full list of such options and their default values, consult [.CMake/alg_su
 
 ## OQS_ALGS_ENABLED
 
-A selected algorithm set is enabled. Possible values are "STD" selecting all algorithms standardized by NIST; "NIST_R4" selecting all algorithms evaluated in round 4 of the NIST PQC competition; "NIST_SIG_ONRAMP" selecting algorithms evaluated in the NIST PQC "onramp" standardization for additional signature schemes; "All" (or any other value) selecting all algorithms integrated into liboqs. Parameter setting "STD" minimizes library size but may require re-running code generator scripts in projects integrating `liboqs`; e.g., [oqs-provider](https://github.com/open-quantum-safe/oqs-provider) and [oqs-boringssl](https://github.com/open-quantum-safe/boringssl).
+A selected algorithm set is enabled. Possible values are "STD" selecting all algorithms standardized by NIST; "NIST_R4" selecting all algorithms evaluated in round 4 of the NIST PQC competition; "NIST_SIG_ONRAMP" selecting algorithms evaluated in the NIST PQC "onramp" standardization for additional signature schemes; "All" (or any other value) leaving each algorithm at its `OQS_ENABLE_*` setting, so algorithms that are disabled by default, such as Classic McEliece, must be enabled explicitly. Parameter setting "STD" minimizes library size but may require re-running code generator scripts in projects integrating `liboqs`; e.g., [oqs-provider](https://github.com/open-quantum-safe/oqs-provider) and [oqs-boringssl](https://github.com/open-quantum-safe/boringssl).
 
 **Attention**: If you use any predefined value (`STD` or `NIST_R4` or `NIST_SIG_ONRAMP` as of now) for this variable, the values added via [OQS_ENABLE_KEM_ALG/OQS_ENABLE_SIG_ALG/OQS_ENABLE_SIG_STFL_ALG](#OQS_ENABLE_KEM_ALG/OQS_ENABLE_SIG_ALG/OQS_ENABLE_SIG_STFL_ALG) variables will be ignored.
 
@@ -146,7 +147,7 @@ By default,
 
 These default choices have been made to optimize the default performance of all algorithms. Changing them implies performance penalties.
 
-When `OQS_USE_OPENSSL` is `ON`, CMake also scans the filesystem to find the minimum version of OpenSSL required by liboqs (which happens to be 1.1.1). The [OPENSSL_ROOT_DIR](https://cmake.org/cmake/help/latest/module/FindOpenSSL.html) option can be set to aid CMake in its search.
+When `OQS_USE_OPENSSL` is `ON`, OpenSSL 3.0 or newer is required. CMake scans the filesystem to find OpenSSL; the [OPENSSL_ROOT_DIR](https://cmake.org/cmake/help/latest/module/FindOpenSSL.html) option can be set to aid CMake in its search.
 
 **Default**: `ON`.
 
@@ -249,13 +250,15 @@ This has an effect when the compiler is Clang and when [CMAKE_BUILD_TYPE](#CMAKE
 
 **Default**: Unset.
 
-## OQS_ENABLE_TEST_CONSTANT_TIME
+## OQS_ENABLE_TEST_CONSTANT_TIME_VALGRIND
 
-This is used in conjunction with `tests/test_constant_time.py` to use Valgrind to look for instances of secret-dependent control flow.  liboqs must also be compiled with [CMAKE_BUILD_TYPE](#CMAKE_BUILD_TYPE) set to `Debug`.  
+This option enables Valgrind-based detection of non-constant time behaviour (timing side-channels) using `valgrind-varlat`. It is used in conjunction with the testing framework in `tests/ct_tooling/` (e.g., `tests/ct_tooling/ct_test.sh`). liboqs must also be compiled with [CMAKE_BUILD_TYPE](#CMAKE_BUILD_TYPE) set to `Debug`.
 
-See the documentation in [`tests/test_constant_time.py`](https://github.com/open-quantum-safe/liboqs/blob/main/tests/test_constant_time.py) for more usage information.
+**Default**: `OFF`.
 
-When this option is set to `ON`, the additional option `OQS_ENABLE_TEST_CONSTANT_TIME_OPTIMIZED` is made available to control whether liboqs is built using `-O3` optimization, as in a release build, or using the default "Debug" profile. By default, `OQS_ENABLE_TEST_CONSTANT_TIME_OPTIMIZED` is `OFF`.
+## OQS_ENABLE_TEST_CONSTANT_TIME_MEMSAN
+
+Similar to Valgrind's tooling, this option enables constant-time testing using Clang's MemorySanitizer (`memsan`) in `tests/ct_tooling/`. liboqs must also be compiled with [CMAKE_BUILD_TYPE](#CMAKE_BUILD_TYPE) set to `Debug` and using the Clang compiler with MemorySanitizer flags.
 
 **Default**: `OFF`.
 

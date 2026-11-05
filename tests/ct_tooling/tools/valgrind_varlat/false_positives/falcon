@@ -1,0 +1,250 @@
+{
+	Rejection sampling for short secret (f,g) that can be completed to full basis
+	Memcheck:Cond
+	fun:poly_small_mkgauss
+	fun:PQCLEAN_FALCON*_*_keygen
+	fun:PQCLEAN_FALCON*_*_crypto_sign_keypair
+}
+{
+	Rejection sampling for small (f,g) coefficients
+	Memcheck:Cond
+	src:keygen.c:4153 # fun:PQCLEAN_FALCON*_*_keygen
+	fun:PQCLEAN_FALCON*_AVX2_crypto_sign_keypair
+}
+{
+	Rejection sampling for small (f,g) coefficients
+	Memcheck:Cond
+	src:keygen.c:4154 # fun:PQCLEAN_FALCON*_*_keygen
+	fun:PQCLEAN_FALCON*_*_crypto_sign_keypair
+}
+{
+	Rejection sampling for small (f,g) coefficients
+	Memcheck:Cond
+	src:keygen.c:4155 # fun:PQCLEAN_FALCON*_*_keygen
+	fun:PQCLEAN_FALCON*_*_crypto_sign_keypair
+}
+{
+	Rejection sampling for small (f,g) norm
+	Memcheck:Cond
+	src:keygen.c:4173 # fun:PQCLEAN_FALCON*_*_keygen
+	fun:PQCLEAN_FALCON*_AVX2_crypto_sign_keypair
+}
+{
+	Rejection sampling for small (f,g) norm
+	Memcheck:Cond
+	src:keygen.c:4174 # fun:PQCLEAN_FALCON*_*_keygen
+	fun:PQCLEAN_FALCON*_*_crypto_sign_keypair
+}
+{
+	Rejection sampling for orthogonalized vector norm
+	Memcheck:Cond
+	src:keygen.c:4201 # fun:PQCLEAN_FALCON*_*_keygen
+	fun:PQCLEAN_FALCON*_AVX2_crypto_sign_keypair
+}
+{
+	Rejection sampling for orthogonalized vector norm
+	Memcheck:Cond
+	src:keygen.c:4202 # fun:PQCLEAN_FALCON*_*_keygen
+	fun:PQCLEAN_FALCON*_*_crypto_sign_keypair
+}
+{
+	Rejection sampling for invertible f
+	Memcheck:Cond
+	fun:PQCLEAN_FALCON*_*_compute_public
+	fun:PQCLEAN_FALCON*_*_keygen
+	fun:PQCLEAN_FALCON*_*_crypto_sign_keypair
+}
+{
+	Rejection sampling for basis completion (zint_bezout)
+	Memcheck:Cond
+	src:keygen.c:2713 # fun:solve_NTRU_deepest
+	fun:solve_NTRU
+	fun:PQCLEAN_FALCON*_AVX2_keygen
+	fun:PQCLEAN_FALCON*_AVX2_crypto_sign_keypair
+}
+{
+	Rejection sampling for basis completion (zint_bezout)
+	Memcheck:Cond
+	src:keygen.c:2714 # fun:solve_NTRU_deepest
+	fun:solve_NTRU
+	fun:PQCLEAN_FALCON*_*_keygen
+	fun:PQCLEAN_FALCON*_*_crypto_sign_keypair
+}
+{
+	Rejection sampling for basis completion (zint_mul_small Fp)
+	Memcheck:Cond
+	src:keygen.c:2725 # fun:solve_NTRU_deepest
+	fun:solve_NTRU
+	fun:PQCLEAN_FALCON*_AVX2_keygen
+	fun:PQCLEAN_FALCON*_AVX2_crypto_sign_keypair
+}
+{
+	Rejection sampling for basis completion (zint_mul_small Fp)
+	Memcheck:Cond
+	src:keygen.c:2726 # fun:solve_NTRU_deepest
+	fun:solve_NTRU
+	fun:PQCLEAN_FALCON*_*_keygen
+	fun:PQCLEAN_FALCON*_*_crypto_sign_keypair
+}
+{
+	Rejection sampling for basis completion (zint_mul_small Fp)
+	Memcheck:Cond
+	src:keygen.c:2727 # fun:solve_NTRU_deepest
+	fun:solve_NTRU
+	fun:PQCLEAN_FALCON*_*_keygen
+	fun:PQCLEAN_FALCON*_*_crypto_sign_keypair
+}
+{
+	Keygen is restarted on floating point exception
+	Memcheck:Cond
+	src:keygen.c:3197 # fun:solve_NTRU_intermediate
+	fun:solve_NTRU
+	fun:PQCLEAN_FALCON*_AVX2_keygen
+	fun:PQCLEAN_FALCON*_AVX2_crypto_sign_keypair
+}
+{
+	Keygen is restarted on floating point exception
+	Memcheck:Cond
+	src:keygen.c:3198 # fun:solve_NTRU_intermediate
+	fun:solve_NTRU
+	fun:PQCLEAN_FALCON*_*_keygen
+	fun:PQCLEAN_FALCON*_*_crypto_sign_keypair
+}
+{
+	Keygen is restarted on floating point exception
+	Memcheck:Cond
+	src:keygen.c:3199 # fun:solve_NTRU_intermediate
+	fun:solve_NTRU
+	fun:PQCLEAN_FALCON*_*_keygen
+	fun:PQCLEAN_FALCON*_*_crypto_sign_keypair
+}
+{
+	Keygen is restarted on floating point exception
+	Memcheck:Cond
+	src:keygen.c:3625 # fun:solve_NTRU_binary_depth1
+	fun:solve_NTRU
+	fun:PQCLEAN_FALCON*_AVX2_keygen
+	fun:PQCLEAN_FALCON*_AVX2_crypto_sign_keypair
+}
+{
+	Keygen is restarted on floating point exception
+	Memcheck:Cond
+	src:keygen.c:3626 # fun:solve_NTRU_binary_depth1
+	fun:solve_NTRU
+	fun:PQCLEAN_FALCON*_*_keygen
+	fun:PQCLEAN_FALCON*_*_crypto_sign_keypair
+}
+{
+	Keygen is restarted if (F,G) cannot be packed to small integers
+	Memcheck:Cond
+	src:keygen.c:2065 # fun:poly_big_to_small
+	fun:solve_NTRU
+	fun:PQCLEAN_FALCON*_*_keygen
+	fun:PQCLEAN_FALCON*_*_crypto_sign_keypair
+}
+{
+	Keygen is restarted if f*G - g*F != 12289 mod a small prime
+	Memcheck:Cond
+	src:keygen.c:4025 # fun:solve_NTRU
+	fun:PQCLEAN_FALCON*_AVX2_keygen
+	fun:PQCLEAN_FALCON*_AVX2_crypto_sign_keypair
+}
+{
+	Keygen is restarted if f*G - g*F != 12289 mod a small prime
+	Memcheck:Cond
+	src:keygen.c:4026 # fun:solve_NTRU
+	fun:PQCLEAN_FALCON*_*_keygen
+	fun:PQCLEAN_FALCON*_*_crypto_sign_keypair
+}
+{
+	Exception while encoding secret key (keygen fails and key is unused)
+	Memcheck:Cond
+	fun:PQCLEAN_FALCON*_*_trim_i8_encode
+	fun:PQCLEAN_FALCON*_*_crypto_sign_keypair
+}
+{
+	Exception while encoding public key (keygen fails and key is unused)
+	Memcheck:Cond
+	fun:PQCLEAN_FALCON*_*_modq_encode
+	fun:PQCLEAN_FALCON*_*_crypto_sign_keypair
+}
+
+# Suppressions that work for both CLEAN and AVX2 implementations
+
+{
+   Exception while reading secret key. No signature is produced.
+   Memcheck:Cond
+   fun:PQCLEAN_FALCON*_*_trim_i8_decode
+   fun:do_sign
+   fun:PQCLEAN_FALCON*_*_crypto_sign_signature
+}
+{
+   Exception while re-computing private basis (non-invertible f). No signature is produced.
+   Memcheck:Cond
+   src:vrfy.c:726 # fun:PQCLEAN_FALCON*_*_complete_private
+   fun:do_sign
+   fun:PQCLEAN_FALCON*_*_crypto_sign_signature
+}
+{
+   Exception while re-computing private basis (large G coefficients). No signature is produced.
+   Memcheck:Cond
+   src:vrfy.c:739 # fun:PQCLEAN_FALCON*_*_complete_private
+   fun:do_sign
+   fun:PQCLEAN_FALCON*_*_crypto_sign_signature
+}
+{
+   Rejection sampling on encoded signature size
+   Memcheck:Cond
+   fun:PQCLEAN_FALCON*_*_comp_encode
+   fun:do_sign
+   fun:PQCLEAN_FALCON*_*_crypto_sign_signature
+}
+
+
+# CLEAN implementation of sign.c 
+
+{
+   Rejection sampling to re-center discrete Gaussian distribution
+   Memcheck:Cond
+   # Wildcard to catch the while loop in fun:BerExp as well as line the if on src:sign.c:1155
+   ...
+   src:sign.c:1155 # fun:PQCLEAN_FALCON*_CLEAN_sampler
+   ...
+   fun:PQCLEAN_FALCON*_CLEAN_crypto_sign_signature
+}
+{
+   Rejection sampling on signature length
+   Memcheck:Cond
+   src:sign.c:946 # fun:do_sign_dyn
+   fun:PQCLEAN_FALCON*_CLEAN_sign_dyn
+   fun:do_sign
+   fun:PQCLEAN_FALCON*_CLEAN_crypto_sign_signature
+}
+{
+   Rejection sampling on encoded signature size
+   Memcheck:Cond
+   fun:PQCLEAN_FALCON*_CLEAN_comp_encode
+   fun:do_sign
+   fun:PQCLEAN_FALCON*_CLEAN_crypto_sign_signature
+}
+
+
+# AVX2 implementation of sign.c 
+
+{
+   Rejection sampling to re-center discrete Gaussian distribution
+   Memcheck:Cond
+   # Wildcard to catch the while loop in fun:BerExp as well as line the if on src:sign.c:1153
+   ...
+   src:sign.c:1213 # fun:PQCLEAN_FALCON*_AVX2_sampler
+   ...
+   fun:PQCLEAN_FALCON*_AVX2_crypto_sign_signature
+}
+{
+   Rejection sampling on signature length
+   Memcheck:Cond
+   src:sign.c:939 # fun:do_sign_dyn
+   fun:PQCLEAN_FALCON*_AVX2_sign_dyn
+   fun:do_sign
+   fun:PQCLEAN_FALCON*_AVX2_crypto_sign_signature
+}
