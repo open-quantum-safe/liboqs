@@ -1,0 +1,16 @@
+{
+   HQC fixed-weight sampling by rejection (SampleFixedWeightVect$, keygen and PKE re-derivation during decaps): loop count depends on rejected/colliding candidates
+   Memcheck:Cond
+   fun:PQCHQC_HQC*_C_vect_generate_random_support1
+}
+{
+   HQC fixed-weight sampling by rejection (SampleFixedWeightVect$, keygen and PKE re-derivation during decaps): store index depends on accepted-candidate count
+   Memcheck:Value8
+   fun:PQCHQC_HQC*_C_vect_generate_random_support1
+}
+{
+   This implementation of HQC is not validated against branching on secret
+   Memcheck:Cond
+   fun:find_peaks
+   fun:PQCHQC_HQC*_C_reed_muller_decode
+}
