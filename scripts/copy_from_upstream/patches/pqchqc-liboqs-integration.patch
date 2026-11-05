@@ -1,6 +1,6 @@
 diff --git a/integrations/HQC-1_META.yml b/integrations/HQC-1_META.yml
 new file mode 100644
-index 0000000..b9bdfd4
+index 0000000..92671f6
 --- /dev/null
 +++ b/integrations/HQC-1_META.yml
 @@ -0,0 +1,59 @@
@@ -10,15 +10,15 @@ index 0000000..b9bdfd4
 +claimed-security: IND-CCA2
 +length-public-key: 2241
 +length-ciphertext: 4433
-+length-secret-key: 2321
++length-secret-key: 32
 +length-shared-secret: 32
 +length-keypair-seed: 0
 +length-encaps-seed: 0
 +# NOTE: for test_kat (1 test case):
-+# head -8 kats/ref/hqc-1/PQCkemKAT_2321.rsp | tail -6 | sha256sum
++# head -8 kats/ref/hqc-1/PQCkemKAT_32.rsp | tail -6 | sha256sum
 +# for test_kat_all (100 test cases):
-+# head -701 kats/ref/hqc-1/PQCkemKAT_2321.rsp | tail -699 | sha256sum
-+nistkat-sha256: 0f1f4fd014b32492ec6490d2ad9e9f75ccc0c2b27d72f34918c7f73f9698c2e4
++# head -701 kats/ref/hqc-1/PQCkemKAT_32.rsp | tail -699 | sha256sum
++nistkat-sha256: e06a2111c37e22b4fe7268f99f7e10df7dec755326800da19a5b4a4fc513ee62
 +testvectors-sha256: xxx
 +principal-submitters:
 +- Philippe Gaborit
@@ -47,7 +47,7 @@ index 0000000..b9bdfd4
 +- Valentin Vasseur
 +implementations:
 +- name: ref
-+  version: "https://gitlab.com/pqc-hqc/hqc@161cd4f"
++  version: "https://gitlab.com/pqc-hqc/hqc@06567cc"
 +  folder_name: .
 +  compile_opts: "-DHQC_ARCH_REF=1 -DPQCHQC_NAMESPACE_PREFIX=PQCHQC_HQC1_C_ -DUSE_OQS_RANDOMBYTES"
 +  signature_keypair: PQCHQC_HQC1_C_crypto_kem_keypair
@@ -59,13 +59,13 @@ index 0000000..b9bdfd4
 +    src/ref/reed_solomon.c src/ref/reed_muller.c src/ref/hqc.c src/ref/vector.h
 +    src/ref/hqc-1/reed_solomon.h src/ref/hqc-1/parameters.h src/ref/hqc.h
 +    src/ref/parsing.h src/ref/data_structures.h src/ref/gf.h src/ref/gf2x.h
-+    src/common/fft.h src/common/crypto_memset.h src/common/code.h
-+    src/common/reed_muller.h src/common/kem.c src/common/hqc-1/api.h
-+    src/common/symmetric.h src/common/crypto_memset.c src/common/fft.c
-+    src/common/code.c src/common/symmetric.c src/common/namespace.h
++    src/common/crypto_memset.h src/common/code.h src/common/reed_muller.h
++    src/common/hqc-kem.c src/common/hqc-1/hqc-kem.h src/common/symmetric.h
++    src/common/crypto_memset.c src/common/code.c src/common/symmetric.c
++    src/common/namespace.h src/common/randombytes.h
 diff --git a/integrations/HQC-3_META.yml b/integrations/HQC-3_META.yml
 new file mode 100644
-index 0000000..daaae06
+index 0000000..cc1ae6c
 --- /dev/null
 +++ b/integrations/HQC-3_META.yml
 @@ -0,0 +1,59 @@
@@ -75,15 +75,15 @@ index 0000000..daaae06
 +claimed-security: IND-CCA2
 +length-public-key: 4514
 +length-ciphertext: 8978
-+length-secret-key: 4602
++length-secret-key: 32
 +length-shared-secret: 32
 +length-keypair-seed: 0
 +length-encaps-seed: 0
-+# NOTE: for test_kat (one test case):
-+# head -8 kats/ref/hqc-3/PQCkemKAT_4602.rsp | tail -6 | sha256sum
++# NOTE: for test_kat (1 test case):
++# head -8 kats/ref/hqc-3/PQCkemKAT_32.rsp | tail -6 | sha256sum
 +# for test_kat_all (100 test cases):
-+# head -701 kats/ref/hqc-3/PQCkemKAT_4602.rsp | tail -699 | sha256sum
-+nistkat-sha256: b88d4cfe517446854b5d3c85e6602518a526c5eb95571348ce4ab5915faa05b6
++# head -701 kats/ref/hqc-3/PQCkemKAT_32.rsp | tail -699 | sha256sum
++nistkat-sha256: 20f8ae4ba7c449b6e1941df1efb3e8659dcff1cfedbae0c1287fef1ce79de3b2
 +testvectors-sha256: xxx
 +principal-submitters:
 +- Philippe Gaborit
@@ -112,7 +112,7 @@ index 0000000..daaae06
 +- Valentin Vasseur
 +implementations:
 +- name: ref
-+  version: "https://gitlab.com/pqc-hqc/hqc@161cd4f"
++  version: "https://gitlab.com/pqc-hqc/hqc@06567cc"
 +  folder_name: .
 +  compile_opts: "-DHQC_ARCH_REF=1 -DPQCHQC_NAMESPACE_PREFIX=PQCHQC_HQC3_C_ -DUSE_OQS_RANDOMBYTES"
 +  signature_keypair: PQCHQC_HQC3_C_crypto_kem_keypair
@@ -124,13 +124,13 @@ index 0000000..daaae06
 +    src/ref/reed_solomon.c src/ref/reed_muller.c src/ref/hqc.c src/ref/vector.h
 +    src/ref/hqc-3/reed_solomon.h src/ref/hqc-3/parameters.h src/ref/hqc.h
 +    src/ref/parsing.h src/ref/data_structures.h src/ref/gf.h src/ref/gf2x.h
-+    src/common/fft.h src/common/crypto_memset.h src/common/code.h
-+    src/common/reed_muller.h src/common/kem.c src/common/hqc-3/api.h
-+    src/common/symmetric.h src/common/crypto_memset.c src/common/fft.c
-+    src/common/code.c src/common/symmetric.c src/common/namespace.h
++    src/common/crypto_memset.h src/common/code.h src/common/reed_muller.h
++    src/common/hqc-kem.c src/common/hqc-3/hqc-kem.h src/common/symmetric.h
++    src/common/crypto_memset.c src/common/code.c src/common/symmetric.c
++    src/common/namespace.h src/common/randombytes.h
 diff --git a/integrations/HQC-5_META.yml b/integrations/HQC-5_META.yml
 new file mode 100644
-index 0000000..0d4e3a2
+index 0000000..7629cd5
 --- /dev/null
 +++ b/integrations/HQC-5_META.yml
 @@ -0,0 +1,59 @@
@@ -140,15 +140,15 @@ index 0000000..0d4e3a2
 +claimed-security: IND-CCA2
 +length-public-key: 7237
 +length-ciphertext: 14421
-+length-secret-key: 7333
++length-secret-key: 32
 +length-shared-secret: 32
 +length-keypair-seed: 0
 +length-encaps-seed: 0
-+# NOTE: for test_kat (one test case):
-+# head -8 kats/ref/hqc-5/PQCkemKAT_7333.rsp | tail -6 | sha256sum
++# NOTE: for test_kat (1 test case):
++# head -8 kats/ref/hqc-5/PQCkemKAT_32.rsp | tail -6 | sha256sum
 +# for test_kat_all (100 test cases):
-+# head -701 kats/ref/hqc-5/PQCkemKAT_7333.rsp | tail -699 | sha256sum
-+nistkat-sha256: 87bf16803c53f3add0004097b8aa924053d9cd2c5fffc443fe3742ee3254428b
++# head -701 kats/ref/hqc-5/PQCkemKAT_32.rsp | tail -699 | sha256sum
++nistkat-sha256: 80fddaba6f95e1ed6ca1b155e5808fee6da1fafdff8d442af8155f548c833c71
 +testvectors-sha256: xxx
 +principal-submitters:
 +- Philippe Gaborit
@@ -177,7 +177,7 @@ index 0000000..0d4e3a2
 +- Valentin Vasseur
 +implementations:
 +- name: ref
-+  version: "https://gitlab.com/pqc-hqc/hqc@161cd4f"
++  version: "https://gitlab.com/pqc-hqc/hqc@06567cc"
 +  folder_name: .
 +  compile_opts: "-DHQC_ARCH_REF=1 -DPQCHQC_NAMESPACE_PREFIX=PQCHQC_HQC5_C_ -DUSE_OQS_RANDOMBYTES"
 +  signature_keypair: PQCHQC_HQC5_C_crypto_kem_keypair
@@ -189,10 +189,10 @@ index 0000000..0d4e3a2
 +    src/ref/reed_solomon.c src/ref/reed_muller.c src/ref/hqc.c src/ref/vector.h
 +    src/ref/hqc-5/reed_solomon.h src/ref/hqc-5/parameters.h src/ref/hqc.h
 +    src/ref/parsing.h src/ref/data_structures.h src/ref/gf.h src/ref/gf2x.h
-+    src/common/fft.h src/common/crypto_memset.h src/common/code.h
-+    src/common/reed_muller.h src/common/kem.c src/common/hqc-5/api.h
-+    src/common/symmetric.h src/common/crypto_memset.c src/common/fft.c
-+    src/common/code.c src/common/symmetric.c src/common/namespace.h
++    src/common/crypto_memset.h src/common/code.h src/common/reed_muller.h
++    src/common/hqc-kem.c src/common/hqc-5/hqc-kem.h src/common/symmetric.h
++    src/common/crypto_memset.c src/common/code.c src/common/symmetric.c
++    src/common/namespace.h src/common/randombytes.h
 diff --git a/src/common/code.h b/src/common/code.h
 index ef8439a..c6b384e 100644
 --- a/src/common/code.h
@@ -233,94 +233,134 @@ index 744d49d..861630b 100644
  /**
   * safer call to memset https://github.com/veorq/cryptocoding#problem-4
   */
-diff --git a/src/common/fft.h b/src/common/fft.h
-index a0f0648..ebfaac5 100644
---- a/src/common/fft.h
-+++ b/src/common/fft.h
-@@ -8,6 +8,10 @@
+diff --git a/src/common/hqc-1/hqc-kem.h b/src/common/hqc-1/hqc-kem.h
+index 9719a4e..520fb23 100644
+--- a/src/common/hqc-1/hqc-kem.h
++++ b/src/common/hqc-1/hqc-kem.h
+@@ -7,6 +7,14 @@
+ #define HQC_KEM_H
  
- #include <stddef.h>
  #include <stdint.h>
 +#include "namespace.h"
 +
-+#define fft PQCHQC_NAMESPACE(fft)
-+#define fft_retrieve_error_poly PQCHQC_NAMESPACE(fft_retrieve_error_poly)
- 
- void fft(uint16_t *w, const uint16_t *f, size_t f_coeffs);
- void fft_retrieve_error_poly(uint8_t *error, const uint16_t *w);
-diff --git a/src/common/hqc-1/api.h b/src/common/hqc-1/api.h
-index 07a1196..796f4d2 100644
---- a/src/common/hqc-1/api.h
-+++ b/src/common/hqc-1/api.h
-@@ -13,6 +13,12 @@
- #define CRYPTO_BYTES           32
- #define CRYPTO_CIPHERTEXTBYTES 4433
- 
-+#include "namespace.h"
-+
++#define hqc_kem_keygen PQCHQC_NAMESPACE(hqc_kem_keygen)
++#define hqc_kem_encaps PQCHQC_NAMESPACE(hqc_kem_encaps)
++#define hqc_kem_decaps PQCHQC_NAMESPACE(hqc_kem_decaps)
 +#define crypto_kem_keypair PQCHQC_NAMESPACE(crypto_kem_keypair)
 +#define crypto_kem_enc PQCHQC_NAMESPACE(crypto_kem_enc)
 +#define crypto_kem_dec PQCHQC_NAMESPACE(crypto_kem_dec)
+ 
+ #define CRYPTO_ALGNAME "HQC-1"
+ 
+@@ -60,4 +68,9 @@ int8_t hqc_kem_encaps(uint8_t *K, uint8_t *c_kem, const uint8_t *ek_kem);
+  */
+ int8_t hqc_kem_decaps(uint8_t *K_prime, const uint8_t *dk_kem, const uint8_t *c_kem);
+ 
++/* liboqs: NIST-style (int-returning, ct/ss/pk-ordered) wrappers */
++int crypto_kem_keypair(uint8_t *pk, uint8_t *sk);
++int crypto_kem_enc(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
++int crypto_kem_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
 +
- // As a technicality, the public key is appended to the secret key in order to respect the NIST API.
- // Without this constraint, CRYPTO_SECRETKEYBYTES would be defined as 32
+ #endif  // HQC_KEM_H
+diff --git a/src/common/hqc-3/hqc-kem.h b/src/common/hqc-3/hqc-kem.h
+index 47c5e21..7160ab2 100644
+--- a/src/common/hqc-3/hqc-kem.h
++++ b/src/common/hqc-3/hqc-kem.h
+@@ -7,6 +7,14 @@
+ #define HQC_KEM_H
  
-diff --git a/src/common/hqc-3/api.h b/src/common/hqc-3/api.h
-index 8bffd04..263c5fd 100644
---- a/src/common/hqc-3/api.h
-+++ b/src/common/hqc-3/api.h
-@@ -13,9 +13,14 @@
- #define CRYPTO_BYTES           32
- #define CRYPTO_CIPHERTEXTBYTES 8978
- 
+ #include <stdint.h>
 +#include "namespace.h"
 +
++#define hqc_kem_keygen PQCHQC_NAMESPACE(hqc_kem_keygen)
++#define hqc_kem_encaps PQCHQC_NAMESPACE(hqc_kem_encaps)
++#define hqc_kem_decaps PQCHQC_NAMESPACE(hqc_kem_decaps)
 +#define crypto_kem_keypair PQCHQC_NAMESPACE(crypto_kem_keypair)
 +#define crypto_kem_enc PQCHQC_NAMESPACE(crypto_kem_enc)
 +#define crypto_kem_dec PQCHQC_NAMESPACE(crypto_kem_dec)
-+
- // As a technicality, the public key is appended to the secret key in order to respect the NIST API.
- // Without this constraint, CRYPTO_SECRETKEYBYTES would be defined as 32
--
- int crypto_kem_keypair(unsigned char *pk, unsigned char *sk);
- int crypto_kem_enc(unsigned char *ct, unsigned char *ss, const unsigned char *pk);
- int crypto_kem_dec(unsigned char *ss, const unsigned char *ct, const unsigned char *sk);
-diff --git a/src/common/hqc-5/api.h b/src/common/hqc-5/api.h
-index 3f2b5ec..f849f86 100644
---- a/src/common/hqc-5/api.h
-+++ b/src/common/hqc-5/api.h
-@@ -13,6 +13,12 @@
- #define CRYPTO_BYTES           32
- #define CRYPTO_CIPHERTEXTBYTES 14421
  
+ #define CRYPTO_ALGNAME "HQC-3"
+ 
+@@ -60,4 +68,9 @@ int8_t hqc_kem_encaps(uint8_t *K, uint8_t *c_kem, const uint8_t *ek_kem);
+  */
+ int8_t hqc_kem_decaps(uint8_t *K_prime, const uint8_t *dk_kem, const uint8_t *c_kem);
+ 
++/* liboqs: NIST-style (int-returning, ct/ss/pk-ordered) wrappers */
++int crypto_kem_keypair(uint8_t *pk, uint8_t *sk);
++int crypto_kem_enc(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
++int crypto_kem_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
++
+ #endif  // HQC_KEM_H
+diff --git a/src/common/hqc-5/hqc-kem.h b/src/common/hqc-5/hqc-kem.h
+index 2b35df4..61d617e 100644
+--- a/src/common/hqc-5/hqc-kem.h
++++ b/src/common/hqc-5/hqc-kem.h
+@@ -7,6 +7,14 @@
+ #define HQC_KEM_H
+ 
+ #include <stdint.h>
 +#include "namespace.h"
 +
++#define hqc_kem_keygen PQCHQC_NAMESPACE(hqc_kem_keygen)
++#define hqc_kem_encaps PQCHQC_NAMESPACE(hqc_kem_encaps)
++#define hqc_kem_decaps PQCHQC_NAMESPACE(hqc_kem_decaps)
 +#define crypto_kem_keypair PQCHQC_NAMESPACE(crypto_kem_keypair)
 +#define crypto_kem_enc PQCHQC_NAMESPACE(crypto_kem_enc)
 +#define crypto_kem_dec PQCHQC_NAMESPACE(crypto_kem_dec)
+ 
+ #define CRYPTO_ALGNAME "HQC-5"
+ 
+@@ -60,4 +68,9 @@ int8_t hqc_kem_encaps(uint8_t *K, uint8_t *c_kem, const uint8_t *ek_kem);
+  */
+ int8_t hqc_kem_decaps(uint8_t *K_prime, const uint8_t *dk_kem, const uint8_t *c_kem);
+ 
++/* liboqs: NIST-style (int-returning, ct/ss/pk-ordered) wrappers */
++int crypto_kem_keypair(uint8_t *pk, uint8_t *sk);
++int crypto_kem_enc(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
++int crypto_kem_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
 +
- // As a technicality, the public key is appended to the secret key in order to respect the NIST API.
- // Without this constraint, CRYPTO_SECRETKEYBYTES would be defined as 32
- 
-diff --git a/src/common/kem.c b/src/common/kem.c
-index 19ff6e0..1899871 100644
---- a/src/common/kem.c
-+++ b/src/common/kem.c
-@@ -48,13 +48,13 @@ int crypto_kem_keypair(uint8_t *ek_kem, uint8_t *dk_kem) {
-     uint8_t ek_pke[PUBLIC_KEY_BYTES] = {0};
-     uint8_t dk_pke[SEED_BYTES] = {0};
- 
--    // Sample seed_kem
-     prng_get_bytes(seed_kem, SEED_BYTES);
- 
-     // Compute seed_pke and randomness sigma
-     xof_init(&ctx_kem, seed_kem, SEED_BYTES);
-     xof_get_bytes(&ctx_kem, seed_pke, SEED_BYTES);
-     xof_get_bytes(&ctx_kem, sigma, PARAM_SECURITY_BYTES);
+ #endif  // HQC_KEM_H
+diff --git a/src/common/hqc-kem.c b/src/common/hqc-kem.c
+index 47698f8..5e77be8 100644
+--- a/src/common/hqc-kem.c
++++ b/src/common/hqc-kem.c
+@@ -66,6 +66,7 @@ static int8_t hqc_kem_keygen_internal(uint8_t *ek_kem, uint8_t *dk_kem, const ui
+     // Zeroize sensitive data
+     memset_zero(seed_pke, sizeof seed_pke);
+     memset_zero(dk_pke, sizeof dk_pke);
 +    xof_ctx_release(&ctx_kem);
+     memset_zero(&ctx_kem, sizeof ctx_kem);
  
-     // Compute HQC-PKE keypair
-     hqc_pke_keygen(ek_pke, dk_pke, seed_pke);
+     return 0;
+@@ -310,6 +311,7 @@ static int8_t hqc_kem_decaps_internal(uint8_t *K_prime, const uint8_t *dk_kem, c
+ 
+     // Zeroize sensitive data
+     memset_zero(seed_pke, sizeof seed_pke);
++    xof_ctx_release(&ctx_kem);
+     memset_zero(&ctx_kem, sizeof ctx_kem);
+     memset_zero(dk_pke, sizeof dk_pke);
+     memset_zero(sigma, sizeof sigma);
+@@ -335,3 +337,20 @@ static int8_t hqc_kem_decaps_internal(uint8_t *K_prime, const uint8_t *dk_kem, c
+ int8_t hqc_kem_decaps(uint8_t *K_prime, const uint8_t *dk_kem, const uint8_t *c_kem) {
+     return hqc_kem_decaps_internal(K_prime, dk_kem, c_kem);
+ }
++
++/*
++ * liboqs integration: NIST-style wrappers.
++ * liboqs calls KEMs as (ct, ss, pk) / (ss, ct, sk) with an int return value,
++ * whereas the HQC API is (K, c_kem, ek_kem) / (K', dk_kem, c_kem) returning int8_t.
++ */
++int crypto_kem_keypair(uint8_t *pk, uint8_t *sk) {
++    return hqc_kem_keygen(pk, sk) == 0 ? 0 : -1;
++}
++
++int crypto_kem_enc(uint8_t *ct, uint8_t *ss, const uint8_t *pk) {
++    return hqc_kem_encaps(ss, ct, pk) == 0 ? 0 : -1;
++}
++
++int crypto_kem_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk) {
++    return hqc_kem_decaps(ss, sk, ct) == 0 ? 0 : -1;
++}
 diff --git a/src/common/namespace.h b/src/common/namespace.h
 new file mode 100644
 index 0000000..2013183
@@ -346,6 +386,25 @@ index 0000000..2013183
 +#define PQCHQC_NAMESPACE(name) PQCHQC_CONCAT(PQCHQC_NAMESPACE_PREFIX, name)
 +
 +#endif /* !HQC_NAMESPACE_H */
+diff --git a/src/common/randombytes.h b/src/common/randombytes.h
+index 3f6e4a6..371cd25 100644
+--- a/src/common/randombytes.h
++++ b/src/common/randombytes.h
+@@ -20,6 +20,14 @@
+  * @note This function must be backed by a secure RBG and return fresh bytes
+  *       on every call.
+  */
++#ifdef USE_OQS_RANDOMBYTES
++#include <oqs/rand.h>
++static inline int randombytes(uint8_t *out, size_t outlen) {
++    OQS_randombytes(out, outlen);
++    return 0;
++}
++#else
+ int randombytes(uint8_t *out, size_t outlen);
++#endif
+ 
+ #endif  // HQC_RANDOMBYTES_H
 diff --git a/src/common/reed_muller.h b/src/common/reed_muller.h
 index d4c22b4..4bd8609 100644
 --- a/src/common/reed_muller.h
@@ -362,81 +421,38 @@ index d4c22b4..4bd8609 100644
  void reed_muller_encode(uint64_t* cdw, const uint64_t* msg);
  void reed_muller_decode(uint64_t* msg, const uint64_t* cdw);
 diff --git a/src/common/symmetric.c b/src/common/symmetric.c
-index b963673..5169d9e 100644
+index 09b42a0..c6b7e4f 100644
 --- a/src/common/symmetric.c
 +++ b/src/common/symmetric.c
-@@ -7,12 +7,26 @@
- #include "symmetric.h"
- #include <stdint.h>
- 
-+#ifdef USE_OQS_RANDOMBYTES
-+#include <oqs/rand.h>
-+
-+void prng_init(uint8_t *entropy_input, uint8_t *personalization_string, uint32_t enlen, uint32_t perlen) {
-+    (void)entropy_input;
-+    (void)personalization_string;
-+    (void)enlen;
-+    (void)perlen;
-+}
-+
-+void prng_get_bytes(uint8_t *output, uint32_t outlen) {
-+    OQS_randombytes(output, outlen);
-+}
-+#else
- /**
-  * @typedef shake256_prng_ctx
-  * @brief Incremental SHAKE-256 prng context.
-  *
-  */
--shake256incctx shake256_prng_ctx;
-+static OQS_SHA3_shake256_inc_ctx shake256_prng_ctx;
- 
- /**
-  * @brief SHAKE-256 with incremental API and domain separation
-@@ -26,11 +40,11 @@ shake256incctx shake256_prng_ctx;
-  */
- void prng_init(uint8_t *entropy_input, uint8_t *personalization_string, uint32_t enlen, uint32_t perlen) {
-     uint8_t domain = HQC_PRNG_DOMAIN;
--    shake256_inc_init(&shake256_prng_ctx);
--    shake256_inc_absorb(&shake256_prng_ctx, entropy_input, enlen);
--    shake256_inc_absorb(&shake256_prng_ctx, personalization_string, perlen);
--    shake256_inc_absorb(&shake256_prng_ctx, &domain, 1);
--    shake256_inc_finalize(&shake256_prng_ctx);
-+    OQS_SHA3_shake256_inc_init(&shake256_prng_ctx);
-+    OQS_SHA3_shake256_inc_absorb(&shake256_prng_ctx, entropy_input, enlen);
-+    OQS_SHA3_shake256_inc_absorb(&shake256_prng_ctx, personalization_string, perlen);
-+    OQS_SHA3_shake256_inc_absorb(&shake256_prng_ctx, &domain, 1);
-+    OQS_SHA3_shake256_inc_finalize(&shake256_prng_ctx);
- }
- 
- /**
-@@ -42,8 +56,9 @@ void prng_init(uint8_t *entropy_input, uint8_t *personalization_string, uint32_t
-  * @param[in] outlen length of output in bytes
-  */
- void prng_get_bytes(uint8_t *output, uint32_t outlen) {
--    shake256_inc_squeeze(output, outlen, &shake256_prng_ctx);
-+    OQS_SHA3_shake256_inc_squeeze(output, outlen, &shake256_prng_ctx);
- }
-+#endif /* USE_OQS_RANDOMBYTES */
- 
- /**
-  * @brief Initializes a SHAKE256 XOF context with a given seed.
-@@ -54,10 +69,10 @@ void prng_get_bytes(uint8_t *output, uint32_t outlen) {
+@@ -15,9 +15,9 @@
+  * @param[in]  seed_size Size of the seed in bytes.
   */
  void xof_init(shake256_xof_ctx *xof_ctx, const uint8_t *seed, uint32_t seed_size) {
-     uint8_t xof_domain = HQC_XOF_DOMAIN;
 -    shake256_inc_init(xof_ctx);
 -    shake256_inc_absorb(xof_ctx, seed, seed_size);
--    shake256_inc_absorb(xof_ctx, &xof_domain, 1);
 -    shake256_inc_finalize(xof_ctx);
 +    OQS_SHA3_shake256_inc_init(xof_ctx);
 +    OQS_SHA3_shake256_inc_absorb(xof_ctx, seed, seed_size);
-+    OQS_SHA3_shake256_inc_absorb(xof_ctx, &xof_domain, 1);
 +    OQS_SHA3_shake256_inc_finalize(xof_ctx);
  }
  
  /**
-@@ -72,7 +87,14 @@ void xof_init(shake256_xof_ctx *xof_ctx, const uint8_t *seed, uint32_t seed_size
+@@ -34,10 +34,10 @@ void xof_init(shake256_xof_ctx *xof_ctx, const uint8_t *seed, uint32_t seed_size
+  * @param[in]  domain_separator Domain separator.
+  */
+ void xof_init_dom_sep(shake256_xof_ctx *xof_ctx, const uint8_t *seed, uint32_t seed_size, uint8_t domain_separator) {
+-    shake256_inc_init(xof_ctx);
+-    shake256_inc_absorb(xof_ctx, seed, seed_size);
+-    shake256_inc_absorb(xof_ctx, &domain_separator, 1);
+-    shake256_inc_finalize(xof_ctx);
++    OQS_SHA3_shake256_inc_init(xof_ctx);
++    OQS_SHA3_shake256_inc_absorb(xof_ctx, seed, seed_size);
++    OQS_SHA3_shake256_inc_absorb(xof_ctx, &domain_separator, 1);
++    OQS_SHA3_shake256_inc_finalize(xof_ctx);
+ }
+ 
+ /**
+@@ -52,7 +52,14 @@ void xof_init_dom_sep(shake256_xof_ctx *xof_ctx, const uint8_t *seed, uint32_t s
   * The context must have been initialized beforehand using `xof_init()`.
   */
  void xof_get_bytes(shake256_xof_ctx *xof_ctx, uint8_t *output, uint32_t output_size) {
@@ -445,14 +461,50 @@ index b963673..5169d9e 100644
 +}
 +
 +/**
-+ * @brief Free heap-allocated memory in the SHAKE256 XOF context
++ * @brief Free heap-allocated memory in the SHAKE256 XOF context (liboqs)
 + */
 +void xof_ctx_release(shake256_xof_ctx *xof_ctx) {
 +    OQS_SHA3_shake256_inc_ctx_release(xof_ctx);
  }
  
  /**
-@@ -87,10 +109,11 @@ void xof_get_bytes(shake256_xof_ctx *xof_ctx, uint8_t *output, uint32_t output_s
+@@ -67,12 +74,13 @@ void hash_g(uint8_t *output, const uint8_t hash_ek_kem[SEED_BYTES], const uint8_
+             const uint8_t salt[SALT_BYTES]) {
+     sha3_512_ctx g_hash_ctx = {0};
+     uint8_t i_domain = HQC_G_FCT_DOMAIN;
+-    sha3_512_inc_init(&g_hash_ctx);
+-    sha3_512_inc_absorb(&g_hash_ctx, hash_ek_kem, SEED_BYTES);
+-    sha3_512_inc_absorb(&g_hash_ctx, m, PARAM_K);
+-    sha3_512_inc_absorb(&g_hash_ctx, salt, SALT_BYTES);
+-    sha3_512_inc_absorb(&g_hash_ctx, &i_domain, 1);
+-    sha3_512_inc_finalize(output, &g_hash_ctx);
++    OQS_SHA3_sha3_512_inc_init(&g_hash_ctx);
++    OQS_SHA3_sha3_512_inc_absorb(&g_hash_ctx, hash_ek_kem, SEED_BYTES);
++    OQS_SHA3_sha3_512_inc_absorb(&g_hash_ctx, m, PARAM_K);
++    OQS_SHA3_sha3_512_inc_absorb(&g_hash_ctx, salt, SALT_BYTES);
++    OQS_SHA3_sha3_512_inc_absorb(&g_hash_ctx, &i_domain, 1);
++    OQS_SHA3_sha3_512_inc_finalize(output, &g_hash_ctx);
++    OQS_SHA3_sha3_512_inc_ctx_release(&g_hash_ctx);
+ }
+ 
+ /**
+@@ -84,10 +92,11 @@ void hash_g(uint8_t *output, const uint8_t hash_ek_kem[SEED_BYTES], const uint8_
+ void hash_h(uint8_t *output, const uint8_t ek_kem[PUBLIC_KEY_BYTES_KEM]) {
+     sha3_256_ctx h_hash_ctx = {0};
+     uint8_t h_domain = HQC_H_FCT_DOMAIN;
+-    sha3_256_inc_init(&h_hash_ctx);
+-    sha3_256_inc_absorb(&h_hash_ctx, ek_kem, PUBLIC_KEY_BYTES_KEM);
+-    sha3_256_inc_absorb(&h_hash_ctx, &h_domain, 1);
+-    sha3_256_inc_finalize(output, &h_hash_ctx);
++    OQS_SHA3_sha3_256_inc_init(&h_hash_ctx);
++    OQS_SHA3_sha3_256_inc_absorb(&h_hash_ctx, ek_kem, PUBLIC_KEY_BYTES_KEM);
++    OQS_SHA3_sha3_256_inc_absorb(&h_hash_ctx, &h_domain, 1);
++    OQS_SHA3_sha3_256_inc_finalize(output, &h_hash_ctx);
++    OQS_SHA3_sha3_256_inc_ctx_release(&h_hash_ctx);
+ }
+ 
+ /**
+@@ -102,10 +111,11 @@ void hash_h(uint8_t *output, const uint8_t ek_kem[PUBLIC_KEY_BYTES_KEM]) {
  void hash_i(uint8_t *output, const uint8_t *seed) {
      sha3_512_ctx i_hash_ctx = {0};
      uint8_t i_domain = HQC_I_FCT_DOMAIN;
@@ -468,66 +520,30 @@ index b963673..5169d9e 100644
  }
  
  /**
-@@ -102,10 +125,11 @@ void hash_i(uint8_t *output, const uint8_t *seed) {
- void hash_h(uint8_t *output, const uint8_t ek_kem[PUBLIC_KEY_BYTES]) {
-     sha3_256_ctx h_hash_ctx = {0};
-     uint8_t h_domain = HQC_H_FCT_DOMAIN;
--    sha3_256_inc_init(&h_hash_ctx);
--    sha3_256_inc_absorb(&h_hash_ctx, ek_kem, PUBLIC_KEY_BYTES);
--    sha3_256_inc_absorb(&h_hash_ctx, &h_domain, 1);
--    sha3_256_inc_finalize(output, &h_hash_ctx);
-+    OQS_SHA3_sha3_256_inc_init(&h_hash_ctx);
-+    OQS_SHA3_sha3_256_inc_absorb(&h_hash_ctx, ek_kem, PUBLIC_KEY_BYTES);
-+    OQS_SHA3_sha3_256_inc_absorb(&h_hash_ctx, &h_domain, 1);
-+    OQS_SHA3_sha3_256_inc_finalize(output, &h_hash_ctx);
-+    OQS_SHA3_sha3_256_inc_ctx_release(&h_hash_ctx);
- }
- 
- /**
-@@ -120,12 +144,13 @@ void hash_g(uint8_t *output, const uint8_t hash_ek_kem[SEED_BYTES], const uint8_
-             const uint8_t salt[SALT_BYTES]) {
-     sha3_512_ctx g_hash_ctx = {0};
-     uint8_t i_domain = HQC_G_FCT_DOMAIN;
--    sha3_512_inc_init(&g_hash_ctx);
--    sha3_512_inc_absorb(&g_hash_ctx, hash_ek_kem, SEED_BYTES);
--    sha3_512_inc_absorb(&g_hash_ctx, m, PARAM_SECURITY_BYTES);
--    sha3_512_inc_absorb(&g_hash_ctx, salt, SALT_BYTES);
--    sha3_512_inc_absorb(&g_hash_ctx, &i_domain, 1);
--    sha3_512_inc_finalize(output, &g_hash_ctx);
-+    OQS_SHA3_sha3_512_inc_init(&g_hash_ctx);
-+    OQS_SHA3_sha3_512_inc_absorb(&g_hash_ctx, hash_ek_kem, SEED_BYTES);
-+    OQS_SHA3_sha3_512_inc_absorb(&g_hash_ctx, m, PARAM_SECURITY_BYTES);
-+    OQS_SHA3_sha3_512_inc_absorb(&g_hash_ctx, salt, SALT_BYTES);
-+    OQS_SHA3_sha3_512_inc_absorb(&g_hash_ctx, &i_domain, 1);
-+    OQS_SHA3_sha3_512_inc_finalize(output, &g_hash_ctx);
-+    OQS_SHA3_sha3_512_inc_ctx_release(&g_hash_ctx);
- }
- 
- /**
-@@ -140,12 +165,13 @@ void hash_j(uint8_t *output, const uint8_t hash_ek_kem[SEED_BYTES], const uint8_
-             const ciphertext_kem_t *c_kem) {
+@@ -122,12 +132,13 @@ void hash_j(uint8_t *output, const uint8_t hash_ek_kem[SEED_BYTES], const uint8_
+             const uint64_t *v, const uint8_t salt[SALT_BYTES]) {
      sha3_256_ctx k_hash_ctx = {0};
      uint8_t k_domain = HQC_J_FCT_DOMAIN;
 -    sha3_256_inc_init(&k_hash_ctx);
 -    sha3_256_inc_absorb(&k_hash_ctx, hash_ek_kem, SEED_BYTES);
--    sha3_256_inc_absorb(&k_hash_ctx, sigma, PARAM_SECURITY_BYTES);
--    sha3_256_inc_absorb(&k_hash_ctx, (uint8_t *)c_kem->c_pke.u, VEC_N_SIZE_BYTES);
--    sha3_256_inc_absorb(&k_hash_ctx, (uint8_t *)c_kem->c_pke.v, VEC_N1N2_SIZE_BYTES);
--    sha3_256_inc_absorb(&k_hash_ctx, c_kem->salt, SALT_BYTES);
+-    sha3_256_inc_absorb(&k_hash_ctx, sigma, PARAM_K);
+-    sha3_256_inc_absorb(&k_hash_ctx, (const uint8_t *)u, VEC_N_SIZE_BYTES);
+-    sha3_256_inc_absorb(&k_hash_ctx, (const uint8_t *)v, VEC_N1N2_SIZE_BYTES);
+-    sha3_256_inc_absorb(&k_hash_ctx, salt, SALT_BYTES);
 -    sha3_256_inc_absorb(&k_hash_ctx, &k_domain, 1);
 -    sha3_256_inc_finalize(output, &k_hash_ctx);
 +    OQS_SHA3_sha3_256_inc_init(&k_hash_ctx);
 +    OQS_SHA3_sha3_256_inc_absorb(&k_hash_ctx, hash_ek_kem, SEED_BYTES);
-+    OQS_SHA3_sha3_256_inc_absorb(&k_hash_ctx, sigma, PARAM_SECURITY_BYTES);
-+    OQS_SHA3_sha3_256_inc_absorb(&k_hash_ctx, (uint8_t *)c_kem->c_pke.u, VEC_N_SIZE_BYTES);
-+    OQS_SHA3_sha3_256_inc_absorb(&k_hash_ctx, (uint8_t *)c_kem->c_pke.v, VEC_N1N2_SIZE_BYTES);
-+    OQS_SHA3_sha3_256_inc_absorb(&k_hash_ctx, c_kem->salt, SALT_BYTES);
++    OQS_SHA3_sha3_256_inc_absorb(&k_hash_ctx, sigma, PARAM_K);
++    OQS_SHA3_sha3_256_inc_absorb(&k_hash_ctx, (const uint8_t *)u, VEC_N_SIZE_BYTES);
++    OQS_SHA3_sha3_256_inc_absorb(&k_hash_ctx, (const uint8_t *)v, VEC_N1N2_SIZE_BYTES);
++    OQS_SHA3_sha3_256_inc_absorb(&k_hash_ctx, salt, SALT_BYTES);
 +    OQS_SHA3_sha3_256_inc_absorb(&k_hash_ctx, &k_domain, 1);
 +    OQS_SHA3_sha3_256_inc_finalize(output, &k_hash_ctx);
 +    OQS_SHA3_sha3_256_inc_ctx_release(&k_hash_ctx);
  }
 diff --git a/src/common/symmetric.h b/src/common/symmetric.h
-index cd7e2ea..96d4420 100644
+index ff9bb01..c0d5a3a 100644
 --- a/src/common/symmetric.h
 +++ b/src/common/symmetric.h
 @@ -7,9 +7,10 @@
@@ -567,15 +583,14 @@ index cd7e2ea..96d4420 100644
 -typedef shake256incctx shake256_xof_ctx;
 +typedef OQS_SHA3_shake256_inc_ctx shake256_xof_ctx;
  
- /** @def HQC_PRNG_DOMAIN
-  *  @brief Domain separator for HQC prng function.
-@@ -68,11 +69,22 @@ typedef shake256incctx shake256_xof_ctx;
+ /** @def HQC_G_FCT_DOMAIN
+  *  @brief Domain separator for the G(·) function in HQC.
+@@ -58,9 +59,19 @@ typedef shake256incctx shake256_xof_ctx;
   */
  #define HQC_J_FCT_DOMAIN 3
  
-+#define prng_init PQCHQC_NAMESPACE(prng_init)
-+#define prng_get_bytes PQCHQC_NAMESPACE(prng_get_bytes)
 +#define xof_init PQCHQC_NAMESPACE(xof_init)
++#define xof_init_dom_sep PQCHQC_NAMESPACE(xof_init_dom_sep)
 +#define xof_get_bytes PQCHQC_NAMESPACE(xof_get_bytes)
 +#define xof_ctx_release PQCHQC_NAMESPACE(xof_ctx_release)
 +#define hash_g PQCHQC_NAMESPACE(hash_g)
@@ -583,17 +598,15 @@ index cd7e2ea..96d4420 100644
 +#define hash_i PQCHQC_NAMESPACE(hash_i)
 +#define hash_j PQCHQC_NAMESPACE(hash_j)
 +
- void prng_init(uint8_t *entropy_input, uint8_t *personalization_string, uint32_t enlen, uint32_t perlen);
- void prng_get_bytes(uint8_t *output, uint32_t outlen);
- 
  void xof_init(shake256_xof_ctx *xof_ctx, const uint8_t *seed, uint32_t seed_size);
+ void xof_init_dom_sep(shake256_xof_ctx *xof_ctx, const uint8_t *seed, uint32_t seed_size, uint8_t domain_separator);
  void xof_get_bytes(shake256_xof_ctx *xof_ctx, uint8_t *output, uint32_t output_size);
 +void xof_ctx_release(shake256_xof_ctx *xof_ctx);
  
- void hash_g(uint8_t *output, const uint8_t h_ek[SEED_BYTES], const uint8_t m[VEC_K_SIZE_BYTES],
-             const uint8_t salt[SALT_BYTES]);
+ void hash_g(uint8_t *output, const uint8_t h_ek[SEED_BYTES], const uint8_t m[PARAM_K], const uint8_t salt[SALT_BYTES]);
+ void hash_h(uint8_t *output, const uint8_t ek_kem[PUBLIC_KEY_BYTES_KEM]);
 diff --git a/src/ref/gf.c b/src/ref/gf.c
-index 7021029..393ed9e 100644
+index 6067850..218a5ed 100644
 --- a/src/ref/gf.c
 +++ b/src/ref/gf.c
 @@ -8,7 +8,7 @@
@@ -604,8 +617,8 @@ index 7021029..393ed9e 100644
 +static void gf_carryless_mul(uint8_t *c, uint8_t a, uint8_t b);
  
  /**
-  * @brief Generates exp and log lookup tables of GF(2^8).
-@@ -106,7 +106,7 @@ uint16_t gf_reduce(uint16_t x) {
+  * @brief Generates exp and log lookup tables for the field defined by @c PARAM_GF_POLY and ::gf_alpha.
+@@ -103,7 +103,7 @@ uint16_t gf_reduce(uint16_t x) {
   * @param[in] a The first polynomial
   * @param[in] b The second polynomial
   */
@@ -615,7 +628,7 @@ index 7021029..393ed9e 100644
      u[0] = 0;
      u[1] = b & ((1UL << 7) - 1UL);
 diff --git a/src/ref/gf.h b/src/ref/gf.h
-index f00fecc..c842e4a 100644
+index 4262d4f..bcb5aff 100644
 --- a/src/ref/gf.h
 +++ b/src/ref/gf.h
 @@ -8,6 +8,7 @@
@@ -625,10 +638,10 @@ index f00fecc..c842e4a 100644
 +#include "namespace.h"
  
  /**
-  * Powers of the root alpha of 1 + x^2 + x^3 + x^4 + x^8.
-@@ -46,6 +47,11 @@ static const uint16_t gf_log[256] = {
-     187, 204, 62,  90,  203, 89,  95,  176, 156, 169, 160, 81,  11,  245, 22,  235, 122, 117, 44,  215, 79,  174,
-     213, 233, 230, 231, 173, 232, 116, 214, 244, 234, 168, 80,  88,  175};
+  * @brief Primitive element used to enumerate the non-zero field elements.
+@@ -51,6 +52,11 @@ static const uint16_t gf_log[256] = {
+     86,  242, 211, 171, 68,  17,  146, 217, 35,  32,  46,  137, 180, 124, 184, 38,  119, 153, 227, 165, 103, 74,
+     237, 222, 197, 49,  254, 24,  13,  99,  140, 128, 192, 247, 112, 7};
  
 +#define gf_generate PQCHQC_NAMESPACE(gf_generate)
 +#define gf_mul PQCHQC_NAMESPACE(gf_mul)
@@ -653,13 +666,13 @@ index b1ef4e1..223ca14 100644
  void vect_mul(uint64_t *o, const uint64_t *v1, const uint64_t *v2);
  
 diff --git a/src/ref/hqc-1/parameters.h b/src/ref/hqc-1/parameters.h
-index e333cd3..fabd910 100644
+index 05b9ac3..efc0044 100644
 --- a/src/ref/hqc-1/parameters.h
 +++ b/src/ref/hqc-1/parameters.h
 @@ -7,9 +7,10 @@
  #define HQC_PARAMETERS_H
  
- #include "api.h"
+ #include "hqc-kem.h"
 +#include <stdint.h>
  
  #define CEIL_DIVIDE(a, b) (((a) / (b)) + ((a) % (b) == 0 ? 0 : 1)) /*!< Divide a by b and ceil the result*/
@@ -669,7 +682,7 @@ index e333cd3..fabd910 100644
  #define PARAM_N                     17669       ///< Define the parameter n of the scheme
  #define PARAM_N1                    46          ///< Define the parameter n1 of the scheme (length of Reed–Solomon code)
 diff --git a/src/ref/hqc-1/reed_solomon.h b/src/ref/hqc-1/reed_solomon.h
-index c835689..82df8fc 100644
+index fa56156..a92b41d 100644
 --- a/src/ref/hqc-1/reed_solomon.h
 +++ b/src/ref/hqc-1/reed_solomon.h
 @@ -9,6 +9,7 @@
@@ -680,9 +693,9 @@ index c835689..82df8fc 100644
  
  /**
   * @brief  Precomputed Galois‐field powers for Reed–Solomon operations.
-@@ -80,6 +81,10 @@ static const uint16_t alpha_ij_pow[30][45] = {
-     {96, 185, 223, 59,  85, 150, 89,  44,  38,  193, 15, 26, 169, 145, 100, 36, 1,   96, 185, 223, 59,  85, 150,
-      89, 44,  38,  193, 15, 26,  169, 145, 100, 36,  1,  96, 185, 223, 59,  85, 150, 89, 44,  38,  193, 15}};
+@@ -128,6 +129,10 @@ static const uint8_t eval_alpha_pow[PARAM_K][PARAM_T] = {
+     /* row 15: beta = alpha^210 */
+     {0x4A, 0xEF, 0x2F, 0x08, 0x66, 0x39, 0x63, 0x40, 0x1D, 0xD3, 0x35, 0x36, 0xE8, 0xC2, 0xB3}};
  
 +#define reed_solomon_encode PQCHQC_NAMESPACE(reed_solomon_encode)
 +#define reed_solomon_decode PQCHQC_NAMESPACE(reed_solomon_decode)
@@ -692,13 +705,13 @@ index c835689..82df8fc 100644
  void reed_solomon_decode(uint64_t* msg, uint64_t* cdw);
  
 diff --git a/src/ref/hqc-3/parameters.h b/src/ref/hqc-3/parameters.h
-index f34f912..eaf4575 100644
+index 995ae08..482f670 100644
 --- a/src/ref/hqc-3/parameters.h
 +++ b/src/ref/hqc-3/parameters.h
 @@ -7,9 +7,10 @@
  #define HQC_PARAMETERS_H
  
- #include "api.h"
+ #include "hqc-kem.h"
 +#include <stdint.h>
  
  #define CEIL_DIVIDE(a, b) (((a) / (b)) + ((a) % (b) == 0 ? 0 : 1)) /*!< Divide a by b and ceil the result*/
@@ -708,12 +721,20 @@ index f34f912..eaf4575 100644
  #define PARAM_N                     35851       ///< Define the parameter n of the scheme
  #define PARAM_N1                    56          ///< Define the parameter n1 of the scheme (length of Reed-Solomon code)
 diff --git a/src/ref/hqc-3/reed_solomon.h b/src/ref/hqc-3/reed_solomon.h
-index 14b0937..51b4a8b 100644
+index 9c6ea6a..db7df77 100644
 --- a/src/ref/hqc-3/reed_solomon.h
 +++ b/src/ref/hqc-3/reed_solomon.h
-@@ -116,6 +116,10 @@ static const uint16_t alpha_ij_pow[32][55] = {
-      46,  191, 50,  72,  8,   156, 194, 134, 92,  99,  100, 144, 16,  37,  153, 17, 184, 198, 200,
-      61,  32,  74,  47,  34,  109, 145, 141, 122, 64,  148, 94,  68,  218, 63,  7,  244}};
+@@ -9,6 +9,7 @@
+ #include <stddef.h>
+ #include <stdint.h>
+ #include "parameters.h"
++#include "namespace.h"
+ 
+ /**
+  * @brief  Precomputed Galois‐field powers for Reed–Solomon operations.
+@@ -180,6 +181,10 @@ static const uint8_t eval_alpha_pow[PARAM_K][PARAM_T] = {
+     /* row 23: beta = alpha^200 */
+     {0x1B, 0x5E, 0xB3, 0xE4, 0x94, 0xE8, 0x20, 0x4D, 0x35, 0x91, 0x9F, 0x1D, 0x04, 0x6C, 0x63, 0xFA}};
  
 +#define reed_solomon_encode PQCHQC_NAMESPACE(reed_solomon_encode)
 +#define reed_solomon_decode PQCHQC_NAMESPACE(reed_solomon_decode)
@@ -723,13 +744,13 @@ index 14b0937..51b4a8b 100644
  void reed_solomon_decode(uint64_t* msg, uint64_t* cdw);
  
 diff --git a/src/ref/hqc-5/parameters.h b/src/ref/hqc-5/parameters.h
-index 34e5bf5..3af5741 100644
+index 2594de1..aeed149 100644
 --- a/src/ref/hqc-5/parameters.h
 +++ b/src/ref/hqc-5/parameters.h
 @@ -7,9 +7,10 @@
  #define HQC_PARAMETERS_H
  
- #include "api.h"
+ #include "hqc-kem.h"
 +#include <stdint.h>
  
  #define CEIL_DIVIDE(a, b) (((a) / (b)) + ((a) % (b) == 0 ? 0 : 1)) /*!< Divide a by b and ceil the result*/
@@ -739,12 +760,20 @@ index 34e5bf5..3af5741 100644
  #define PARAM_N                     57637       ///< Define the parameter n of the scheme
  #define PARAM_N1                    90          ///< Define the parameter n1 of the scheme (length of Reed-Solomon code)
 diff --git a/src/ref/hqc-5/reed_solomon.h b/src/ref/hqc-5/reed_solomon.h
-index 20e2d9a..193bc65 100644
+index 2f3c71c..064ac3a 100644
 --- a/src/ref/hqc-5/reed_solomon.h
 +++ b/src/ref/hqc-5/reed_solomon.h
-@@ -252,6 +252,10 @@ static const uint16_t alpha_ij_pow[58][89] = {
-      227, 251, 74,  226, 146, 178, 19,  101, 46,  165, 207, 140, 104, 145, 9,   6,   107, 42,  28,  8,   111, 147, 219,
-      235, 148, 217, 57,  121, 38,  202, 92,  87,  131, 5,   208, 63,  18,  12,  214, 84,  56,  16,  222}};
+@@ -9,6 +9,7 @@
+ #include <stddef.h>
+ #include <stdint.h>
+ #include "parameters.h"
++#include "namespace.h"
+ 
+ /**
+  * @brief  Precomputed Galois‐field powers for Reed–Solomon operations.
+@@ -364,6 +365,10 @@ static const uint8_t eval_alpha_pow[PARAM_K][PARAM_T] = {
+                                     0xBE, 0xCA, 0xAD, 0x22, 0x63, 0x27, 0xE1, 0xAF, 0x76, 0x33,
+                                     0xDF, 0xB9, 0x1C, 0x75, 0x4D, 0xA7, 0x3D, 0x68, 0x12}};
  
 +#define reed_solomon_encode PQCHQC_NAMESPACE(reed_solomon_encode)
 +#define reed_solomon_decode PQCHQC_NAMESPACE(reed_solomon_decode)
@@ -754,32 +783,29 @@ index 20e2d9a..193bc65 100644
  void reed_solomon_decode(uint64_t* msg, uint64_t* cdw);
  
 diff --git a/src/ref/hqc.c b/src/ref/hqc.c
-index 63e6b06..b176c09 100644
+index 5459957..b11a0f1 100644
 --- a/src/ref/hqc.c
 +++ b/src/ref/hqc.c
-@@ -46,10 +46,12 @@ void hqc_pke_keygen(uint8_t *ek_pke, uint8_t *dk_pke, uint8_t *seed) {
-     xof_init(&dk_xof_ctx, seed_dk, SEED_BYTES);
-     vect_sample_fixed_weight1(&dk_xof_ctx, y, PARAM_OMEGA);
-     vect_sample_fixed_weight1(&dk_xof_ctx, x, PARAM_OMEGA);
+@@ -79,7 +79,9 @@ void hqc_pke_keygen(uint8_t *ek_pke, uint8_t *dk_pke, uint8_t *seed) {
+     memset_zero(keypair_seed, sizeof keypair_seed);
+     memset_zero(x, sizeof x);
+     memset_zero(y, sizeof y);
 +    xof_ctx_release(&dk_xof_ctx);
- 
-     // Compute encryption key
-     xof_init(&ek_xof_ctx, seed_ek, SEED_BYTES);
-     vect_set_random(&ek_xof_ctx, h);
+     memset_zero(&dk_xof_ctx, sizeof dk_xof_ctx);
 +    xof_ctx_release(&ek_xof_ctx);
-     vect_mul(s, y, h);
-     vect_add(s, x, s, VEC_N_SIZE_64);
+     memset_zero(&ek_xof_ctx, sizeof ek_xof_ctx);
+ }
  
-@@ -113,6 +115,7 @@ void hqc_pke_encrypt(ciphertext_pke_t *c_pke, const uint8_t *ek_pke, const uint6
-     vect_sample_fixed_weight2(&theta_xof_ctx, r2, PARAM_OMEGA_R);
-     vect_sample_fixed_weight2(&theta_xof_ctx, e, PARAM_OMEGA_E);
-     vect_sample_fixed_weight2(&theta_xof_ctx, r1, PARAM_OMEGA_R);
+@@ -153,6 +155,7 @@ void hqc_pke_encrypt(uint64_t *u, uint64_t *v, const uint8_t *ek_pke, const uint
+     memset_zero(r2, sizeof r2);
+     memset_zero(e, sizeof e);
+     memset_zero(tmp, sizeof tmp);
 +    xof_ctx_release(&theta_xof_ctx);
+     memset_zero(&theta_xof_ctx, sizeof theta_xof_ctx);
+ }
  
-     // Compute u = r1 + r2.h
-     vect_mul(c_pke->u, r2, h);
 diff --git a/src/ref/hqc.h b/src/ref/hqc.h
-index 70bebd2..ae7ba57 100644
+index 24dbe5b..d5cb247 100644
 --- a/src/ref/hqc.h
 +++ b/src/ref/hqc.h
 @@ -6,10 +6,14 @@
@@ -797,38 +823,37 @@ index 70bebd2..ae7ba57 100644
 +#define hqc_pke_decrypt PQCHQC_NAMESPACE(hqc_pke_decrypt)
  
  void hqc_pke_keygen(uint8_t *ek_pke, uint8_t *dk_pke, uint8_t *seed);
- void hqc_pke_encrypt(ciphertext_pke_t *c_pke, const uint8_t *ek_pke, const uint64_t *m, const uint8_t *theta);
+ void hqc_pke_encrypt(uint64_t *u, uint64_t *v, const uint8_t *ek_pke, const uint64_t *m, const uint8_t *theta);
 diff --git a/src/ref/parsing.c b/src/ref/parsing.c
-index abd0ec7..e37d228 100644
+index 93504b2..9c97449 100644
 --- a/src/ref/parsing.c
 +++ b/src/ref/parsing.c
-@@ -20,6 +20,7 @@ void hqc_dk_pke_from_string(uint64_t *y, const uint8_t *dk_pke) {
-     shake256_xof_ctx dk_xof_ctx = {0};
-     xof_init(&dk_xof_ctx, dk_pke, SEED_BYTES);
+@@ -22,6 +22,7 @@ void hqc_dk_pke_from_string(uint64_t *y, const uint8_t *dk_pke) {
      vect_sample_fixed_weight1(&dk_xof_ctx, y, PARAM_OMEGA);
-+    xof_ctx_release(&dk_xof_ctx);
  
      // Zeroize sensitive data
++    xof_ctx_release(&dk_xof_ctx);
      memset_zero(&dk_xof_ctx, sizeof dk_xof_ctx);
-@@ -37,6 +38,7 @@ void hqc_ek_pke_from_string(uint64_t *h, uint64_t *s, const uint8_t *ek_pke) {
+ }
  
-     xof_init(&ek_xof_ctx, ek_pke, SEED_BYTES);
-     vect_set_random(&ek_xof_ctx, h);
-+    xof_ctx_release(&ek_xof_ctx);
+@@ -40,6 +41,7 @@ void hqc_ek_pke_from_string(uint64_t *h, uint64_t *s, const uint8_t *ek_pke) {
  
      memcpy(s, ek_pke + SEED_BYTES, VEC_N_SIZE_BYTES);
+ 
++    xof_ctx_release(&ek_xof_ctx);
+     memset_zero(&ek_xof_ctx, sizeof ek_xof_ctx);
  }
+ 
 diff --git a/src/ref/parsing.h b/src/ref/parsing.h
-index b1d1710..f64bd85 100644
+index dd76791..39b928a 100644
 --- a/src/ref/parsing.h
 +++ b/src/ref/parsing.h
-@@ -6,10 +6,16 @@
+@@ -6,9 +6,14 @@
  #ifndef HQC_PARSING_H
  #define HQC_PARSING_H
  
 -#include <immintrin.h>
  #include <stdint.h>
- #include "data_structures.h"
  #include "parameters.h"
 +#include "namespace.h"
 +
@@ -836,12 +861,11 @@ index b1d1710..f64bd85 100644
 +#define hqc_ek_pke_from_string PQCHQC_NAMESPACE(hqc_ek_pke_from_string)
 +#define hqc_c_kem_to_string PQCHQC_NAMESPACE(hqc_c_kem_to_string)
 +#define hqc_c_kem_from_string PQCHQC_NAMESPACE(hqc_c_kem_from_string)
-+
  
  void hqc_dk_pke_from_string(uint64_t *y, const uint8_t *dk_pke);
  void hqc_ek_pke_from_string(uint64_t *h, uint64_t *s, const uint8_t *ek_pke);
 diff --git a/src/ref/reed_muller.c b/src/ref/reed_muller.c
-index 82760e4..9a8fe42 100644
+index 5a3439b..648d9f5 100644
 --- a/src/ref/reed_muller.c
 +++ b/src/ref/reed_muller.c
 @@ -34,10 +34,10 @@ typedef int16_t rm_expanded_cdw[128];
@@ -859,7 +883,7 @@ index 82760e4..9a8fe42 100644
  
  /**
   * @brief Encode a single byte into a single codeword using RM(1,7)
-@@ -56,7 +56,7 @@ int32_t find_peaks(rm_expanded_cdw *transform);
+@@ -55,7 +55,7 @@ int32_t find_peaks(rm_expanded_cdw *transform);
   * @param[out] word An RM(1,7) codeword
   * @param[in] message A message
   */
@@ -868,7 +892,7 @@ index 82760e4..9a8fe42 100644
      int32_t first_word;
  
      first_word = BIT0MASK(message >> 7);
-@@ -87,7 +87,7 @@ void encode(rm_codeword_t *word, int32_t message) {
+@@ -86,7 +86,7 @@ void encode(rm_codeword_t *word, int32_t message) {
   * @param[out] src Structure that contain the expanded codeword
   * @param[out] dst Structure that contain the expanded codeword
   */
@@ -877,7 +901,7 @@ index 82760e4..9a8fe42 100644
      // the passes move data:
      // src -> dst -> src -> dst -> src -> dst -> src -> dst
      // using p1 and p2 alternately
-@@ -118,7 +118,7 @@ void hadamard(rm_expanded_cdw *src, rm_expanded_cdw *dst) {
+@@ -117,7 +117,7 @@ void hadamard(rm_expanded_cdw *src, rm_expanded_cdw *dst) {
   * @param[out] dest Structure that contain the expanded codeword
   * @param[in] src Structure that contain the codeword
   */
@@ -886,7 +910,7 @@ index 82760e4..9a8fe42 100644
      // start with the first copy
      for (int32_t part = 0; part < 4; part++) {
          for (int32_t bit = 0; bit < 32; bit++) {
-@@ -144,7 +144,7 @@ void expand_and_sum(rm_expanded_cdw *dest, rm_codeword_t src[]) {
+@@ -143,7 +143,7 @@ void expand_and_sum(rm_expanded_cdw *dest, rm_codeword_t src[]) {
   * in the lowest 7 bits it taken
   * @param[in] transform Structure that contain the expanded codeword
   */

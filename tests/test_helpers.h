@@ -23,7 +23,6 @@
 #endif
 
 typedef union {
-	OQS_SHA3_shake256_inc_ctx hqc_state;
 	OQS_NIST_DRBG_struct nist_state;
 } OQS_KAT_PRNG_state;
 

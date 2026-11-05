@@ -13,7 +13,7 @@ OQS_KEM *OQS_KEM_hqc_1_new(void) {
 		return NULL;
 	}
 	kem->method_name = OQS_KEM_alg_hqc_1;
-	kem->alg_version = "https://gitlab.com/pqc-hqc/hqc@161cd4f";
+	kem->alg_version = "https://gitlab.com/pqc-hqc/hqc@06567cc";
 
 	kem->claimed_nist_level = 1;
 	kem->ind_cca = true;

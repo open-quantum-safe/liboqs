@@ -42,16 +42,15 @@ static int32_t find_peaks(rm_expanded_cdw *transform);
 /**
  * @brief Encode a single byte into a single codeword using RM(1,7)
  *
- * Encoding matrix of this code:
- * bit pattern (note that bits are numbered big endian)
- * 0   aaaaaaaa aaaaaaaa aaaaaaaa aaaaaaaa
- * 1   cccccccc cccccccc cccccccc cccccccc
- * 2   f0f0f0f0 f0f0f0f0 f0f0f0f0 f0f0f0f0
- * 3   ff00ff00 ff00ff00 ff00ff00 ff00ff00
- * 4   ffff0000 ffff0000 ffff0000 ffff0000
- * 5   ffffffff 00000000 ffffffff 00000000
- * 6   ffffffff ffffffff 00000000 00000000
- * 7   ffffffff ffffffff ffffffff ffffffff
+ * Generator matrix:
+ *     ffffffff ffffffff ffffffff ffffffff
+ *     ffffffff ffffffff 00000000 00000000
+ *     ffffffff 00000000 ffffffff 00000000
+ *     ffff0000 ffff0000 ffff0000 ffff0000
+ *     ff00ff00 ff00ff00 ff00ff00 ff00ff00
+ *     0f0f0f0f 0f0f0f0f 0f0f0f0f 0f0f0f0f
+ *     33333333 33333333 33333333 33333333
+ *     55555555 55555555 55555555 55555555
  *
  * @param[out] word An RM(1,7) codeword
  * @param[in] message A message
@@ -61,9 +60,9 @@ static void encode(rm_codeword_t *word, int32_t message) {
 
     first_word = BIT0MASK(message >> 7);
 
-    first_word ^= BIT0MASK(message >> 0) & 0xaaaaaaaa;
-    first_word ^= BIT0MASK(message >> 1) & 0xcccccccc;
-    first_word ^= BIT0MASK(message >> 2) & 0xf0f0f0f0;
+    first_word ^= BIT0MASK(message >> 0) & 0x55555555;
+    first_word ^= BIT0MASK(message >> 1) & 0x33333333;
+    first_word ^= BIT0MASK(message >> 2) & 0x0f0f0f0f;
     first_word ^= BIT0MASK(message >> 3) & 0xff00ff00;
     first_word ^= BIT0MASK(message >> 4) & 0xffff0000;
 
@@ -122,14 +121,14 @@ static void expand_and_sum(rm_expanded_cdw *dest, rm_codeword_t src[]) {
     // start with the first copy
     for (int32_t part = 0; part < 4; part++) {
         for (int32_t bit = 0; bit < 32; bit++) {
-            (*dest)[part * 32 + bit] = src[0].u32[part] >> bit & 1;
+            (*dest)[part * 32 + bit] = src[0].u32[part] >> (bit ^ 7) & 1;
         }
     }
     // sum the rest of the copies
     for (int32_t copy = 1; copy < MULTIPLICITY; copy++) {
         for (int32_t part = 0; part < 4; part++) {
             for (int32_t bit = 0; bit < 32; bit++) {
-                (*dest)[part * 32 + bit] += src[copy].u32[part] >> bit & 1;
+                (*dest)[part * 32 + bit] += src[copy].u32[part] >> (bit ^ 7) & 1;
             }
         }
     }

@@ -1,6 +1,6 @@
 /**
  * @file gf.c
- * @brief Galois field implementation with multiplication using the pclmulqdq instruction
+ * @brief Reference GF(2^8) arithmetic for the field defined by @c PARAM_GF_POLY.
  */
 
 #include "gf.h"
@@ -11,12 +11,12 @@ static uint16_t gf_reduce(uint16_t x);
 static void gf_carryless_mul(uint8_t *c, uint8_t a, uint8_t b);
 
 /**
- * @brief Generates exp and log lookup tables of GF(2^8).
+ * @brief Generates exp and log lookup tables for the field defined by @c PARAM_GF_POLY and ::gf_alpha.
  *
  * @note   this function is not used in the code; it was used to generate
  *         the lookup table for GF(2^8).
  *
- * The logarithm of 0 is defined as 2^8 by convention. <br>
+ * The logarithm of 0 is stored as 0 by convention. <br>
  * The last two elements of the exp table are needed by the gf_mul function from gf_lutmul.c
  * (for example if both elements to multiply are zero).
  * @param[out] exp Array of size 2^8 + 2 receiving the powers of the primitive element
@@ -25,53 +25,50 @@ static void gf_carryless_mul(uint8_t *c, uint8_t a, uint8_t b);
  */
 void gf_generate(uint16_t *exp, uint16_t *log, const int16_t m) {
     uint16_t elt = 1;
-    uint16_t alpha = 2;  // primitive element of GF(2^8)
-    uint16_t gf_poly = PARAM_GF_POLY;
+    const uint16_t alpha = gf_alpha;
 
     for (size_t i = 0; i < (1U << m) - 1; ++i) {
         exp[i] = elt;
         log[elt] = i;
 
-        elt *= alpha;
-        if (elt >= 1 << m)
-            elt ^= gf_poly;
+        elt = gf_mul(elt, alpha);
     }
 
     exp[(1 << m) - 1] = 1;
-    exp[1 << m] = 2;
-    exp[(1 << m) + 1] = 4;
+    exp[1 << m] = alpha;
+    exp[(1 << m) + 1] = gf_mul(alpha, alpha);
     log[0] = 0;  // by convention
 }
 
 /**
- * @brief Feedback bit positions used for modular reduction by PARAM_GF_POLY = 0x11D.
+ * @brief Feedback bit positions used for modular reduction by @c PARAM_GF_POLY = 0x11B.
  *
  * These values are derived from the binary form of the polynomial:
- *     0x11D = 0b100011101 → bits set at positions: 8, 4, 3, 1, 0
+ *     0x11B = 0b100011011 → bits set at positions: 8, 4, 3, 1, 0
  *
  * To reduce a polynomial modulo this irreducible polynomial:
  * - Bit 8 (the leading term) is handled via shifting: mod = x >> 8
  * - Bit 0 (constant term) is handled by the initial XOR
  *
- * The remaining set bits at positions 4, 3, and 2 define where the shifted
+ * The remaining set bits at positions 4, 3, and 1 define where the shifted
  * high bits (mod) must be XORed back into the result. These represent the
  * feedback positions used during reduction.
  */
-static const uint8_t gf_reduction_taps[] = {4, 3, 2};
+static const uint8_t gf_reduction_taps[] = {4, 3, 1};
 
 /**
- * @brief Reduce a polynomial modulo PARAM_GF_POLY in GF(2^8).
+ * @brief Reduce a polynomial modulo @c PARAM_GF_POLY in GF(2^8).
  *
  * This function performs modular reduction of a 16-bit polynomial `x`
- * by the irreducible polynomial PARAM_GF_POLY = 0x11D
+ * by the irreducible polynomial @c PARAM_GF_POLY = 0x11B
  * (i.e., x⁸ + x⁴ + x³ + x + 1), used in GF(2^8).
  *
  * It assumes the input polynomial has degree ≤ 14 and uses a fixed
  * number of reduction steps and fixed feedback tap positions
- * ({4, 3, 2}) to produce a result of degree < 8.
+ * ({4, 3, 1}) to produce a result of degree < 8.
  *
  * @param x 16-bit input polynomial to reduce (deg(x) ≤ 14)
- * @return Reduced 8-bit polynomial modulo PARAM_GF_POLY (deg(x) < 8)
+ * @return Reduced 8-bit polynomial modulo @c PARAM_GF_POLY (deg(x) < 8)
  */
 uint16_t gf_reduce(uint16_t x) {
     uint64_t mod;
@@ -97,7 +94,7 @@ uint16_t gf_reduce(uint16_t x) {
 }
 
 /**
- * Carryless multiplication of two polynomials a and b.
+ * Carryless multiplication of two degree-7 polynomials over GF(2).
  *
  * Implementation of the algorithm mul1 in https://hal.inria.fr/inria-00188261v4/document
  * with s = 2 and w = 8

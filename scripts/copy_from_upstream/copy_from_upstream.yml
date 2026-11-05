@@ -11,8 +11,8 @@ upstreams:
   -
     name: pqc-hqc
     git_url: https://gitlab.com/pqc-hqc/hqc.git
-    git_branch: next-release
-    git_commit: 161cd4fdf6b4a5198cf40b3a1243f9f27f13e03d
+    git_branch: v5.1.0
+    git_commit: 06567ccbad10580d78dd7863b15d23f41076d57f
     kem_meta_path: "integrations/{pretty_name_full}_META.yml"
     kem_scheme_path: .
     patches: [pqchqc-liboqs-integration.patch]
