@@ -276,7 +276,9 @@ sys.path.insert(0, 'tests')
 import helpers
 for alg in helpers.available_"$ALG_TYPE"s_by_name():
     if helpers.is_"$ALG_TYPE"_enabled_by_name(alg):
-        print(alg)")
+        print(alg)
+    else:
+        print(f'Skipping {alg}: not enabled in this build', file=sys.stderr)")
 }
 
 # Read inputs from arguments
