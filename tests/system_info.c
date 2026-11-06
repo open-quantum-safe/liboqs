@@ -147,6 +147,9 @@ static void print_cpu_extensions(void) {
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_ARM_NEON)) {
 		printf(" NEON");
 	}
+	if (OQS_CPU_has_extension(OQS_CPU_EXT_RISCV_RVV)) {
+		printf(" RVV");
+	}
 #else
 	printf("CPU exts compile-time: ");
 #ifdef OQS_USE_ADX_INSTRUCTIONS
@@ -196,6 +199,9 @@ static void print_cpu_extensions(void) {
 #endif
 #ifdef OQS_USE_ARM_NEON_INSTRUCTIONS
 	printf(" NEON");
+#endif
+#ifdef OQS_USE_RISCV_VECTOR_INSTRUCTIONS
+	printf(" RVV");
 #endif
 	printf("\n");
 #endif
