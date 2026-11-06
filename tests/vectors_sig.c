@@ -1443,10 +1443,12 @@ int main(int argc, char **argv) {
 		int sigVerPassed = atoi(argv[7]);
 
 		if (is_ml_dsa(alg_name)) {
+			/* pass wrong signature and context lengths on, so that the vectors
+			 * check that OQS_SIG_verify_with_ctx_str rejects them */
 			if (strlen(sigVer_msg) % 2 != 0 ||
-			        strlen(sigVer_sig) != 2 * sig->length_signature ||
+			        strlen(sigVer_sig) % 2 != 0 ||
 			        strlen(sigVer_pk) != 2 * sig->length_public_key ||
-			        strlen(sigVer_ctx) > 2 * MAXCTXBYTES ||
+			        strlen(sigVer_ctx) % 2 != 0 ||
 			        (sigVerPassed != 0 && sigVerPassed != 1)) {
 				printf("lengths bad or incorrect verification status \n");
 				goto err;
