@@ -26,12 +26,16 @@ on:
   # ===== END TEMPORARY DEMO =====
 
 permissions:
-  pull-requests: write
+  contents: read
   actions: read
 
 jobs:
   report:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read        # list the triggering run's jobs
+      pull-requests: write # post or update the timing comment
     steps:
       - name: Compute timings and post comment
         uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # pin@v7.1.0
@@ -55,6 +59,13 @@ jobs:
             }
             // ===== END TEMPORARY DEMO =====
 
+            // pr.yml and push.yml cancel superseded runs; skip those so their
+            // partial numbers don't overwrite the report.
+            if (run.conclusion === 'cancelled') {
+              core.info(`Run ${run.id} was cancelled; not reporting.`);
+              return;
+            }
+
             // --- timings -------------------------------------------------------
             // All jobs of the completed run (reusable-workflow jobs are included).
             const jobs = await github.paginate(
@@ -75,9 +86,10 @@ jobs:
               return (h ? `${h}h ` : '') + (h || m ? `${m}m ` : '') + `${x}s`;
             };
             const totalCpu = timed.reduce((a, j) => a + j.sec, 0);
-            const starts   = jobs.filter(j => j.started_at).map(j => +new Date(j.started_at));
-            const ends     = jobs.filter(j => j.completed_at).map(j => +new Date(j.completed_at));
-            const wall     = (Math.max(...ends) - Math.min(...starts)) / 1000;
+            // Use the run's own timestamps. After "Re-run failed jobs" the job
+            // list mixes attempts (carried-over jobs keep their original times),
+            // so job timestamps can span hours. run_started_at resets on re-run.
+            const wall     = (new Date(run.updated_at) - new Date(run.run_started_at)) / 1000;
             const longest  = timed.slice().sort((a, b) => b.sec - a.sec)[0];
 
             const body = (marker) => [
@@ -89,28 +101,33 @@ jobs:
               `| Jobs (timed) | ${timed.length} |`,
               `| Aggregate runner time | **${fmt(totalCpu)}** |`,
               `| Peak wall-clock | **${fmt(wall)}** |`,
-              `| Longest job | **${fmt(longest.sec)}** — \`${longest.name}\` |`,
+              `| Longest job | **${fmt(longest.sec)}** — \`${longest.name.replace(/[^\w .,:()[\]\/+=-]/g, '_').slice(0, 120)}\` |`,
               '',
-              `<sub>Conclusion: ${run.conclusion}. Aggregate is unweighted runner-seconds summed across all jobs.</sub>`,
+              `<sub>Commit ${run.head_sha.slice(0, 7)}, attempt ${run.run_attempt}. Conclusion: ${run.conclusion}. Aggregate is unweighted runner-seconds summed across all jobs.</sub>`,
             ].join('\n');
 
             // --- helpers -------------------------------------------------------
-            // Resolve the open PR for this run. run.pull_requests is empty for
-            // fork PRs, and the fork's head commit does not exist in the base
-            // repo, so commit->PR association also fails there. Matching on
-            // head "<owner>:<branch>" works for both fork and same-repo PRs.
+            // Resolve the open PR for this run by matching on head
+            // "<owner>:<branch>", which works for both fork and same-repo PRs.
+            // (run.pull_requests is empty for fork PRs and can list PRs in other
+            // repos that use one of our branches as head, so it isn't used;
+            // commit->PR association fails for fork commits.)
             const findOpenPR = async () => {
-              if (run.pull_requests?.length) return run.pull_requests[0].number;
-              const head = `${run.head_repository.owner.login}:${run.head_branch}`;
+              // head_repository is null if the fork was deleted after the run.
+              const login = run.head_repository?.owner?.login;
+              if (!login) return undefined;
               const { data } = await github.rest.pulls.list(
-                { owner, repo, head, state: 'open' });
-              return data[0]?.number;
+                { owner, repo, head: `${login}:${run.head_branch}`, state: 'open' });
+              // Only report on the PR's current head, so an older run that
+              // finishes late (or is re-run) can't replace a newer report.
+              return data.find(p => p.head.sha === run.head_sha)?.number;
             };
             const upsert = async (prNumber, markerId) => {
               const marker = `<!-- ${markerId} -->`;
               const comments = await github.paginate(github.rest.issues.listComments,
                 { owner, repo, issue_number: prNumber, per_page: 100 });
-              const hit = comments.find(c => c.body?.startsWith(marker));
+              const hit = comments.find(c =>
+                c.user?.login === 'github-actions[bot]' && c.body?.startsWith(marker));
               if (hit) {
                 await github.rest.issues.updateComment(
                   { owner, repo, comment_id: hit.id, body: body(marker) });
@@ -121,6 +138,18 @@ jobs:
             };
 
             // --- route by firing workflow -------------------------------------
+            // run.name comes from the triggering workflow's file, which a fork
+            // PR controls, so also check the event and where the run came from.
+            const fromHere = run.head_repository?.full_name === `${owner}/${repo}`;
+            const trusted = {
+              'Pull request tests': run.event === 'pull_request',
+              'Push tests':         run.event === 'push' && fromHere,
+              'Main branch tests':  run.event === 'push' && fromHere && run.head_branch === 'main',
+            };
+            if (trusted[run.name] !== true) {
+              core.info(`Ignoring "${run.name}" (${run.event} on ${run.head_repository?.full_name}:${run.head_branch}).`);
+              return;
+            }
             switch (run.name) {
               case 'Pull request tests': {
                 const pr = await findOpenPR();
