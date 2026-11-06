@@ -138,6 +138,10 @@
 #define array_abs_bound(arr, lb, ub, k) \
   array_bound((arr), (lb), (ub), -((int)(k)) + 1, (k))
 
+#define VALID_SLH_VAR_T(var) \
+  (memory_no_alias(var, sizeof(slh_var_t)) && memory_no_alias(var->prm, sizeof(slh_param_t)) && \
+   memory_no_alias(var->adrs, sizeof(adrs_t)))
+
 #endif /* CBMC */
 
 #endif /* !SLH_CBMC_H */
