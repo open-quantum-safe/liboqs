@@ -193,3 +193,44 @@ def test_empty_sig_directory_omits_include_directory():
         "${CMAKE_CURRENT_LIST_DIR}/upstream_test_avx2)"
         not in output
     )
+
+
+def test_kem_shared_only_spacing():
+    output = render("kem", [], ["shared.c"], has_impl_files=False)
+    lines = [
+        line.strip() for line in output.splitlines()
+        if line.strip().startswith("add_library(kem_test_avx2 OBJECT")
+    ]
+    assert len(lines) == 1
+    assert "OBJECT  " not in lines[0]
+    assert "OBJECT " in lines[0]
+    assert "shared.c" in lines[0]
+
+
+def test_kem_default_shared_source_spacing():
+    output = render("kem", [], ["shared.c"], has_impl_files=False)
+    lines = [
+        line.strip() for line in output.splitlines()
+        if line.strip().startswith("add_library(kem_test_ref OBJECT")
+    ]
+    assert len(lines) == 1
+    assert "kem_kem_test.c  " not in lines[0]
+    assert "kem_kem_test.c upstream_test_ref/reference.c" in lines[0]
+
+
+def test_header_only_kem_retains_include_directory():
+    output = render("kem", [], ["shared.c"], has_impl_files=True)
+    assert (
+        "target_include_directories(kem_test_avx2 PRIVATE "
+        "${CMAKE_CURRENT_LIST_DIR}/upstream_test_avx2)"
+        in output
+    )
+
+
+def test_empty_kem_directory_omits_include_directory():
+    output = render("kem", [], ["shared.c"], has_impl_files=False)
+    assert (
+        "target_include_directories(kem_test_avx2 PRIVATE "
+        "${CMAKE_CURRENT_LIST_DIR}/upstream_test_avx2)"
+        not in output
+    )
