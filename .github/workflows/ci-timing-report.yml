@@ -164,15 +164,17 @@ jobs:
                 break;
               }
               case 'Main branch tests': {
-                // Primary: parse "(#NNNN)" from the merge/squash commit subject.
-                const subject = (run.head_commit?.message || '').split('\n')[0];
-                let pr = subject.match(/\(#(\d+)\)\s*$/)?.[1];
-                // Fallback: commit->PR association.
-                if (!pr) {
-                  const { data } = await github.rest.repos.listPullRequestsAssociatedWithCommit(
-                    { owner, repo, commit_sha: run.head_sha });
-                  pr = data[0]?.number;
-                }
+                // Authoritative: the PR(s) whose merge/squash commit is this sha.
+                const { data: assoc } = await github.rest.repos.listPullRequestsAssociatedWithCommit(
+                  { owner, repo, commit_sha: run.head_sha });
+                const assocNums = assoc.map(p => p.number);
+                // Prefer "(#NNNN)" from the squash subject, but only if it is
+                // actually associated with this commit. The subject is editable
+                // at merge time, so trusting it blindly would let a crafted title
+                // redirect the comment to an unrelated issue.
+                const fromSubject = Number((run.head_commit?.message || '').split('\n')[0]
+                  .match(/\(#(\d+)\)\s*$/)?.[1]);
+                const pr = assocNums.includes(fromSubject) ? fromSubject : assocNums[0];
                 if (!pr) { core.info('Merge with no resolvable PR; skipping.'); break; }
                 // Create-only: each merge CI pass gets its own standalone comment.
                 await github.rest.issues.createComment(
