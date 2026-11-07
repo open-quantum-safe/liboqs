@@ -20,7 +20,7 @@ upstream-maintenance: TBD
 upstream-statement-url: null
 oqs-support-tier: 3
 primary-upstream:
-  source: https://github.com/0rlych1kk4/round3/commit/3965b56ca41484f6359ee71f1c508b1da7b77711
+  source: https://github.com/qruov/round3-liboqs/commit/fb4a574c8340a95e88923404143d9364a15b7501
     with copy_from_upstream patches
   spdx-license-identifier: 0BSD
 parameter-sets:
