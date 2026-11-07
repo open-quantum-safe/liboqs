@@ -1,0 +1,186 @@
+name: CI timing report
+
+# Reports how long the umbrella CI workflows took: aggregate runner time (sum of
+# all jobs), peak wall-clock (whole run), and the single longest job.
+#
+# Runs in the base-repo context via workflow_run so it can comment on fork PRs
+# (which get a read-only token in the pull_request-triggered workflows).
+#
+#   Pull request tests -> sticky comment on the PR            (marker ci-timing:pr)
+#   Push tests         -> sticky comment on the open PR, else skip (marker ci-timing:push)
+#   Main branch tests  -> a NEW standalone comment on the merged PR, every run
+#
+# PR and push use distinct markers, so a PR that also had a branch-push run shows
+# two separate timing comments instead of one overwriting the other.
+
+on:
+  workflow_run:
+    workflows: ["Pull request tests", "Push tests", "Main branch tests"]
+    types: [completed]
+  # ===== BEGIN TEMPORARY DEMO (delete this block before merging) =====
+  # Lets this same-repo PR demonstrate the comment on itself before the workflow
+  # is on the default branch (workflow_run/workflow_dispatch only fire from the
+  # default branch). Reports on the PR's own latest completed "Pull request
+  # tests" run, so re-run this job once that CI has gone green.
+  pull_request:
+  # ===== END TEMPORARY DEMO =====
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read        # list the triggering run's jobs
+      pull-requests: write # post or update the timing comment
+    steps:
+      - name: Compute timings and post comment
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # pin@v7.1.0
+        with:
+          script: |
+            const { owner, repo } = context.repo;
+
+            // --- resolve the run to report on ----------------------------------
+            // Production: the completed run that triggered us (workflow_run).
+            let run = context.payload.workflow_run;
+            // ===== BEGIN TEMPORARY DEMO (delete this block before merging) =====
+            // pull_request demo: look up this PR's own latest completed
+            // "Pull request tests" run and report on that.
+            if (!run) {
+              const sha = context.payload.pull_request?.head?.sha;
+              const runs = await github.paginate(github.rest.actions.listWorkflowRunsForRepo,
+                { owner, repo, event: 'pull_request', status: 'completed',
+                  head_sha: sha, per_page: 100 });
+              run = runs.find(r => r.name === 'Pull request tests');
+              if (!run) { core.info(`No completed "Pull request tests" run for ${sha} yet; re-run once CI is green.`); return; }
+            }
+            // ===== END TEMPORARY DEMO =====
+
+            // pr.yml and push.yml cancel superseded runs; skip those so their
+            // partial numbers don't overwrite the report.
+            if (run.conclusion === 'cancelled') {
+              core.info(`Run ${run.id} was cancelled; not reporting.`);
+              return;
+            }
+
+            // --- timings -------------------------------------------------------
+            // All jobs of the completed run (reusable-workflow jobs are included).
+            const jobs = await github.paginate(
+              github.rest.actions.listJobsForWorkflowRun,
+              { owner, repo, run_id: run.id, per_page: 100 }
+            );
+            const timed = jobs
+              .filter(j => j.conclusion !== 'skipped' && j.started_at && j.completed_at)
+              .map(j => ({
+                name: j.name,
+                sec: (new Date(j.completed_at) - new Date(j.started_at)) / 1000,
+              }));
+            if (timed.length === 0) { core.info('No timed jobs; nothing to report.'); return; }
+
+            const fmt = (s) => {
+              s = Math.round(s);
+              const h = Math.floor(s / 3600), m = Math.floor((s % 3600) / 60), x = s % 60;
+              return (h ? `${h}h ` : '') + (h || m ? `${m}m ` : '') + `${x}s`;
+            };
+            const totalCpu = timed.reduce((a, j) => a + j.sec, 0);
+            // Use the run's own timestamps. After "Re-run failed jobs" the job
+            // list mixes attempts (carried-over jobs keep their original times),
+            // so job timestamps can span hours. run_started_at resets on re-run.
+            const wall     = (new Date(run.updated_at) - new Date(run.run_started_at)) / 1000;
+            const longest  = timed.slice().sort((a, b) => b.sec - a.sec)[0];
+
+            const body = (marker) => [
+              marker,
+              `### ⏱️ CI timing — [${run.name} #${run.run_number}](${run.html_url})`,
+              '',
+              `| Metric | Value |`,
+              `| --- | --- |`,
+              `| Jobs (timed) | ${timed.length} |`,
+              `| Aggregate runner time | **${fmt(totalCpu)}** |`,
+              `| Peak wall-clock | **${fmt(wall)}** |`,
+              `| Longest job | **${fmt(longest.sec)}** — \`${longest.name.replace(/[^\w .,:()[\]\/+=-]/g, '_').slice(0, 120)}\` |`,
+              '',
+              `<sub>Commit ${run.head_sha.slice(0, 7)}, attempt ${run.run_attempt}. Conclusion: ${run.conclusion}. Aggregate is unweighted runner-seconds summed across all jobs.</sub>`,
+            ].join('\n');
+
+            // --- helpers -------------------------------------------------------
+            // Resolve the open PR for this run by matching on head
+            // "<owner>:<branch>", which works for both fork and same-repo PRs.
+            // (run.pull_requests is empty for fork PRs and can list PRs in other
+            // repos that use one of our branches as head, so it isn't used;
+            // commit->PR association fails for fork commits.)
+            const findOpenPR = async () => {
+              // head_repository is null if the fork was deleted after the run.
+              const login = run.head_repository?.owner?.login;
+              if (!login) return undefined;
+              const { data } = await github.rest.pulls.list(
+                { owner, repo, head: `${login}:${run.head_branch}`, state: 'open' });
+              // Only report on the PR's current head, so an older run that
+              // finishes late (or is re-run) can't replace a newer report.
+              return data.find(p => p.head.sha === run.head_sha)?.number;
+            };
+            const upsert = async (prNumber, markerId) => {
+              const marker = `<!-- ${markerId} -->`;
+              const comments = await github.paginate(github.rest.issues.listComments,
+                { owner, repo, issue_number: prNumber, per_page: 100 });
+              const hit = comments.find(c =>
+                c.user?.login === 'github-actions[bot]' && c.body?.startsWith(marker));
+              if (hit) {
+                await github.rest.issues.updateComment(
+                  { owner, repo, comment_id: hit.id, body: body(marker) });
+              } else {
+                await github.rest.issues.createComment(
+                  { owner, repo, issue_number: prNumber, body: body(marker) });
+              }
+            };
+
+            // --- route by firing workflow -------------------------------------
+            // run.name comes from the triggering workflow's file, which a fork
+            // PR controls, so also check the event and where the run came from.
+            const fromHere = run.head_repository?.full_name === `${owner}/${repo}`;
+            const trusted = {
+              'Pull request tests': run.event === 'pull_request',
+              'Push tests':         run.event === 'push' && fromHere,
+              'Main branch tests':  run.event === 'push' && fromHere && run.head_branch === 'main',
+            };
+            if (trusted[run.name] !== true) {
+              core.info(`Ignoring "${run.name}" (${run.event} on ${run.head_repository?.full_name}:${run.head_branch}).`);
+              return;
+            }
+            switch (run.name) {
+              case 'Pull request tests': {
+                const pr = await findOpenPR();
+                if (!pr) { core.info('No PR for this run; skipping.'); break; }
+                await upsert(pr, 'ci-timing:pr');
+                break;
+              }
+              case 'Push tests': {
+                const pr = await findOpenPR();
+                if (!pr) { core.info('Push with no open PR; skipping.'); break; }
+                await upsert(pr, 'ci-timing:push');
+                break;
+              }
+              case 'Main branch tests': {
+                // Authoritative: the PR(s) whose merge/squash commit is this sha.
+                const { data: assoc } = await github.rest.repos.listPullRequestsAssociatedWithCommit(
+                  { owner, repo, commit_sha: run.head_sha });
+                const assocNums = assoc.map(p => p.number);
+                // Prefer "(#NNNN)" from the squash subject, but only if it is
+                // actually associated with this commit. The subject is editable
+                // at merge time, so trusting it blindly would let a crafted title
+                // redirect the comment to an unrelated issue.
+                const fromSubject = Number((run.head_commit?.message || '').split('\n')[0]
+                  .match(/\(#(\d+)\)\s*$/)?.[1]);
+                const pr = assocNums.includes(fromSubject) ? fromSubject : assocNums[0];
+                if (!pr) { core.info('Merge with no resolvable PR; skipping.'); break; }
+                // Create-only: each merge CI pass gets its own standalone comment.
+                await github.rest.issues.createComment(
+                  { owner, repo, issue_number: Number(pr), body: body('<!-- ci-timing:merge -->') });
+                break;
+              }
+              default:
+                core.info(`Unexpected workflow "${run.name}"; skipping.`);
+            }
