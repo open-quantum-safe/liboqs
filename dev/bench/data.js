@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1794099906061,
+  "lastUpdate": 1794099929257,
   "repoUrl": "https://github.com/open-quantum-safe/liboqs",
   "entries": {
     "Dilithium2": [
@@ -119598,6 +119598,46 @@ window.BENCHMARK_DATA = {
             "value": 29767,
             "unit": "cycles",
             "extra": "Target platform: x86_64-Linux-7.0.0-1017-azure | Compiler: gcc (15.2.0) | Compile options: [-Wa,--noexecstack;-fomit-frame-pointer;-fdata-sections;-ffunction-sections;-Wl,--gc-sections;-Wbad-function-cast] | OQS version: 0.16.0 (major: 0, minor: 16, patch: 0) | Git commit: e77d81dab791c13bf1c4e5d9a7160c403be9bbe0 | OpenSSL enabled: Yes (OpenSSL 3.5.5 27 Jan 2026) | AES: NI | SHA-2: OpenSSL | SHA-3: AVX512VL | OQS build flags: OQS_DIST_BUILD OQS_LIBJADE_BUILD OQS_OPT_TARGET=generic CMAKE_BUILD_TYPE=Release | CPU exts active: ADX AES AVX AVX2 AVX512 BMI1 BMI2 PCLMULQDQ VPCLMULQDQ POPCNT SSE SSE2 SSE3 | "
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "name": "Siyâvash",
+            "username": "mkhellat",
+            "email": "mkhellat@beavernets.com"
+          },
+          "committer": {
+            "name": "GitHub",
+            "username": "web-flow",
+            "email": "noreply@github.com"
+          },
+          "id": "7bf154f197696f5bf04be2ea4c576db86bb6a238",
+          "message": "qruov: use explicit_memset on NetBSD in secure_zero (#2683)\n\n* qruov: use explicit_memset on NetBSD in secure_zero\n\nQRUOV util.h treated NetBSD like FreeBSD/OpenBSD and called\nexplicit_bzero. NetBSD libc does not provide that symbol; it provides\nexplicit_memset(3) instead (already used by OQS_MEM_cleanse via\nOQS_HAVE_EXPLICIT_MEMSET).\n\nThe wrong call leaves liboqs.so with an undefined explicit_bzero, so\nlinking liboqs test binaries on NetBSD fails. Call explicit_memset on\nNetBSD and keep explicit_bzero for glibc/FreeBSD/OpenBSD.\n\nSigned-off-by: Mohammadreza Khellat <mkhellat@gmail.com>\n\n* qruov: apply NetBSD explicit_memset via copy_from_upstream patch\n\nHand-editing util.h fails the upstream-integration CI check: copy\nregenerates the file from round3 and leaves it dirty. Add\nqruov-netbsd-explicit-memset.patch and register it on the qruov\nupstream entry so the integrated tree stays reproducible.\n\nSigned-off-by: Mohammadreza Khellat <mkhellat@gmail.com>\n\n* ci: retrigger fork push tests for upstreamcheck\n\nSigned-off-by: Mohammadreza Khellat <mkhellat@gmail.com>\n\n* docs(qruov): mark primary-upstream as using CFU patches\n\nFirst copy_from_upstream patch for QRUOV makes the doc updater append\n\" with copy_from_upstream patches\" to primary-upstream.source. Commit\nthe regenerated qruov.yml/md so upstreamcheck porcelain stays clean.\n\nSigned-off-by: Mohammadreza Khellat <mkhellat@gmail.com>\n\n---------\n\nSigned-off-by: Mohammadreza Khellat <mkhellat@gmail.com>",
+          "timestamp": "2026-11-06T16:26:33Z",
+          "url": "https://github.com/open-quantum-safe/liboqs/commit/7bf154f197696f5bf04be2ea4c576db86bb6a238"
+        },
+        "date": 1794099927725,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "ML-KEM-1024 keygen",
+            "value": 21059,
+            "unit": "cycles",
+            "extra": "Target platform: x86_64-Linux-7.0.0-1019-azure | Compiler: gcc (15.2.0) | Compile options: [-Wa,--noexecstack;-fomit-frame-pointer;-fdata-sections;-ffunction-sections;-Wl,--gc-sections;-Wbad-function-cast] | OQS version: 0.16.0 (major: 0, minor: 16, patch: 0) | Git commit: 7bf154f197696f5bf04be2ea4c576db86bb6a238 | OpenSSL enabled: Yes (OpenSSL 3.5.5 27 Jan 2026) | AES: NI | SHA-2: OpenSSL | SHA-3: AVX512VL | OQS build flags: OQS_DIST_BUILD OQS_LIBJADE_BUILD OQS_OPT_TARGET=generic CMAKE_BUILD_TYPE=Release | CPU exts active: ADX AES AVX AVX2 AVX512 BMI1 BMI2 PCLMULQDQ VPCLMULQDQ POPCNT SSE SSE2 SSE3 | "
+          },
+          {
+            "name": "ML-KEM-1024 encaps",
+            "value": 22208,
+            "unit": "cycles",
+            "extra": "Target platform: x86_64-Linux-7.0.0-1019-azure | Compiler: gcc (15.2.0) | Compile options: [-Wa,--noexecstack;-fomit-frame-pointer;-fdata-sections;-ffunction-sections;-Wl,--gc-sections;-Wbad-function-cast] | OQS version: 0.16.0 (major: 0, minor: 16, patch: 0) | Git commit: 7bf154f197696f5bf04be2ea4c576db86bb6a238 | OpenSSL enabled: Yes (OpenSSL 3.5.5 27 Jan 2026) | AES: NI | SHA-2: OpenSSL | SHA-3: AVX512VL | OQS build flags: OQS_DIST_BUILD OQS_LIBJADE_BUILD OQS_OPT_TARGET=generic CMAKE_BUILD_TYPE=Release | CPU exts active: ADX AES AVX AVX2 AVX512 BMI1 BMI2 PCLMULQDQ VPCLMULQDQ POPCNT SSE SSE2 SSE3 | "
+          },
+          {
+            "name": "ML-KEM-1024 decaps",
+            "value": 27526,
+            "unit": "cycles",
+            "extra": "Target platform: x86_64-Linux-7.0.0-1019-azure | Compiler: gcc (15.2.0) | Compile options: [-Wa,--noexecstack;-fomit-frame-pointer;-fdata-sections;-ffunction-sections;-Wl,--gc-sections;-Wbad-function-cast] | OQS version: 0.16.0 (major: 0, minor: 16, patch: 0) | Git commit: 7bf154f197696f5bf04be2ea4c576db86bb6a238 | OpenSSL enabled: Yes (OpenSSL 3.5.5 27 Jan 2026) | AES: NI | SHA-2: OpenSSL | SHA-3: AVX512VL | OQS build flags: OQS_DIST_BUILD OQS_LIBJADE_BUILD OQS_OPT_TARGET=generic CMAKE_BUILD_TYPE=Release | CPU exts active: ADX AES AVX AVX2 AVX512 BMI1 BMI2 PCLMULQDQ VPCLMULQDQ POPCNT SSE SSE2 SSE3 | "
           }
         ]
       }
