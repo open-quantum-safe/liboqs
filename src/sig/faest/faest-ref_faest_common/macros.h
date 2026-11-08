@@ -205,10 +205,16 @@
 #endif
 
 /* vector_size attribute */
-#if GNUC_CHECK(4, 8) || __has_attribute(vector_size)
+/* liboqs: only select the GCC/clang vector-extension field implementation when
+ * the target actually provides the vector registers it needs. The 192/256-bit
+ * field types are 32-byte (256-bit) vectors; returning them by value without
+ * AVX changes the ABI (-Wpsabi) and breaks liboqs' portable, strict-warning
+ * builds. Without AVX, fall back to the struct-based field implementation that
+ * faest-ref already provides. */
+#if (GNUC_CHECK(4, 8) || __has_attribute(vector_size)) && defined(__AVX__)
 #define HAVE_ATTR_VECTOR_SIZE
 #define ATTR_VECTOR_SIZE(s) __attribute__((vector_size(s)))
-#elif __has_attribute(__vector_size__)
+#elif __has_attribute(__vector_size__) && defined(__AVX__)
 #define HAVE_ATTR_VECTOR_SIZE
 #define ATTR_VECTOR_SIZE(s) __attribute__((__vector_size__(s)))
 #else

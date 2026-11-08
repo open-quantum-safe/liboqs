@@ -73,7 +73,13 @@
 
 #define faest_aligned_alloc(alignment, size) aligned_alloc((alignment), (size))
 #define faest_aligned_free(ptr) free((ptr)) // IGNORE memory-check
-#else
+// liboqs: under -DOQS these are provided below via OQS_MEM_aligned_alloc/free,
+// and compat.c does not build its fallback (see its !defined(OQS) guard), so
+// the fallback prototype is dead. Emitting it also trips -Werror=attributes on
+// GCC, because liboqs' config.h `#define malloc(size) OQS_MEM_malloc(size)`
+// rewrites the malloc() deallocator token inside ATTR_MALLOC into a bogus
+// `OQS_MEM_malloc(...)` attribute. Guard it out when building for OQS.
+#elif !defined(OQS)
 FAEST_BEGIN_C_DECL
 
 /**
@@ -135,12 +141,13 @@ FAEST_END_C_DECL
 
 /**
  * Compatibility implementation of mempcpy
+ *
+ * liboqs: compute the end pointer via uint8_t* rather than doing arithmetic on
+ * the void* returned by memcpy; void* arithmetic is a GNU extension that fails
+ * under liboqs' -Wpedantic/-Werror (-Wpointer-arith) on GCC. The cast form is
+ * valid on every compiler, so drop the previous clang/MSC-only special-case.
  */
-#if defined(_MSC_VER) || defined(__clang__)
 #define faest_mempcpy(dst, src, len) ((void*)(((uint8_t*)memcpy((dst), (src), (len))) + (len)))
-#else
-#define faest_mempcpy(dst, src, len) (memcpy((dst), (src), (len)) + (len))
-#endif
 #endif /* HAVE_MEMPCPY */
 
 #if defined(OQS)
