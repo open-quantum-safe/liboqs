@@ -568,6 +568,20 @@
 #cmakedefine OQS_ENABLE_SIG_sqisign_p664_17 1
 #cmakedefine OQS_ENABLE_SIG_sqisign_p664_17_broadwell 1
 #cmakedefine OQS_ENABLE_SIG_sqisign_p664_17_arm64 1
+
+#cmakedefine OQS_ENABLE_SIG_FAEST 1
+#cmakedefine OQS_ENABLE_SIG_faest_128s 1
+#cmakedefine OQS_ENABLE_SIG_faest_128f 1
+#cmakedefine OQS_ENABLE_SIG_faest_em_128s 1
+#cmakedefine OQS_ENABLE_SIG_faest_em_128f 1
+#cmakedefine OQS_ENABLE_SIG_faest_192s 1
+#cmakedefine OQS_ENABLE_SIG_faest_192f 1
+#cmakedefine OQS_ENABLE_SIG_faest_em_192s 1
+#cmakedefine OQS_ENABLE_SIG_faest_em_192f 1
+#cmakedefine OQS_ENABLE_SIG_faest_256s 1
+#cmakedefine OQS_ENABLE_SIG_faest_256f 1
+#cmakedefine OQS_ENABLE_SIG_faest_em_256s 1
+#cmakedefine OQS_ENABLE_SIG_faest_em_256f 1
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ADD_ALG_ENABLE_DEFINES_END
 ///// OQS_COPY_FROM_SLH_DSA_FRAGMENT_ADD_ALG_ENABLE_DEFINES_START
 #cmakedefine OQS_ENABLE_SIG_SLH_DSA 1

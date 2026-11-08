@@ -113,10 +113,14 @@ jobs:
             if grep -qE "$SHARED|^src/sig/qruov/" "$CHANGED"; then
               echo "RUN_QRUOV_LEAKS=true" >> "$GITHUB_ENV"
             fi
+            if grep -qE "$SHARED|^src/sig/faest/" "$CHANGED"; then
+              echo "RUN_FAEST_LEAKS=true" >> "$GITHUB_ENV"
+            fi
           else
             echo "::warning::Could not determine changed files; running all leak tests"
             echo "RUN_MQOM_LEAKS=true" >> "$GITHUB_ENV"
             echo "RUN_QRUOV_LEAKS=true" >> "$GITHUB_ENV"
+            echo "RUN_FAEST_LEAKS=true" >> "$GITHUB_ENV"
           fi
       - name: Configure
         run: mkdir build && cd build && cmake -GNinja ${{ matrix.CMAKE_ARGS }} .. && cmake -LA -N ..
@@ -133,6 +137,8 @@ jobs:
         timeout-minutes: 60
         env:
           OQS_TEST_SIG_CTX_STEP: "255"
+          # Fast FAEST variants only per-PR; slow "s" sets run in extended CI. See #2658.
+          SKIP_ALGS: 'FAEST-.*S'
         run: mkdir -p tmp && python3 -m pytest --verbose --ignore=tests/test_code_conventions.py --ignore=tests/test_cmake_option_coverage.py --ignore=tests/test_kats_json.py --ignore=tests/test_acvp_vectors.py --ignore=tests/test_wycheproof_vectors.py --numprocesses=logical --dist load --maxschedchunk=1 ${{ matrix.PYTEST_ARGS }}
       - name: Package .deb
         if: matrix.name == 'jammy-std-openssl3'

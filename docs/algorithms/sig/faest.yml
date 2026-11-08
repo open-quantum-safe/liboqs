@@ -23,6 +23,7 @@ oqs-support-tier: 3
 spec-version: 3.0
 primary-upstream:
   source: https://github.com/faest-sign/faest-ref/commit/fe428d05a8cbea9c38fbb9266e43fba2c80b621d
+    with copy_from_upstream patches
   spdx-license-identifier: MIT
 parameter-sets:
 - name: FAEST-128S

@@ -6,7 +6,9 @@ import subprocess
 from pathlib import Path
 
 import pytest
-import yaml
+
+# PyYAML is not in every CI image (e.g. Alpine/musl). Skip there rather than fail.
+yaml = pytest.importorskip("yaml")
 
 LIBOQS_ROOT = Path(__file__).resolve().parents[1]
 COPY_FROM_UPSTREAM = LIBOQS_ROOT / "scripts" / "copy_from_upstream"

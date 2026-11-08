@@ -93,7 +93,7 @@ def parse_meson_parameter_sets(meson_path: Path) -> list[dict[str, object]]:
     parameter_sets: list[dict[str, object]] = []
     set_re = re.compile(r"^\s*param_\w+\.set\('([^']+)',\s*(.+)\)\s*$")
 
-    for line in meson_path.read_text().splitlines():
+    for line in meson_path.read_text(encoding="utf-8").splitlines():
         if re.match(r"^param_\w+ = configuration_data\(\)", line):
             current = {}
             continue
@@ -218,7 +218,7 @@ COMMON_SOURCES = [
 
 
 def render_template(template_path: Path, mapping: dict[str, str]) -> str:
-    content = template_path.read_text()
+    content = template_path.read_text(encoding="utf-8")
     for key, value in mapping.items():
         content = content.replace(f"@{key}@", value)
     return content
@@ -291,7 +291,7 @@ def generate_parameters_h(parameter_sets: list[dict]) -> str:
 
 
 def generate_config_h() -> str:
-    return (TEMPLATES / "config.h.in").read_text()
+    return (TEMPLATES / "config.h.in").read_text(encoding="utf-8")
 
 
 def cxx_compiler() -> str:
@@ -307,7 +307,7 @@ def generate_vole_tables(faest_ref: Path, parameters_h: str) -> dict[Path, str]:
     with tempfile.TemporaryDirectory(prefix="faest-tables-") as tmp:
         tmpdir = Path(tmp)
         (tmpdir / "tables").mkdir()
-        (tmpdir / "parameters.h").write_text(parameters_h)
+        (tmpdir / "parameters.h").write_text(parameters_h, encoding="utf-8")
         shutil.copy(faest_ref / "macros.h", tmpdir / "macros.h")
         shutil.copy(faest_ref / "faest_defines.h", tmpdir / "faest_defines.h")
         shutil.copy(
@@ -333,7 +333,9 @@ def generate_vole_tables(faest_ref: Path, parameters_h: str) -> dict[Path, str]:
                 [str(exe), "--preset", preset, "--emit-c", str(dest)],
                 check=True,
             )
-            outputs[GENERATED / f"tables_{preset}.h"] = dest.read_text()
+            outputs[GENERATED / f"tables_{preset}.h"] = (
+                "/* SPDX-License-Identifier: MIT */\n" + dest.read_text(encoding="utf-8")
+            )
         return outputs
 
 
@@ -370,9 +372,9 @@ implementations:
     signature_keypair: {ns}_crypto_sign_keypair
     signature_signature: {ns}_crypto_sign_signature
     signature_verify: {ns}_crypto_sign_verify
-    compile_opts: -DOQS -DHAVE_CONFIG_H
+    compile_opts: -DOQS -DHAVE_CONFIG_H -DFAEST_STATIC
     sources: api.h crypto_sign.c faest_{ps['param_l']}.c faest_{ps['param_l']}.h
-    common_dep: faest_common
+    common_dep: faest_common faest_common_headers
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: true
@@ -382,10 +384,27 @@ implementations:
 
 def generate_meta_common_yml() -> str:
     sources = " ".join(COMMON_SOURCES)
+    # Compile the parameter-independent core once. Inlining it into every
+    # variant (include_only: true) defines the same non-static symbols 12 times
+    # and breaks shared-library links. A headers-only companion dep supplies
+    # the include path for per-variant glue, matching SDitH.
+    header_sources = " ".join(
+        [
+            f"{LIBOQS_PREFIX}/generated/config.h",
+            f"{LIBOQS_PREFIX}/generated/parameters.h",
+        ]
+        + [f"{LIBOQS_PREFIX}/generated/tables_{preset}.h" for preset in TABLE_PRESETS]
+        + COMMON_HEADERS
+    )
     return f"""commons:
   - name: faest_common
     folder_name: .
     sources: {sources}
+    compile_opts: -DOQS -DHAVE_CONFIG_H -DFAEST_STATIC
+    include_only: false
+  - name: faest_common_headers
+    folder_name: .
+    sources: {header_sources}
     include_only: true
 """
 
@@ -510,13 +529,13 @@ def build_outputs(faest_ref: Path, parameter_sets: list[dict]) -> dict[Path, str
 def write_outputs(outputs: dict[Path, str]) -> None:
     for path, content in outputs.items():
         path.parent.mkdir(parents=True, exist_ok=True)
-        path.write_text(content)
+        path.write_text(content, encoding="utf-8")
 
 
 def find_stale_outputs(outputs: dict[Path, str]) -> list[Path]:
     stale: list[Path] = []
     for path, content in outputs.items():
-        if not path.is_file() or path.read_text() != content:
+        if not path.is_file() or path.read_text(encoding="utf-8") != content:
             stale.append(path)
     return stale
 

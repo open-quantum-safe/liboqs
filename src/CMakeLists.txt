@@ -83,6 +83,10 @@ if(OQS_ENABLE_SIG_SQISIGN)
     add_subdirectory(sig/sqisign)
     set(SIG_OBJS ${SIG_OBJS} ${SQISIGN_OBJS})
 endif()
+if(OQS_ENABLE_SIG_FAEST)
+    add_subdirectory(sig/faest)
+    set(SIG_OBJS ${SIG_OBJS} ${FAEST_OBJS})
+endif()
 ##### OQS_COPY_FROM_UPSTREAM_FRAGMENT_ADD_ALG_OBJECTS_END
 
 # SDitH is imported upstream code that is not yet free of compiler warnings
