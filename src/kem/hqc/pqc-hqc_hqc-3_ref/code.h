@@ -10,6 +10,10 @@
 #include <stdint.h>
 #include "parameters.h"
 
+#include "namespace.h"
+#define code_encode HQC_NS(code_encode)
+#define code_decode HQC_NS(code_decode)
+
 void code_encode(uint64_t *em, const uint64_t *m);
 void code_decode(uint64_t *m, const uint64_t *em);
 

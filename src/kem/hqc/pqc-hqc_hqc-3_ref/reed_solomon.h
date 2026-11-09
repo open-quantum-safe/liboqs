@@ -10,6 +10,11 @@
 #include <stdint.h>
 #include "parameters.h"
 
+#include "namespace.h"
+#define reed_solomon_encode HQC_NS(reed_solomon_encode)
+#define reed_solomon_decode HQC_NS(reed_solomon_decode)
+#define compute_generator_poly HQC_NS(compute_generator_poly)
+
 /**
  * @brief  Precomputed Galois‐field powers for Reed–Solomon operations.
  *
