@@ -20,7 +20,7 @@ upstreams:
     name: pqc-hqc
     git_url: https://github.com/xuganyu96/hqc.git
     git_branch: liboqs-integration
-    git_commit: 40747cf4824a078a02f003f79d777a45db5ef410
+    git_commit: fe6032cdf3a94a0b90d676da1df2952f89e7ac7d
     kem_meta_path: "integration/liboqs/{pretty_name_full}_META.yml"
     kem_scheme_path: .
     patches: []
