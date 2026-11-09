@@ -1,6 +1,6 @@
 --- upstream/lib/low/common/PlSnP-Fallback.inc
 +++ upstream-patched/lib/low/common/PlSnP-Fallback.inc
-@@ -25,46 +25,51 @@
+@@ -25,46 +25,52 @@
  /* expect prefix */
  /* expect SnP_* */
  
@@ -53,6 +53,7 @@
  #define PlSnP_factor ((PlSnP_targetParallelism)/(PlSnP_baseParallelism))
  #define SnP_stateOffset (((SnP_stateSizeInBytes+(SnP_stateAlignment-1))/SnP_stateAlignment)*SnP_stateAlignment)
  #define stateWithIndex(i) ((unsigned char *)states+((i)*SnP_stateOffset))
++#define constStateWithIndex(i) ((const unsigned char *)states+((i)*SnP_stateOffset))
  
 -#define SnP_StaticInitialize            JOIN(SnP, _StaticInitialize)
 -#define SnP_Initialize                  JOIN(SnP, _Initialize)
@@ -83,22 +84,52 @@
  
  void PlSnP_StaticInitialize( void )
  {
-@@ -214,7 +219,7 @@
+@@ -205,12 +211,12 @@
+ }
+ #endif
+ 
+-void PlSnP_ExtractBytes(void *states, unsigned int instanceIndex, unsigned char *data, unsigned int offset, unsigned int length)
++void PlSnP_ExtractBytes(const void *states, unsigned int instanceIndex, unsigned char *data, unsigned int offset, unsigned int length)
+ {
+     #if (PlSnP_baseParallelism == 1)
+-        SnP_ExtractBytes(stateWithIndex(instanceIndex), data, offset, length);
++        SnP_ExtractBytes(constStateWithIndex(instanceIndex), data, offset, length);
+     #else
+-        SnP_ExtractBytes(stateWithIndex(instanceIndex/PlSnP_baseParallelism), instanceIndex%PlSnP_baseParallelism, data, offset, length);
++        SnP_ExtractBytes(constStateWithIndex(instanceIndex/PlSnP_baseParallelism), instanceIndex%PlSnP_baseParallelism, data, offset, length);
      #endif
  }
  
--void PlSnP_ExtractLanesAll(const void *states, unsigned char *data, unsigned int laneCount, unsigned int laneOffset)
-+void PlSnP_ExtractLanesAll(void *states, unsigned char *data, unsigned int laneCount, unsigned int laneOffset)
- {
-     unsigned int i;
+@@ -220,9 +226,9 @@
  
-@@ -237,7 +242,7 @@
-     #endif
- }
+     for(i=0; i<PlSnP_factor; i++) {
+         #if (PlSnP_baseParallelism == 1)
+-            SnP_ExtractBytes(stateWithIndex(i), data, 0, laneCount*SnP_laneLengthInBytes);
++            SnP_ExtractBytes(constStateWithIndex(i), data, 0, laneCount*SnP_laneLengthInBytes);
+         #else
+-            SnP_ExtractLanesAll(stateWithIndex(i), data, laneCount, laneOffset);
++            SnP_ExtractLanesAll(constStateWithIndex(i), data, laneCount, laneOffset);
+         #endif
+         data += laneOffset*SnP_laneLengthInBytes*PlSnP_baseParallelism;
+     }
+@@ -243,9 +249,9 @@
  
--void PlSnP_ExtractAndAddLanesAll(const void *states, const unsigned char *input, unsigned char *output, unsigned int laneCount, unsigned int laneOffset)
-+void PlSnP_ExtractAndAddLanesAll(void *states, const unsigned char *input, unsigned char *output, unsigned int laneCount, unsigned int laneOffset)
- {
-     unsigned int i;
- 
+     for(i=0; i<PlSnP_factor; i++) {
+         #if (PlSnP_baseParallelism == 1)
+-            SnP_ExtractAndAddBytes(stateWithIndex(i), input, output, 0, laneCount*SnP_laneLengthInBytes);
++            SnP_ExtractAndAddBytes(constStateWithIndex(i), input, output, 0, laneCount*SnP_laneLengthInBytes);
+         #else
+-            SnP_ExtractAndAddLanesAll(stateWithIndex(i), input, output, laneCount, laneOffset);
++            SnP_ExtractAndAddLanesAll(constStateWithIndex(i), input, output, laneCount, laneOffset);
+         #endif
+         input += laneOffset*SnP_laneLengthInBytes*PlSnP_baseParallelism;
+         output += laneOffset*SnP_laneLengthInBytes*PlSnP_baseParallelism;
+@@ -255,6 +261,7 @@
+ #undef PlSnP_factor
+ #undef SnP_stateOffset
+ #undef stateWithIndex
++#undef constStateWithIndex
+ #undef JOIN0
+ #undef JOIN
+ #undef PlSnP_StaticInitialize
 
