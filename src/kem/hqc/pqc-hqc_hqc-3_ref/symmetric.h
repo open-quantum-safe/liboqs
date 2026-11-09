@@ -11,6 +11,15 @@
 #include "fips202.h"
 #include "parameters.h"
 
+#include "namespace.h"
+#define xof_init HQC_NS(xof_init)
+#define xof_init_dom_sep HQC_NS(xof_init_dom_sep)
+#define xof_get_bytes HQC_NS(xof_get_bytes)
+#define hash_g HQC_NS(hash_g)
+#define hash_h HQC_NS(hash_h)
+#define hash_i HQC_NS(hash_i)
+#define hash_j HQC_NS(hash_j)
+
 /**
  * @typedef sha3_512_ctx
  * @brief Incremental SHA3-512 hashing context.
