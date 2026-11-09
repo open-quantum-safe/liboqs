@@ -13,7 +13,7 @@ OQS_KEM *OQS_KEM_hqc_5_new(void) {
 		return NULL;
 	}
 	kem->method_name = OQS_KEM_alg_hqc_5;
-	kem->alg_version = "https://gitlab.com/pqc-hqc/hqc@161cd4f";
+	kem->alg_version = "2026-10-12";
 
 	kem->claimed_nist_level = 5;
 	kem->ind_cca = true;
@@ -34,9 +34,15 @@ OQS_KEM *OQS_KEM_hqc_5_new(void) {
 	return kem;
 }
 
-extern int PQCHQC_HQC5_C_crypto_kem_keypair(uint8_t *pk, uint8_t *sk);
-extern int PQCHQC_HQC5_C_crypto_kem_enc(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
-extern int PQCHQC_HQC5_C_crypto_kem_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
+extern int PQCHQC_HQC5_C_hqc_kem_keygen(uint8_t *pk, uint8_t *sk);
+extern int PQCHQC_HQC5_C_hqc_kem_encaps(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
+extern int PQCHQC_HQC5_C_hqc_kem_decaps(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
+
+#if defined(OQS_ENABLE_KEM_hqc_5_x86_64)
+extern int PQCHQC_HQC5_AVX256_hqc_kem_keygen(uint8_t *pk, uint8_t *sk);
+extern int PQCHQC_HQC5_AVX256_hqc_kem_encaps(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
+extern int PQCHQC_HQC5_AVX256_hqc_kem_decaps(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
+#endif
 
 OQS_API OQS_STATUS OQS_KEM_hqc_5_keypair_derand(uint8_t *public_key, uint8_t *secret_key, const uint8_t *seed) {
 	(void)public_key;
@@ -46,7 +52,19 @@ OQS_API OQS_STATUS OQS_KEM_hqc_5_keypair_derand(uint8_t *public_key, uint8_t *se
 }
 
 OQS_API OQS_STATUS OQS_KEM_hqc_5_keypair(uint8_t *public_key, uint8_t *secret_key) {
-	return (OQS_STATUS) PQCHQC_HQC5_C_crypto_kem_keypair(public_key, secret_key);
+#if defined(OQS_ENABLE_KEM_hqc_5_x86_64)
+#if defined(OQS_DIST_BUILD)
+	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX) && OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_BMI) && OQS_CPU_has_extension(OQS_CPU_EXT_PCLMUL)) {
+#endif /* OQS_DIST_BUILD */
+		return (OQS_STATUS) PQCHQC_HQC5_AVX256_hqc_kem_keygen(public_key, secret_key);
+#if defined(OQS_DIST_BUILD)
+	} else {
+		return (OQS_STATUS) PQCHQC_HQC5_C_hqc_kem_keygen(public_key, secret_key);
+	}
+#endif /* OQS_DIST_BUILD */
+#else
+	return (OQS_STATUS) PQCHQC_HQC5_C_hqc_kem_keygen(public_key, secret_key);
+#endif
 }
 
 OQS_API OQS_STATUS OQS_KEM_hqc_5_encaps_derand(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key, const uint8_t *seed) {
@@ -58,11 +76,35 @@ OQS_API OQS_STATUS OQS_KEM_hqc_5_encaps_derand(uint8_t *ciphertext, uint8_t *sha
 }
 
 OQS_API OQS_STATUS OQS_KEM_hqc_5_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key) {
-	return (OQS_STATUS) PQCHQC_HQC5_C_crypto_kem_enc(ciphertext, shared_secret, public_key);
+#if defined(OQS_ENABLE_KEM_hqc_5_x86_64)
+#if defined(OQS_DIST_BUILD)
+	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX) && OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_BMI) && OQS_CPU_has_extension(OQS_CPU_EXT_PCLMUL)) {
+#endif /* OQS_DIST_BUILD */
+		return (OQS_STATUS) PQCHQC_HQC5_AVX256_hqc_kem_encaps(ciphertext, shared_secret, public_key);
+#if defined(OQS_DIST_BUILD)
+	} else {
+		return (OQS_STATUS) PQCHQC_HQC5_C_hqc_kem_encaps(ciphertext, shared_secret, public_key);
+	}
+#endif /* OQS_DIST_BUILD */
+#else
+	return (OQS_STATUS) PQCHQC_HQC5_C_hqc_kem_encaps(ciphertext, shared_secret, public_key);
+#endif
 }
 
 OQS_API OQS_STATUS OQS_KEM_hqc_5_decaps(uint8_t *shared_secret, const uint8_t *ciphertext, const uint8_t *secret_key) {
-	return (OQS_STATUS) PQCHQC_HQC5_C_crypto_kem_dec(shared_secret, ciphertext, secret_key);
+#if defined(OQS_ENABLE_KEM_hqc_5_x86_64)
+#if defined(OQS_DIST_BUILD)
+	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX) && OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_BMI) && OQS_CPU_has_extension(OQS_CPU_EXT_PCLMUL)) {
+#endif /* OQS_DIST_BUILD */
+		return (OQS_STATUS) PQCHQC_HQC5_AVX256_hqc_kem_decaps(shared_secret, ciphertext, secret_key);
+#if defined(OQS_DIST_BUILD)
+	} else {
+		return (OQS_STATUS) PQCHQC_HQC5_C_hqc_kem_decaps(shared_secret, ciphertext, secret_key);
+	}
+#endif /* OQS_DIST_BUILD */
+#else
+	return (OQS_STATUS) PQCHQC_HQC5_C_hqc_kem_decaps(shared_secret, ciphertext, secret_key);
+#endif
 }
 
 #endif
