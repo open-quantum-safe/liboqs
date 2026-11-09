@@ -8,6 +8,8 @@
 
 #include <stdint.h>
 
+#include "namespace.h"
+
 #ifndef HQC_PARAMETER_SET
 #define HQC_PARAMETER_SET 1
 #endif /* !HQC_PARAMETER_SET */
@@ -35,10 +37,6 @@
 #define CRYPTO_BYTES           32U
 #define CRYPTO_CIPHERTEXTBYTES 14421U
 #endif /* HQC_PARAMETER_SET decides CRYPTO_ALGNAME and parameter sets */
-
-#define HQC_CONCAT_(x, y) x##y
-#define HQC_CONCAT(x, y) HQC_CONCAT_(x, y)
-#define HQC_NS(sym) HQC_CONCAT(HQC_CONCAT(HQC_NAMESPACE_PREFIX, _), sym)
 
 #define hqc_kem_keygen HQC_NS(hqc_kem_keygen)
 #define hqc_kem_encaps HQC_NS(hqc_kem_encaps)
