@@ -777,9 +777,15 @@ OQS_API OQS_STATUS OQS_SIG_keypair(const OQS_SIG *sig, uint8_t *public_key, uint
 /**
  * Signature generation algorithm.
  *
- * Caller is responsible for allocating sufficient memory for `signnature`,
+ * Caller is responsible for allocating sufficient memory for `signature`,
  * based on the `length_*` members in this object or the per-scheme
  * compile-time macros `OQS_SIG_*_length_*`.
+ *
+ * Caller is also responsible for ensuring that `secret_key` is exactly
+ * `length_secret_key` bytes long. This function cannot check the length of
+ * `secret_key`: a shorter buffer causes an out-of-bounds read, and a secret key
+ * of the wrong length (for example, one for a different parameter set) may not
+ * be detected.
  *
  * @param[in] sig The OQS_SIG object representing the signature scheme.
  * @param[out] signature The signature on the message represented as a byte string.
@@ -798,6 +804,12 @@ OQS_API OQS_STATUS OQS_SIG_sign(const OQS_SIG *sig, uint8_t *signature, size_t *
  * based on the `length_*` members in this object or the per-scheme
  * compile-time macros `OQS_SIG_*_length_*`.
  *
+ * Caller is also responsible for ensuring that `secret_key` is exactly
+ * `length_secret_key` bytes long. This function cannot check the length of
+ * `secret_key`: a shorter buffer causes an out-of-bounds read, and a secret key
+ * of the wrong length (for example, one for a different parameter set) may not
+ * be detected.
+ *
  * @param[in] sig The OQS_SIG object representing the signature scheme.
  * @param[out] signature The signature on the message represented as a byte string.
  * @param[out] signature_len The actual length of the signature. May be smaller than `length_signature` for some algorithms since some algorithms have variable length signatures.
@@ -813,6 +825,13 @@ OQS_API OQS_STATUS OQS_SIG_sign_with_ctx_str(const OQS_SIG *sig, uint8_t *signat
 /**
  * Signature verification algorithm.
  *
+ * Caller is responsible for ensuring that `public_key` is exactly
+ * `length_public_key` bytes long, based on the `length_*` members in this object
+ * or the per-scheme compile-time macros `OQS_SIG_*_length_*`. This function
+ * cannot check the length of `public_key`: a shorter buffer causes an
+ * out-of-bounds read, and a public key of the wrong length (for example, one for
+ * a different parameter set) may not be detected.
+ *
  * @param[in] sig The OQS_SIG object representing the signature scheme.
  * @param[in] message The message represented as a byte string.
  * @param[in] message_len The length of the message.
@@ -825,6 +844,13 @@ OQS_API OQS_STATUS OQS_SIG_verify(const OQS_SIG *sig, const uint8_t *message, si
 
 /**
  * Signature verification algorithm, with custom context string.
+ *
+ * Caller is responsible for ensuring that `public_key` is exactly
+ * `length_public_key` bytes long, based on the `length_*` members in this object
+ * or the per-scheme compile-time macros `OQS_SIG_*_length_*`. This function
+ * cannot check the length of `public_key`: a shorter buffer causes an
+ * out-of-bounds read, and a public key of the wrong length (for example, one for
+ * a different parameter set) may not be detected.
  *
  * @param[in] sig The OQS_SIG object representing the signature scheme.
  * @param[in] message The message represented as a byte string.
