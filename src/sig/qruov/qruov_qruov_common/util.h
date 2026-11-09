@@ -30,7 +30,10 @@ static inline void secure_zero(void *ptr, size_t len)
 {
 #if defined(__APPLE__)
     (void)memset_s(ptr, len, 0, len);
-#elif defined(__GLIBC__) || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__OpenBSD__)
+#elif defined(__NetBSD__)
+    /* NetBSD provides explicit_memset(3), not explicit_bzero(3). */
+    explicit_memset(ptr, 0, len);
+#elif defined(__GLIBC__) || defined(__FreeBSD__) || defined(__OpenBSD__)
     explicit_bzero(ptr, len);
 #else
     static void *(*const volatile memset_ptr)(void *, int, size_t) = memset;

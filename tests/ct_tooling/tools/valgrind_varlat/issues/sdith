@@ -1,5 +1,7 @@
+## avx2 suppressions
 # These suppressions need to be verified as false positives
 # This is tracked at https://github.com/open-quantum-safe/liboqs/issues/2609
+
 {
    TODO: verify CT claims
    Memcheck:Cond
@@ -82,4 +84,20 @@
    fun:oqs_sig_pubapi_sdith_*_avx2_crypto_sign_sign
    fun:OQS_SIG_sdith_*_sign
    fun:OQS_SIG_sign
+}
+
+## ref suppressions
+# The ref implementation does not claim constant-time behaviour
+# (docs/algorithms/sig/sdith.yml: no-secret-dependent-branching-claimed: false).
+{
+   SDitH ref implementation does not claim constant-time behaviour
+   Memcheck:Cond
+   ...
+   fun:oqs_sig_private_sdith_ref_*
+}
+{
+   SDitH ref implementation does not claim constant-time behaviour
+   Memcheck:Value8
+   ...
+   fun:oqs_sig_private_sdith_ref_*
 }
