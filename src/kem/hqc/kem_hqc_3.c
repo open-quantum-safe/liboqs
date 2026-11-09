@@ -13,7 +13,7 @@ OQS_KEM *OQS_KEM_hqc_3_new(void) {
 		return NULL;
 	}
 	kem->method_name = OQS_KEM_alg_hqc_3;
-	kem->alg_version = "https://gitlab.com/pqc-hqc/hqc@161cd4f";
+	kem->alg_version = "2026-10-12";
 
 	kem->claimed_nist_level = 3;
 	kem->ind_cca = true;
@@ -34,9 +34,15 @@ OQS_KEM *OQS_KEM_hqc_3_new(void) {
 	return kem;
 }
 
-extern int PQCHQC_HQC3_C_crypto_kem_keypair(uint8_t *pk, uint8_t *sk);
-extern int PQCHQC_HQC3_C_crypto_kem_enc(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
-extern int PQCHQC_HQC3_C_crypto_kem_dec(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
+extern int PQCHQC_HQC3_C_hqc_kem_keygen_oqs(uint8_t *pk, uint8_t *sk);
+extern int PQCHQC_HQC3_C_hqc_kem_encaps_oqs(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
+extern int PQCHQC_HQC3_C_hqc_kem_decaps_oqs(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
+
+#if defined(OQS_ENABLE_KEM_hqc_3_x86_64)
+extern int PQCHQC_HQC3_AVX256_hqc_kem_keygen_oqs(uint8_t *pk, uint8_t *sk);
+extern int PQCHQC_HQC3_AVX256_hqc_kem_encaps_oqs(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
+extern int PQCHQC_HQC3_AVX256_hqc_kem_decaps_oqs(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
+#endif
 
 OQS_API OQS_STATUS OQS_KEM_hqc_3_keypair_derand(uint8_t *public_key, uint8_t *secret_key, const uint8_t *seed) {
 	(void)public_key;
@@ -46,7 +52,19 @@ OQS_API OQS_STATUS OQS_KEM_hqc_3_keypair_derand(uint8_t *public_key, uint8_t *se
 }
 
 OQS_API OQS_STATUS OQS_KEM_hqc_3_keypair(uint8_t *public_key, uint8_t *secret_key) {
-	return (OQS_STATUS) PQCHQC_HQC3_C_crypto_kem_keypair(public_key, secret_key);
+#if defined(OQS_ENABLE_KEM_hqc_3_x86_64)
+#if defined(OQS_DIST_BUILD)
+	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX) && OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_BMI1) && OQS_CPU_has_extension(OQS_CPU_EXT_PCLMULQDQ)) {
+#endif /* OQS_DIST_BUILD */
+		return (OQS_STATUS) PQCHQC_HQC3_AVX256_hqc_kem_keygen_oqs(public_key, secret_key);
+#if defined(OQS_DIST_BUILD)
+	} else {
+		return (OQS_STATUS) PQCHQC_HQC3_C_hqc_kem_keygen_oqs(public_key, secret_key);
+	}
+#endif /* OQS_DIST_BUILD */
+#else
+	return (OQS_STATUS) PQCHQC_HQC3_C_hqc_kem_keygen_oqs(public_key, secret_key);
+#endif
 }
 
 OQS_API OQS_STATUS OQS_KEM_hqc_3_encaps_derand(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key, const uint8_t *seed) {
@@ -58,11 +76,35 @@ OQS_API OQS_STATUS OQS_KEM_hqc_3_encaps_derand(uint8_t *ciphertext, uint8_t *sha
 }
 
 OQS_API OQS_STATUS OQS_KEM_hqc_3_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key) {
-	return (OQS_STATUS) PQCHQC_HQC3_C_crypto_kem_enc(ciphertext, shared_secret, public_key);
+#if defined(OQS_ENABLE_KEM_hqc_3_x86_64)
+#if defined(OQS_DIST_BUILD)
+	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX) && OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_BMI1) && OQS_CPU_has_extension(OQS_CPU_EXT_PCLMULQDQ)) {
+#endif /* OQS_DIST_BUILD */
+		return (OQS_STATUS) PQCHQC_HQC3_AVX256_hqc_kem_encaps_oqs(ciphertext, shared_secret, public_key);
+#if defined(OQS_DIST_BUILD)
+	} else {
+		return (OQS_STATUS) PQCHQC_HQC3_C_hqc_kem_encaps_oqs(ciphertext, shared_secret, public_key);
+	}
+#endif /* OQS_DIST_BUILD */
+#else
+	return (OQS_STATUS) PQCHQC_HQC3_C_hqc_kem_encaps_oqs(ciphertext, shared_secret, public_key);
+#endif
 }
 
 OQS_API OQS_STATUS OQS_KEM_hqc_3_decaps(uint8_t *shared_secret, const uint8_t *ciphertext, const uint8_t *secret_key) {
-	return (OQS_STATUS) PQCHQC_HQC3_C_crypto_kem_dec(shared_secret, ciphertext, secret_key);
+#if defined(OQS_ENABLE_KEM_hqc_3_x86_64)
+#if defined(OQS_DIST_BUILD)
+	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX) && OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_BMI1) && OQS_CPU_has_extension(OQS_CPU_EXT_PCLMULQDQ)) {
+#endif /* OQS_DIST_BUILD */
+		return (OQS_STATUS) PQCHQC_HQC3_AVX256_hqc_kem_decaps_oqs(shared_secret, ciphertext, secret_key);
+#if defined(OQS_DIST_BUILD)
+	} else {
+		return (OQS_STATUS) PQCHQC_HQC3_C_hqc_kem_decaps_oqs(shared_secret, ciphertext, secret_key);
+	}
+#endif /* OQS_DIST_BUILD */
+#else
+	return (OQS_STATUS) PQCHQC_HQC3_C_hqc_kem_decaps_oqs(shared_secret, ciphertext, secret_key);
+#endif
 }
 
 #endif

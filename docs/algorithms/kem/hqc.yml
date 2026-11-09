@@ -5,22 +5,27 @@ principal-submitters:
 crypto-assumption: Syndrome decoding of structure codes (Hamming Quasi-Cyclic)
 website: https://pqc-hqc.org/
 nist-round: 4
-standardization-status: Selected by [NIST](https://pqc-hqc.org/doc/hqc_specifications_2025_08_22.pdf)
-  for upcoming standardization
+standardization-status: Selected by NIST for upcoming standardization
 upstream-maintenance: TBD
 upstream-statement-url: null
 oqs-support-tier: 2
-spec-version: 2025-08-22
+spec-version: 2026-10-12
 upstream-ancestors:
 - https://gitlab.com/pqc-hqc
-- submission 2025-08-22 at https://pqc-hqc.org/implementation.html
+advisories:
+- HQC's AVX2 backend is not thread-safe. `src/kem/hqc/pqc-hqc_hqc_avx256_common/hqc.c`
+  and `src/kem/hqc/pqc-hqc_hqc-<1,3,5>_x86_64/gf2x.c` use static buffers that might
+  get corrupted when multiple instances of HQC AVX2 backends run concurrently. These
+  `static` declarations were inherited from upstream and were likely put there to
+  reduce stack usage. Set `OQS_ENABLE_KEM_hqc_{1,3,5}_x86_64=OFF` at CMake configure
+  time to turn off AVX256 backends.
 parameter-sets:
 - name: HQC-1
   claimed-nist-level: 1
   claimed-security: IND-CCA2
   length-public-key: 2241
   length-ciphertext: 4433
-  length-secret-key: 2321
+  length-secret-key: 32
   length-shared-secret: 32
   implementations-switch-on-runtime-cpu-features: true
   implementations:
@@ -33,12 +38,30 @@ parameter-sets:
     large-stack-usage: false
     upstream: primary-upstream
     default: true
+  - upstream-id: x86_64
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - avx
+      - avx2
+      - bmi1
+      - pclmulqdq
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+    upstream: primary-upstream
+    default: false
 - name: HQC-3
   claimed-nist-level: 3
   claimed-security: IND-CCA2
   length-ciphertext: 8978
   length-public-key: 4514
-  length-secret-key: 4602
+  length-secret-key: 32
   length-shared-secret: 32
   implementations-switch-on-runtime-cpu-features: true
   implementations:
@@ -51,12 +74,30 @@ parameter-sets:
     large-stack-usage: false
     upstream: primary-upstream
     default: true
+  - upstream-id: x86_64
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - avx
+      - avx2
+      - bmi1
+      - pclmulqdq
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+    upstream: primary-upstream
+    default: false
 - name: HQC-5
   claimed-nist-level: 5
   claimed-security: IND-CCA2
   length-ciphertext: 14421
   length-public-key: 7237
-  length-secret-key: 7333
+  length-secret-key: 32
   length-shared-secret: 32
   implementations-switch-on-runtime-cpu-features: true
   implementations:
@@ -69,9 +110,27 @@ parameter-sets:
     large-stack-usage: false
     upstream: primary-upstream
     default: true
+  - upstream-id: x86_64
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - avx
+      - avx2
+      - bmi1
+      - pclmulqdq
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+    upstream: primary-upstream
+    default: false
 primary-upstream:
   spdx-license-identifier: Public domain
-  source: https://gitlab.com/pqc-hqc/hqc/commit/161cd4fdf6b4a5198cf40b3a1243f9f27f13e03d
+  source: https://gitlab.com/pqc-hqc/hqc/commit/06567ccbad10580d78dd7863b15d23f41076d57f
     with copy_from_upstream patches
 default-upstream-id: ref
 auxiliary-submitters:
