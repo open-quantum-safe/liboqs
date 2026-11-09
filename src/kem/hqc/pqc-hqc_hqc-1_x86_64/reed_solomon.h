@@ -10,6 +10,12 @@
 #include <stdint.h>
 #include "parameters.h"
 
+#include "namespace.h"
+#define reed_solomon_encode HQC_NS(reed_solomon_encode)
+#define reed_solomon_decode HQC_NS(reed_solomon_decode)
+#define compute_generator_poly HQC_NS(compute_generator_poly)
+
+
 void reed_solomon_encode(uint64_t *cdw, const uint64_t *msg);
 void reed_solomon_decode(uint64_t *msg, uint64_t *cdw);
 

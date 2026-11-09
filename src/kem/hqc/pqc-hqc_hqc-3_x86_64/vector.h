@@ -10,6 +10,18 @@
 #include <stdint.h>
 #include "symmetric.h"
 
+#include "namespace.h"
+#define vect_generate_random_support1 HQC_NS(vect_generate_random_support1)
+#define vect_generate_random_support2 HQC_NS(vect_generate_random_support2)
+#define vect_write_support_to_vector HQC_NS(vect_write_support_to_vector)
+#define vect_sample_fixed_weight1 HQC_NS(vect_sample_fixed_weight1)
+#define vect_sample_fixed_weight2 HQC_NS(vect_sample_fixed_weight2)
+#define vect_set_random HQC_NS(vect_set_random)
+#define vect_add HQC_NS(vect_add)
+#define vect_compare HQC_NS(vect_compare)
+#define vect_truncate HQC_NS(vect_truncate)
+#define vect_print HQC_NS(vect_print)
+
 void vect_generate_random_support1(shake256_xof_ctx *ctx, uint32_t *support, uint16_t weight);
 void vect_generate_random_support2(shake256_xof_ctx *ctx, uint32_t *support, uint16_t weight);
 void vect_write_support_to_vector(__m256i *v, uint32_t *support, uint16_t weight);

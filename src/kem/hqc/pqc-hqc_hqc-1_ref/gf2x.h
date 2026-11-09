@@ -8,6 +8,9 @@
 
 #include <stdint.h>
 
+#include "namespace.h"
+#define vect_mul HQC_NS(vect_mul)
+
 void vect_mul(uint64_t *o, const uint64_t *v1, const uint64_t *v2);
 
 #endif  // HQC_GF2X_H
