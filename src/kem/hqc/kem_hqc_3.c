@@ -54,7 +54,7 @@ OQS_API OQS_STATUS OQS_KEM_hqc_3_keypair_derand(uint8_t *public_key, uint8_t *se
 OQS_API OQS_STATUS OQS_KEM_hqc_3_keypair(uint8_t *public_key, uint8_t *secret_key) {
 #if defined(OQS_ENABLE_KEM_hqc_3_x86_64)
 #if defined(OQS_DIST_BUILD)
-	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX) && OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_BMI) && OQS_CPU_has_extension(OQS_CPU_EXT_PCLMUL)) {
+	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX) && OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_BMI1) && OQS_CPU_has_extension(OQS_CPU_EXT_PCLMULQDQ)) {
 #endif /* OQS_DIST_BUILD */
 		return (OQS_STATUS) PQCHQC_HQC3_AVX256_hqc_kem_keygen(public_key, secret_key);
 #if defined(OQS_DIST_BUILD)
@@ -78,7 +78,7 @@ OQS_API OQS_STATUS OQS_KEM_hqc_3_encaps_derand(uint8_t *ciphertext, uint8_t *sha
 OQS_API OQS_STATUS OQS_KEM_hqc_3_encaps(uint8_t *ciphertext, uint8_t *shared_secret, const uint8_t *public_key) {
 #if defined(OQS_ENABLE_KEM_hqc_3_x86_64)
 #if defined(OQS_DIST_BUILD)
-	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX) && OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_BMI) && OQS_CPU_has_extension(OQS_CPU_EXT_PCLMUL)) {
+	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX) && OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_BMI1) && OQS_CPU_has_extension(OQS_CPU_EXT_PCLMULQDQ)) {
 #endif /* OQS_DIST_BUILD */
 		return (OQS_STATUS) PQCHQC_HQC3_AVX256_hqc_kem_encaps(ciphertext, shared_secret, public_key);
 #if defined(OQS_DIST_BUILD)
@@ -94,7 +94,7 @@ OQS_API OQS_STATUS OQS_KEM_hqc_3_encaps(uint8_t *ciphertext, uint8_t *shared_sec
 OQS_API OQS_STATUS OQS_KEM_hqc_3_decaps(uint8_t *shared_secret, const uint8_t *ciphertext, const uint8_t *secret_key) {
 #if defined(OQS_ENABLE_KEM_hqc_3_x86_64)
 #if defined(OQS_DIST_BUILD)
-	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX) && OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_BMI) && OQS_CPU_has_extension(OQS_CPU_EXT_PCLMUL)) {
+	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX) && OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_BMI1) && OQS_CPU_has_extension(OQS_CPU_EXT_PCLMULQDQ)) {
 #endif /* OQS_DIST_BUILD */
 		return (OQS_STATUS) PQCHQC_HQC3_AVX256_hqc_kem_decaps(shared_secret, ciphertext, secret_key);
 #if defined(OQS_DIST_BUILD)
