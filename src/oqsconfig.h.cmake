@@ -137,8 +137,11 @@
 
 #cmakedefine OQS_ENABLE_KEM_HQC 1
 #cmakedefine OQS_ENABLE_KEM_hqc_1 1
+#cmakedefine OQS_ENABLE_KEM_hqc_1_x86_64 1
 #cmakedefine OQS_ENABLE_KEM_hqc_3 1
+#cmakedefine OQS_ENABLE_KEM_hqc_3_x86_64 1
 #cmakedefine OQS_ENABLE_KEM_hqc_5 1
+#cmakedefine OQS_ENABLE_KEM_hqc_5_x86_64 1
 
 #cmakedefine OQS_ENABLE_KEM_KYBER 1
 #cmakedefine OQS_ENABLE_KEM_kyber_512 1

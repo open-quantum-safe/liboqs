@@ -77,15 +77,15 @@
   },
   "HQC-1": {
     "all": "b3389b12e932373de55a14223acf2c7e67dddcf4df46a133bd3724fe0460b4d1",
-    "single": "0f1f4fd014b32492ec6490d2ad9e9f75ccc0c2b27d72f34918c7f73f9698c2e4"
+    "single": "e06a2111c37e22b4fe7268f99f7e10df7dec755326800da19a5b4a4fc513ee62"
   },
   "HQC-3": {
     "all": "afe6382bfec5426317ca6c986731433fafb95bc08cc6d0b273c3736fcd8b3205",
-    "single": "b88d4cfe517446854b5d3c85e6602518a526c5eb95571348ce4ab5915faa05b6"
+    "single": "20f8ae4ba7c449b6e1941df1efb3e8659dcff1cfedbae0c1287fef1ce79de3b2"
   },
   "HQC-5": {
     "all": "8eda7cc337fb4c279f0c1199ececb142406735449faed24a9047b38956de7805",
-    "single": "87bf16803c53f3add0004097b8aa924053d9cd2c5fffc443fe3742ee3254428b"
+    "single": "80fddaba6f95e1ed6ca1b155e5808fee6da1fafdff8d442af8155f548c833c71"
   },
   "Kyber1024": {
     "all": "b72b97eb9270d76f2c7a8a0b03022c81c879af9e247abff52405127d77dd3a46",

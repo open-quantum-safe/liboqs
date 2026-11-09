@@ -20,7 +20,6 @@ void hqc_dk_pke_from_string(uint64_t *y, const uint8_t *dk_pke) {
     shake256_xof_ctx dk_xof_ctx = {0};
     xof_init(&dk_xof_ctx, dk_pke, SEED_BYTES);
     vect_sample_fixed_weight1(&dk_xof_ctx, y, PARAM_OMEGA);
-    xof_ctx_release(&dk_xof_ctx);
 
     // Zeroize sensitive data
     memset_zero(&dk_xof_ctx, sizeof dk_xof_ctx);
@@ -38,32 +37,36 @@ void hqc_ek_pke_from_string(uint64_t *h, uint64_t *s, const uint8_t *ek_pke) {
 
     xof_init(&ek_xof_ctx, ek_pke, SEED_BYTES);
     vect_set_random(&ek_xof_ctx, h);
-    xof_ctx_release(&ek_xof_ctx);
 
     memcpy(s, ek_pke + SEED_BYTES, VEC_N_SIZE_BYTES);
+
+    memset_zero(&ek_xof_ctx, sizeof ek_xof_ctx);
 }
 
 /**
- * @brief Serializes a KEM ciphertext structure into a byte array.
+ * @brief Serializes KEM ciphertext components into a byte array.
  *
  * @param[out] ct       Pointer to the output buffer where the serialized ciphertext will be stored.
- * @param[in]  c_kem    Pointer to the KEM ciphertext structure to be serialized.
+ * @param[in]  u        Pointer to the PKE ciphertext u vector.
+ * @param[in]  v        Pointer to the PKE ciphertext v vector.
+ * @param[in]  salt     Pointer to the KEM salt.
  */
-void hqc_c_kem_to_string(uint8_t *ct, const ciphertext_kem_t *c_kem) {
-    memcpy(ct, c_kem->c_pke.u, VEC_N_SIZE_BYTES);
-    memcpy(ct + VEC_N_SIZE_BYTES, c_kem->c_pke.v, VEC_N1N2_SIZE_BYTES);
-    memcpy(ct + VEC_N_SIZE_BYTES + VEC_N1N2_SIZE_BYTES, c_kem->salt, SALT_BYTES);
+void hqc_c_kem_to_string(uint8_t *ct, const uint64_t *u, const uint64_t *v, const uint8_t *salt) {
+    memcpy(ct, u, VEC_N_SIZE_BYTES);
+    memcpy(ct + VEC_N_SIZE_BYTES, v, VEC_N1N2_SIZE_BYTES);
+    memcpy(ct + VEC_N_SIZE_BYTES + VEC_N1N2_SIZE_BYTES, salt, SALT_BYTES);
 }
 
 /**
- * @brief Deserializes a KEM ciphertext byte array into its structured components.
+ * @brief Deserializes a KEM ciphertext byte array into its components.
  *
- * @param[out] c_pke    Pointer to the output buffer where the deserialized PKE ciphertext will be stored.
+ * @param[out] u        Pointer to the output buffer for the PKE ciphertext u vector.
+ * @param[out] v        Pointer to the output buffer for the PKE ciphertext v vector.
  * @param[out] salt     Pointer to the output buffer where the extracted salt will be stored.
  * @param[in]  ct       Pointer to the serialized KEM ciphertext.
  */
-void hqc_c_kem_from_string(ciphertext_pke_t *c_pke, uint8_t *salt, const uint8_t *ct) {
-    memcpy(c_pke->u, ct, VEC_N_SIZE_BYTES);
-    memcpy(c_pke->v, ct + VEC_N_SIZE_BYTES, VEC_N1N2_SIZE_BYTES);
+void hqc_c_kem_from_string(uint64_t *u, uint64_t *v, uint8_t *salt, const uint8_t *ct) {
+    memcpy(u, ct, VEC_N_SIZE_BYTES);
+    memcpy(v, ct + VEC_N_SIZE_BYTES, VEC_N1N2_SIZE_BYTES);
     memcpy(salt, ct + VEC_N_SIZE_BYTES + VEC_N1N2_SIZE_BYTES, SALT_BYTES);
 }
