@@ -29,8 +29,8 @@
 #define BIT0MASK(x) (int64_t)(-((x) & 1))
 // clang-format on
 
-void encode(rm_codeword128_t *word, int32_t message);
-void expand_and_sum(rm_expanded_cdw128_t *dst, rm_codeword128_t src[]);
+static void encode(rm_codeword128_t *word, int32_t message);
+static void expand_and_sum(rm_expanded_cdw128_t *dst, rm_codeword128_t src[]);
 static inline void hadamard(rm_expanded_cdw128_t *src, rm_expanded_cdw128_t *dst);
 static inline int32_t find_peaks(rm_expanded_cdw128_t *transform);
 
@@ -50,7 +50,7 @@ static inline int32_t find_peaks(rm_expanded_cdw128_t *transform);
  * @param[out] word An RM(1,7) codeword
  * @param[in] message A message to encode
  */
-inline void encode(rm_codeword128_t *word, int32_t message) {
+static inline void encode(rm_codeword128_t *word, int32_t message) {
     int32_t first_word;
     first_word = BIT0MASK(message >> 7);
     first_word ^= BIT0MASK(message >> 0) & 0x55555555;
@@ -80,7 +80,7 @@ inline void encode(rm_codeword128_t *word, int32_t message) {
  * @param[out] dst Structure that contain the expanded codeword
  * @param[in] src Structure that contain the codeword
  */
-inline void expand_and_sum(rm_expanded_cdw128_t *dst, rm_codeword128_t src[]) {
+static inline void expand_and_sum(rm_expanded_cdw128_t *dst, rm_codeword128_t src[]) {
     // start converting the first copy
     for (size_t part = 0; part < 8; part++) {
         for (size_t i = 0; i < 16; ++i) {
@@ -106,7 +106,7 @@ inline void expand_and_sum(rm_expanded_cdw128_t *dst, rm_codeword128_t src[]) {
  * @param[out] src Structure that contain the expanded codeword
  * @param[out] dst Structure that contain the expanded codeword
  */
-inline void hadamard(rm_expanded_cdw128_t *src, rm_expanded_cdw128_t *dst) {
+static inline void hadamard(rm_expanded_cdw128_t *src, rm_expanded_cdw128_t *dst) {
     // the passes move data:
     // src -> dst -> src -> dst -> src -> dst -> src -> dst
     // using p1 and p2 alternately
@@ -148,7 +148,7 @@ inline void hadamard(rm_expanded_cdw128_t *src, rm_expanded_cdw128_t *dst) {
  *
  * @param[in] transform Structure that contain the expanded codeword
  */
-inline int32_t find_peaks(rm_expanded_cdw128_t *transform) {
+static inline int32_t find_peaks(rm_expanded_cdw128_t *transform) {
     __m256i bitmap, abs_rows[8], bound, active_row, max_abs_rows;
     rm_vector256_t peak_mask;
     // compute absolute value of transform
