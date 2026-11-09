@@ -9,6 +9,10 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#include "namespace.h"
+
+#define randombytes HQC_NS(randombytes)
+
 /**
  * @brief Fill a buffer with random bytes.
  *
