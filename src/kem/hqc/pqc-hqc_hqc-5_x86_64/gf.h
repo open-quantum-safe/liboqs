@@ -9,6 +9,7 @@
 #include <immintrin.h>
 #include <stddef.h>
 #include <stdint.h>
+#include "namespace.h"
 
 /**
  * @brief  Build a 256-bit AVX2 register from two 128-bit halves.
@@ -109,6 +110,12 @@ static const __m256i red[7] = {
     {0x009a009a009a009aUL, 0x009a009a009a009aUL, 0x009a009a009a009aUL, 0x009a009a009a009aUL},
 
 };
+
+#define gf_generate HQC_NS(gf_generate)
+#define gf_mul HQC_NS(gf_mul)
+#define gf_mul_vect HQC_NS(gf_mul_vect)
+#define gf_square HQC_NS(gf_square)
+#define gf_inverse HQC_NS(gf_inverse)
 
 void gf_generate(uint16_t *exp, uint16_t *log, const int16_t m);
 
