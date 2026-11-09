@@ -11,6 +11,11 @@
 #include "parameters.h"
 #include "parsing.h"
 
+#include "namespace.h"
+#define hqc_pke_keygen HQC_NS(hqc_pke_keygen)
+#define hqc_pke_encrypt HQC_NS(hqc_pke_encrypt)
+#define hqc_pke_decrypt HQC_NS(hqc_pke_decrypt)
+
 /**
  * @brief Number of 256-bit vector words in the VEC_N_256 representation.
  *
