@@ -19,6 +19,20 @@ jobs:
       security-events: write
       contents: read
 
+
+  importer-regression:
+    name: Verify importer CMake templates
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # pin@v4
+      - name: Install test dependencies
+        run: python3 -m pip install --require-hashes -r .github/workflows/requirements.txt
+      - name: Test importer templates
+        run: |
+          python3 -c "import jinja2; print(jinja2.__version__)"
+          python3 -m pytest -q scripts/copy_from_upstream/tests/test_empty_sources.py
+
   extended-tests:
     uses: ./.github/workflows/extended.yml
 
