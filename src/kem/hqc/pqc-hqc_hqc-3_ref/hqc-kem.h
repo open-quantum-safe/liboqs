@@ -41,6 +41,8 @@
 #define hqc_kem_keygen HQC_NS(hqc_kem_keygen)
 #define hqc_kem_encaps HQC_NS(hqc_kem_encaps)
 #define hqc_kem_decaps HQC_NS(hqc_kem_decaps)
+#define hqc_kem_encaps_oqs HQC_NS(hqc_kem_encaps_oqs)
+#define hqc_kem_decaps_oqs HQC_NS(hqc_kem_decaps_oqs)
 
 /**
  * @brief Generate a KEM keypair.
@@ -86,5 +88,15 @@ int8_t hqc_kem_encaps(uint8_t *K, uint8_t *c_kem, const uint8_t *ek_kem);
  * @return 0 on success.
  */
 int8_t hqc_kem_decaps(uint8_t *K_prime, const uint8_t *dk_kem, const uint8_t *c_kem);
+
+/**
+ * @brief Thin wrapper for converting reference impl's signature to OQS's signature
+ */
+int8_t hqc_kem_encaps_oqs(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
+
+/**
+ * @brief Thin wrapper for converting reference impl's signature to OQS's signature
+ */
+int8_t hqc_kem_decaps_oqs(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
 
 #endif  // HQC_KEM_H
