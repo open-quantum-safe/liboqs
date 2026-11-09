@@ -8,6 +8,7 @@
 
 #include <stddef.h>
 #include <stdint.h>
+#include "namespace.h"
 
 /**
  * @brief Primitive element used to enumerate the non-zero field elements.
@@ -50,6 +51,11 @@ static const uint16_t gf_log[256] = {
     220, 252, 188, 149, 207, 205, 55,  63,  91,  209, 83,  57,  132, 60,  65,  162, 109, 71,  20,  42,  158, 93,
     86,  242, 211, 171, 68,  17,  146, 217, 35,  32,  46,  137, 180, 124, 184, 38,  119, 153, 227, 165, 103, 74,
     237, 222, 197, 49,  254, 24,  13,  99,  140, 128, 192, 247, 112, 7};
+
+#define gf_generate HQC_NS(gf_generate)
+#define gf_mul HQC_NS(gf_mul)
+#define gf_square HQC_NS(gf_square)
+#define gf_inverse HQC_NS(gf_inverse)
 
 void gf_generate(uint16_t *exp, uint16_t *log, const int16_t m);
 
