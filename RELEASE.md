@@ -36,6 +36,18 @@ language-specific wrappers:
 - Python 3, via <https://github.com/open-quantum-safe/liboqs-python>
 - Rust, via <https://github.com/open-quantum-safe/liboqs-rust>
 
+## Upcoming changes
+
+The following changes have been merged since 0.16.0 and will be included in the
+next release:
+
+- **OpenSSL 1.1.1 is no longer supported.** When building with the default
+  `OQS_USE_OPENSSL=ON`, OpenSSL 3.0 or newer is now required, and CMake fails at
+  configure if only an older version is found. Platforms that only ship OpenSSL
+  1.1.1 (e.g. Ubuntu 20.04, RHEL 8, Debian 11, Amazon Linux 2) must install
+  OpenSSL 3.x or configure with `-DOQS_USE_OPENSSL=OFF`.
+  [#2661](https://github.com/open-quantum-safe/liboqs/pull/2661)
+
 ## Release notes
 
 liboqs 0.16.0 was released on Thursday, July 9, 2026.

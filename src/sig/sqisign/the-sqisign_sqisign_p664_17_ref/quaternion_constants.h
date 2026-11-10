@@ -1,0 +1,13 @@
+#include <quaternion.h>
+#include <stddef.h>
+#include <stdint.h>
+#define QUAT_primality_num_iter 128
+#define QUAT_equiv_bound_coeff 22
+#define QUAT_qlapoty_used_power_of_two 662
+#define QUAT_degree_norm_bits 1181
+#define QUAT_equiv_norm_bits 349
+#define QUAT_prod_norm_bits 698
+#define QUAT_P_BITS 669
+#define QUAT_SQRT_P_BITS 335
+#define QUAT_P_HEX "10ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+#define QUAT_SQRT_P_HEX "41f83d9abfb41bd6b23c4654c2a2175832842012131573f2aa59916aca3991fcaec1b7c06fd19d2561ec"

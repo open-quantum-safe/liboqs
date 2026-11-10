@@ -79,6 +79,10 @@ if(OQS_ENABLE_SIG_SDITH)
     add_subdirectory(sig/sdith)
     set(SIG_OBJS ${SIG_OBJS} ${SDITH_OBJS})
 endif()
+if(OQS_ENABLE_SIG_SQISIGN)
+    add_subdirectory(sig/sqisign)
+    set(SIG_OBJS ${SIG_OBJS} ${SQISIGN_OBJS})
+endif()
 ##### OQS_COPY_FROM_UPSTREAM_FRAGMENT_ADD_ALG_OBJECTS_END
 
 # SDitH is imported upstream code that is not yet free of compiler warnings
@@ -202,7 +206,7 @@ write_basic_package_version_file(
 )
 
 if(OQS_USE_OPENSSL)
-    set(_oqs_pkgconfig_requires_private openssl)
+    set(_oqs_pkgconfig_requires_private "openssl >= 3.0")
 endif()
 
 # generate pkg-config file

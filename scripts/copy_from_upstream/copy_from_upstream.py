@@ -631,6 +631,10 @@ def handle_implementation(impl, family, scheme, dst_basedir):
                                'Makefile.Microsoft_nmake'))
     except FileNotFoundError:
         pass
+    i['has_impl_files'] = any(
+        files for _, _, files in os.walk(srcfolder)
+    )
+
     extensions = ['.c', '.s']
     ffs = []
     for subdir, dirs, files in os.walk(srcfolder):

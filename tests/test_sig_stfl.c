@@ -164,6 +164,10 @@ static size_t signature_len_2;
 static uint8_t message_1[] = "The quick brown fox ...";
 static uint8_t message_2[] = "The quick brown fox jumped from the tree.";
 
+/* Count lock/unlock calls so a test can confirm a key-reading wrapper took the lock. */
+static int sk_lock_acquisitions = 0;
+static int sk_lock_releases = 0;
+
 static OQS_STATUS lock_sk_key(void *mutex) {
 	if (mutex == NULL) {
 		return OQS_ERROR;
@@ -172,6 +176,7 @@ static OQS_STATUS lock_sk_key(void *mutex) {
 	if (pthread_mutex_lock((pthread_mutex_t *)mutex)) {
 		return OQS_ERROR;
 	}
+	sk_lock_acquisitions++;
 	return  OQS_SUCCESS;
 }
 
@@ -183,6 +188,7 @@ static OQS_STATUS unlock_sk_key(void *mutex) {
 	if (pthread_mutex_unlock((pthread_mutex_t *)mutex)) {
 		return OQS_ERROR;
 	}
+	sk_lock_releases++;
 	return  OQS_SUCCESS;
 }
 #else
@@ -1197,6 +1203,25 @@ static OQS_STATUS sig_stfl_test_secret_key_lock(const char *method_name, const c
 	if (lock_test_sk->set_scrt_key_store_cb) {
 		lock_test_context = convert_method_name_to_file_name(method_name);
 		lock_test_sk->set_scrt_key_store_cb(lock_test_sk, save_secret_key, (void *)lock_test_context);
+	}
+
+	/* Querying the remaining signatures reads the leaf index that the signer
+	 * advances in place, so it must take the same secret-key lock the signer
+	 * uses. Confirm the wrapper acquires and releases it exactly once. The
+	 * XMSS/XMSSMT wrappers skipped the lock before this was fixed. */
+	{
+		unsigned long long remain = 0;
+		int acq = sk_lock_acquisitions;
+		int rel = sk_lock_releases;
+		if (OQS_SIG_STFL_sigs_remaining(lock_test_sig_obj, &remain, lock_test_sk) != OQS_SUCCESS) {
+			fprintf(stderr, "ERROR: sigs_remaining failed in lock test\n");
+			goto err;
+		}
+		if (sk_lock_acquisitions != acq + 1 || sk_lock_releases != rel + 1) {
+			fprintf(stderr, "ERROR: sigs_remaining did not take the secret key lock (acquire %d->%d, release %d->%d)\n",
+			        acq, sk_lock_acquisitions, rel, sk_lock_releases);
+			goto err;
+		}
 	}
 
 	return OQS_SUCCESS;

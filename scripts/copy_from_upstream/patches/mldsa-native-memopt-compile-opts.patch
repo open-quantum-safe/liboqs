@@ -1,0 +1,84 @@
+diff --git a/integration/liboqs/ML-DSA-44_META.yml b/integration/liboqs/ML-DSA-44_META.yml
+index 5fa75b5d..6e09a125 100644
+--- a/integration/liboqs/ML-DSA-44_META.yml
++++ b/integration/liboqs/ML-DSA-44_META.yml
+@@ -25,6 +25,7 @@ implementations:
+   version: FIPS204
+   folder_name: .
+   compile_opts: -DMLD_CONFIG_PARAMETER_SET=44 -DMLD_CONFIG_FILE="integration/liboqs/config_c.h"
++  compile_opts_if_memopt: -DMLD_CONFIG_PARAMETER_SET=44 -DMLD_CONFIG_FILE="integration/liboqs/config_c.h" -DMLD_CONFIG_REDUCE_RAM
+   signature_keypair: PQCP_MLDSA_NATIVE_MLDSA44_C_keypair_oqs
+   signature_signature: PQCP_MLDSA_NATIVE_MLDSA44_C_signature_oqs
+   signature_verify: PQCP_MLDSA_NATIVE_MLDSA44_C_verify_oqs
+@@ -43,6 +44,7 @@ implementations:
+   version: FIPS204
+   folder_name: .
+   compile_opts: -DMLD_CONFIG_PARAMETER_SET=44 -DMLD_CONFIG_FILE="integration/liboqs/config_x86_64.h"
++  compile_opts_if_memopt: -DMLD_CONFIG_PARAMETER_SET=44 -DMLD_CONFIG_FILE="integration/liboqs/config_x86_64.h" -DMLD_CONFIG_REDUCE_RAM
+   signature_keypair: PQCP_MLDSA_NATIVE_MLDSA44_X86_64_keypair_oqs
+   signature_signature: PQCP_MLDSA_NATIVE_MLDSA44_X86_64_signature_oqs
+   signature_verify: PQCP_MLDSA_NATIVE_MLDSA44_X86_64_verify_oqs
+@@ -70,6 +72,7 @@ implementations:
+   version: FIPS204
+   folder_name: .
+   compile_opts: -DMLD_CONFIG_PARAMETER_SET=44 -DMLD_CONFIG_FILE="integration/liboqs/config_aarch64.h"
++  compile_opts_if_memopt: -DMLD_CONFIG_PARAMETER_SET=44 -DMLD_CONFIG_FILE="integration/liboqs/config_aarch64.h" -DMLD_CONFIG_REDUCE_RAM
+   signature_keypair: PQCP_MLDSA_NATIVE_MLDSA44_AARCH64_keypair_oqs
+   signature_signature: PQCP_MLDSA_NATIVE_MLDSA44_AARCH64_signature_oqs
+   signature_verify: PQCP_MLDSA_NATIVE_MLDSA44_AARCH64_verify_oqs
+diff --git a/integration/liboqs/ML-DSA-65_META.yml b/integration/liboqs/ML-DSA-65_META.yml
+index fa57ebd4..73c10a27 100644
+--- a/integration/liboqs/ML-DSA-65_META.yml
++++ b/integration/liboqs/ML-DSA-65_META.yml
+@@ -25,6 +25,7 @@ implementations:
+   version: FIPS204
+   folder_name: .
+   compile_opts: -DMLD_CONFIG_PARAMETER_SET=65 -DMLD_CONFIG_FILE="integration/liboqs/config_c.h"
++  compile_opts_if_memopt: -DMLD_CONFIG_PARAMETER_SET=65 -DMLD_CONFIG_FILE="integration/liboqs/config_c.h" -DMLD_CONFIG_REDUCE_RAM
+   signature_keypair: PQCP_MLDSA_NATIVE_MLDSA65_C_keypair_oqs
+   signature_signature: PQCP_MLDSA_NATIVE_MLDSA65_C_signature_oqs
+   signature_verify: PQCP_MLDSA_NATIVE_MLDSA65_C_verify_oqs
+@@ -43,6 +44,7 @@ implementations:
+   version: FIPS204
+   folder_name: .
+   compile_opts: -DMLD_CONFIG_PARAMETER_SET=65 -DMLD_CONFIG_FILE="integration/liboqs/config_x86_64.h"
++  compile_opts_if_memopt: -DMLD_CONFIG_PARAMETER_SET=65 -DMLD_CONFIG_FILE="integration/liboqs/config_x86_64.h" -DMLD_CONFIG_REDUCE_RAM
+   signature_keypair: PQCP_MLDSA_NATIVE_MLDSA65_X86_64_keypair_oqs
+   signature_signature: PQCP_MLDSA_NATIVE_MLDSA65_X86_64_signature_oqs
+   signature_verify: PQCP_MLDSA_NATIVE_MLDSA65_X86_64_verify_oqs
+@@ -70,6 +72,7 @@ implementations:
+   version: FIPS204
+   folder_name: .
+   compile_opts: -DMLD_CONFIG_PARAMETER_SET=65 -DMLD_CONFIG_FILE="integration/liboqs/config_aarch64.h"
++  compile_opts_if_memopt: -DMLD_CONFIG_PARAMETER_SET=65 -DMLD_CONFIG_FILE="integration/liboqs/config_aarch64.h" -DMLD_CONFIG_REDUCE_RAM
+   signature_keypair: PQCP_MLDSA_NATIVE_MLDSA65_AARCH64_keypair_oqs
+   signature_signature: PQCP_MLDSA_NATIVE_MLDSA65_AARCH64_signature_oqs
+   signature_verify: PQCP_MLDSA_NATIVE_MLDSA65_AARCH64_verify_oqs
+diff --git a/integration/liboqs/ML-DSA-87_META.yml b/integration/liboqs/ML-DSA-87_META.yml
+index 1ae51c80..1f22f21f 100644
+--- a/integration/liboqs/ML-DSA-87_META.yml
++++ b/integration/liboqs/ML-DSA-87_META.yml
+@@ -25,6 +25,7 @@ implementations:
+   version: FIPS204
+   folder_name: .
+   compile_opts: -DMLD_CONFIG_PARAMETER_SET=87 -DMLD_CONFIG_FILE="integration/liboqs/config_c.h"
++  compile_opts_if_memopt: -DMLD_CONFIG_PARAMETER_SET=87 -DMLD_CONFIG_FILE="integration/liboqs/config_c.h" -DMLD_CONFIG_REDUCE_RAM
+   signature_keypair: PQCP_MLDSA_NATIVE_MLDSA87_C_keypair_oqs
+   signature_signature: PQCP_MLDSA_NATIVE_MLDSA87_C_signature_oqs
+   signature_verify: PQCP_MLDSA_NATIVE_MLDSA87_C_verify_oqs
+@@ -43,6 +44,7 @@ implementations:
+   version: FIPS204
+   folder_name: .
+   compile_opts: -DMLD_CONFIG_PARAMETER_SET=87 -DMLD_CONFIG_FILE="integration/liboqs/config_x86_64.h"
++  compile_opts_if_memopt: -DMLD_CONFIG_PARAMETER_SET=87 -DMLD_CONFIG_FILE="integration/liboqs/config_x86_64.h" -DMLD_CONFIG_REDUCE_RAM
+   signature_keypair: PQCP_MLDSA_NATIVE_MLDSA87_X86_64_keypair_oqs
+   signature_signature: PQCP_MLDSA_NATIVE_MLDSA87_X86_64_signature_oqs
+   signature_verify: PQCP_MLDSA_NATIVE_MLDSA87_X86_64_verify_oqs
+@@ -70,6 +72,7 @@ implementations:
+   version: FIPS204
+   folder_name: .
+   compile_opts: -DMLD_CONFIG_PARAMETER_SET=87 -DMLD_CONFIG_FILE="integration/liboqs/config_aarch64.h"
++  compile_opts_if_memopt: -DMLD_CONFIG_PARAMETER_SET=87 -DMLD_CONFIG_FILE="integration/liboqs/config_aarch64.h" -DMLD_CONFIG_REDUCE_RAM
+   signature_keypair: PQCP_MLDSA_NATIVE_MLDSA87_AARCH64_keypair_oqs
+   signature_signature: PQCP_MLDSA_NATIVE_MLDSA87_AARCH64_signature_oqs
+   signature_verify: PQCP_MLDSA_NATIVE_MLDSA87_AARCH64_verify_oqs

@@ -32,6 +32,10 @@
 - **Upstream maintenance**: Actively maintained ([statement](https://github.com/pq-code-package/mlkem-native))
 - **OQS support tier**: Tier 1
 
+## Advisories
+
+- The liboqs KEM API does not take input lengths, so the FIPS 203 input type checks (Sections 7.2 and 7.3) are the caller's responsibility. Before calling ``OQS_KEM_encaps``, ``OQS_KEM_encaps_derand`` or ``OQS_KEM_decaps``, check that the encapsulation key, ciphertext and decapsulation key are exactly ``length_public_key``, ``length_ciphertext`` and ``length_secret_key`` bytes long. The mlkem-native implementations perform the other FIPS 203 input checks (the encapsulation key modulus check and the decapsulation key hash check) and return ``OQS_ERROR`` if they fail.
+
 ## Parameter set summary
 
 |  Parameter set  | Parameter set alias   | Security model   |   Claimed NIST Level |   Public key size (bytes) |   Secret key size (bytes) |   Ciphertext size (bytes) |   Shared secret size (bytes) |   Keypair seed size (bytes) |   Encapsulation seed size (bytes) |

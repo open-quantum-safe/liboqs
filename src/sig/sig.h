@@ -276,6 +276,12 @@ extern "C" {
 #define OQS_SIG_alg_sdith_l5_gf2_fast "SDitH3-L5-gf2-fast"
 /** Algorithm identifier for SDitH3-L5-gf2-fast-cipherpow */
 #define OQS_SIG_alg_sdith_l5_gf2_fast_cipherpow "SDitH3-L5-gf2-fast-cipherpow"
+/** Algorithm identifier for SQIsign-p324-3 */
+#define OQS_SIG_alg_sqisign_p324_3 "SQIsign-p324-3"
+/** Algorithm identifier for SQIsign-p500-27 */
+#define OQS_SIG_alg_sqisign_p500_27 "SQIsign-p500-27"
+/** Algorithm identifier for SQIsign-p664-17 */
+#define OQS_SIG_alg_sqisign_p664_17 "SQIsign-p664-17"
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALG_IDENTIFIER_END
 ///// OQS_COPY_FROM_SLH_DSA_FRAGMENT_ALGID_START
 /** Algorithm identifier for slh_dsa_pure_sha2_128s */
@@ -600,7 +606,7 @@ extern "C" {
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALGS_LENGTH_START
 
 /** Number of algorithm identifiers above. */
-#define OQS_SIG_algs_length 122 + OQS_SIG_SLH_DSA_algs_length
+#define OQS_SIG_algs_length 125 + OQS_SIG_SLH_DSA_algs_length
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ALGS_LENGTH_END
 
 /**
@@ -771,9 +777,15 @@ OQS_API OQS_STATUS OQS_SIG_keypair(const OQS_SIG *sig, uint8_t *public_key, uint
 /**
  * Signature generation algorithm.
  *
- * Caller is responsible for allocating sufficient memory for `signnature`,
+ * Caller is responsible for allocating sufficient memory for `signature`,
  * based on the `length_*` members in this object or the per-scheme
  * compile-time macros `OQS_SIG_*_length_*`.
+ *
+ * Caller is also responsible for ensuring that `secret_key` is exactly
+ * `length_secret_key` bytes long. This function cannot check the length of
+ * `secret_key`: a shorter buffer causes an out-of-bounds read, and a secret key
+ * of the wrong length (for example, one for a different parameter set) may not
+ * be detected.
  *
  * @param[in] sig The OQS_SIG object representing the signature scheme.
  * @param[out] signature The signature on the message represented as a byte string.
@@ -792,6 +804,12 @@ OQS_API OQS_STATUS OQS_SIG_sign(const OQS_SIG *sig, uint8_t *signature, size_t *
  * based on the `length_*` members in this object or the per-scheme
  * compile-time macros `OQS_SIG_*_length_*`.
  *
+ * Caller is also responsible for ensuring that `secret_key` is exactly
+ * `length_secret_key` bytes long. This function cannot check the length of
+ * `secret_key`: a shorter buffer causes an out-of-bounds read, and a secret key
+ * of the wrong length (for example, one for a different parameter set) may not
+ * be detected.
+ *
  * @param[in] sig The OQS_SIG object representing the signature scheme.
  * @param[out] signature The signature on the message represented as a byte string.
  * @param[out] signature_len The actual length of the signature. May be smaller than `length_signature` for some algorithms since some algorithms have variable length signatures.
@@ -807,6 +825,13 @@ OQS_API OQS_STATUS OQS_SIG_sign_with_ctx_str(const OQS_SIG *sig, uint8_t *signat
 /**
  * Signature verification algorithm.
  *
+ * Caller is responsible for ensuring that `public_key` is exactly
+ * `length_public_key` bytes long, based on the `length_*` members in this object
+ * or the per-scheme compile-time macros `OQS_SIG_*_length_*`. This function
+ * cannot check the length of `public_key`: a shorter buffer causes an
+ * out-of-bounds read, and a public key of the wrong length (for example, one for
+ * a different parameter set) may not be detected.
+ *
  * @param[in] sig The OQS_SIG object representing the signature scheme.
  * @param[in] message The message represented as a byte string.
  * @param[in] message_len The length of the message.
@@ -819,6 +844,13 @@ OQS_API OQS_STATUS OQS_SIG_verify(const OQS_SIG *sig, const uint8_t *message, si
 
 /**
  * Signature verification algorithm, with custom context string.
+ *
+ * Caller is responsible for ensuring that `public_key` is exactly
+ * `length_public_key` bytes long, based on the `length_*` members in this object
+ * or the per-scheme compile-time macros `OQS_SIG_*_length_*`. This function
+ * cannot check the length of `public_key`: a shorter buffer causes an
+ * out-of-bounds read, and a public key of the wrong length (for example, one for
+ * a different parameter set) may not be detected.
  *
  * @param[in] sig The OQS_SIG object representing the signature scheme.
  * @param[in] message The message represented as a byte string.
@@ -875,6 +907,9 @@ OQS_API bool OQS_SIG_supports_ctx_str(const char *alg_name);
 #ifdef OQS_ENABLE_SIG_SDITH
 #include <oqs/sig_sdith.h>
 #endif /* OQS_ENABLE_SIG_SDITH */
+#ifdef OQS_ENABLE_SIG_SQISIGN
+#include <oqs/sig_sqisign.h>
+#endif /* OQS_ENABLE_SIG_SQISIGN */
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_INCLUDE_END
 ///// OQS_COPY_FROM_SLH_DSA_FRAGMENT_INCLUDE_START
 #ifdef OQS_ENABLE_SIG_SLH_DSA

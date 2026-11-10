@@ -69,6 +69,8 @@
 
 #cmakedefine OQS_SPEED_USE_ARM_PMU 1
 
+#cmakedefine OQS_ENABLE_TEST_CONSTANT_TIME_VALGRIND 1
+#cmakedefine OQS_ENABLE_TEST_CONSTANT_TIME_MEMSAN 1
 #cmakedefine OQS_ENABLE_TEST_CONSTANT_TIME 1
 
 #cmakedefine OQS_ENABLE_SHA3_xkcp_low_avx2 1
@@ -560,6 +562,17 @@
 #cmakedefine OQS_ENABLE_SIG_sdith_l5_gf2_fast_avx2 1
 #cmakedefine OQS_ENABLE_SIG_sdith_l5_gf2_fast_cipherpow 1
 #cmakedefine OQS_ENABLE_SIG_sdith_l5_gf2_fast_cipherpow_avx2 1
+
+#cmakedefine OQS_ENABLE_SIG_SQISIGN 1
+#cmakedefine OQS_ENABLE_SIG_sqisign_p324_3 1
+#cmakedefine OQS_ENABLE_SIG_sqisign_p324_3_broadwell 1
+#cmakedefine OQS_ENABLE_SIG_sqisign_p324_3_arm64 1
+#cmakedefine OQS_ENABLE_SIG_sqisign_p500_27 1
+#cmakedefine OQS_ENABLE_SIG_sqisign_p500_27_broadwell 1
+#cmakedefine OQS_ENABLE_SIG_sqisign_p500_27_arm64 1
+#cmakedefine OQS_ENABLE_SIG_sqisign_p664_17 1
+#cmakedefine OQS_ENABLE_SIG_sqisign_p664_17_broadwell 1
+#cmakedefine OQS_ENABLE_SIG_sqisign_p664_17_arm64 1
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ADD_ALG_ENABLE_DEFINES_END
 ///// OQS_COPY_FROM_SLH_DSA_FRAGMENT_ADD_ALG_ENABLE_DEFINES_START
 #cmakedefine OQS_ENABLE_SIG_SLH_DSA 1
