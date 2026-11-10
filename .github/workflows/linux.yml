@@ -99,6 +99,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # pin@v4
       # tests/test_leaks.py skips the slow MQOM and QR-UOV leak tests on PRs and feature-branch
       # pushes unless this step finds changes to that algorithm or to shared code it depends on.
+      # FAEST leak tests are always skipped on PRs; they remain enabled on main.
       - name: Detect algorithm changes
         env:
           BASE_REF: ${{ github.base_ref || 'main' }}
@@ -113,14 +114,10 @@ jobs:
             if grep -qE "$SHARED|^src/sig/qruov/" "$CHANGED"; then
               echo "RUN_QRUOV_LEAKS=true" >> "$GITHUB_ENV"
             fi
-            if grep -qE "$SHARED|^src/sig/faest/" "$CHANGED"; then
-              echo "RUN_FAEST_LEAKS=true" >> "$GITHUB_ENV"
-            fi
           else
             echo "::warning::Could not determine changed files; running all leak tests"
             echo "RUN_MQOM_LEAKS=true" >> "$GITHUB_ENV"
             echo "RUN_QRUOV_LEAKS=true" >> "$GITHUB_ENV"
-            echo "RUN_FAEST_LEAKS=true" >> "$GITHUB_ENV"
           fi
       - name: Configure
         run: mkdir build && cd build && cmake -GNinja ${{ matrix.CMAKE_ARGS }} .. && cmake -LA -N ..
@@ -137,9 +134,9 @@ jobs:
         timeout-minutes: 60
         env:
           OQS_TEST_SIG_CTX_STEP: "255"
-          # TEMPORARY: skip all FAEST pipeline tests. Restore FAEST-.*S (or drop) before merge.
-          SKIP_ALGS: 'FAEST'
-        run: mkdir -p tmp && python3 -m pytest --verbose --ignore=tests/test_code_conventions.py --ignore=tests/test_cmake_option_coverage.py --ignore=tests/test_kats_json.py --ignore=tests/test_acvp_vectors.py --ignore=tests/test_wycheproof_vectors.py --ignore=tests/test_faest_integration.py --numprocesses=logical --dist load --maxschedchunk=1 ${{ matrix.PYTEST_ARGS }}
+          # Fast FAEST variants only per-PR; slow "s" sets run in extended CI. See #2658.
+          SKIP_ALGS: 'FAEST-.*S'
+        run: mkdir -p tmp && python3 -m pytest --verbose --ignore=tests/test_code_conventions.py --ignore=tests/test_cmake_option_coverage.py --ignore=tests/test_kats_json.py --ignore=tests/test_acvp_vectors.py --ignore=tests/test_wycheproof_vectors.py --numprocesses=logical --dist load --maxschedchunk=1 ${{ matrix.PYTEST_ARGS }}
       - name: Package .deb
         if: matrix.name == 'jammy-std-openssl3'
         run: cpack
@@ -220,9 +217,9 @@ jobs:
       - name: Run tests
         timeout-minutes: 60
         env:
-          # TEMPORARY: skip all FAEST pipeline tests. Restore before merge.
-          SKIP_ALGS: 'FAEST'
-        run: mkdir -p tmp && python3 -m pytest --verbose --ignore=tests/test_code_conventions.py --ignore=tests/test_cmake_option_coverage.py --ignore=tests/test_kats_json.py --ignore=tests/test_leaks.py --ignore=tests/test_kat_all.py --ignore=tests/test_wycheproof_vectors.py --ignore=tests/test_faest_integration.py --numprocesses=logical --dist load --maxschedchunk=1
+          # Fast FAEST variants only per-PR; slow "s" sets run in extended CI. See #2658.
+          SKIP_ALGS: 'FAEST-.*S'
+        run: mkdir -p tmp && python3 -m pytest --verbose --ignore=tests/test_code_conventions.py --ignore=tests/test_cmake_option_coverage.py --ignore=tests/test_kats_json.py --ignore=tests/test_leaks.py --ignore=tests/test_kat_all.py --ignore=tests/test_wycheproof_vectors.py --numprocesses=logical --dist load --maxschedchunk=1
 
   scan_build:
     runs-on: ubuntu-latest

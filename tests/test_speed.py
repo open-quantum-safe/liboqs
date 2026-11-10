@@ -20,6 +20,8 @@ def test_sig(sig_name):
         pytest.skip('Not enabled')
     if "extmu" in sig_name:
         pytest.skip("ML-DSA ExtMu will not be benchmarked")
+    if "FAEST" in sig_name:
+        pytest.skip("FAEST speed tests are skipped to keep per-PR CI within budget")
     helpers.run_subprocess( [helpers.path_to_executable('speed_sig'), sig_name, "-f"])
 
 @helpers.filtered_test
