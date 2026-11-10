@@ -12,8 +12,14 @@ Run from the repository root:
     python3 -m pytest tests --suite basic,correctness
     python3 -m pytest tests --suite correctness --algs ML-KEM-768,ML-DSA-65
 
+The same suites are available as build targets, e.g. `ninja run_tests_correctness`.
+Build targets take no arguments, so --algs defaults to $OQS_TEST_ALGS:
+
+    OQS_TEST_ALGS=ML-KEM-768 ninja run_tests_correctness
+
 """
 
+import os
 from pathlib import Path
 
 import pytest
@@ -32,6 +38,7 @@ SUITES = {
         "test_cmake_option_coverage.py",
         "test_kats_json.py",
         "test_alg_support_generators.py",
+        "test_suites.py",
     ],
     # build-system checks that configure CMake but run no liboqs code
     "build": [
@@ -117,7 +124,7 @@ def _requested_algs(config):
     unknown = algs - known
     if unknown:
         raise pytest.UsageError(
-            f"unknown algorithm(s) in --algs: {', '.join(sorted(unknown))}"
+            f"unknown algorithm(s) in --algs/OQS_TEST_ALGS: {', '.join(sorted(unknown))}"
         )
     return algs
 
@@ -156,10 +163,10 @@ def pytest_addoption(parser):
     )
     group.addoption(
         "--algs",
-        default="",
+        default=os.environ.get("OQS_TEST_ALGS", ""),
         metavar="ALG[,ALG...]",
         help="run per-algorithm tests only for these algorithm names; tests "
-             "that take no algorithm always run.",
+             "that take no algorithm always run. Default: $OQS_TEST_ALGS.",
     )
 
 # hook: runs during pytest configuration to validate suite and algorithm options
