@@ -52,3 +52,37 @@ jobs:
       contents: read
     with:
       algorithms: 'ML-KEM-512,ML-KEM-768,ML-KEM-1024'
+
+  report-failure:
+    if: ${{ always() && contains(needs.*.result, 'failure') }}
+    needs:
+      - scorecard
+      - extended-tests
+      - kem-continuous-benchmarking
+      - sig-continuous-benchmarking
+      - ct-tooling
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - name: Open issue for failed weekly tests
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          NEEDS: ${{ toJSON(needs) }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          failed_jobs=$(printf '%s' "$NEEDS" | jq -r \
+            'to_entries[] | select(.value.result == "failure") | .key')
+
+          gh issue create \
+            --title "Weekly tests failed (run #${GITHUB_RUN_NUMBER})" \
+            --body "$(cat <<EOF
+          The scheduled weekly workflow failed. Please review the failure and investigate.
+
+          Failed jobs:
+          $(printf '%s\n' "$failed_jobs" | sed 's/^/- /')
+
+          Workflow run: $RUN_URL
+          EOF
+          )"
