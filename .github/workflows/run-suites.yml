@@ -1,0 +1,123 @@
+name: Run test suites
+
+# Builds liboqs for one platform/build configuration and runs the given test
+# suites (see tests/conftest.py) against it.
+#
+# platform-matrix.yml calls this once per configuration from a matrix; it can
+# also be triggered by hand to run any suite on any configuration ahead of its
+# usual stage.
+
+permissions:
+  contents: read
+
+on:
+  workflow_call:
+    inputs:
+      name:
+        description: Job name shown in the Actions UI, usually the configuration name
+        type: string
+        default: test
+      runner:
+        description: GitHub runner label
+        type: string
+        required: true
+      container:
+        description: Container image to run in; empty to run directly on the runner
+        type: string
+        default: ''
+      cmake_args:
+        description: Arguments passed to `cmake -B build` (Ninja is used except on Windows)
+        type: string
+        default: ''
+      pytest_args:
+        description: Extra pytest arguments this configuration always needs
+        type: string
+        default: ''
+      build_only:
+        description: Only build; for cross builds whose tests cannot run on the runner
+        type: boolean
+        default: false
+      suites:
+        description: Comma-separated test suites from tests/conftest.py. The job is skipped if empty, unless build_only is set
+        type: string
+        default: ''
+  workflow_dispatch:
+    inputs:
+      name:
+        description: Job name shown in the Actions UI, usually the configuration name
+        type: string
+        default: test
+      runner:
+        description: GitHub runner label
+        type: string
+        required: true
+      container:
+        description: Container image to run in; empty to run directly on the runner
+        type: string
+        default: ''
+      cmake_args:
+        description: Arguments passed to `cmake -B build` (Ninja is used except on Windows)
+        type: string
+        default: ''
+      pytest_args:
+        description: Extra pytest arguments this configuration always needs
+        type: string
+        default: ''
+      build_only:
+        description: Only build; for cross builds whose tests cannot run on the runner
+        type: boolean
+        default: false
+      suites:
+        description: Comma-separated test suites from tests/conftest.py. The job is skipped if empty, unless build_only is set
+        type: string
+        default: ''
+
+jobs:
+
+  run:
+    name: ${{ inputs.name }}
+    if: inputs.suites != '' || inputs.build_only
+    runs-on: ${{ inputs.runner }}
+    container: ${{ inputs.container }}
+    timeout-minutes: 85 # max + 3*std over the last thousands of successful runs
+    env:
+      OQS_TEST_SIG_CTX_STEP: "255"
+    # Steps must run under sh (Alpine has no bash) and pwsh (Windows).
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # pin@v4
+      # tests/test_leaks.py skips the slow MQOM and QR-UOV leak tests on PRs and feature-branch
+      # pushes unless this step finds changes to that algorithm or to shared code it depends on.
+      - name: Detect algorithm changes
+        if: runner.os == 'Linux' && contains(inputs.suites, 'leaks')
+        env:
+          BASE_REF: ${{ github.base_ref || 'main' }}
+        run: |
+          git config --global --add safe.directory '*'
+          scripts/detect_changed_algorithms.sh "$BASE_REF" | tee -a "$GITHUB_ENV"
+      - name: Install Python
+        if: runner.os != 'Linux'
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # pin@v5
+        with:
+          python-version: '3.12'
+      - name: Install dependencies (macOS)
+        if: runner.os == 'macOS'
+        run: env HOMEBREW_NO_AUTO_UPDATE=1 brew install ninja openssl@3 && pip3 install --require-hashes --break-system-packages -r .github/workflows/requirements.txt
+      - name: Install dependencies (Windows)
+        if: runner.os == 'Windows'
+        run: pip install --require-hashes -r .github/workflows/requirements.txt
+      - name: Configure
+        run: cmake -B build ${{ runner.os != 'Windows' && '-GNinja' || '' }} ${{ inputs.cmake_args }}
+      - name: Show configuration
+        run: cmake -LA -N build
+      - name: Build
+        run: cmake --build build --config Release --parallel
+      - name: Run test suites (${{ inputs.suites }})
+        if: ${{ !inputs.build_only }}
+        timeout-minutes: 60
+        run: >
+          cmake -E make_directory tmp &&
+          ${{ runner.os == 'Windows' && 'python' || 'python3' }} -m pytest tests --verbose
+          --suite ${{ inputs.suites }}
+          --numprocesses=logical --dist load --maxschedchunk=1
+          ${{ inputs.pytest_args }}
