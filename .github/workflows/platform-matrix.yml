@@ -1,0 +1,183 @@
+name: Test suites on the platform matrix
+
+permissions:
+  contents: read
+
+on:
+  workflow_call:
+    inputs:
+      stage:
+        description: CI stage whose column selects the suites (pr or main)
+        type: string
+        default: main
+  workflow_dispatch:
+    inputs:
+      stage:
+        description: CI stage whose column selects the suites
+        type: choice
+        options: [pr, main]
+        default: main
+
+# Each row is one platform (runner, optional container) and build configuration,
+# built and tested by run-suites.yml. Its `pr` and `main` columns list the suites
+# (from tests/conftest.py) it runs at each stage. An empty column skips the row
+# at that stage.
+
+jobs:
+  test:
+    name: ${{ matrix.name }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # Linux
+          - name: noble-clang
+            runner: ubuntu-latest
+            container: openquantumsafe/ci-ubuntu-latest:latest
+            cmake_args: -DOQS_STRICT_WARNINGS=ON -DCMAKE_C_COMPILER=clang
+            pr: build,correctness,distbuild,extensive
+            main: build,correctness,distbuild,extensive
+          - name: arm64
+            runner: ubuntu-24.04-arm
+            container: openquantumsafe/ci-ubuntu-latest:latest
+            cmake_args: -DOQS_ENABLE_SIG_SLH_DSA=OFF -DOQS_ENABLE_SIG_STFL_LMS=ON -DOQS_ENABLE_SIG_STFL_XMSS=ON -DOQS_HAZARDOUS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN=ON
+            pytest_args: --maxprocesses=10
+            pr: build,correctness,distbuild,extensive
+            main: build,correctness,distbuild,extensive
+          - name: noble-memopt
+            runner: ubuntu-latest
+            container: openquantumsafe/ci-ubuntu-latest:latest
+            cmake_args: -DOQS_STRICT_WARNINGS=ON -DOQS_MEMOPT_BUILD=ON
+            pr: build,correctness,distbuild,extensive
+            main: build,correctness,distbuild,extensive
+          - name: jammy-clang
+            runner: ubuntu-latest
+            container: openquantumsafe/ci-ubuntu-jammy:latest
+            cmake_args: -DOQS_STRICT_WARNINGS=ON -DCMAKE_C_COMPILER=clang
+            pr: build,correctness,distbuild,extensive
+            main: build,correctness,distbuild,extensive
+          - name: alpine-no-stfl-key-sig-gen
+            runner: ubuntu-latest
+            container: openquantumsafe/ci-alpine-amd64:latest
+            cmake_args: -DOQS_STRICT_WARNINGS=ON -DOQS_USE_OPENSSL=ON -DBUILD_SHARED_LIBS=ON -DOQS_ENABLE_SIG_SLH_DSA=OFF -DOQS_HAZARDOUS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN=OFF -DOQS_ENABLE_SIG_STFL_XMSS=ON -DOQS_ENABLE_SIG_STFL_LMS=ON
+            pytest_args: --ignore=tests/test_alg_info.py
+            pr: build,correctness,distbuild,extensive
+            main: build,correctness,distbuild,extensive
+          - name: alpine-openssl-all
+            runner: ubuntu-latest
+            container: openquantumsafe/ci-alpine-amd64:latest
+            cmake_args: -DOQS_STRICT_WARNINGS=ON -DOQS_USE_OPENSSL=ON -DBUILD_SHARED_LIBS=ON -DOQS_USE_AES_OPENSSL=ON -DOQS_USE_SHA2_OPENSSL=ON -DOQS_USE_SHA3_OPENSSL=ON -DOQS_ENABLE_SIG_SLH_DSA=OFF -DOQS_HAZARDOUS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN=OFF -DOQS_ENABLE_SIG_STFL_XMSS=ON -DOQS_ENABLE_SIG_STFL_LMS=ON
+            pytest_args: --ignore=tests/test_alg_info.py
+            pr: build,correctness,distbuild,extensive
+            main: build,correctness,distbuild,extensive
+          - name: alpine-noopenssl
+            runner: ubuntu-latest
+            container: openquantumsafe/ci-alpine-amd64:latest
+            cmake_args: -DOQS_STRICT_WARNINGS=ON -DOQS_USE_OPENSSL=OFF -DOQS_ENABLE_SIG_SLH_DSA=OFF -DOQS_HAZARDOUS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN=OFF -DOQS_ENABLE_SIG_STFL_XMSS=ON -DOQS_ENABLE_SIG_STFL_LMS=ON
+            pytest_args: --ignore=tests/test_alg_info.py
+            pr: build,correctness,distbuild,extensive
+            main: build,correctness,distbuild,extensive
+          - name: noble-nistr4-openssl
+            runner: ubuntu-latest
+            container: openquantumsafe/ci-ubuntu-latest:latest
+            cmake_args: -DOQS_STRICT_WARNINGS=ON -DOQS_ALGS_ENABLED=NIST_R4
+            pr: build,correctness,distbuild,extensive
+            main: build,correctness,distbuild,extensive
+          - name: noble-nistonramp-openssl
+            runner: ubuntu-latest
+            container: openquantumsafe/ci-ubuntu-latest:latest
+            cmake_args: -DOQS_STRICT_WARNINGS=ON -DOQS_ALGS_ENABLED=NIST_SIG_ONRAMP
+            pr: build,correctness,distbuild,extensive
+            main: build,correctness,distbuild,extensive
+          - name: noble-noopenssl
+            runner: ubuntu-latest
+            container: openquantumsafe/ci-ubuntu-latest:latest
+            cmake_args: -DOQS_USE_OPENSSL=OFF
+            pr: build,correctness,distbuild,extensive
+            main: build,correctness,distbuild,extensive
+          - name: noble-shared-noopenssl
+            runner: ubuntu-latest
+            container: openquantumsafe/ci-ubuntu-latest:latest
+            cmake_args: -DOQS_DIST_BUILD=OFF -DOQS_USE_OPENSSL=OFF -DBUILD_SHARED_LIBS=ON
+            pr: build,correctness,distbuild,extensive
+            main: build,correctness,distbuild,extensive
+          # Valgrind and QEMU do not work on ASan-instrumented binaries.
+          - name: address-sanitizer-no-stfl-key-sig-gen
+            runner: ubuntu-latest
+            container: openquantumsafe/ci-ubuntu-latest:latest
+            cmake_args: -DCMAKE_C_COMPILER=clang -DCMAKE_BUILD_TYPE=Debug -DUSE_SANITIZER=Address -DOQS_ENABLE_SIG_SLH_DSA=OFF -DOQS_HAZARDOUS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN=OFF -DOQS_ENABLE_SIG_STFL_XMSS=ON -DOQS_ENABLE_SIG_STFL_LMS=ON
+            pytest_args: --ignore=tests/test_distbuild.py --ignore=tests/test_leaks.py --maxprocesses=10
+            pr: build,correctness,distbuild,extensive
+            main: build,correctness,distbuild,extensive
+          - name: noble-no-sha3-avx512vl
+            runner: ubuntu-latest
+            container: openquantumsafe/ci-ubuntu-latest:latest
+            cmake_args: -DOQS_USE_SHA3_AVX512VL=OFF
+            pr: build,correctness,distbuild,extensive
+            main: build,correctness,distbuild,extensive
+          # Valgrind leak checks dominate runtime, so they get their own rows to
+          # run in parallel with the rows above.
+          - name: noble-clang-leaks
+            runner: ubuntu-latest
+            container: openquantumsafe/ci-ubuntu-latest:latest
+            cmake_args: -DOQS_STRICT_WARNINGS=ON -DCMAKE_C_COMPILER=clang
+            pytest_args: -k 'not (leaks and ML-DSA)'
+            pr: leaks
+            main: leaks
+          - name: noble-memopt-leaks
+            runner: ubuntu-latest
+            container: openquantumsafe/ci-ubuntu-latest:latest
+            cmake_args: -DOQS_STRICT_WARNINGS=ON -DOQS_MEMOPT_BUILD=ON
+            pr: leaks
+            main: leaks
+          - name: jammy-clang-leaks
+            runner: ubuntu-latest
+            container: openquantumsafe/ci-ubuntu-jammy:latest
+            cmake_args: -DOQS_STRICT_WARNINGS=ON -DCMAKE_C_COMPILER=clang
+            pr: leaks
+            main: leaks
+          # macOS
+          - name: macos-15-stfl
+            runner: macos-15
+            cmake_args: -DOQS_STRICT_WARNINGS=ON -DOQS_ENABLE_SIG_SLH_DSA=OFF -DOQS_HAZARDOUS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN=ON -DOQS_ENABLE_SIG_STFL_XMSS=ON -DOQS_ENABLE_SIG_STFL_LMS=ON
+            pr: build,correctness,distbuild,extensive
+            main: build,correctness,distbuild,extensive
+          - name: macos-15-noopenssl
+            runner: macos-15
+            cmake_args: -DOQS_STRICT_WARNINGS=ON -DOQS_USE_OPENSSL=OFF
+            pr: build,correctness,distbuild,extensive
+            main: build,correctness,distbuild,extensive
+          - name: macos-15-shared
+            runner: macos-15
+            cmake_args: -DOQS_STRICT_WARNINGS=ON -DBUILD_SHARED_LIBS=ON -DOQS_DIST_BUILD=OFF
+            pr: build,correctness,distbuild,extensive
+            main: build,correctness,distbuild,extensive
+    uses: ./.github/workflows/run-suites.yml
+    with:
+      name: ${{ matrix.name }}
+      runner: ${{ matrix.runner }}
+      container: ${{ matrix.container }}
+      cmake_args: ${{ matrix.cmake_args }}
+      pytest_args: ${{ matrix.pytest_args }}
+      suites: ${{ matrix[inputs.stage] }}
+
+  windows:
+    name: ${{ matrix.runner }}-${{ matrix.arch }}${{ matrix.key_sig_gen == 'OFF' && '-no-stfl-key-sig-gen' || '' }}
+    strategy:
+      fail-fast: false
+      matrix:
+        runner: [windows-2022, windows-2025]
+        arch: [amd64, x86, arm64]
+        key_sig_gen: ['ON', 'OFF']
+        # Stage columns shared by every combination above.
+        include:
+          - pr: build,correctness,distbuild,extensive
+            main: build,correctness,distbuild,extensive
+    uses: ./.github/workflows/run-suites.yml
+    with:
+      name: ${{ matrix.runner }}-${{ matrix.arch }}${{ matrix.key_sig_gen == 'OFF' && '-no-stfl-key-sig-gen' || '' }}
+      runner: ${{ matrix.runner }}
+      cmake_args: --toolchain .CMake/toolchain_windows_${{ matrix.arch }}.cmake -DOQS_ENABLE_SIG_SLH_DSA=OFF -DOQS_ENABLE_SIG_STFL_LMS=ON -DOQS_ENABLE_SIG_STFL_XMSS=ON -DOQS_HAZARDOUS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN=${{ matrix.key_sig_gen }}
+      # arm64 is cross-compiled, so it is only built.
+      build_only: ${{ matrix.arch == 'arm64' }}
+      suites: ${{ matrix[inputs.stage] }}

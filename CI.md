@@ -57,25 +57,37 @@ This workflow runs a minimal set of tests that should pass before heavier tests 
 
 This workflow runs code coverage tests and uploads the results to [Coveralls.io](https://coveralls.io/github/open-quantum-safe/liboqs).
 
+#### <a name="run-suites.yml"></a> Test suites on one configuration (`run-suites.yml`)
+
+This workflow builds liboqs for one platform and build configuration and runs the given test suites against it.
+The `suites` input lists test suites defined in `tests/conftest.py` (`basic`, `build`, `correctness`, `extensive`, `vectors`, `leaks`, `distbuild`). If `suites` is empty, the job is skipped unless `build_only` is set.
+
+Callers run it once per configuration from a matrix, as [`platform-matrix.yml`](#platform-matrix.yml) does.
+The same suites can be run locally, for example `python3 -m pytest tests --suite correctness`.
+
 #### <a name="<platform>.yml"></a> Individual platform tests (`<platform>.yml`)
 
-These workflows contain tests for the individual [platforms supported by liboqs](PLATFORMS.md).
+These workflows contain tests for [supported platforms](PLATFORMS.md) and configurations that need steps beyond building and running a test suite.
 Currently, these include
 - `android.yml`,
 - `apple.yml`,
-- `macos.yml`,
-- `linux.yml`,
-- `windows.yml`, and
+- `linux.yml`, and
 - `zephyr.yml`.
 
-All of these these are wrapped by [`platforms.yml`](#platforms.yml).
+All other platform configurations are listed in [`platform-matrix.yml`](#platform-matrix.yml) and run via [`run-suites.yml`](#run-suites.yml).
 
-To save time, `linux.yml` skips the slow MQOM and QR-UOV memory leak tests on pull requests and feature-branch pushes, unless the change touches that algorithm's directory or shared code it depends on (see the "Detect algorithm changes" step).
+#### <a name="platform-matrix.yml"></a> Platform matrix (`platform-matrix.yml`)
+
+This workflow lists every platform and build configuration tested via [`run-suites.yml`](#run-suites.yml), and which [test suites](#run-suites.yml) each runs at each CI stage.
+Each row has a `pr` and a `main` column; the `stage` input selects which one is used, and an empty column skips that row at that stage.
+
+To save time, `run-suites.yml` skips the slow MQOM and QR-UOV memory leak tests on pull requests and feature-branch pushes, unless the change touches that algorithm's directory or shared code it depends on (see `scripts/detect_changed_algorithms.sh`).
 They always run on pushes to `main`.
 
 #### <a name="platforms.yml"></a> All platform tests (`platforms.yml`)
 
-This workflow calls all of the [platform-specific tests](#<platform>.yml).
+This workflow calls the [platform matrix](#platform-matrix.yml) and the [platform-specific tests](#<platform>.yml).
+Its `stage` input (`pr` or `main`, default `main`) is passed on to the platform matrix.
 
 #### <a name="extended.yml"></a> Extended tests (`extended.yml`)
 
