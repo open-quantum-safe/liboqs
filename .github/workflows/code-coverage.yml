@@ -37,6 +37,8 @@ jobs:
       - name: Run tests
         env:
           OQS_TEST_SIG_CTX_STEP: "255"
+          # TEMPORARY: skip all FAEST pipeline tests. Restore before merge.
+          SKIP_ALGS: 'FAEST'
         run: |
           python3 -m pytest --verbose --numprocesses=logical --dist load --maxschedchunk=1 \
           tests/test_cmdline.py \

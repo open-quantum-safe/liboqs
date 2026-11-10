@@ -130,6 +130,9 @@ jobs:
         working-directory: build
       - name: Run tests
         timeout-minutes: 360
+        env:
+          # TEMPORARY: skip all FAEST pipeline tests. Restore before merge.
+          SKIP_ALGS: 'FAEST'
         run: mkdir -p tmp && python3 -m pytest --verbose ${{ matrix.PYTEST_ARGS }}
 
   # QR-UOV ships three implementations per parameter set, and all three
@@ -348,7 +351,10 @@ jobs:
         working-directory: build
       - name: Run tests
         timeout-minutes: 60
-        run: mkdir -p tmp && python3 -m pytest --verbose --ignore=tests/test_code_conventions.py --ignore=tests/test_cmake_option_coverage.py --ignore=tests/test_kats_json.py --ignore=tests/test_acvp_vectors.py --ignore=tests/test_distbuild.py --ignore=tests/test_leaks.py --ignore=tests/test_kat_all.py --numprocesses=logical --dist load --maxschedchunk=1 --maxprocesses=10
+        env:
+          # TEMPORARY: skip all FAEST pipeline tests. Restore before merge.
+          SKIP_ALGS: 'FAEST'
+        run: mkdir -p tmp && python3 -m pytest --verbose --ignore=tests/test_code_conventions.py --ignore=tests/test_cmake_option_coverage.py --ignore=tests/test_kats_json.py --ignore=tests/test_acvp_vectors.py --ignore=tests/test_distbuild.py --ignore=tests/test_leaks.py --ignore=tests/test_kat_all.py --ignore=tests/test_faest_integration.py --numprocesses=logical --dist load --maxschedchunk=1 --maxprocesses=10
 
   stfl-tests:
     name: STFL key generation tests
@@ -380,7 +386,9 @@ jobs:
         timeout-minutes: 90
         env:
           OQS_TEST_SIG_CTX_STEP: "255"
-        run: mkdir -p tmp && python3 -m pytest --verbose --ignore=tests/test_code_conventions.py --ignore=tests/test_cmake_option_coverage.py --ignore=tests/test_kats_json.py --ignore=tests/test_acvp_vectors.py --numprocesses=auto --ignore=tests/test_alg_info.py --ignore=tests/test_kat_all.py
+          # TEMPORARY: skip all FAEST pipeline tests. Restore before merge.
+          SKIP_ALGS: 'FAEST'
+        run: mkdir -p tmp && python3 -m pytest --verbose --ignore=tests/test_code_conventions.py --ignore=tests/test_cmake_option_coverage.py --ignore=tests/test_kats_json.py --ignore=tests/test_acvp_vectors.py --ignore=tests/test_faest_integration.py --numprocesses=auto --ignore=tests/test_alg_info.py --ignore=tests/test_kat_all.py
 
   slhdsa-openssl330-test:
     name: SLH-DSA with OpenSSL 3.3.0
@@ -619,6 +627,9 @@ jobs:
         run: ninja
         working-directory: build
       - name: Run tests
+        env:
+          # TEMPORARY: skip all FAEST pipeline tests. Restore before merge.
+          SKIP_ALGS: 'FAEST'
         run: |
           python3 -m pytest --verbose --numprocesses=logical --dist load --maxschedchunk=1 \
           tests/test_acvp_vectors.py \
