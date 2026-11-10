@@ -29,12 +29,12 @@ OQS_KAT_PRNG *OQS_KAT_PRNG_new(const char *method_name) {
 	OQS_KAT_PRNG *prng = OQS_MEM_malloc(sizeof(OQS_KAT_PRNG));
 	if (prng != NULL) {
 		prng->max_kats = is_mceliece(method_name) ? 10 : 100;
-        // set randombytes function
-        OQS_randombytes_custom_algorithm(&OQS_randombytes_nist_kat);
-        prng->seed = &OQS_randombytes_nist_kat_init_256bit;
-        prng->get_state = &OQS_randombytes_nist_kat_get_state;
-        prng->set_state = &OQS_randombytes_nist_kat_set_state;
-        prng->free = NULL;
+		// set randombytes function
+		OQS_randombytes_custom_algorithm(&OQS_randombytes_nist_kat);
+		prng->seed = &OQS_randombytes_nist_kat_init_256bit;
+		prng->get_state = &OQS_randombytes_nist_kat_get_state;
+		prng->set_state = &OQS_randombytes_nist_kat_set_state;
+		prng->free = NULL;
 	}
 	return prng;
 }
