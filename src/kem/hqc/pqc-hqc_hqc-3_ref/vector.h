@@ -6,7 +6,6 @@
 #ifndef HQC_VECTOR_H
 #define HQC_VECTOR_H
 
-#include <immintrin.h>
 #include <stdint.h>
 #include "symmetric.h"
 

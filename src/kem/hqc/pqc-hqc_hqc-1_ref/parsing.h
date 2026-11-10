@@ -6,7 +6,6 @@
 #ifndef HQC_PARSING_H
 #define HQC_PARSING_H
 
-#include <immintrin.h>
 #include <stdint.h>
 #include "parameters.h"
 
