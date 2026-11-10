@@ -27,6 +27,8 @@ For example, "[full tests] [trigger downstream]" will trigger both the platform 
 
 This workflow runs on pull requests.
 It calls [basic checks](#basic.yml), [code coverage tests](#code-coverage.yml), [platform tests](#platforms.yml) and [scorecard analysis](#scorecard.yml).
+Platform tests run the `pr` stage of the [platform matrix](#platform-matrix.yml).
+Include "[full tests]" in the pull request title or description to run the `main` stage instead, as pushes to `main` do.
 
 #### <a name="commit-to-main.yml"></a> Commit-to-main workflow (`commit-to-main.yml`)
 
