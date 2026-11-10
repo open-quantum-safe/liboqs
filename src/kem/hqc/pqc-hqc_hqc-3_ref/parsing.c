@@ -23,6 +23,7 @@ void hqc_dk_pke_from_string(uint64_t *y, const uint8_t *dk_pke) {
 
     // Zeroize sensitive data
     memset_zero(&dk_xof_ctx, sizeof dk_xof_ctx);
+    xof_ctx_release(&dk_xof_ctx);
 }
 
 /**
@@ -41,6 +42,7 @@ void hqc_ek_pke_from_string(uint64_t *h, uint64_t *s, const uint8_t *ek_pke) {
     memcpy(s, ek_pke + SEED_BYTES, VEC_N_SIZE_BYTES);
 
     memset_zero(&ek_xof_ctx, sizeof ek_xof_ctx);
+    xof_ctx_release(&ek_xof_ctx);
 }
 
 /**

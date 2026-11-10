@@ -81,6 +81,8 @@ void hqc_pke_keygen(uint8_t *ek_pke, uint8_t *dk_pke, uint8_t *seed) {
     memset_zero(y, sizeof y);
     memset_zero(&dk_xof_ctx, sizeof dk_xof_ctx);
     memset_zero(&ek_xof_ctx, sizeof ek_xof_ctx);
+    xof_ctx_release(&dk_xof_ctx);
+    xof_ctx_release(&ek_xof_ctx);
 }
 
 /**
@@ -154,6 +156,7 @@ void hqc_pke_encrypt(uint64_t *u, uint64_t *v, const uint8_t *ek_pke, const uint
     memset_zero(e, sizeof e);
     memset_zero(tmp, sizeof tmp);
     memset_zero(&theta_xof_ctx, sizeof theta_xof_ctx);
+    xof_ctx_release(&theta_xof_ctx);
 }
 
 /**
