@@ -64,3 +64,6 @@ void oqs_aes256_ctr_enc_sch_armv8(const uint8_t *iv, const size_t iv_len, const 
 void oqs_aes256_ctr_enc_sch_upd_blks_armv8(void *schedule, uint8_t *out, size_t out_blks);
 
 extern struct OQS_AES_callbacks aes_default_callbacks;
+
+/* Select the AES backend at runtime (dist builds); called from OQS_init(). */
+void OQS_AES_init(void);

@@ -274,3 +274,6 @@ struct OQS_AES_callbacks aes_default_callbacks = {
 	.AES192_ECB_enc = AES192_ECB_enc,
 	.AES192_ECB_enc_sch = AES192_ECB_enc_sch,
 };
+
+void OQS_AES_init(void) {
+}
