@@ -66,7 +66,6 @@ static int8_t hqc_kem_keygen_internal(uint8_t *ek_kem, uint8_t *dk_kem, const ui
     // Zeroize sensitive data
     memset_zero(seed_pke, sizeof seed_pke);
     memset_zero(dk_pke, sizeof dk_pke);
-    memset_zero(&ctx_kem, sizeof ctx_kem);
     xof_ctx_release(&ctx_kem);
 
     return 0;
@@ -311,7 +310,6 @@ static int8_t hqc_kem_decaps_internal(uint8_t *K_prime, const uint8_t *dk_kem, c
 
     // Zeroize sensitive data
     memset_zero(seed_pke, sizeof seed_pke);
-    memset_zero(&ctx_kem, sizeof ctx_kem);
     memset_zero(dk_pke, sizeof dk_pke);
     memset_zero(sigma, sizeof sigma);
     memset_zero(m_prime, sizeof m_prime);
