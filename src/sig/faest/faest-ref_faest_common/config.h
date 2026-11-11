@@ -19,4 +19,6 @@
 #define calloc(nmemb, size) OQS_MEM_calloc(nmemb, size) // IGNORE memory-check
 #define free(ptr) OQS_MEM_insecure_free(ptr) // IGNORE memory-check
 
+#include "faest_namespace.h"
+
 #endif

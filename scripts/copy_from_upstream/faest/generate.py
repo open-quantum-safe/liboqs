@@ -214,7 +214,79 @@ COMMON_SOURCES = [
     f"{LIBOQS_PREFIX}/generated/faest_aes_128.c",
     f"{LIBOQS_PREFIX}/generated/faest_aes_192.c",
     f"{LIBOQS_PREFIX}/generated/faest_aes_256.c",
+    f"{LIBOQS_PREFIX}/generated/faest_namespace.h",
 ] + [f"{LIBOQS_PREFIX}/generated/tables_{preset}.h" for preset in TABLE_PRESETS] + COMMON_HEADERS
+
+
+# Bare faest-ref globals seen by `nm -g` on liboqs.a. Renamed to oqs_faest_*
+# via generated/faest_namespace.h so they match liboqs coding conventions.
+# Keep in sync with any new exported faest-ref symbols.
+FAEST_NAMESPACE_SYMBOLS = [
+    "aes128_init_round_keys", "aes_128_prover", "aes_128_verifier", "aes192_init_round_keys",
+    "aes_192_prover", "aes_192_verifier", "aes256_init_round_keys", "aes_256_prover",
+    "aes_256_verifier", "aes_extend_witness_7", "alloc_pointer_array", "bavc_clear",
+    "bavc_commit", "bavc_open", "bavc_reconstruct", "bf128_byte_combine",
+    "bf128_byte_combine_bits", "bf128_byte_combine_sq", "bf128_mul", "bf128_mul_64_inplace",
+    "bf128_mul_bit", "bf128_mul_inplace", "bf128_sq_bit", "bf128_sq_bit_inplace",
+    "bf128_square", "bf128_sum_poly_bits", "bf192_byte_combine", "bf192_byte_combine_bits",
+    "bf192_byte_combine_sq", "bf192_mul", "bf192_mul_64_inplace", "bf192_mul_bit",
+    "bf192_mul_inplace", "bf192_sq_bit", "bf192_sq_bit_inplace", "bf192_square",
+    "bf192_sum_poly_bits", "bf256_byte_combine", "bf256_byte_combine_bits", "bf256_byte_combine_sq",
+    "bf256_mul", "bf256_mul_64_inplace", "bf256_mul_bit", "bf256_mul_inplace",
+    "bf256_sq_bit", "bf256_sq_bit_inplace", "bf256_square", "bf256_sum_poly_bits",
+    "bf2_matrix_mul_tbl", "bf2_poly_mul", "bf2_poly_reduce", "bf384_mul_128_inplace",
+    "bf576_mul_192_inplace", "bf768_mul_256_inplace", "bf8_inv", "bf8_mul",
+    "bf8_square", "decode_all_chall_3", "expand_key", "extract_bit_slice",
+    "faest_128f_clear_private_key", "faest_128f_clear_unpacked_private_key", "faest_128f_keygen", "faest_128f_sign",
+    "faest_128f_sign_with_randomness", "faest_128f_unpacked_sign", "faest_128f_unpacked_sign_with_randomness", "faest_128f_unpack_private_key",
+    "faest_128f_validate_keypair", "faest_128f_verify", "faest_128s_clear_private_key", "faest_128s_clear_unpacked_private_key",
+    "faest_128s_keygen", "faest_128s_sign", "faest_128s_sign_with_randomness", "faest_128s_unpacked_sign",
+    "faest_128s_unpacked_sign_with_randomness", "faest_128s_unpack_private_key", "faest_128s_validate_keypair", "faest_128s_verify",
+    "faest_192f_clear_private_key", "faest_192f_clear_unpacked_private_key", "faest_192f_keygen", "faest_192f_sign",
+    "faest_192f_sign_with_randomness", "faest_192f_unpacked_sign", "faest_192f_unpacked_sign_with_randomness", "faest_192f_unpack_private_key",
+    "faest_192f_validate_keypair", "faest_192f_verify", "faest_192s_clear_private_key", "faest_192s_clear_unpacked_private_key",
+    "faest_192s_keygen", "faest_192s_sign", "faest_192s_sign_with_randomness", "faest_192s_unpacked_sign",
+    "faest_192s_unpacked_sign_with_randomness", "faest_192s_unpack_private_key", "faest_192s_validate_keypair", "faest_192s_verify",
+    "faest_256f_clear_private_key", "faest_256f_clear_unpacked_private_key", "faest_256f_keygen", "faest_256f_sign",
+    "faest_256f_sign_with_randomness", "faest_256f_unpacked_sign", "faest_256f_unpacked_sign_with_randomness", "faest_256f_unpack_private_key",
+    "faest_256f_validate_keypair", "faest_256f_verify", "faest_256s_clear_private_key", "faest_256s_clear_unpacked_private_key",
+    "faest_256s_keygen", "faest_256s_sign", "faest_256s_sign_with_randomness", "faest_256s_unpacked_sign",
+    "faest_256s_unpacked_sign_with_randomness", "faest_256s_unpack_private_key", "faest_256s_validate_keypair", "faest_256s_verify",
+    "faest_em_128f_clear_private_key", "faest_em_128f_clear_unpacked_private_key", "faest_em_128f_keygen", "faest_em_128f_sign",
+    "faest_em_128f_sign_with_randomness", "faest_em_128f_unpacked_sign", "faest_em_128f_unpacked_sign_with_randomness", "faest_em_128f_unpack_private_key",
+    "faest_em_128f_validate_keypair", "faest_em_128f_verify", "faest_em_128s_clear_private_key", "faest_em_128s_clear_unpacked_private_key",
+    "faest_em_128s_keygen", "faest_em_128s_sign", "faest_em_128s_sign_with_randomness", "faest_em_128s_unpacked_sign",
+    "faest_em_128s_unpacked_sign_with_randomness", "faest_em_128s_unpack_private_key", "faest_em_128s_validate_keypair", "faest_em_128s_verify",
+    "faest_em_192f_clear_private_key", "faest_em_192f_clear_unpacked_private_key", "faest_em_192f_keygen", "faest_em_192f_sign",
+    "faest_em_192f_sign_with_randomness", "faest_em_192f_unpacked_sign", "faest_em_192f_unpacked_sign_with_randomness", "faest_em_192f_unpack_private_key",
+    "faest_em_192f_validate_keypair", "faest_em_192f_verify", "faest_em_192s_clear_private_key", "faest_em_192s_clear_unpacked_private_key",
+    "faest_em_192s_keygen", "faest_em_192s_sign", "faest_em_192s_sign_with_randomness", "faest_em_192s_unpacked_sign",
+    "faest_em_192s_unpacked_sign_with_randomness", "faest_em_192s_unpack_private_key", "faest_em_192s_validate_keypair", "faest_em_192s_verify",
+    "faest_em_256f_clear_private_key", "faest_em_256f_clear_unpacked_private_key", "faest_em_256f_keygen", "faest_em_256f_sign",
+    "faest_em_256f_sign_with_randomness", "faest_em_256f_unpacked_sign", "faest_em_256f_unpacked_sign_with_randomness", "faest_em_256f_unpack_private_key",
+    "faest_em_256f_validate_keypair", "faest_em_256f_verify", "faest_em_256s_clear_private_key", "faest_em_256s_clear_unpacked_private_key",
+    "faest_em_256s_keygen", "faest_em_256s_sign", "faest_em_256s_sign_with_randomness", "faest_em_256s_unpacked_sign",
+    "faest_em_256s_unpacked_sign_with_randomness", "faest_em_256s_unpack_private_key", "faest_em_256s_validate_keypair", "faest_em_256s_verify",
+    "faest_get_paramset", "faest_sign", "faest_verify", "free_pointer_array",
+    "generic_aes_ecb_encrypt", "generic_aes_ecb_free", "generic_aes_ecb_new", "H0_final",
+    "H0_init", "H0_update", "H1_final", "H1_init",
+    "H1_update", "H2_0_final", "H2_1_final", "H2_2_final",
+    "H2_3_final", "H2_copy", "H2_init", "H2_update",
+    "H2_update_u32_le", "H3_final", "H3_init", "H3_update",
+    "H4", "H5", "leaf_hash_128", "leaf_hash_192",
+    "leaf_hash_256", "masked_xor_u8_array", "owf_128", "owf_192",
+    "owf_256", "owf_em_128", "owf_em_192", "owf_em_256",
+    "prg", "prg_2_lambda", "prg_4_lambda", "rand_bytes",
+    "rijndael192_encrypt_block", "rijndael192_init_round_keys", "rijndael256_encrypt_block", "rijndael256_init_round_keys",
+    "transpose_matrix", "vole_commit", "vole_hash", "vole_hash_128",
+    "vole_hash_192", "vole_hash_256", "vole_reconstruct", "xor_u8_array",
+    "xor_u8_array_inplace", "zk_hash_128_7_finalize", "zk_hash_128_7_init", "zk_hash_128_7_raise_and_update",
+    "zk_hash_128_7_update", "zk_hash_128_finalize", "zk_hash_128_init", "zk_hash_128_update",
+    "zk_hash_192_7_finalize", "zk_hash_192_7_init", "zk_hash_192_7_raise_and_update", "zk_hash_192_7_update",
+    "zk_hash_192_finalize", "zk_hash_192_init", "zk_hash_192_update", "zk_hash_256_7_finalize",
+    "zk_hash_256_7_init", "zk_hash_256_7_raise_and_update", "zk_hash_256_7_update", "zk_hash_256_finalize",
+    "zk_hash_256_init", "zk_hash_256_update",
+]
 
 
 def render_template(template_path: Path, mapping: dict[str, str]) -> str:
@@ -292,6 +364,26 @@ def generate_parameters_h(parameter_sets: list[dict]) -> str:
 
 def generate_config_h() -> str:
     return (TEMPLATES / "config.h.in").read_text(encoding="utf-8")
+
+
+def generate_faest_namespace_h() -> str:
+    """Prefix faest-ref globals with oqs_faest_ (baentsch / liboqs convention)."""
+    lines = [
+        "/* SPDX-License-Identifier: MIT */",
+        "/* Generated for liboqs integration. Do not edit by hand. */",
+        "#ifndef FAEST_NAMESPACE_H",
+        "#define FAEST_NAMESPACE_H",
+        "",
+        "/* Same pattern as SDitH APPLY_NAMESPACE / MQOM_NAMESPACE: rename bare",
+        " * faest-ref symbols so `nm -g liboqs.a` sees an oqs_ prefix. Upstream",
+        " * faest-ref can replace this with -DFAEST_NAMESPACE=oqs_faest_ later. */",
+        "",
+    ]
+    width = max(len(sym) for sym in FAEST_NAMESPACE_SYMBOLS)
+    for sym in FAEST_NAMESPACE_SYMBOLS:
+        lines.append(f"#define {sym:<{width}} oqs_faest_{sym}")
+    lines.extend(["", "#endif", ""])
+    return "\n".join(lines)
 
 
 def cxx_compiler() -> str:
@@ -391,6 +483,7 @@ def generate_meta_common_yml() -> str:
     header_sources = " ".join(
         [
             f"{LIBOQS_PREFIX}/generated/config.h",
+            f"{LIBOQS_PREFIX}/generated/faest_namespace.h",
             f"{LIBOQS_PREFIX}/generated/parameters.h",
         ]
         + [f"{LIBOQS_PREFIX}/generated/tables_{preset}.h" for preset in TABLE_PRESETS]
@@ -425,8 +518,9 @@ provides the cryptographic implementation, parameter templates (`.in` files), an
 | `src/sig/faest/` | Copied integration tree (do not edit by hand) |
 
 Parameter numeric values are read from `faest-ref/meson.build` at generation time.
-liboqs-only templates (`api.h.in`, `crypto_sign.c.in`, `config.h.in`) implement the
-PQClean detached-signature API and OQS primitive routing.
+liboqs-only templates (`api.h.in`, `crypto_sign.c.in`, `config.h.in`) plus
+generated `faest_namespace.h` implement the PQClean detached-signature API, OQS
+primitive routing, and `oqs_faest_` symbol prefixes.
 
 ## Maintenance (liboqs)
 
@@ -466,6 +560,10 @@ When built for liboqs (`-DOQS`), FAEST routes cryptographic primitives to liboqs
 | AES-128/256 ECB | `OQS_AES128/256_ECB_*` (`aes.c`) |
 | AES-192 ECB | `OQS_AES192_ECB_*` (`aes.c`) |
 
+Bare faest-ref globals are renamed with `#define` in `generated/faest_namespace.h`
+(included from `config.h`) to `oqs_faest_<symbol>`. Upstream can later replace
+this with `-DFAEST_NAMESPACE=oqs_faest_`.
+
 ## Known follow-ups
 
 1. Add optimized implementations (`avx2`, `neon`) as additional entries in each
@@ -479,6 +577,7 @@ def build_outputs(faest_ref: Path, parameter_sets: list[dict]) -> dict[Path, str
     """Return expected integration file paths and contents."""
     outputs: dict[Path, str] = {}
     outputs[GENERATED / "config.h"] = generate_config_h()
+    outputs[GENERATED / "faest_namespace.h"] = generate_faest_namespace_h()
     parameters_h = generate_parameters_h(parameter_sets)
     outputs[GENERATED / "parameters.h"] = parameters_h
     outputs.update(generate_vole_tables(faest_ref, parameters_h))

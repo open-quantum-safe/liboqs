@@ -13,8 +13,9 @@ provides the cryptographic implementation, parameter templates (`.in` files), an
 | `src/sig/faest/` | Copied integration tree (do not edit by hand) |
 
 Parameter numeric values are read from `faest-ref/meson.build` at generation time.
-liboqs-only templates (`api.h.in`, `crypto_sign.c.in`, `config.h.in`) implement the
-PQClean detached-signature API and OQS primitive routing.
+liboqs-only templates (`api.h.in`, `crypto_sign.c.in`, `config.h.in`) plus
+generated `faest_namespace.h` implement the PQClean detached-signature API, OQS
+primitive routing, and `oqs_faest_` symbol prefixes.
 
 ## Maintenance (liboqs)
 
@@ -53,6 +54,10 @@ When built for liboqs (`-DOQS`), FAEST routes cryptographic primitives to liboqs
 | CPU features | `OQS_CPU_has_extension` (`cpu.h`) |
 | AES-128/256 ECB | `OQS_AES128/256_ECB_*` (`aes.c`) |
 | AES-192 ECB | `OQS_AES192_ECB_*` (`aes.c`) |
+
+Bare faest-ref globals are renamed with `#define` in `generated/faest_namespace.h`
+(included from `config.h`) to `oqs_faest_<symbol>`. Upstream can later replace
+this with `-DFAEST_NAMESPACE=oqs_faest_`.
 
 ## Known follow-ups
 
