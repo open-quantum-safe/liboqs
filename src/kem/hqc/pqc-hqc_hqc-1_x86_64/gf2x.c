@@ -27,8 +27,8 @@ static __m256i a1_times_a2[VEC_N_256_SIZE_64 >> 1];
 static __m256i o256[VEC_N_ARRAY_SIZE_VEC];
 static uint64_t *tmp_reduce = (uint64_t *)o256;
 
-static uint64_t bloc64[PARAM_OMEGA_R];  // Allocation with the biggest possible weight
-static uint64_t bit64[PARAM_OMEGA_R];   // Allocation with the biggest possible weight
+// static uint64_t bloc64[PARAM_OMEGA_R];  // Allocation with the biggest possible weight
+// static uint64_t bit64[PARAM_OMEGA_R];   // Allocation with the biggest possible weight
 
 static inline void reduce(__m256i *o, const __m256i *a);
 static inline void karat_mult_1(__m128i *C, __m128i *A, __m128i *B);
