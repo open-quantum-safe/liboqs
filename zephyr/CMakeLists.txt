@@ -41,6 +41,8 @@ if(CONFIG_LIBOQS)
         set(OQS_BUILD_ONLY_LIB ON)
         set(OQS_USE_OPENSSL OFF)
         set(OQS_EMBEDDED_BUILD ON)
+        # Zephyr has its own hardening options (e.g. CONFIG_STACK_CANARIES)
+        set(OQS_HARDENED_COMPILE_OPTS OFF)
 
         set(CMAKE_CROSSCOMPILING ON)
 
