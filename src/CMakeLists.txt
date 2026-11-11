@@ -94,6 +94,21 @@ if(OQS_ENABLE_SIG_SDITH)
     set_target_properties(${_sdith_targets} PROPERTIES COMPILE_WARNING_AS_ERROR OFF)
 endif()
 
+# GCC 13's -Warray-bounds reports false positives in MQOM's AVX2 operations
+# After inlining, GCC loses the value range of partial-block lengths
+# and warns about stores and table loads that cannot be reached.
+# Keep the warning visible, but do not treat it as an error.
+# In the future, this could be addressed and this guard removed
+# Tracked by https://github.com/open-quantum-safe/liboqs/issues/2700
+if(OQS_ENABLE_SIG_MQOM AND CMAKE_C_COMPILER_ID STREQUAL "GNU")
+    get_property(_mqom_targets DIRECTORY sig/mqom PROPERTY BUILDSYSTEM_TARGETS)
+    foreach(_t IN LISTS _mqom_targets)
+        if(_t MATCHES "_avx2$")
+            target_compile_options(${_t} PRIVATE -Wno-error=array-bounds)
+        endif()
+    endforeach()
+endif()
+
 if(OQS_ENABLE_SIG_SLH_DSA)
     add_subdirectory(sig/slh_dsa)
     set(SIG_OBJS ${SIG_OBJS} ${SLH_DSA_OBJS})
