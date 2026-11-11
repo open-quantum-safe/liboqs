@@ -6,6 +6,8 @@
 #endif
 
 #include <oqs/common.h>
+#include "aes/aes.h"
+#include "aes/aes_local.h"
 
 #include <errno.h>
 #include <stdint.h>
@@ -238,6 +240,7 @@ OQS_API void OQS_init(void) {
 #if defined(OQS_DIST_BUILD)
 	OQS_CPU_has_extension(OQS_CPU_EXT_INIT);
 #endif
+	OQS_AES_init();
 }
 
 OQS_API void OQS_thread_stop(void) {

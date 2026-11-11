@@ -457,11 +457,12 @@ static void override_AES128_ECB_load_schedule(const uint8_t *key, void **_schedu
 int main(int argc, char **argv) {
 	bool bench = false;
 
+	OQS_init();
+
 	struct OQS_AES_callbacks callbacks = aes_default_callbacks;
 	callbacks.AES128_ECB_load_schedule = override_AES128_ECB_load_schedule;
 	OQS_AES_set_callbacks(&callbacks);
 
-	OQS_init();
 	for (int i = 1; i < argc; i++) {
 		if (argv[i][0] == '-') {
 			if (strcmp(argv[i], "--bench") == 0 || strcmp(argv[i], "-b") == 0) {
