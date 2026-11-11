@@ -38,12 +38,12 @@
 #endif
 
 #define OQS_AES_DEFINE_ECB_ENC(name, load, enc_sch, free_sch) \
-	static void name(const uint8_t *plaintext, const size_t plaintext_len, const uint8_t *key, uint8_t *ciphertext) { \
-		void *schedule = NULL; \
-		load(key, &schedule); \
-		enc_sch(plaintext, plaintext_len, schedule, ciphertext); \
-		free_sch(schedule); \
-	}
+    static void name(const uint8_t *plaintext, const size_t plaintext_len, const uint8_t *key, uint8_t *ciphertext) { \
+        void *schedule = NULL; \
+        load(key, &schedule); \
+        enc_sch(plaintext, plaintext_len, schedule, ciphertext); \
+        free_sch(schedule); \
+    }
 
 #if OQS_AES_HAVE_C
 OQS_AES_DEFINE_ECB_ENC(aes128_ecb_enc_c, oqs_aes128_load_schedule_c, oqs_aes128_ecb_enc_sch_c, oqs_aes128_free_schedule_c)
@@ -51,27 +51,27 @@ OQS_AES_DEFINE_ECB_ENC(aes256_ecb_enc_c, oqs_aes256_load_schedule_c, oqs_aes256_
 OQS_AES_DEFINE_ECB_ENC(aes192_ecb_enc_c, oqs_aes192_load_schedule_c, oqs_aes192_ecb_enc_sch_c, oqs_aes192_free_schedule_c)
 
 #define OQS_AES_C_CALLBACKS { \
-	.AES128_ECB_load_schedule = oqs_aes128_load_schedule_c, \
-	.AES128_CTR_inc_init = oqs_aes128_load_schedule_c, \
-	.AES128_CTR_inc_iv = oqs_aes128_load_iv_c, \
-	.AES128_CTR_inc_ivu64 = oqs_aes128_load_iv_u64_c, \
-	.AES128_free_schedule = oqs_aes128_free_schedule_c, \
-	.AES128_ECB_enc = aes128_ecb_enc_c, \
-	.AES128_ECB_enc_sch = oqs_aes128_ecb_enc_sch_c, \
-	.AES128_CTR_inc_stream_iv = oqs_aes128_ctr_enc_sch_c, \
-	.AES256_ECB_load_schedule = oqs_aes256_load_schedule_c, \
-	.AES256_CTR_inc_init = oqs_aes256_load_schedule_c, \
-	.AES256_CTR_inc_iv = oqs_aes256_load_iv_c, \
-	.AES256_CTR_inc_ivu64 = oqs_aes256_load_iv_u64_c, \
-	.AES256_free_schedule = oqs_aes256_free_schedule_c, \
-	.AES256_ECB_enc = aes256_ecb_enc_c, \
-	.AES256_ECB_enc_sch = oqs_aes256_ecb_enc_sch_c, \
-	.AES256_CTR_inc_stream_iv = oqs_aes256_ctr_enc_sch_c, \
-	.AES256_CTR_inc_stream_blks = oqs_aes256_ctr_enc_sch_upd_blks_c, \
-	.AES192_ECB_load_schedule = oqs_aes192_load_schedule_c, \
-	.AES192_free_schedule = oqs_aes192_free_schedule_c, \
-	.AES192_ECB_enc = aes192_ecb_enc_c, \
-	.AES192_ECB_enc_sch = oqs_aes192_ecb_enc_sch_c, \
+    .AES128_ECB_load_schedule = oqs_aes128_load_schedule_c, \
+    .AES128_CTR_inc_init = oqs_aes128_load_schedule_c, \
+    .AES128_CTR_inc_iv = oqs_aes128_load_iv_c, \
+    .AES128_CTR_inc_ivu64 = oqs_aes128_load_iv_u64_c, \
+    .AES128_free_schedule = oqs_aes128_free_schedule_c, \
+    .AES128_ECB_enc = aes128_ecb_enc_c, \
+    .AES128_ECB_enc_sch = oqs_aes128_ecb_enc_sch_c, \
+    .AES128_CTR_inc_stream_iv = oqs_aes128_ctr_enc_sch_c, \
+    .AES256_ECB_load_schedule = oqs_aes256_load_schedule_c, \
+    .AES256_CTR_inc_init = oqs_aes256_load_schedule_c, \
+    .AES256_CTR_inc_iv = oqs_aes256_load_iv_c, \
+    .AES256_CTR_inc_ivu64 = oqs_aes256_load_iv_u64_c, \
+    .AES256_free_schedule = oqs_aes256_free_schedule_c, \
+    .AES256_ECB_enc = aes256_ecb_enc_c, \
+    .AES256_ECB_enc_sch = oqs_aes256_ecb_enc_sch_c, \
+    .AES256_CTR_inc_stream_iv = oqs_aes256_ctr_enc_sch_c, \
+    .AES256_CTR_inc_stream_blks = oqs_aes256_ctr_enc_sch_upd_blks_c, \
+    .AES192_ECB_load_schedule = oqs_aes192_load_schedule_c, \
+    .AES192_free_schedule = oqs_aes192_free_schedule_c, \
+    .AES192_ECB_enc = aes192_ecb_enc_c, \
+    .AES192_ECB_enc_sch = oqs_aes192_ecb_enc_sch_c, \
 }
 #endif
 
@@ -81,27 +81,27 @@ OQS_AES_DEFINE_ECB_ENC(aes256_ecb_enc_ni, oqs_aes256_load_schedule_ni, oqs_aes25
 OQS_AES_DEFINE_ECB_ENC(aes192_ecb_enc_ni, oqs_aes192_load_schedule_ni, oqs_aes192_ecb_enc_sch_ni, oqs_aes192_free_schedule_ni)
 
 #define OQS_AES_NI_CALLBACKS { \
-	.AES128_ECB_load_schedule = oqs_aes128_load_schedule_ni, \
-	.AES128_CTR_inc_init = oqs_aes128_load_schedule_ni, \
-	.AES128_CTR_inc_iv = oqs_aes128_load_iv_ni, \
-	.AES128_CTR_inc_ivu64 = oqs_aes128_load_iv_u64_ni, \
-	.AES128_free_schedule = oqs_aes128_free_schedule_ni, \
-	.AES128_ECB_enc = aes128_ecb_enc_ni, \
-	.AES128_ECB_enc_sch = oqs_aes128_ecb_enc_sch_ni, \
-	.AES128_CTR_inc_stream_iv = oqs_aes128_ctr_enc_sch_ni, \
-	.AES256_ECB_load_schedule = oqs_aes256_load_schedule_ni, \
-	.AES256_CTR_inc_init = oqs_aes256_load_schedule_ni, \
-	.AES256_CTR_inc_iv = oqs_aes256_load_iv_ni, \
-	.AES256_CTR_inc_ivu64 = oqs_aes256_load_iv_u64_ni, \
-	.AES256_free_schedule = oqs_aes256_free_schedule_ni, \
-	.AES256_ECB_enc = aes256_ecb_enc_ni, \
-	.AES256_ECB_enc_sch = oqs_aes256_ecb_enc_sch_ni, \
-	.AES256_CTR_inc_stream_iv = oqs_aes256_ctr_enc_sch_ni, \
-	.AES256_CTR_inc_stream_blks = oqs_aes256_ctr_enc_sch_upd_blks_ni, \
-	.AES192_ECB_load_schedule = oqs_aes192_load_schedule_ni, \
-	.AES192_free_schedule = oqs_aes192_free_schedule_ni, \
-	.AES192_ECB_enc = aes192_ecb_enc_ni, \
-	.AES192_ECB_enc_sch = oqs_aes192_ecb_enc_sch_ni, \
+    .AES128_ECB_load_schedule = oqs_aes128_load_schedule_ni, \
+    .AES128_CTR_inc_init = oqs_aes128_load_schedule_ni, \
+    .AES128_CTR_inc_iv = oqs_aes128_load_iv_ni, \
+    .AES128_CTR_inc_ivu64 = oqs_aes128_load_iv_u64_ni, \
+    .AES128_free_schedule = oqs_aes128_free_schedule_ni, \
+    .AES128_ECB_enc = aes128_ecb_enc_ni, \
+    .AES128_ECB_enc_sch = oqs_aes128_ecb_enc_sch_ni, \
+    .AES128_CTR_inc_stream_iv = oqs_aes128_ctr_enc_sch_ni, \
+    .AES256_ECB_load_schedule = oqs_aes256_load_schedule_ni, \
+    .AES256_CTR_inc_init = oqs_aes256_load_schedule_ni, \
+    .AES256_CTR_inc_iv = oqs_aes256_load_iv_ni, \
+    .AES256_CTR_inc_ivu64 = oqs_aes256_load_iv_u64_ni, \
+    .AES256_free_schedule = oqs_aes256_free_schedule_ni, \
+    .AES256_ECB_enc = aes256_ecb_enc_ni, \
+    .AES256_ECB_enc_sch = oqs_aes256_ecb_enc_sch_ni, \
+    .AES256_CTR_inc_stream_iv = oqs_aes256_ctr_enc_sch_ni, \
+    .AES256_CTR_inc_stream_blks = oqs_aes256_ctr_enc_sch_upd_blks_ni, \
+    .AES192_ECB_load_schedule = oqs_aes192_load_schedule_ni, \
+    .AES192_free_schedule = oqs_aes192_free_schedule_ni, \
+    .AES192_ECB_enc = aes192_ecb_enc_ni, \
+    .AES192_ECB_enc_sch = oqs_aes192_ecb_enc_sch_ni, \
 }
 #endif
 
@@ -117,27 +117,27 @@ OQS_AES_DEFINE_ECB_ENC(aes256_ecb_enc_armv8, oqs_aes256_load_schedule_no_bitslic
 OQS_AES_DEFINE_ECB_ENC(aes192_ecb_enc_armv8, oqs_aes192_load_schedule_no_bitslice, oqs_aes192_ecb_enc_sch_armv8, oqs_aes192_free_schedule_no_bitslice)
 
 #define OQS_AES_ARMV8_CALLBACKS { \
-	.AES128_ECB_load_schedule = oqs_aes128_load_schedule_no_bitslice, \
-	.AES128_CTR_inc_init = oqs_aes128_load_schedule_no_bitslice, \
-	.AES128_CTR_inc_iv = oqs_aes128_load_iv_armv8, \
-	.AES128_CTR_inc_ivu64 = aes_armv8_load_iv_u64_noop, \
-	.AES128_free_schedule = oqs_aes128_free_schedule_no_bitslice, \
-	.AES128_ECB_enc = aes128_ecb_enc_armv8, \
-	.AES128_ECB_enc_sch = oqs_aes128_ecb_enc_sch_armv8, \
-	.AES128_CTR_inc_stream_iv = oqs_aes128_ctr_enc_sch_armv8, \
-	.AES256_ECB_load_schedule = oqs_aes256_load_schedule_no_bitslice, \
-	.AES256_CTR_inc_init = oqs_aes256_load_schedule_no_bitslice, \
-	.AES256_CTR_inc_iv = oqs_aes256_load_iv_armv8, \
-	.AES256_CTR_inc_ivu64 = aes_armv8_load_iv_u64_noop, \
-	.AES256_free_schedule = oqs_aes256_free_schedule_no_bitslice, \
-	.AES256_ECB_enc = aes256_ecb_enc_armv8, \
-	.AES256_ECB_enc_sch = oqs_aes256_ecb_enc_sch_armv8, \
-	.AES256_CTR_inc_stream_iv = oqs_aes256_ctr_enc_sch_armv8, \
-	.AES256_CTR_inc_stream_blks = oqs_aes256_ctr_enc_sch_upd_blks_armv8, \
-	.AES192_ECB_load_schedule = oqs_aes192_load_schedule_no_bitslice, \
-	.AES192_free_schedule = oqs_aes192_free_schedule_no_bitslice, \
-	.AES192_ECB_enc = aes192_ecb_enc_armv8, \
-	.AES192_ECB_enc_sch = oqs_aes192_ecb_enc_sch_armv8, \
+    .AES128_ECB_load_schedule = oqs_aes128_load_schedule_no_bitslice, \
+    .AES128_CTR_inc_init = oqs_aes128_load_schedule_no_bitslice, \
+    .AES128_CTR_inc_iv = oqs_aes128_load_iv_armv8, \
+    .AES128_CTR_inc_ivu64 = aes_armv8_load_iv_u64_noop, \
+    .AES128_free_schedule = oqs_aes128_free_schedule_no_bitslice, \
+    .AES128_ECB_enc = aes128_ecb_enc_armv8, \
+    .AES128_ECB_enc_sch = oqs_aes128_ecb_enc_sch_armv8, \
+    .AES128_CTR_inc_stream_iv = oqs_aes128_ctr_enc_sch_armv8, \
+    .AES256_ECB_load_schedule = oqs_aes256_load_schedule_no_bitslice, \
+    .AES256_CTR_inc_init = oqs_aes256_load_schedule_no_bitslice, \
+    .AES256_CTR_inc_iv = oqs_aes256_load_iv_armv8, \
+    .AES256_CTR_inc_ivu64 = aes_armv8_load_iv_u64_noop, \
+    .AES256_free_schedule = oqs_aes256_free_schedule_no_bitslice, \
+    .AES256_ECB_enc = aes256_ecb_enc_armv8, \
+    .AES256_ECB_enc_sch = oqs_aes256_ecb_enc_sch_armv8, \
+    .AES256_CTR_inc_stream_iv = oqs_aes256_ctr_enc_sch_armv8, \
+    .AES256_CTR_inc_stream_blks = oqs_aes256_ctr_enc_sch_upd_blks_armv8, \
+    .AES192_ECB_load_schedule = oqs_aes192_load_schedule_no_bitslice, \
+    .AES192_free_schedule = oqs_aes192_free_schedule_no_bitslice, \
+    .AES192_ECB_enc = aes192_ecb_enc_armv8, \
+    .AES192_ECB_enc_sch = oqs_aes192_ecb_enc_sch_armv8, \
 }
 #endif
 
