@@ -34,7 +34,7 @@ static inline uint64_t ATTR_CONST bswap64(uint64_t x) {
          ((x & UINT64_C(0x00000000ff000000)) << 8) | ((x & UINT64_C(0x0000000000ff0000)) << 24) |
          ((x & UINT64_C(0x000000000000ff00)) << 40) | ((x & UINT64_C(0x00000000000000ff)) << 56);
 }
-#endif
+#endif /* __GNUC__ || __clang__ */
 
 /* Linux / GLIBC */
 #if defined(__linux__) || defined(__GLIBC__)
@@ -44,7 +44,7 @@ static inline uint64_t ATTR_CONST bswap64(uint64_t x) {
 #if defined(_DEFAULT_SOURCE) || defined(_GNU_SOURCE) || defined(_BSD_SOURCE) || defined(__ANDROID__)
 #define HAVE_HOSTSWAP
 #endif
-#endif
+#endif /* __linux__ || __GLIBC__ */
 
 /* Windows */
 #if defined(_WIN16) || defined(_WIN32) || defined(_WIN64)
@@ -53,30 +53,30 @@ static inline uint64_t ATTR_CONST bswap64(uint64_t x) {
 #else
 #define FAEST_IS_LITTLE_ENDIAN
 #endif
-#endif
+#endif /* _WIN16 || _WIN32 | _WIN64 */
 
 /* Cygwin */
 #if defined(__CYGWIN__)
 #include <endian.h>
 #define HAVE_HOSTSWAP
-#endif
+#endif /* __CYGWIN__ */
 
 /* OS X */
 #if defined(__APPLE__)
 #include <machine/endian.h>
-#endif
+#endif /* __APPLE__ */
 
 /* OpenBSD */
 #if defined(__OpenBSD__)
 #include <machine/endian.h>
 #define HAVE_HOSTSWAP
-#endif
+#endif /* __OpenBSD__ */
 
 /* other BSDs */
 #if defined(__FreeBSD__) || defined(__NETBSD__) || defined(__NetBSD__)
 #include <sys/endian.h>
 #define HAVE_HOSTSWAP
-#endif
+#endif /* __FreeBSD__ || __NETBSD__ || __NetBSD__ */
 
 #if !defined(FAEST_IS_LITTLE_ENDIAN) && !defined(FAEST_IS_BIG_ENDIAN)
 #if defined(BIG_ENDIAN) && defined(LITTLE_ENDIAN)
@@ -90,7 +90,7 @@ static inline uint64_t ATTR_CONST bswap64(uint64_t x) {
 #elif defined(LITTLE_ENDIAN)
 #define FAEST_IS_LITTLE_ENDIAN
 #endif
-#endif
+#endif /* !FAEST_IS_LITTLE_ENDIAN && !FAEST_IS_BIG_ENDIAN */
 
 #if !defined(FAEST_IS_LITTLE_ENDIAN) && !defined(FAEST_IS_BIG_ENDIAN)
 #if defined(_BIG_ENDIAN) && defined(_LITTLE_ENDIAN)
@@ -104,7 +104,7 @@ static inline uint64_t ATTR_CONST bswap64(uint64_t x) {
 #elif defined(_LITTLE_ENDIAN)
 #define FAEST_IS_LITTLE_ENDIAN
 #endif
-#endif
+#endif /* !FAEST_IS_LITTLE_ENDIAN && !FAEST_IS_BIG_ENDIAN */
 
 #if !defined(FAEST_IS_LITTLE_ENDIAN) && !defined(FAEST_IS_BIG_ENDIAN)
 #if defined(__BIG_ENDIAN) && defined(__LITTLE_ENDIAN)
@@ -118,7 +118,7 @@ static inline uint64_t ATTR_CONST bswap64(uint64_t x) {
 #elif defined(__LITTLE_ENDIAN)
 #define FAEST_IS_LITTLE_ENDIAN
 #endif
-#endif
+#endif /* !FAEST_IS_LITTLE_ENDIAN && !FAEST_IS_BIG_ENDIAN */
 
 #if !defined(FAEST_IS_LITTLE_ENDIAN) && !defined(FAEST_IS_BIG_ENDIAN)
 #if defined(__BIG_ENDIAN__) && defined(__LITTLE_ENDIAN__)
@@ -132,7 +132,7 @@ static inline uint64_t ATTR_CONST bswap64(uint64_t x) {
 #elif defined(__LITTLE_ENDIAN__)
 #define FAEST_IS_LITTLE_ENDIAN
 #endif
-#endif
+#endif /* !FAEST_IS_LITTLE_ENDIAN && !FAEST_IS_BIG_ENDIAN */
 
 #if !defined(FAEST_IS_LITTLE_ENDIAN) && !defined(FAEST_IS_BIG_ENDIAN)
 #if defined(__ORDER_BIG_ENDIAN__) && defined(__ORDER_LITTLE_ENDIAN__)
@@ -142,11 +142,11 @@ static inline uint64_t ATTR_CONST bswap64(uint64_t x) {
 #define FAEST_IS_LITTLE_ENDIAN
 #endif
 #endif
-#endif
+#endif /* !FAEST_IS_LITTLE_ENDIAN && !FAEST_IS_BIG_ENDIAN */
 
 #if !defined(FAEST_IS_LITTLE_ENDIAN) && !defined(FAEST_IS_BIG_ENDIAN)
 #error "Unknown platform!"
-#endif
+#endif /* !FAEST_IS_LITTLE_ENDIAN && !FAEST_IS_BIG_ENDIAN */
 
 #if !defined(HAVE_HOSTSWAP)
 #if defined(FAEST_IS_LITTLE_ENDIAN)
@@ -180,6 +180,6 @@ static inline uint64_t ATTR_CONST bswap64(uint64_t x) {
 #define be64toh(x) ((uint64_t)(x))
 #define le64toh(x) bswap64((x))
 #endif
-#endif
+#endif /* !HAVE_HOSTSWAP */
 
 #endif

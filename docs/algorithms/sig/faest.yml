@@ -22,7 +22,7 @@ upstream-statement-url: https://github.com/open-quantum-safe/liboqs/blob/main/sc
 oqs-support-tier: 3
 spec-version: 3.0
 primary-upstream:
-  source: https://github.com/faest-sign/faest-ref/commit/fe428d05a8cbea9c38fbb9266e43fba2c80b621d
+  source: https://github.com/faest-sign/faest-ref/commit/6edd814491d56ba29a37510825493c7041221ed6
     with copy_from_upstream patches
   spdx-license-identifier: MIT
 parameter-sets:

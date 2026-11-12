@@ -49,12 +49,14 @@ typedef struct faest_paramset_t {
   uint8_t w_grind;
   uint16_t T_open;
   uint16_t ell;
+  // 64 bits
 
   // extra parameters
   uint16_t k;
   uint8_t tau0;
   uint8_t tau1;
   uint32_t L;
+  // 64 bits
 
   // OWF parameters
   uint16_t Nst;
@@ -68,8 +70,8 @@ typedef struct faest_paramset_t {
   uint8_t owf_input_size;
   uint8_t owf_output_size;
 
-  // new round 3 params
-  uint16_t n_mult; // number of AND gates in the F_2^lambda multiplication circuit
+  // number of AND gates in the F_2^lambda multiplication circuit
+  uint16_t n_mult;
 
   // tables
   const uint64_t* const F;

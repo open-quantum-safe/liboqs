@@ -26,7 +26,7 @@ FAEST_BEGIN_C_DECL
 #define AES_ROUNDS_256 14
 #define AES_MAX_ROUNDS 14
 
-typedef uint8_t aes_word_t[4];
+typedef uint32_t aes_word_t;
 // round key with 4 (AES) up to 8 (Rijndael-256) units
 // TODO: aes_round_key_t[8] should this be 8 ?
 typedef aes_word_t aes_round_key_t[8];
@@ -34,8 +34,15 @@ typedef aes_word_t aes_round_key_t[8];
 // # of rows
 #define AES_NR 4
 
+// AES round constants
+static const uint8_t aes_round_constants[30] = {
+    0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80, 0x1b, 0x36, 0x6c, 0xd8, 0xab, 0x4d, 0x9a,
+    0x2f, 0x5e, 0xbc, 0x63, 0xc6, 0x97, 0x35, 0x6a, 0xd4, 0xb3, 0x7d, 0xfa, 0xef, 0xc5, 0x91,
+};
+
 // block with 4 (AES) up to 8 (Rijndael-256) units
-typedef aes_word_t aes_block_t[8];
+#define MAX_AES_BLOCK_WORDS 8
+typedef aes_word_t aes_block_t[MAX_AES_BLOCK_WORDS];
 
 typedef struct {
   aes_round_key_t round_keys[AES_MAX_ROUNDS + 1];

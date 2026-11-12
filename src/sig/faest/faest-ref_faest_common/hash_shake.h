@@ -140,20 +140,20 @@ FAEST_END_C_DECL
 #if !defined(SUPERCOP)
 #if defined(__cplusplus)
 extern "C" {
-#endif
+#endif /* __cplusplus */
 #if defined(WITH_SHAKE_XKCP)
 #include <KeccakHash.h>
 #else
 /* use SHAKE implementation in sha3/ */
 #include "sha3/KeccakHash.h"
-#endif
+#endif /* WITH_SHAKE_XKCP */
 #if defined(__cplusplus)
 }
-#endif
+#endif /* __cplusplus */
 #else
 /* use SUPERCOP implementation */
 #include <libkeccak.a.headers/KeccakHash.h>
-#endif
+#endif /* SUPERCOP */
 
 FAEST_BEGIN_C_DECL
 
@@ -191,7 +191,12 @@ static inline void hash_squeeze(hash_context* ctx, uint8_t* buffer, size_t bufle
   {                                                                                                \
     (void)ctx;                                                                                     \
   }
+
+FAEST_END_C_DECL
+
 #endif
+
+FAEST_BEGIN_C_DECL
 
 static inline void hash_update_uint32_le(hash_context* ctx, uint32_t data) {
 #if defined(FAEST_IS_BIG_ENDIAN)

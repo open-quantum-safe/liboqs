@@ -378,7 +378,7 @@ void faest_sign(uint8_t* sig, const uint8_t* msg, size_t msg_len, const uint8_t*
 
   // line 6
   bavc_t bavc;
-  uint8_t* u = malloc(ell_bytes); // IGNORE memory-check
+  uint8_t* u = faest_malloc(ell_bytes);
   assert(u);
 
   // Store u_bar and v_bar in V_row so that they can be hashed togeter. Also saves additional memory
@@ -392,6 +392,7 @@ void faest_sign(uint8_t* sig, const uint8_t* msg, size_t msg_len, const uint8_t*
 
   vole_commit(rootkey, iv, ell_hat, params, &bavc, signature_c(sig, 0, params),
               signature_c_mult(sig, params), u, V, u_bar, v_bar);
+  faest_explicit_bzero(rootkey, lambda_bytes);
 
   // it is actually lambda - w_grind but keeping it lambda
   transpose_matrix(V, V_row, lambda, ell);
@@ -410,7 +411,7 @@ void faest_sign(uint8_t* sig, const uint8_t* msg, size_t msg_len, const uint8_t*
     // for scan-build
     assert(uh_0_bytes + lambda_bytes * 4 > 0);
 
-    uint8_t* uh   = malloc(uh_0_bytes + lambda_bytes * 4); // IGNORE memory-check
+    uint8_t* uh   = faest_malloc(uh_0_bytes + lambda_bytes * 4);
     uint8_t* uh_0 = uh;
 
     memset(uh_0, 0, uh_0_bytes);
@@ -422,7 +423,7 @@ void faest_sign(uint8_t* sig, const uint8_t* msg, size_t msg_len, const uint8_t*
 
     // line 8, line 11, line 12, line 13
     vole_hash(signature_u_tilde(sig, params), chall_1, uh, ell, lambda);
-    free(uh); // IGNORE memory-check
+    faest_free(uh);
 
     // To save memory consumption, the chall_2 is computed in an
     // Init-Update-Finalize style as V_tilde is only fed into to the hash and not
@@ -453,7 +454,7 @@ void faest_sign(uint8_t* sig, const uint8_t* msg, size_t msg_len, const uint8_t*
               owf_output, chall_2, params);
 
     free_pointer_array(&V_row);
-    free(u); // IGNORE memory-check
+    faest_free(u);
     u = NULL;
 
     // line 26
@@ -486,7 +487,7 @@ void faest_sign(uint8_t* sig, const uint8_t* msg, size_t msg_len, const uint8_t*
   }
 
   hash_clear(&h2_ctx);
-  bavc_clear(&bavc);
+  bavc_clear(&bavc, params);
 
   // copy counter to signature
   ctr = htole32(ctr);

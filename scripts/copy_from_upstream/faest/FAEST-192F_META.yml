@@ -24,12 +24,12 @@ length-signature: 11738
 nistkat-sha256: 0d8d585f17687dfad35159b02ebf9d7ed96983bcf4630fe1062f5a0690a3f632
 implementations:
   - name: ref
-    version: 3.0
+    version: 3.0.3
     folder_name: liboqs:scripts/copy_from_upstream/faest/generated/faest-192f
     signature_keypair: PQCLEAN_FAEST_192F_REF_crypto_sign_keypair
     signature_signature: PQCLEAN_FAEST_192F_REF_crypto_sign_signature
     signature_verify: PQCLEAN_FAEST_192F_REF_crypto_sign_verify
-    compile_opts: -DOQS -DHAVE_CONFIG_H -DFAEST_STATIC
+    compile_opts: -DOQS -DHAVE_CONFIG_H -DFAEST_STATIC -DFAEST_FIELDS=FAEST_FIELDS_USE_U64
     sources: api.h crypto_sign.c faest_192f.c faest_192f.h
     common_dep: faest_common faest_common_headers
     no-secret-dependent-branching-claimed: true

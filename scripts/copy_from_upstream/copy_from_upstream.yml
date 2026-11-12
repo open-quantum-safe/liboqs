@@ -140,8 +140,8 @@ upstreams:
     name: faest-ref
     git_url: https://github.com/faest-sign/faest-ref.git
     git_branch: main
-    git_commit: fe428d05a8cbea9c38fbb9266e43fba2c80b621d
-    patches: [faest-ref-portable-vector-abi.patch, faest-ref-eof-newline.patch, faest-ref-scan-build-false-positives.patch]
+    git_commit: 6edd814491d56ba29a37510825493c7041221ed6
+    patches: [faest-ref-scan-build-false-positives.patch]
     sig_scheme_path: '.'
     # Integration metadata and generated wrappers live in liboqs (meta_root).
     # faest-ref supplies core crypto and .in templates; OQS AES-128/192/256

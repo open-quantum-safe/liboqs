@@ -44,14 +44,14 @@
 #define GLIBC_CHECK(maj, min) __GLIBC_PREREQ(maj, min)
 #else
 #define GLIBC_CHECK(maj, min) 0
-#endif
+#endif /* __GLIBC__ */
 
 /* FreeBSD version check macro */
 #if defined(__FreeBSD__)
 #define FREEBSD_CHECK(maj, min) (__FreeBSD__ >= (maj))
 #else
 #define FREEBSD_CHECK(maj, min) 0
-#endif
+#endif /* __FreeBSD__ */
 
 /* NetBSD version check macro */
 #if defined(__NetBSD__)
@@ -59,30 +59,42 @@
 #define NETBSD_CHECK(maj, min) (__NetBSD_Version__ >= ((maj) * 1000000000 + (min) * 10000000))
 #else
 #define NETBSD_CHECK(maj, min) 0
-#endif
+#endif /* __NetBSD__ */
+
+/* OpenBSD version check macro */
+#if defined(__OpenBSD__)
+#include <sys/param.h>
+#define OPENBSD_CHECK(ver) (OpenBSD >= (ver))
+#else
+#define OPENBSD_CHECK(ver) 0
+#endif /* __OpenBSD__ */
 
 /* Apple version check macro */
 #if defined(__APPLE__)
 #include <Availability.h>
+
 #define MACOSX_CHECK(maj, min, rev)                                                                \
   (__MAC_OS_X_VERSION_MIN_REQUIRED >= ((maj) * 10000 + (min) * 100 + (rev)))
 #else
 #define MACOSX_CHECK(maj, min, rev) 0
-#endif
+#endif /* __APPLE__ */
 
 #if !defined(MIN)
 #define MIN(a, b) ((a) < (b) ? (a) : (b))
-#endif
+#endif /* !MIN */
 
 #if !defined(MAX)
 #define MAX(a, b) ((a) > (b) ? (a) : (b))
-#endif
+#endif /* !MAX */
 
 /* assume */
 #if GNUC_CHECK(4, 5) || __has_builtin(__builtin_unreachable)
 #define ASSUME(p)                                                                                  \
-  if (!(p))                                                                                        \
-  __builtin_unreachable()
+  do {                                                                                             \
+    if (!(p)) {                                                                                    \
+      __builtin_unreachable();                                                                     \
+    }                                                                                              \
+  } while (0)
 #elif defined(_MSC_VER)
 #define ASSUME(p) __assume(p)
 #else
@@ -90,7 +102,7 @@
 #endif
 
 /* unused attributed */
-#if defined(__GNUC__) || __has_attribute(unused)
+#if GNUC_CHECK(2, 7) || __has_attribute(unused)
 #define FAEST_UNUSED(x) UNUSED_##x __attribute__((unused))
 #else
 #define FAEST_UNUSED(x) x
@@ -99,59 +111,24 @@
 /* nonnull attribute */
 #if GNUC_CHECK(3, 3) || __has_attribute(nonnull)
 #define ATTR_NONNULL __attribute__((nonnull))
-#define ATTR_NONNULL_ARG(i) __attribute__((nonnull(i)))
+#define ATTR_NONNULL_ARG(i, ...) __attribute__((nonnull(i, __VA_ARGS__)))
 #else
 #define ATTR_NONNULL
-#define ATTR_NONNULL_ARG(i)
-#endif
-
-/* destructor attribute */
-#if GNUC_CHECK(2, 7) || __has_attribute(destructor)
-#define ATTR_DTOR __attribute__((destructor))
-#else
-#define ATTR_DTOR
-#endif
-
-/* assumed aligned attribute */
-#if GNUC_CHECK(4, 9) || __has_attribute(assume_aligned)
-#define ATTR_ASSUME_ALIGNED(i) __attribute__((assume_aligned(i)))
-#else
-#define ATTR_ASSUME_ALIGNED(i)
+#define ATTR_NONNULL_ARG(i, ...)
 #endif
 
 /* aligned attribute */
 /* note that C11's alignas will only do the job once DR 444 is implemented */
 #if GNUC_CHECK(3, 2) || __has_attribute(aligned)
 #define ATTR_ALIGNED(i) __attribute__((aligned((i))))
-#define HAVE_USEFUL_ATTR_ALIGNED
 #elif defined(_MSC_VER)
 #define ATTR_ALIGNED(i) __declspec(align(i))
-#define HAVE_USEFUL_ATTR_ALIGNED
 #else
 #define ATTR_ALIGNED(i)
 #endif
 
 /* round size to meet alignment requirements */
 #define ALIGN_TO(s, a) (((s) + a - 1) & ~(a - 1))
-
-/* unreachable builtin */
-#if GNUC_CHECK(4, 5) || __has_builtin(__builtin_unreachable)
-#define UNREACHABLE __builtin_unreachable()
-#define HAVE_USEFUL_UNREACHABLE
-/* #elif defined(_MSC_VER)
-#define UNREACHABLE __assume(0) */
-#else
-#define UNREACHABLE
-#endif
-
-/* assume aligned builtin */
-#if GNUC_CHECK(4, 9) || __has_builtin(__builtin_assume_aligned)
-#define ASSUME_ALIGNED(p, a) __builtin_assume_aligned((p), (a))
-#elif defined(HAVE_USEFUL_UNREACHABLE) && defined(HAVE_USEFUL_ATTR_ALIGNED)
-#define ASSUME_ALIGNED(p, a) (((((uintptr_t)(p)) % (a)) == 0) ? (p) : (UNREACHABLE, (p)))
-#else
-#define ASSUME_ALIGNED(p, a) (p)
-#endif
 
 /* always inline attribute */
 #if GNUC_CHECK(4, 0) || __has_attribute(always_inline)
@@ -163,38 +140,50 @@
 #endif
 
 /* pure attribute
-  Functions can be marked as pure if their only effect is their return value. The return value
-  itself may only be computed from reading global variables and the arguments.
+ * Functions can be marked as pure if their only effect is their return value.
+ * The return value itself may only be computed from reading global variables
+ * and the arguments.
  */
-#if defined(__GNUC__) || __has_attribute(pure)
+#if GNUC_CHECK(3, 0) || __has_attribute(pure)
 #define ATTR_PURE __attribute__((pure))
 #else
 #define ATTR_PURE
 #endif
 
 /* const attribute
-  Functions can be marked as const if their only effect is their return value. The return value
-  itself may only be computed from the arguments.
+ * Functions can be marked as const if their only effect is their return value.
+ * The return value itself may only be computed from the arguments.
  */
-#if defined(__GNUC__) || __has_attribute(const)
+#if GNUC_CHECK(2, 5) || __has_attribute(const)
 #define ATTR_CONST __attribute__((const))
 #else
 #define ATTR_CONST
 #endif
 
 /* target attribute */
-#if defined(__GNUC__) || __has_attribute(target)
+#if GNUC_CHECK(4, 4) || __has_attribute(target)
 #define ATTR_TARGET(x) __attribute__((target((x))))
-#define ATTR_TARGET_AVX2 __attribute__((target("avx2,bmi2,sse2")))
+#define ATTR_TARGET_AVX2 __attribute__((target("avx2,sse2")))
 #define ATTR_TARGET_SSE2 __attribute__((target("sse2")))
 #define ATTR_TARGET_AESNI __attribute__((target("sse2,aes")))
-#define ATTR_TARGET_AESNI_AVX2 __attribute__((target("avx2,bmi2,aes")))
+#define ATTR_TARGET_AESNI_AVX2 __attribute__((target("avx2,aes")))
+#define ATTR_TARGET_PCLMUL __attribute__((target("pclmul")))
+#if !defined(__aarch64__) && !defined(_M_ARM64) && !defined(_M_ARM64EC)
+#define ATTR_TARGET_NEON __attribute__((target("fpu=neon")))
+#define ATTR_TARGET_ARM_AES
+#else
+#define ATTR_TARGET_NEON
+#define ATTR_TARGET_ARM_AES __attribute__((target("+crypto")))
+#endif
 #else
 #define ATTR_TARGET(x)
 #define ATTR_TARGET_AVX2
 #define ATTR_TARGET_SSE2
 #define ATTR_TARGET_AESNI
 #define ATTR_TARGET_AESNI_AVX2
+#define ATTR_TARGET_PCLMUL
+#define ATTR_TARGET_NEON
+#define ATTR_TARGET_ARM_AES
 #endif
 
 /* artificial attribute */
@@ -205,16 +194,10 @@
 #endif
 
 /* vector_size attribute */
-/* liboqs: only select the GCC/clang vector-extension field implementation when
- * the target actually provides the vector registers it needs. The 192/256-bit
- * field types are 32-byte (256-bit) vectors; returning them by value without
- * AVX changes the ABI (-Wpsabi) and breaks liboqs' portable, strict-warning
- * builds. Without AVX, fall back to the struct-based field implementation that
- * faest-ref already provides. */
-#if (GNUC_CHECK(4, 8) || __has_attribute(vector_size)) && defined(__AVX__)
+#if GNUC_CHECK(4, 8) || __has_attribute(vector_size)
 #define HAVE_ATTR_VECTOR_SIZE
 #define ATTR_VECTOR_SIZE(s) __attribute__((vector_size(s)))
-#elif __has_attribute(__vector_size__) && defined(__AVX__)
+#elif __has_attribute(__vector_size__)
 #define HAVE_ATTR_VECTOR_SIZE
 #define ATTR_VECTOR_SIZE(s) __attribute__((__vector_size__(s)))
 #else
@@ -245,15 +228,16 @@
 #endif
 
 /* deprecated attribute */
-#if defined(_GCC__) || __has_attribute(deprecated)
+#if GNUC_CHECK(3, 1) || __has_attribute(deprecated)
 #define ATTR_DEPRECATED __attribute__((deprecated))
 #else
 #define ATTR_DEPRECATED
 #endif
 
-/* concatenation */
-#define CONCAT2(a, b) a##_##b
-#define CONCAT(a, b) CONCAT2(a, b)
+/* constructor attribute */
+#if GNUC_CHECK(2, 7) || __has_attribute(constructor)
+#define ATTR_CONSTRUCTOR __attribute__((constructor))
+#endif
 
 #if defined(__WIN32__)
 #define SIZET_FMT "%Iu"

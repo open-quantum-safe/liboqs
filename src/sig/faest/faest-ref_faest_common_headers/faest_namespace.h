@@ -28,6 +28,7 @@
 #define bf128_mul                                   oqs_faest_bf128_mul
 #define bf128_mul_64_inplace                        oqs_faest_bf128_mul_64_inplace
 #define bf128_mul_bit                               oqs_faest_bf128_mul_bit
+#define bf128_mul_bit_8                             oqs_faest_bf128_mul_bit_8
 #define bf128_mul_inplace                           oqs_faest_bf128_mul_inplace
 #define bf128_sq_bit                                oqs_faest_bf128_sq_bit
 #define bf128_sq_bit_inplace                        oqs_faest_bf128_sq_bit_inplace
@@ -39,6 +40,7 @@
 #define bf192_mul                                   oqs_faest_bf192_mul
 #define bf192_mul_64_inplace                        oqs_faest_bf192_mul_64_inplace
 #define bf192_mul_bit                               oqs_faest_bf192_mul_bit
+#define bf192_mul_bit_8                             oqs_faest_bf192_mul_bit_8
 #define bf192_mul_inplace                           oqs_faest_bf192_mul_inplace
 #define bf192_sq_bit                                oqs_faest_bf192_sq_bit
 #define bf192_sq_bit_inplace                        oqs_faest_bf192_sq_bit_inplace
@@ -50,6 +52,7 @@
 #define bf256_mul                                   oqs_faest_bf256_mul
 #define bf256_mul_64_inplace                        oqs_faest_bf256_mul_64_inplace
 #define bf256_mul_bit                               oqs_faest_bf256_mul_bit
+#define bf256_mul_bit_8                             oqs_faest_bf256_mul_bit_8
 #define bf256_mul_inplace                           oqs_faest_bf256_mul_inplace
 #define bf256_sq_bit                                oqs_faest_bf256_sq_bit
 #define bf256_sq_bit_inplace                        oqs_faest_bf256_sq_bit_inplace
@@ -63,6 +66,7 @@
 #define bf768_mul_256_inplace                       oqs_faest_bf768_mul_256_inplace
 #define bf8_inv                                     oqs_faest_bf8_inv
 #define bf8_mul                                     oqs_faest_bf8_mul
+#define bf8_mulX                                    oqs_faest_bf8_mulX
 #define bf8_square                                  oqs_faest_bf8_square
 #define decode_all_chall_3                          oqs_faest_decode_all_chall_3
 #define expand_key                                  oqs_faest_expand_key
@@ -188,6 +192,7 @@
 #define faest_em_256s_validate_keypair              oqs_faest_faest_em_256s_validate_keypair
 #define faest_em_256s_verify                        oqs_faest_faest_em_256s_verify
 #define faest_get_paramset                          oqs_faest_faest_get_paramset
+#define faest_mempcpy                               oqs_faest_faest_mempcpy
 #define faest_sign                                  oqs_faest_faest_sign
 #define faest_verify                                oqs_faest_faest_verify
 #define free_pointer_array                          oqs_faest_free_pointer_array
