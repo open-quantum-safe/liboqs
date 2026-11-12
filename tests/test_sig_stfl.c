@@ -85,7 +85,7 @@ int FindMarker(FILE *infile, const char *marker) {
 //
 // ALLOW TO READ HEXADECIMAL ENTRY (KEYS, DATA, TEXT, etc.)
 //
-int ReadHex(FILE *infile, unsigned char *a, unsigned long Length, char *str) {
+int ReadHex(FILE *infile, unsigned char *a, unsigned long Length, const char *str) {
 	int ch, started;
 	unsigned long i;
 	unsigned char ich;
@@ -222,12 +222,12 @@ OQS_STATUS sig_stfl_keypair_from_KATs(OQS_SIG_STFL *sig, uint8_t *public_key, OQ
 	}
 
 	// Grab the pk and sk from KAT file
-	if (!ReadHex(fp_rsp, public_key, sig->length_public_key, (char *)"pk = ")) {
+	if (!ReadHex(fp_rsp, public_key, sig->length_public_key, "pk = ")) {
 		fprintf(stderr, "ERROR: unable to read 'pk' from <%s>\n", katfile);
 		goto err;
 	}
 
-	if (!ReadHex(fp_rsp, secret_key->secret_key_data, sig->length_secret_key, (char *)"sk = ")) {
+	if (!ReadHex(fp_rsp, secret_key->secret_key_data, sig->length_secret_key, "sk = ")) {
 		fprintf(stderr, "ERROR: unable to read 'sk' from <%s>\n", katfile);
 		goto err;
 	}
