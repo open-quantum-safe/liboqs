@@ -1,5 +1,6 @@
+
 /**
- * @file randombytes.h
+ * @file randombytes_fallible.h
  * @brief Generic RNG interface for the HQC scheme.
  */
 
@@ -11,7 +12,7 @@
 
 #include "namespace.h"
 
-#define randombytes HQC_NS(randombytes)
+#define randombytes_fallible HQC_NS(randombytes_fallible)
 
 /**
  * @brief Fill a buffer with random bytes.
@@ -24,6 +25,6 @@
  * @note This function must be backed by a secure RBG and return fresh bytes
  *       on every call.
  */
-int randombytes(uint8_t *out, size_t outlen);
+int randombytes_fallible(uint8_t *out, size_t outlen);
 
 #endif  // HQC_RANDOMBYTES_H
