@@ -21,6 +21,8 @@ bool vole_reconstruct(uint8_t* com, uint8_t** q, const uint8_t* iv, const uint8_
                       const faest_paramset_t* params);
 
 #if defined(FAEST_TESTS)
+uint16_t reduce_tree_product(uint32_t value, uint16_t modulus, unsigned int degree);
+
 unsigned int convert_to_vole(const uint8_t* iv, const uint8_t* sd, bool sd0_bot, unsigned int i,
                              unsigned int outLenBytes, uint8_t* u, uint8_t* v,
                              const faest_paramset_t* params);

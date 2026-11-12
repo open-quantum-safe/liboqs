@@ -50,7 +50,7 @@ When built for liboqs (`-DOQS`), FAEST routes cryptographic primitives to liboqs
 |-----------|---------|
 | Random bytes | `OQS_randombytes` (`randomness.c`) |
 | SHAKE | `OQS_SHA3_shake*` (`hash_shake.h`) |
-| Memory helpers | `OQS_MEM_*` (`config.h`, `compat.h`) |
+| Memory helpers | `OQS_MEM_*` via `faest_malloc` / `faest_calloc` / `faest_free` (`compat.h`) |
 | CPU features | `OQS_CPU_has_extension` (`cpu.h`) |
 | AES-128/256 ECB | `OQS_AES128/256_ECB_*` (`aes.c`) |
 | AES-192 ECB | `OQS_AES192_ECB_*` (`aes.c`) |
@@ -61,7 +61,9 @@ this with `-DFAEST_NAMESPACE=oqs_faest_`.
 
 ## Known follow-ups
 
-1. Add optimized implementations (`avx2`, `neon`) as additional entries in each
-   scheme's `META.yml`.
+1. faest-ref 3.0.3 ships compile-time SSE2/AVX2+PCLMUL/NEON field files
+   (`fields_sse2.c`, `fields_avx2.c`, `fields_neon.c`). This integration keeps
+   the portable `FAEST_FIELDS_USE_U64` ref implementation; extra META `avx2` /
+   `neon` implementations are a follow-up.
 2. Run liboqs constant-time tests and document results under
    `tests/constant_time/sig/`.

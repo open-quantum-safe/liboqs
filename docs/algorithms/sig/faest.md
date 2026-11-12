@@ -6,7 +6,7 @@
 - **Authors' website**: https://faest.info/
 - **Specification version**: 3.0.
 - **Primary Source**<a name="primary-source"></a>:
-  - **Source**: https://github.com/faest-sign/faest-ref/commit/fe428d05a8cbea9c38fbb9266e43fba2c80b621d with copy_from_upstream patches
+  - **Source**: https://github.com/faest-sign/faest-ref/commit/6edd814491d56ba29a37510825493c7041221ed6 with copy_from_upstream patches
   - **Implementation license (SPDX-Identifier)**: MIT
 
 

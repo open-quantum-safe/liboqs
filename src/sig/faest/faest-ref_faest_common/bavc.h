@@ -46,7 +46,7 @@ bool bavc_open(uint8_t* decom_i, const bavc_t* vc, const uint16_t* i_delta,
 bool bavc_reconstruct(bavc_rec_t* bavc_rec, const uint8_t* decom_i, const uint16_t* i_delta,
                       const uint8_t* iv, const faest_paramset_t* params);
 
-void bavc_clear(bavc_t* com);
+void bavc_clear(bavc_t* com, const faest_paramset_t* params);
 
 #if defined(FAEST_TESTS)
 void leaf_commit(uint8_t* sd, uint8_t* com, const uint8_t* key, const uint8_t* iv, uint32_t tweak,

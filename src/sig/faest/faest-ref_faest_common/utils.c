@@ -8,13 +8,20 @@
 
 #include "utils.h"
 
-#if defined(HAVE_AVX2) || defined(HAVE_SSE2)
+#if defined(HAVE_AVX2) || defined(HAVE_SSE2) || defined(HAVE_NEON)
 #include "cpu.h"
 #endif
 #if defined(HAVE_AVX2)
 #include <immintrin.h>
 #elif defined(HAVE_SSE2)
 #include <emmintrin.h>
+#endif
+#if defined(HAVE_NEON)
+#if defined(_MSC_VER) && !defined(__clang__) && (defined(_M_ARM64) || defined(_M_ARM64EC))
+#include <arm64_neon.h>
+#else
+#include <arm_neon.h>
+#endif
 #endif
 
 #include <assert.h>
@@ -130,6 +137,27 @@ ATTR_TARGET_SSE2 static inline void xor_u8_array_inplace_128(uint8_t* out, const
 
   xor_small_u8_array_inplace(out, a, len - blocks * sizeof(__m128i));
 }
+#elif defined(HAVE_NEON)
+ATTR_TARGET_NEON static inline void xor_u8_array_128(uint8_t* out, const uint8_t* a,
+                                                     const uint8_t* b, size_t len) {
+  const size_t blocks = len / sizeof(uint8x16_t);
+  for (size_t idx = 0; idx != blocks;
+       ++idx, a += sizeof(uint8x16_t), b += sizeof(uint8x16_t), out += sizeof(uint8x16_t)) {
+    vst1q_u8(out, veorq_u8(vld1q_u8(a), vld1q_u8(b)));
+  }
+
+  xor_small_u8_array(out, a, b, len - blocks * sizeof(uint8x16_t));
+}
+
+ATTR_TARGET_NEON static inline void xor_u8_array_inplace_128(uint8_t* out, const uint8_t* a,
+                                                             size_t len) {
+  const size_t blocks = len / sizeof(uint8x16_t);
+  for (size_t idx = 0; idx != blocks; ++idx, a += sizeof(uint8x16_t), out += sizeof(uint8x16_t)) {
+    vst1q_u8(out, veorq_u8(vld1q_u8(out), vld1q_u8(a)));
+  }
+
+  xor_small_u8_array_inplace(out, a, len - blocks * sizeof(uint8x16_t));
+}
 #endif
 
 static inline void xor_u8_array_64(uint8_t* out, const uint8_t* a, const uint8_t* b, size_t len) {
@@ -198,6 +226,19 @@ ATTR_TARGET_SSE2 static inline void masked_xor_u8_array_128(uint8_t* out, const 
 
   masked_xor_small_u8_array(out, a, b, mask_bit, len - blocks * sizeof(__m128i));
 }
+#elif defined(HAVE_NEON)
+ATTR_TARGET_NEON static inline void masked_xor_u8_array_128(uint8_t* out, const uint8_t* a,
+                                                            const uint8_t* b, uint8_t mask_bit,
+                                                            size_t len) {
+  const size_t blocks   = len / sizeof(uint8x16_t);
+  const uint8x16_t mask = vdupq_n_u8((uint8_t)-mask_bit);
+  for (size_t idx = 0; idx != blocks;
+       ++idx, a += sizeof(uint8x16_t), b += sizeof(uint8x16_t), out += sizeof(uint8x16_t)) {
+    vst1q_u8(out, veorq_u8(vld1q_u8(a), vandq_u8(vld1q_u8(b), mask)));
+  }
+
+  masked_xor_small_u8_array(out, a, b, mask_bit, len - blocks * sizeof(uint8x16_t));
+}
 #endif
 
 static inline void masked_xor_u8_array_64(uint8_t* out, const uint8_t* a, const uint8_t* b,
@@ -230,6 +271,11 @@ void xor_u8_array(uint8_t* out, const uint8_t* a, const uint8_t* b, size_t len) 
     xor_u8_array_128(out, a, b, len);
     return;
   }
+#elif defined(HAVE_NEON)
+  if (CPU_SUPPORTS_NEON) {
+    xor_u8_array_128(out, a, b, len);
+    return;
+  }
 #endif
 
   if (len >= sizeof(uint64_t)) {
@@ -252,6 +298,11 @@ void xor_u8_array_inplace(uint8_t* out, const uint8_t* a, size_t len) {
 
 #if defined(HAVE_SSE2)
   if (CPU_SUPPORTS_SSE2) {
+    xor_u8_array_inplace_128(out, a, len);
+    return;
+  }
+#elif defined(HAVE_NEON)
+  if (CPU_SUPPORTS_NEON) {
     xor_u8_array_inplace_128(out, a, len);
     return;
   }
@@ -279,6 +330,11 @@ void masked_xor_u8_array(uint8_t* out, const uint8_t* a, const uint8_t* b, uint8
 
 #if defined(HAVE_SSE2)
   if (CPU_SUPPORTS_SSE2) {
+    masked_xor_u8_array_128(out, a, b, mask_bit, len);
+    return;
+  }
+#elif defined(HAVE_NEON)
+  if (CPU_SUPPORTS_NEON) {
     masked_xor_u8_array_128(out, a, b, mask_bit, len);
     return;
   }
@@ -368,6 +424,52 @@ ATTR_TARGET_SSE2 static void transpose_128x128(uint8_t** v, uint8_t** v_row_maj,
 }
 #endif
 
+#if defined(HAVE_NEON)
+// Apply one stage of a 16x16 mask-and-swap transpose in all eight 16-bit lanes.
+#define TRANSPOSE_NEON_16X16_STAGE(value, shift, mask_value)                                       \
+  do {                                                                                             \
+    const uint16x8_t mask = vdupq_n_u16(mask_value);                                               \
+    for (unsigned int idx = 0; idx < 16; idx = (idx + (shift) + 1) & ~(shift)) {                   \
+      const uint16x8_t tmp =                                                                       \
+          vandq_u16(veorq_u16(vshrq_n_u16((value)[idx], shift), (value)[idx + (shift)]), mask);    \
+      (value)[idx]           = veorq_u16((value)[idx], vshlq_n_u16(tmp, shift));                   \
+      (value)[idx + (shift)] = veorq_u16((value)[idx + (shift)], tmp);                             \
+    }                                                                                              \
+  } while (0)
+
+ATTR_TARGET_NEON static void transpose_128x128(uint8_t** v, uint8_t** v_row_maj, unsigned int row,
+                                               unsigned int col) {
+  for (unsigned int row_offset = 0; row_offset < 128; row_offset += 16) {
+    const unsigned int dst_byte = (row + row_offset) / 8;
+    const unsigned int src_byte = col / 8;
+    uint16x8_t block[16];
+
+    for (unsigned int idx = 0; idx < 16; ++idx) {
+      uint16_t input[8];
+      memcpy(input, v[row + row_offset + idx] + src_byte, sizeof(input));
+      for (unsigned int lane = 0; lane < 8; ++lane) {
+        input[lane] = le16toh(input[lane]);
+      }
+      block[idx] = vld1q_u16(input);
+    }
+
+    TRANSPOSE_NEON_16X16_STAGE(block, 8, 0x00ff);
+    TRANSPOSE_NEON_16X16_STAGE(block, 4, 0x0f0f);
+    TRANSPOSE_NEON_16X16_STAGE(block, 2, 0x3333);
+    TRANSPOSE_NEON_16X16_STAGE(block, 1, 0x5555);
+
+    for (unsigned int idx = 0; idx < 16; ++idx) {
+      uint16_t output[8];
+      vst1q_u16(output, block[idx]);
+      for (unsigned int lane = 0; lane < 8; ++lane) {
+        output[lane] = htole16(output[lane]);
+        memcpy(v_row_maj[col + 16 * lane + idx] + dst_byte, &output[lane], sizeof(output[lane]));
+      }
+    }
+  }
+}
+#endif
+
 #if defined(HAVE_AVX2)
 // Apply one stage of a 32x32 mask-and-swap transpose in all eight 32-bit lanes.
 #define TRANSPOSE_AVX2_32X32_STAGE(value, shift, mask_value)                                       \
@@ -400,8 +502,8 @@ ATTR_TARGET_AVX2 static void transpose_256x256(uint8_t** v, uint8_t** v_row_maj,
     TRANSPOSE_AVX2_32X32_STAGE(block, 1, 0x55555555);
 
     for (unsigned int idx = 0; idx < 32; ++idx) {
-      uint32_t output[8];
-      _mm256_storeu_si256((__m256i*)output, block[idx]);
+      ATTR_ALIGNED(32) uint32_t output[8];
+      _mm256_store_si256((__m256i*)output, block[idx]);
       for (unsigned int lane = 0; lane < 8; ++lane) {
         memcpy(v_row_maj[col + 32 * lane + idx] + dst_byte, &output[lane], sizeof(output[lane]));
       }
@@ -415,7 +517,7 @@ void transpose_matrix(uint8_t** v, uint8_t** v_row_maj, unsigned int v_row_bits_
   unsigned int full_rows_128 = 0;
   unsigned int full_cols_128 = 0;
 
-#if defined(HAVE_SSE2)
+#if defined(HAVE_SSE2) || defined(HAVE_NEON)
   unsigned int full_rows_256 = 0;
   unsigned int full_cols_256 = 0;
 #if defined(HAVE_AVX2)
@@ -433,7 +535,7 @@ void transpose_matrix(uint8_t** v, uint8_t** v_row_maj, unsigned int v_row_bits_
 #endif
 
   // transpose 128x128 blocks next
-  if (CPU_SUPPORTS_SSE2) {
+  if (CPU_SUPPORTS_SSE2 || CPU_SUPPORTS_NEON) {
     full_rows_128 = v_row_bits_len & ~127;
     full_cols_128 = v_col_bits_len & ~127;
 
@@ -507,9 +609,9 @@ void transpose_matrix(uint8_t** v, uint8_t** v_row_maj, unsigned int v_row_bits_
 }
 
 uint8_t** alloc_pointer_array(size_t rows, size_t columns) {
-  uint8_t** array = malloc(rows * sizeof(uint8_t*)); // IGNORE memory-check
+  uint8_t** array = faest_malloc(rows * sizeof(uint8_t*));
   assert(array);
-  array[0] = calloc(rows, columns); // IGNORE memory-check
+  array[0] = faest_calloc(rows, columns);
   assert(array[0]);
   for (unsigned int i = 1; i < rows; ++i) {
     array[i] = array[0] + i * columns;
@@ -519,7 +621,7 @@ uint8_t** alloc_pointer_array(size_t rows, size_t columns) {
 }
 
 void free_pointer_array(uint8_t*** ptr) {
-  free((*ptr)[0]); // IGNORE memory-check
-  free(*ptr); // IGNORE memory-check
+  faest_free((*ptr)[0]);
+  faest_free(*ptr);
   *ptr = NULL;
 }

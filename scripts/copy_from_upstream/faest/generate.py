@@ -185,6 +185,7 @@ COMMON_HEADERS = [
     "faest_defines.h",
     "faest_impl.h",
     "fields.h",
+    "fields_u64.h",
     "hash_shake.h",
     "instances.h",
     "macros.h",
@@ -199,9 +200,10 @@ COMMON_HEADERS = [
 COMMON_SOURCES = [
     "aes.c",
     "bavc.c",
-    "compat.c",
+    "compat_mempcpy.c",
     "faest_impl.c",
     "fields.c",
+    "fields_u64.c",
     "instances.c",
     "owf.c",
     "random_oracle.c",
@@ -217,6 +219,11 @@ COMMON_SOURCES = [
     f"{LIBOQS_PREFIX}/generated/faest_namespace.h",
 ] + [f"{LIBOQS_PREFIX}/generated/tables_{preset}.h" for preset in TABLE_PRESETS] + COMMON_HEADERS
 
+# Portable ref: faest-ref 3.0.3 can select SSE2/AVX2/NEON/vector at compile
+# time. Pin U64 here so the single liboqs ref target stays portable (no
+# -Wpsabi from GCC vector_size) without extra META implementations.
+FAEST_COMPILE_OPTS = "-DOQS -DHAVE_CONFIG_H -DFAEST_STATIC -DFAEST_FIELDS=FAEST_FIELDS_USE_U64"
+
 
 # Bare faest-ref globals seen by `nm -g` on liboqs.a. Renamed to oqs_faest_*
 # via generated/faest_namespace.h so they match liboqs coding conventions.
@@ -227,16 +234,16 @@ FAEST_NAMESPACE_SYMBOLS = [
     "aes_256_verifier", "aes_extend_witness_7", "alloc_pointer_array", "bavc_clear",
     "bavc_commit", "bavc_open", "bavc_reconstruct", "bf128_byte_combine",
     "bf128_byte_combine_bits", "bf128_byte_combine_sq", "bf128_mul", "bf128_mul_64_inplace",
-    "bf128_mul_bit", "bf128_mul_inplace", "bf128_sq_bit", "bf128_sq_bit_inplace",
+    "bf128_mul_bit", "bf128_mul_bit_8", "bf128_mul_inplace", "bf128_sq_bit", "bf128_sq_bit_inplace",
     "bf128_square", "bf128_sum_poly_bits", "bf192_byte_combine", "bf192_byte_combine_bits",
     "bf192_byte_combine_sq", "bf192_mul", "bf192_mul_64_inplace", "bf192_mul_bit",
-    "bf192_mul_inplace", "bf192_sq_bit", "bf192_sq_bit_inplace", "bf192_square",
+    "bf192_mul_bit_8", "bf192_mul_inplace", "bf192_sq_bit", "bf192_sq_bit_inplace", "bf192_square",
     "bf192_sum_poly_bits", "bf256_byte_combine", "bf256_byte_combine_bits", "bf256_byte_combine_sq",
-    "bf256_mul", "bf256_mul_64_inplace", "bf256_mul_bit", "bf256_mul_inplace",
+    "bf256_mul", "bf256_mul_64_inplace", "bf256_mul_bit", "bf256_mul_bit_8", "bf256_mul_inplace",
     "bf256_sq_bit", "bf256_sq_bit_inplace", "bf256_square", "bf256_sum_poly_bits",
     "bf2_matrix_mul_tbl", "bf2_poly_mul", "bf2_poly_reduce", "bf384_mul_128_inplace",
     "bf576_mul_192_inplace", "bf768_mul_256_inplace", "bf8_inv", "bf8_mul",
-    "bf8_square", "decode_all_chall_3", "expand_key", "extract_bit_slice",
+    "bf8_mulX", "bf8_square", "decode_all_chall_3", "expand_key", "extract_bit_slice",
     "faest_128f_clear_private_key", "faest_128f_clear_unpacked_private_key", "faest_128f_keygen", "faest_128f_sign",
     "faest_128f_sign_with_randomness", "faest_128f_unpacked_sign", "faest_128f_unpacked_sign_with_randomness", "faest_128f_unpack_private_key",
     "faest_128f_validate_keypair", "faest_128f_verify", "faest_128s_clear_private_key", "faest_128s_clear_unpacked_private_key",
@@ -267,7 +274,7 @@ FAEST_NAMESPACE_SYMBOLS = [
     "faest_em_256f_validate_keypair", "faest_em_256f_verify", "faest_em_256s_clear_private_key", "faest_em_256s_clear_unpacked_private_key",
     "faest_em_256s_keygen", "faest_em_256s_sign", "faest_em_256s_sign_with_randomness", "faest_em_256s_unpacked_sign",
     "faest_em_256s_unpacked_sign_with_randomness", "faest_em_256s_unpack_private_key", "faest_em_256s_validate_keypair", "faest_em_256s_verify",
-    "faest_get_paramset", "faest_sign", "faest_verify", "free_pointer_array",
+    "faest_get_paramset", "faest_mempcpy", "faest_sign", "faest_verify", "free_pointer_array",
     "generic_aes_ecb_encrypt", "generic_aes_ecb_free", "generic_aes_ecb_new", "H0_final",
     "H0_init", "H0_update", "H1_final", "H1_init",
     "H1_update", "H2_0_final", "H2_1_final", "H2_2_final",
@@ -459,12 +466,12 @@ length-signature: {ps['sig_size']}
 nistkat-sha256: {NISTKAT_SHA256[ps['pretty_name']]}
 implementations:
   - name: ref
-    version: 3.0
+    version: 3.0.3
     folder_name: {LIBOQS_PREFIX}/generated/{ps['pqclean_scheme']}
     signature_keypair: {ns}_crypto_sign_keypair
     signature_signature: {ns}_crypto_sign_signature
     signature_verify: {ns}_crypto_sign_verify
-    compile_opts: -DOQS -DHAVE_CONFIG_H -DFAEST_STATIC
+    compile_opts: {FAEST_COMPILE_OPTS}
     sources: api.h crypto_sign.c faest_{ps['param_l']}.c faest_{ps['param_l']}.h
     common_dep: faest_common faest_common_headers
     no-secret-dependent-branching-claimed: true
@@ -493,7 +500,7 @@ def generate_meta_common_yml() -> str:
   - name: faest_common
     folder_name: .
     sources: {sources}
-    compile_opts: -DOQS -DHAVE_CONFIG_H -DFAEST_STATIC
+    compile_opts: {FAEST_COMPILE_OPTS}
     include_only: false
   - name: faest_common_headers
     folder_name: .
@@ -555,7 +562,7 @@ When built for liboqs (`-DOQS`), FAEST routes cryptographic primitives to liboqs
 |-----------|---------|
 | Random bytes | `OQS_randombytes` (`randomness.c`) |
 | SHAKE | `OQS_SHA3_shake*` (`hash_shake.h`) |
-| Memory helpers | `OQS_MEM_*` (`config.h`, `compat.h`) |
+| Memory helpers | `OQS_MEM_*` via `faest_malloc` / `faest_calloc` / `faest_free` (`compat.h`) |
 | CPU features | `OQS_CPU_has_extension` (`cpu.h`) |
 | AES-128/256 ECB | `OQS_AES128/256_ECB_*` (`aes.c`) |
 | AES-192 ECB | `OQS_AES192_ECB_*` (`aes.c`) |
@@ -566,8 +573,10 @@ this with `-DFAEST_NAMESPACE=oqs_faest_`.
 
 ## Known follow-ups
 
-1. Add optimized implementations (`avx2`, `neon`) as additional entries in each
-   scheme's `META.yml`.
+1. faest-ref 3.0.3 ships compile-time SSE2/AVX2+PCLMUL/NEON field files
+   (`fields_sse2.c`, `fields_avx2.c`, `fields_neon.c`). This integration keeps
+   the portable `FAEST_FIELDS_USE_U64` ref implementation; extra META `avx2` /
+   `neon` implementations are a follow-up.
 2. Run liboqs constant-time tests and document results under
    `tests/constant_time/sig/`.
 """
