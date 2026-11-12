@@ -12,7 +12,7 @@ OQS_SIG *OQS_SIG_faest_em_256f_new(void) {
 		return NULL;
 	}
 	sig->method_name = OQS_SIG_alg_faest_em_256f;
-	sig->alg_version = "3.0";
+	sig->alg_version = "3.0.3";
 
 	sig->claimed_nist_level = 5;
 	sig->euf_cma = true;
