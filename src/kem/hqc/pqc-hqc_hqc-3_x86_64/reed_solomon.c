@@ -7,6 +7,7 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <string.h>
+#include <assert.h>
 #include "crypto_memset.h"
 #include "gf.h"
 #include "parameters.h"
@@ -214,6 +215,22 @@ static const __m256i rs_generator_vecs[3] = {
 };
 
 /**
+ * @brief Get the loc-th uint16_t as if vec is cast as uint16_t array
+ *
+ * This is a patch from OQS to get around static analyzer failing to recognize
+ * __m256i array as initialized uint16_t array
+ */
+static inline uint16_t get_rs_poly_coeff(const __m256i *vec, size_t len, size_t loc) {
+    assert(loc < 16 * len);
+    (void)len;
+    size_t row = loc / 16;  // which __m256i
+    size_t col = (loc % 16) / 4;  // which uint64_t within the chosen __m256i
+    size_t off = (loc % 16) % 4;  // which 16-bit block in the uint64_t
+    uint64_t val64 = vec[row][col];
+    return (uint16_t)((val64 >> (16 * off)) & ((uint16_t)0xffff));
+}
+
+/**
  * @brief Precomputed evaluation powers for message positions (AVX2, 16-lane blocks).
  *
  * This table stores, for each polynomial power index \c j and each SIMD block of
@@ -385,7 +402,6 @@ void reed_solomon_encode(uint64_t *cdw, const uint64_t *msg) {
     uint8_t msg_bytes[PARAM_K] = {0};
     uint8_t cdw_bytes[PARAM_N1] = {0};
     __m256i *feedback_vecs = (__m256i *)feedback.terms;
-    uint16_t *PARAM_RS_POLY = (uint16_t *)rs_generator_vecs;
 
     memcpy(msg_bytes, msg, PARAM_K);
 
@@ -397,7 +413,7 @@ void reed_solomon_encode(uint64_t *cdw, const uint64_t *msg) {
         feedback_vecs[1] = gf_mul_vect(gate_vec, rs_generator_vecs[1]);
 
         for (size_t j = 32; j < PARAM_G; ++j) {
-            feedback.terms[j] = gf_mul(gate_value, PARAM_RS_POLY[j]);
+            feedback.terms[j] = gf_mul(gate_value, get_rs_poly_coeff(rs_generator_vecs, 3, j));
         }
 
         for (size_t k = PARAM_N1 - PARAM_K - 1; k; --k) {
