@@ -34,12 +34,12 @@ OQS_KEM *OQS_KEM_hqc_1_new(void) {
 	return kem;
 }
 
-extern int PQCHQC_HQC1_C_hqc_kem_keygen(uint8_t *pk, uint8_t *sk);
+extern int PQCHQC_HQC1_C_hqc_kem_keygen_oqs(uint8_t *pk, uint8_t *sk);
 extern int PQCHQC_HQC1_C_hqc_kem_encaps_oqs(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
 extern int PQCHQC_HQC1_C_hqc_kem_decaps_oqs(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
 
 #if defined(OQS_ENABLE_KEM_hqc_1_x86_64)
-extern int PQCHQC_HQC1_AVX256_hqc_kem_keygen(uint8_t *pk, uint8_t *sk);
+extern int PQCHQC_HQC1_AVX256_hqc_kem_keygen_oqs(uint8_t *pk, uint8_t *sk);
 extern int PQCHQC_HQC1_AVX256_hqc_kem_encaps_oqs(uint8_t *ct, uint8_t *ss, const uint8_t *pk);
 extern int PQCHQC_HQC1_AVX256_hqc_kem_decaps_oqs(uint8_t *ss, const uint8_t *ct, const uint8_t *sk);
 #endif
@@ -56,14 +56,14 @@ OQS_API OQS_STATUS OQS_KEM_hqc_1_keypair(uint8_t *public_key, uint8_t *secret_ke
 #if defined(OQS_DIST_BUILD)
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_AVX) && OQS_CPU_has_extension(OQS_CPU_EXT_AVX2) && OQS_CPU_has_extension(OQS_CPU_EXT_BMI1) && OQS_CPU_has_extension(OQS_CPU_EXT_PCLMULQDQ)) {
 #endif /* OQS_DIST_BUILD */
-		return (OQS_STATUS) PQCHQC_HQC1_AVX256_hqc_kem_keygen(public_key, secret_key);
+		return (OQS_STATUS) PQCHQC_HQC1_AVX256_hqc_kem_keygen_oqs(public_key, secret_key);
 #if defined(OQS_DIST_BUILD)
 	} else {
-		return (OQS_STATUS) PQCHQC_HQC1_C_hqc_kem_keygen(public_key, secret_key);
+		return (OQS_STATUS) PQCHQC_HQC1_C_hqc_kem_keygen_oqs(public_key, secret_key);
 	}
 #endif /* OQS_DIST_BUILD */
 #else
-	return (OQS_STATUS) PQCHQC_HQC1_C_hqc_kem_keygen(public_key, secret_key);
+	return (OQS_STATUS) PQCHQC_HQC1_C_hqc_kem_keygen_oqs(public_key, secret_key);
 #endif
 }
 
