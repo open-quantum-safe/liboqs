@@ -29,7 +29,7 @@ static OQS_STATUS do_nothing_save(uint8_t *key_buf, size_t buf_len, void *contex
  * algorithm in question was enabled at compile-time; instead, the caller
  * must check that the OQS_SIG object returned is not NULL.
  */
-static OQS_STATUS stfl_example(char *method_name) {
+static OQS_STATUS stfl_example(const char *method_name) {
 
 	OQS_SIG_STFL *sig = NULL;
 	uint8_t *public_key = NULL;
@@ -129,7 +129,7 @@ int main(void) {
 		OQS_destroy();
 		return EXIT_FAILURE;
 	}
-	if (stfl_example((char *)"XMSS-SHA2_10_256") == OQS_ERROR && stfl_example((char *)"LMS_SHA256_H10_W4") == OQS_ERROR) {
+	if (stfl_example("XMSS-SHA2_10_256") == OQS_ERROR && stfl_example("LMS_SHA256_H10_W4") == OQS_ERROR) {
 		OQS_destroy();
 		return EXIT_SUCCESS;
 	} else {
@@ -145,8 +145,8 @@ int main(void) {
 		OQS_destroy();
 		return EXIT_FAILURE;
 	}
-	xmss_status = stfl_example((char *)"XMSS-SHA2_10_256");
-	lms_status = stfl_example((char *)"LMS_SHA256_H10_W4");
+	xmss_status = stfl_example("XMSS-SHA2_10_256");
+	lms_status = stfl_example("LMS_SHA256_H10_W4");
 	OQS_destroy();
 
 #ifndef OQS_ALLOW_XMSS_KEY_AND_SIG_GEN
