@@ -109,6 +109,19 @@ if(OQS_ENABLE_SIG_MQOM AND CMAKE_C_COMPILER_ID STREQUAL "GNU")
     endforeach()
 endif()
 
+# With -fno-strict-overflow, GCC's -Wstringop-overflow reports a false positive in SQIsign's mp.c
+# Signed overflow is defined to wrap, so GCC can no longer rule out a negative bitlen,
+# and warns that the FORTIFY memmove in ibz_copy could be passed a huge length.
+# Keep the warning visible, but do not treat it as an error.
+# In the future, this could be addressed and this guard removed
+# Tracked by https://github.com/open-quantum-safe/liboqs/issues/2700
+if(OQS_ENABLE_SIG_SQISIGN AND CMAKE_C_COMPILER_ID STREQUAL "GNU")
+    get_property(_sqisign_targets DIRECTORY sig/sqisign PROPERTY BUILDSYSTEM_TARGETS)
+    foreach(_t IN LISTS _sqisign_targets)
+        target_compile_options(${_t} PRIVATE -Wno-error=stringop-overflow)
+    endforeach()
+endif()
+
 if(OQS_ENABLE_SIG_SLH_DSA)
     add_subdirectory(sig/slh_dsa)
     set(SIG_OBJS ${SIG_OBJS} ${SLH_DSA_OBJS})
