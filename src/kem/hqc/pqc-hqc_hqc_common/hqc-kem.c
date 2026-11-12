@@ -10,7 +10,7 @@
 #include "hqc.h"
 #include "parameters.h"
 #include "parsing.h"
-#include "randombytes.h"
+#include "randombytes_fallible.h"
 #include "symmetric.h"
 #include "vector.h"
 
@@ -81,11 +81,11 @@ static int8_t hqc_kem_keygen_internal(uint8_t *ek_kem, uint8_t *dk_kem, const ui
  * @param[out] ek_kem Pointer to the output buffer where the encapsulation key will be stored.
  * @param[out] dk_kem Pointer to the output buffer where the decapsulation key will be stored.
  *
- * @return 0 on success, -1 if ::randombytes() fails.
+ * @return 0 on success, -1 if ::randombytes_fallible() fails.
  *
- * @note This function samples `seed_kem` via ::randombytes(); `seed_pke` is
+ * @note This function samples `seed_kem` via ::randombytes_fallible(); `seed_pke` is
  *       derived from it using the HQC XOF inside ::hqc_kem_keygen_internal().
- * @note The caller must provide a properly seeded ::randombytes() implementation.
+ * @note The caller must provide a properly seeded ::randombytes_fallible() implementation.
  * @see randombytes
  */
 int8_t hqc_kem_keygen(uint8_t *ek_kem, uint8_t *dk_kem) {
@@ -94,7 +94,7 @@ int8_t hqc_kem_keygen(uint8_t *ek_kem, uint8_t *dk_kem) {
 #endif
     uint8_t seed_kem[SEED_BYTES] = {0};
 
-    if (randombytes(seed_kem, SEED_BYTES) != 0) {
+    if (randombytes_fallible(seed_kem, SEED_BYTES) != 0) {
         memset_zero(seed_kem, sizeof seed_kem);
         return -1;
     }
@@ -174,10 +174,10 @@ static int8_t hqc_kem_encaps_internal(uint8_t *K, uint8_t *c_kem, const uint8_t 
  * @param[out] c_kem   Pointer to the output buffer where the KEM ciphertext will be stored.
  * @param[in]  ek_kem  Pointer to the encapsulation key.
  *
- * @return 0 on success, -1 if ::randombytes() fails.
+ * @return 0 on success, -1 if ::randombytes_fallible() fails.
  *
- * @note This function samples `m` and `salt` via ::randombytes().
- * @note The caller must provide a properly seeded ::randombytes() implementation.
+ * @note This function samples `m` and `salt` via ::randombytes_fallible().
+ * @note The caller must provide a properly seeded ::randombytes_fallible() implementation.
  * @see randombytes
  */
 int8_t hqc_kem_encaps(uint8_t *K, uint8_t *c_kem, const uint8_t *ek_kem) {
@@ -185,7 +185,7 @@ int8_t hqc_kem_encaps(uint8_t *K, uint8_t *c_kem, const uint8_t *ek_kem) {
     uint8_t salt[SALT_BYTES] = {0};
 
     // Sample message m and salt
-    if (randombytes(m, PARAM_K) != 0 || randombytes(salt, SALT_BYTES) != 0) {
+    if (randombytes_fallible(m, PARAM_K) != 0 || randombytes_fallible(salt, SALT_BYTES) != 0) {
         memset_zero(m, sizeof m);
         memset_zero(salt, sizeof salt);
         return -1;
