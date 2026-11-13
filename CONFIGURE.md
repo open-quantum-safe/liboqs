@@ -269,13 +269,13 @@ Can be `ON` or `OFF`. When `ON`, compiler warnings are treated as errors (`-Werr
 
 Compiler warnings themselves are always enabled for GCC and Clang, independent of this setting. The exception is with `OQS_EMBEDDED_BUILD ON`, which keeps the toolchain's own warning set. A few checks for obsolete or dangerous constructs are errors in every build, also independent of this setting: `-Werror=format-security`, `-Werror=implicit`, `-Werror=incompatible-pointer-types` and `-Werror=int-conversion`. Unlike blanket `-Werror`, these checks do not change between compiler releases, and `--compile-no-warning-as-error` does not affect them.
 
-This uses CMake's `COMPILE_WARNING_AS_ERROR`, so it has no effect with CMake older than 3.24 (a warning is printed instead). It can be overridden for a single build with `cmake --compile-no-warning-as-error`.
+This uses CMake's `COMPILE_WARNING_AS_ERROR`, so it requires CMake 3.24 or newer. With an older CMake, configuration fails with an error. It can be overridden for a single build with `cmake --compile-no-warning-as-error`.
 
 **Default**: `OFF`.
 
 ## OQS_HARDENED_COMPILE_OPTS
 
-Can be `ON` or `OFF`. When `ON`, liboqs is built with the run-time protections recommended by the [OpenSSF Compiler Options Hardening Guide for C and C++](https://best.openssf.org/Compiler-Hardening-Guides/Compiler-Options-Hardening-Guide-for-C-and-C++.html), such as `-fstack-protector-strong`, `-D_FORTIFY_SOURCE=3`, `-ftrivial-auto-var-init=zero`, `-fno-strict-aliasing` and full RELRO. These change the generated code and can affect performance, which is why they are off by default. Options the toolchain does not support are skipped. This has an effect only when the compiler is GCC or Clang.
+Can be `ON` or `OFF`. When `ON`, liboqs is built with the run-time protections recommended by the [OpenSSF Compiler Options Hardening Guide for C and C++](https://best.openssf.org/Compiler-Hardening-Guides/Compiler-Options-Hardening-Guide-for-C-and-C++.html). These change the generated code and can affect performance, which is why they are off by default. Options the toolchain does not support are skipped. This has an effect only when the compiler is GCC or Clang.
 
 **Default**: `OFF`.
 

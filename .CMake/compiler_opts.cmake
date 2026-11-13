@@ -21,10 +21,10 @@ include(CheckCCompilerFlag)
 check_c_compiler_flag("-Wa,--noexecstack" CC_SUPPORTS_WA_NOEXECSTACK)
 
 # Treat warnings as errors (-Werror, /WX, ...) via CMake's COMPILE_WARNING_AS_ERROR
-# CMake before 3.24 ignores it, which would silently drop -Werror.
+# CMake before 3.24 ignores it, which would silently drop -Werror, so refuse to configure.
 # https://cmake.org/cmake/help/latest/prop_tgt/COMPILE_WARNING_AS_ERROR.html
 if(OQS_STRICT_WARNINGS AND CMAKE_VERSION VERSION_LESS "3.24")
-    message(WARNING "OQS_STRICT_WARNINGS has no effect with CMake ${CMAKE_VERSION}: warnings are only treated as errors with CMake 3.24 or newer.")
+    message(FATAL_ERROR "OQS_STRICT_WARNINGS requires CMake 3.24 or newer (found ${CMAKE_VERSION}). Upgrade CMake or configure with -DOQS_STRICT_WARNINGS=OFF.")
 endif()
 set(CMAKE_COMPILE_WARNING_AS_ERROR ${OQS_STRICT_WARNINGS})
 
@@ -43,17 +43,6 @@ elseif(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.14")
 else()
     message(WARNING "Unable to check if '-Wl,-z,noexecstack' is supported.")
     set(LD_SUPPORTS_WL_Z_NOEXECSTACK FALSE)
-endif()
-
-# The hardened linker options below (relro, now, as-needed) are ELF features.
-# Every ELF linker (GNU ld, gold, lld, mold) supports them; the Mach-O linkers
-# on Apple platforms and the PE/COFF linkers on Windows, Cygwin and MSYS do not.
-# Embedded builds (e.g. Zephyr) link a static image with their own linker
-# script and no dynamic loader, so these options do not apply there either.
-if(NOT APPLE AND NOT WIN32 AND NOT CYGWIN AND NOT MSYS AND NOT OQS_EMBEDDED_BUILD)
-    set(OQS_LINKER_Z_OPTIONS ON)
-else()
-    set(OQS_LINKER_Z_OPTIONS OFF)
 endif()
 
 set(OQS_OPT_FLAG "")
@@ -365,7 +354,8 @@ if(OQS_HARDENED_COMPILE_OPTS AND CMAKE_C_COMPILER_ID MATCHES "Clang|GNU")
         add_compile_options(-U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=3)
     endif()
 
-    if(OQS_LINKER_Z_OPTIONS)
+    # These linker options are ELF features exclusively, so exclude non-ELF platforms.
+    if(NOT APPLE AND NOT WIN32 AND NOT CYGWIN AND NOT MSYS AND NOT OQS_EMBEDDED_BUILD)
         add_link_options(
             -Wl,-z,relro
             -Wl,-z,now
