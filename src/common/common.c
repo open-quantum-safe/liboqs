@@ -457,6 +457,9 @@ OQS_API char *OQS_MEM_strdup(const char *str) {
 		memcpy(dup, str, len);
 	}
 	return dup;
+#elif defined(_MSC_VER)
+	// strdup is deprecated in MSVC CRT, gives error C4996 with /stl enabled
+	return _strdup(str); 
 #else
 	return strdup(str); // IGNORE memory-check
 #endif
