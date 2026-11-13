@@ -52,9 +52,13 @@ jobs:
       contents: read
       actions: write   # required to cancel the run on fail-fast (see basic.yml)
 
+  # The pr stage of the platform matrix (see platform-matrix.yml), or the main
+  # stage if [full tests] is in the PR title or description.
   platform-tests:
     needs: check-push-result
     uses: ./.github/workflows/platforms.yml
+    with:
+      stage: ${{ (contains( github.event.pull_request.title, '[full tests]' ) || contains( github.event.pull_request.body, '[full tests]' )) && 'main' || 'pr' }}
 
   code-coverage:
     needs: check-push-result

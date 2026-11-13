@@ -3,9 +3,28 @@ name: Tests for all supported platforms
 permissions:
   contents: read
 
-on: [workflow_call, workflow_dispatch]
+on:
+  workflow_call:
+    inputs:
+      stage:
+        description: CI stage of the platform matrix to run (pr or main)
+        type: string
+        default: main
+  workflow_dispatch:
+    inputs:
+      stage:
+        description: CI stage of the platform matrix to run
+        type: choice
+        options: [pr, main]
+        default: main
 
 jobs:
+  matrix-tests:
+    uses: ./.github/workflows/platform-matrix.yml
+    with:
+      stage: ${{ inputs.stage }}
+
+  # Platforms and configurations with steps beyond build-and-test.
 
   android-tests:
     uses: ./.github/workflows/android.yml
@@ -15,12 +34,6 @@ jobs:
 
   linux-tests:
     uses: ./.github/workflows/linux.yml
-
-  macos-tests:
-    uses: ./.github/workflows/macos.yml
-
-  windows-tests:
-    uses: ./.github/workflows/windows.yml
 
   zephyr-tests:
     uses: ./.github/workflows/zephyr.yml

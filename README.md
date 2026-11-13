@@ -168,6 +168,16 @@ The following instructions assume we are in `build`.
 
 		ninja run_tests
 
+	Individual test suites (defined in `tests/conftest.py`) can be run with `ninja run_tests_<suite>`, where `<suite>` is one of `basic`, `build`, `correctness`, `extensive`, `vectors`, `leaks` or `distbuild`. To check a change before opening a pull request, run
+
+		ninja run_tests_correctness
+
+	Per-algorithm tests can be limited to specific algorithms by setting `OQS_TEST_ALGS`, for example `OQS_TEST_ALGS=ML-KEM-768,ML-DSA-65 ninja run_tests_correctness`.
+
+	The suites can also be run with pytest directly from the repository root, which accepts several suites at once but does not rebuild first. Set `OQS_BUILD_DIR` if the build directory is not `build`:
+
+		python3 -m pytest tests --suite basic,correctness --algs ML-KEM-768,ML-DSA-65
+
 4. To generate HTML documentation of the API, run:
 
 		ninja gen_docs

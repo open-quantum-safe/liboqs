@@ -12,63 +12,8 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - name: arm64
-            runner: ubuntu-24.04-arm
-            container: openquantumsafe/ci-ubuntu-latest:latest
-            PYTEST_ARGS: --maxprocesses=10 --ignore=tests/test_kat_all.py
-            CMAKE_ARGS: -DOQS_ENABLE_SIG_SLH_DSA=OFF -DOQS_ENABLE_SIG_STFL_LMS=ON -DOQS_ENABLE_SIG_STFL_XMSS=ON -DOQS_HAZARDOUS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN=ON
-
-          - name: alpine-no-stfl-key-sig-gen
-            runner: ubuntu-latest
-            container: openquantumsafe/ci-alpine-amd64:latest
-            CMAKE_ARGS: -DOQS_STRICT_WARNINGS=ON -DOQS_USE_OPENSSL=ON -DBUILD_SHARED_LIBS=ON -DOQS_ENABLE_SIG_SLH_DSA=OFF -DOQS_HAZARDOUS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN=OFF -DOQS_ENABLE_SIG_STFL_XMSS=ON -DOQS_ENABLE_SIG_STFL_LMS=ON
-            PYTEST_ARGS: --ignore=tests/test_alg_info.py --ignore=tests/test_kat_all.py
-          - name: alpine-openssl-all
-            runner: ubuntu-latest
-            container: openquantumsafe/ci-alpine-amd64:latest
-            CMAKE_ARGS: -DOQS_STRICT_WARNINGS=ON -DOQS_USE_OPENSSL=ON -DBUILD_SHARED_LIBS=ON -DOQS_USE_AES_OPENSSL=ON -DOQS_USE_SHA2_OPENSSL=ON -DOQS_USE_SHA3_OPENSSL=ON -DOQS_ENABLE_SIG_SLH_DSA=OFF -DOQS_HAZARDOUS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN=OFF -DOQS_ENABLE_SIG_STFL_XMSS=ON -DOQS_ENABLE_SIG_STFL_LMS=ON
-            PYTEST_ARGS: --ignore=tests/test_alg_info.py --ignore=tests/test_kat_all.py
-          - name: alpine-noopenssl
-            runner: ubuntu-latest
-            container: openquantumsafe/ci-alpine-amd64:latest
-            CMAKE_ARGS: -DOQS_STRICT_WARNINGS=ON -DOQS_USE_OPENSSL=OFF -DOQS_ENABLE_SIG_SLH_DSA=OFF -DOQS_HAZARDOUS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN=OFF -DOQS_ENABLE_SIG_STFL_XMSS=ON -DOQS_ENABLE_SIG_STFL_LMS=ON
-            PYTEST_ARGS: --ignore=tests/test_alg_info.py --ignore=tests/test_kat_all.py
-
-          - name: noble-nistr4-openssl
-            runner: ubuntu-latest
-            container: openquantumsafe/ci-ubuntu-latest:latest
-            CMAKE_ARGS: -DOQS_STRICT_WARNINGS=ON -DOQS_ALGS_ENABLED=NIST_R4
-            PYTEST_ARGS: --ignore=tests/test_leaks.py --ignore=tests/test_kat_all.py
-          - name: noble-nistonramp-openssl
-            runner: ubuntu-latest
-            container: openquantumsafe/ci-ubuntu-latest:latest
-            CMAKE_ARGS: -DOQS_STRICT_WARNINGS=ON -DOQS_ALGS_ENABLED=NIST_SIG_ONRAMP
-            PYTEST_ARGS: --ignore=tests/test_leaks.py --ignore=tests/test_kat_all.py
-          - name: noble-noopenssl
-            runner: ubuntu-latest
-            container: openquantumsafe/ci-ubuntu-latest:latest
-            CMAKE_ARGS: -DOQS_USE_OPENSSL=OFF
-            PYTEST_ARGS: --ignore=tests/test_leaks.py --ignore=tests/test_kat_all.py
-          - name: noble-shared-noopenssl
-            runner: ubuntu-latest
-            container: openquantumsafe/ci-ubuntu-latest:latest
-            CMAKE_ARGS: -DOQS_DIST_BUILD=OFF -DOQS_USE_OPENSSL=OFF -DBUILD_SHARED_LIBS=ON
-            PYTEST_ARGS: --ignore=tests/test_namespace.py --ignore=tests/test_leaks.py --ignore=tests/test_kat_all.py
-          - name: noble-memopt
-            runner: ubuntu-latest
-            container: openquantumsafe/ci-ubuntu-latest:latest
-            CMAKE_ARGS: -DOQS_STRICT_WARNINGS=ON -DOQS_MEMOPT_BUILD=ON
-            PYTEST_ARGS: --ignore=tests/test_kat_all.py
-          - name: jammy-clang
-            runner: ubuntu-latest
-            container: openquantumsafe/ci-ubuntu-jammy:latest
-            CMAKE_ARGS: -DOQS_STRICT_WARNINGS=ON -DCMAKE_C_COMPILER=clang
-            PYTEST_ARGS: --ignore=tests/test_kat_all.py
-          - name: noble-clang
-            runner: ubuntu-latest
-            container: openquantumsafe/ci-ubuntu-latest:latest
-            CMAKE_ARGS: -DOQS_STRICT_WARNINGS=ON -DCMAKE_C_COMPILER=clang
-            PYTEST_ARGS: --ignore=tests/test_kat_all.py -k 'not (leaks and ML-DSA)'
+          # Configurations that need steps beyond build-and-test live here; all
+          # others are in platform-matrix.yml and run via run-suites.yml.
           - name: jammy-std-openssl3
             runner: ubuntu-latest
             container: openquantumsafe/ci-ubuntu-jammy:latest
@@ -79,16 +24,6 @@ jobs:
             container: openquantumsafe/ci-ubuntu-jammy:latest
             CMAKE_ARGS: -DOQS_STRICT_WARNINGS=ON -DOQS_ALGS_ENABLED=STD -DBUILD_SHARED_LIBS=ON -DOQS_DLOPEN_OPENSSL=ON
             PYTEST_ARGS: --ignore=tests/test_leaks.py --ignore=tests/test_kat_all.py
-          - name: address-sanitizer-no-stfl-key-sig-gen
-            runner: ubuntu-latest
-            container: openquantumsafe/ci-ubuntu-latest:latest
-            CMAKE_ARGS: -DCMAKE_C_COMPILER=clang -DCMAKE_BUILD_TYPE=Debug -DUSE_SANITIZER=Address -DOQS_ENABLE_SIG_SLH_DSA=OFF -DOQS_HAZARDOUS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN=OFF -DOQS_ENABLE_SIG_STFL_XMSS=ON -DOQS_ENABLE_SIG_STFL_LMS=ON
-            PYTEST_ARGS: --ignore=tests/test_distbuild.py --ignore=tests/test_leaks.py --ignore=tests/test_kat_all.py --maxprocesses=10
-          - name: noble-no-sha3-avx512vl
-            runner: ubuntu-latest
-            container: openquantumsafe/ci-ubuntu-latest:latest
-            CMAKE_ARGS: -DOQS_USE_SHA3_AVX512VL=OFF
-            PYTEST_ARGS: --ignore=tests/test_leaks.py --ignore=tests/test_kat_all.py
     runs-on: ${{ matrix.runner }}
     timeout-minutes: 85 # max + 3*std over the last thousands of successful runs
 
@@ -97,27 +32,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # pin@v4
-      # tests/test_leaks.py skips the slow MQOM and QR-UOV leak tests on PRs and feature-branch
-      # pushes unless this step finds changes to that algorithm or to shared code it depends on.
-      - name: Detect algorithm changes
-        env:
-          BASE_REF: ${{ github.base_ref || 'main' }}
-        run: |
-          SHARED='^(CMakeLists\.txt|\.CMake/|\.github/workflows/linux\.yml|src/[^/]*$|src/common/|src/sig/sig\.[ch]$|tests/(CMakeLists\.txt|helpers\.py|system_info\.c|test_helpers\.[ch]|test_leaks\.py|test_sig\.c)$)'
-          CHANGED="$RUNNER_TEMP/changed_files.txt"
-          git config --global --add safe.directory '*'
-          if git fetch --depth=1 origin "$BASE_REF" && git diff --name-only "origin/$BASE_REF" HEAD > "$CHANGED"; then
-            if grep -qE "$SHARED|^src/sig/mqom/" "$CHANGED"; then
-              echo "RUN_MQOM_LEAKS=true" >> "$GITHUB_ENV"
-            fi
-            if grep -qE "$SHARED|^src/sig/qruov/" "$CHANGED"; then
-              echo "RUN_QRUOV_LEAKS=true" >> "$GITHUB_ENV"
-            fi
-          else
-            echo "::warning::Could not determine changed files; running all leak tests"
-            echo "RUN_MQOM_LEAKS=true" >> "$GITHUB_ENV"
-            echo "RUN_QRUOV_LEAKS=true" >> "$GITHUB_ENV"
-          fi
       - name: Configure
         run: mkdir build && cd build && cmake -GNinja ${{ matrix.CMAKE_ARGS }} .. && cmake -LA -N ..
       - name: Build
