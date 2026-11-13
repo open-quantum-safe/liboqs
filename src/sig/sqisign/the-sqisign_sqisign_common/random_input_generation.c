@@ -51,6 +51,10 @@ quat_test_input_random_ideal_lattice_generation(quat_lattice_t *lattices,
 {
     quat_ideal_t *ideals;
     ideals = OQS_MEM_malloc(iterations * sizeof(quat_ideal_t));
+    if (ideals == NULL) {
+        printf("Allocation failure in quat_test_input_random_ideal_lattice_generation\n");
+        return 1;
+    }
     for (int i = 0; i < iterations; i++)
         quat_ideal_init(&(ideals[i]));
     int randret = quat_test_input_random_ideal_generation(ideals, norm_bitsize, iterations);
