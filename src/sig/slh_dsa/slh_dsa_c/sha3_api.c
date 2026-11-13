@@ -5,19 +5,17 @@
 
 /* === FIPS 202: SHA-3 hash and SHAKE eXtensible Output Functions (XOF) */
 
+#include <string.h>
 #include "sha3_api.h"
+#include "cbmc.h"
 
 /* These functions have not been optimized for performance. */
 /* initialize the context for SHA3 */
 
 void sha3_init(sha3_var_t *c, size_t md_sz)
 {
-  size_t i;
-
-  for (i = 0; i < 25; i++)
-  {
-    c->st.d[i] = 0;
-  }
+  memset(c->st.d, 0, 25*sizeof(uint64_t));
+  
   c->md_sz = md_sz; /* in SHAKE; if 0, padding done */
   c->r_sz = 200 - 2 * md_sz;
   c->pt = 0;
