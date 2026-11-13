@@ -6,14 +6,14 @@
 - **Authors' website**: https://info.isl.ntt.co.jp/crypt/eng/qr-uov/
 - **Specification version**: NIST Round 3.
 - **Primary Source**<a name="primary-source"></a>:
-  - **Source**: https://github.com/0rlych1kk4/round3/commit/3965b56ca41484f6359ee71f1c508b1da7b77711 with copy_from_upstream patches
+  - **Source**: https://github.com/qruov/round3-liboqs/commit/fb4a574c8340a95e88923404143d9364a15b7501 with copy_from_upstream patches
   - **Implementation license (SPDX-Identifier)**: 0BSD
 - **Optimized Implementation sources**:
   - **opt**:<a name="opt"></a>
-      - **Source**: https://github.com/0rlych1kk4/round3/commit/3965b56ca41484f6359ee71f1c508b1da7b77711 with copy_from_upstream patches
+      - **Source**: https://github.com/qruov/round3-liboqs/commit/fb4a574c8340a95e88923404143d9364a15b7501 with copy_from_upstream patches
       - **Implementation license (SPDX-Identifier)**: 0BSD
   - **avx2**:<a name="avx2"></a>
-      - **Source**: https://github.com/0rlych1kk4/round3/commit/3965b56ca41484f6359ee71f1c508b1da7b77711 with copy_from_upstream patches
+      - **Source**: https://github.com/qruov/round3-liboqs/commit/fb4a574c8340a95e88923404143d9364a15b7501 with copy_from_upstream patches
       - **Implementation license (SPDX-Identifier)**: 0BSD
 
 
