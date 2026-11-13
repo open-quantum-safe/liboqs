@@ -299,7 +299,7 @@ endif()
 
 # Table 2: Runtime hardening options
 # These modify the properties of the generated binary to enhance security
-# Because this can affect performance, these can be toggled with OQS_HARDENED_COMPILE_OPTS
+# Because this can affect performance, these are opt-in via OQS_HARDENED_COMPILE_OPTS (default OFF)
 if(OQS_HARDENED_COMPILE_OPTS AND CMAKE_C_COMPILER_ID MATCHES "Clang|GNU")
     # Supported by every GCC and Clang that liboqs supports.
     add_compile_options(

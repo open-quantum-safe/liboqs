@@ -533,6 +533,34 @@ jobs:
         timeout-minutes: 60
         run: mkdir -p tmp && python3 -m pytest --verbose --ignore=tests/test_code_conventions.py --ignore=tests/test_cmake_option_coverage.py --ignore=tests/test_kats_json.py --ignore=tests/test_kat_all.py --durations=0 --numprocesses=logical --dist load --maxschedchunk=1
 
+  hardened-tests:
+    name: Hardened compile options
+    runs-on: ubuntu-latest
+    timeout-minutes: 85
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: noble-gcc-hardened
+            CMAKE_ARGS: -DOQS_HARDENED_COMPILE_OPTS=ON -DOQS_STRICT_WARNINGS=ON
+            PYTEST_ARGS: --ignore=tests/test_kat_all.py
+          - name: noble-clang-hardened
+            CMAKE_ARGS: -DOQS_HARDENED_COMPILE_OPTS=ON -DOQS_STRICT_WARNINGS=ON -DCMAKE_C_COMPILER=clang
+            PYTEST_ARGS: --ignore=tests/test_kat_all.py
+    container:
+      image: openquantumsafe/ci-ubuntu-latest:latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # pin@v4
+      - name: Configure
+        run: mkdir build && cd build && cmake -GNinja ${{ matrix.CMAKE_ARGS }} .. && cmake -LA -N ..
+      - name: Build
+        run: ninja
+        working-directory: build
+      - name: Run tests
+        timeout-minutes: 60
+        run: mkdir -p tmp && python3 -m pytest --verbose --ignore=tests/test_code_conventions.py --ignore=tests/test_cmake_option_coverage.py --ignore=tests/test_kats_json.py --ignore=tests/test_acvp_vectors.py --ignore=tests/test_wycheproof_vectors.py --ignore=tests/test_leaks.py --numprocesses=logical --dist load --maxschedchunk=1 ${{ matrix.PYTEST_ARGS }}
+
   acvp-tests:
     name: Run ACVP vector tests
     runs-on: ubuntu-latest
