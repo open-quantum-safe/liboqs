@@ -11,8 +11,9 @@ function(filter_algs alglist)
   #     one of the requested algorithms, e.g. OQS_ENABLE_KEM_kyber_768_avx2.
 
   get_cmake_property(_vars VARIABLES)
+  list(FILTER _vars INCLUDE REGEX "^OQS_ENABLE_..._") # Only process OQS_ENABLE_* variables to avoid CMP0218 warnings with CMake >= 4.4.
   foreach (_var ${_vars})
-      if(_var MATCHES "^OQS_ENABLE_..._" AND NOT _var MATCHES "_AVAILABLE$" AND ${_var})
+      if(NOT _var MATCHES "_AVAILABLE$" AND ${_var})
           set(${_var} OFF PARENT_SCOPE)
           # Case 1, family name
 	  foreach (_alg ${ARGV0})
