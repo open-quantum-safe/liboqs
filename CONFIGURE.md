@@ -275,9 +275,9 @@ This uses CMake's `COMPILE_WARNING_AS_ERROR`, so it has no effect with CMake old
 
 ## OQS_HARDENED_COMPILE_OPTS
 
-Can be `ON` or `OFF`. When `ON`, liboqs is built with the run-time protections recommended by the [OpenSSF Compiler Options Hardening Guide for C and C++](https://best.openssf.org/Compiler-Hardening-Guides/Compiler-Options-Hardening-Guide-for-C-and-C++.html), such as `-fstack-protector-strong`, `-D_FORTIFY_SOURCE=3`, `-ftrivial-auto-var-init=zero`, `-fno-strict-aliasing` and full RELRO. These change the generated code and can affect performance, which is why they can be turned off. Options the toolchain does not support are skipped. This has an effect only when the compiler is GCC or Clang.
+Can be `ON` or `OFF`. When `ON`, liboqs is built with the run-time protections recommended by the [OpenSSF Compiler Options Hardening Guide for C and C++](https://best.openssf.org/Compiler-Hardening-Guides/Compiler-Options-Hardening-Guide-for-C-and-C++.html), such as `-fstack-protector-strong`, `-D_FORTIFY_SOURCE=3`, `-ftrivial-auto-var-init=zero`, `-fno-strict-aliasing` and full RELRO. These change the generated code and can affect performance, which is why they are off by default. Options the toolchain does not support are skipped. This has an effect only when the compiler is GCC or Clang.
 
-**Default**: `ON`.
+**Default**: `OFF`.
 
 ## OQS_EMBEDDED_BUILD
 
