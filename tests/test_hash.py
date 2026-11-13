@@ -21,6 +21,14 @@ def test_sha3():
     )
 
 @helpers.filtered_test
+@pytest.mark.skipif(sys.platform.startswith("win"), reason="Not supported on Windows")
+def test_slh_dsa_sha2():
+    if not any(name.startswith("SLH_DSA") and helpers.is_sig_enabled_by_name(name)
+               for name in helpers.available_sigs_by_name()):
+        pytest.skip("SLH-DSA is disabled")
+    helpers.run_subprocess([helpers.path_to_executable('test_slh_dsa_sha2')])
+
+@helpers.filtered_test
 @pytest.mark.parametrize('algname', ['sha256', 'sha384', 'sha512', 'sha3_256', 'sha3_384', 'sha3_512'])
 @pytest.mark.skipif(sys.platform.startswith("win"), reason="Not supported on Windows")
 def test_hash_sha2_random(algname):
