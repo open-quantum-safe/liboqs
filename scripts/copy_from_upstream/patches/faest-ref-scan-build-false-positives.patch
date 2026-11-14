@@ -1,0 +1,70 @@
+diff --git a/aes.c b/aes.c
+--- a/aes.c
++++ b/aes.c
+@@ -804,23 +804,35 @@
+ 
+ static void generic_prg(const uint8_t* key, uint8_t* internal_iv, uint8_t* out, unsigned int seclvl,
+                         size_t outlen) {
+-  generic_aes_ecb_t ctx;
+-  int ret = generic_aes_ecb_new(&ctx, key, seclvl);
+-  assert(ret == 0);
+-  (void)ret;
++  // liboqs scan-build mitigation (NOT a known runtime bug): upstream expresses
++  // "these calls cannot fail" with assert(ret == 0). Under the clang static
++  // analyzer (and any NDEBUG build) those asserts vanish, so the analyzer walks
++  // the failure paths and reports ctx->sched as a garbage value and `out` as a
++  // possible NULL dereference. Zero-initialising ctx and converting the asserts
++  // into explicit early returns makes those paths well-defined without altering
++  // behaviour on the real, never-failing call sequence.
++  generic_aes_ecb_t ctx = {0};
++  if (!key || !internal_iv || !out) {
++    return;
++  }
++  if (generic_aes_ecb_new(&ctx, key, seclvl) != 0) {
++    return;
++  }
+ 
+   for (size_t idx = 0; idx < outlen / IV_SIZE; idx += 1, out += IV_SIZE) {
+-    ret = generic_aes_ecb_encrypt(&ctx, out, internal_iv, 1);
+-    assert(ret == 0);
+-    (void)ret;
++    if (generic_aes_ecb_encrypt(&ctx, out, internal_iv, 1) != 0) {
++      generic_aes_ecb_free(&ctx);
++      return;
++    }
+     aes_increment_iv(internal_iv);
+   }
+ 
+   if (outlen % IV_SIZE) {
+     uint8_t last_block[IV_SIZE];
+-    ret = generic_aes_ecb_encrypt(&ctx, last_block, internal_iv, 1);
+-    assert(ret == 0);
+-    (void)ret;
++    if (generic_aes_ecb_encrypt(&ctx, last_block, internal_iv, 1) != 0) {
++      generic_aes_ecb_free(&ctx);
++      return;
++    }
+     memcpy(out, last_block, outlen % IV_SIZE);
+   }
+ 
+@@ -1078,7 +1090,10 @@
+   // common part for AES-128, EM-128, EM-192, EM-256, first part for AES-192 and AES-256
+   {
+     // line 16
+-    aes_block_t state;
++    // liboqs scan-build: zero-init (NOT a known runtime bug). load_state fills
++    // only `block_words` columns of the max-sized block, which the analyzer
++    // cannot correlate with the equally bounded reads in the round functions.
++    aes_block_t state = {0};
+     load_state(state, in, block_words);
+ 
+     // line 17
+@@ -1109,7 +1124,7 @@
+     buf[0] ^= 0x1;
+ 
+     // line 16
+-    aes_block_t state;
++    aes_block_t state = {0}; // liboqs scan-build: zero-init; see witness note above
+     load_state(state, buf, AES_BLOCK_WORDS);
+ 
+     // line 17
