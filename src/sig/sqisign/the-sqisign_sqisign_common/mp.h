@@ -165,7 +165,7 @@ void ibz_to_digits(digit_t *target, const ibz_t *source);
 #define ibz_to_digit_array(T, I)                                                                                       \
     do {                                                                                                               \
         memset((T), 0, sizeof(T));                                                                                     \
-        assert((ssize_t)sizeof((T)) >= ibz_size_in_base((I), 256));                                                    \
+        assert(sizeof((T)) >= (size_t)ibz_size_in_base((I), 256));                                                     \
         ibz_to_digits((T), (I));                                                                                       \
     } while (0)
 
