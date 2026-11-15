@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1794104074254,
+  "lastUpdate": 1794703541855,
   "repoUrl": "https://github.com/open-quantum-safe/liboqs",
   "entries": {
     "Dilithium2": [
@@ -5966,6 +5966,46 @@ window.BENCHMARK_DATA = {
             "value": 710381,
             "unit": "cycles",
             "extra": "Target platform: x86_64-Linux-7.0.0-1019-azure | Compiler: gcc (15.2.0) | Compile options: [-Wa,--noexecstack;-fomit-frame-pointer;-fdata-sections;-ffunction-sections;-Wl,--gc-sections;-Wbad-function-cast] | OQS version: 0.16.0 (major: 0, minor: 16, patch: 0) | Git commit: 7bf154f197696f5bf04be2ea4c576db86bb6a238 | OpenSSL enabled: Yes (OpenSSL 3.5.5 27 Jan 2026) | AES: NI | SHA-2: OpenSSL | SHA-3: AVX512VL | OQS build flags: OQS_DIST_BUILD OQS_LIBJADE_BUILD OQS_OPT_TARGET=generic CMAKE_BUILD_TYPE=Release | CPU exts active: ADX AES AVX AVX2 AVX512 BMI1 BMI2 PCLMULQDQ VPCLMULQDQ POPCNT SSE SSE2 SSE3 | "
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "name": "Owen Waldron",
+            "username": "owaldron",
+            "email": "72557743+owaldron@users.noreply.github.com"
+          },
+          "committer": {
+            "name": "GitHub",
+            "username": "web-flow",
+            "email": "noreply@github.com"
+          },
+          "id": "9f027e7c76ce726ba02ed6b96321e6d0f2ccfd30",
+          "message": "Add test checking for  NULL guards after `OQS_MEM_malloc` calls (#2633)\n\n* Added missing NULL checks after malloc\n\nUsed Claude code to search for `OQS_MEM_malloc` and similar calls where\nthe output was not being checked for NULL. Added the checks where\nappropriate.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>\nSigned-off-by: Owen Waldron <owen.waldron@uwaterloo.ca>\n\n* Added `test_malloc_null_check` test.\n\nCreated the `test_malloc_null_check` to check that `OQS_MEM_*` calls\nare immediately followed by NULL checks, where appropriate.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>\nSigned-off-by: Owen Waldron <owen.waldron@uwaterloo.ca>\n\n* Added CodeQL query to check OQS_MEM allocations for NULL\n\nAdded `.github/codeql/queries/malloc-null-check.ql`, which reports any\nOQS_MEM_* result that is used before it is tested against NULL.\n\nUpstream code is skipped through `mallocCheckIgnoredDir()`, and a\nsingle allocation can opt out with `// IGNORE malloc-check`.\n\nThe CodeQL workflow now builds XMSS and LMS, with stateful key and\nsignature generation so that the query also covers that code.\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>\nSigned-off-by: Owen Waldron <owen.waldron@uwaterloo.ca>\n\n---------\n\nSigned-off-by: Owen Waldron <owen.waldron@uwaterloo.ca>\nCo-authored-by: Claude Opus 5.5 <noreply@anthropic.com>",
+          "timestamp": "2026-11-13T17:17:57Z",
+          "url": "https://github.com/open-quantum-safe/liboqs/commit/9f027e7c76ce726ba02ed6b96321e6d0f2ccfd30"
+        },
+        "date": 1794703540329,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "BIKE-L1 keygen",
+            "value": 520108,
+            "unit": "cycles",
+            "extra": "Target platform: x86_64-Linux-7.0.0-1019-azure | Compiler: gcc (15.2.0) | Compile options: [-Wa,--noexecstack;-fomit-frame-pointer;-fdata-sections;-ffunction-sections;-Wl,--gc-sections;-Wbad-function-cast] | OQS version: 0.16.0 (major: 0, minor: 16, patch: 0) | Git commit: 9f027e7c76ce726ba02ed6b96321e6d0f2ccfd30 | OpenSSL enabled: Yes (OpenSSL 3.5.5 27 Jan 2026) | AES: NI | SHA-2: OpenSSL | SHA-3: AVX2 | OQS build flags: OQS_DIST_BUILD OQS_LIBJADE_BUILD OQS_OPT_TARGET=generic CMAKE_BUILD_TYPE=Release | CPU exts active: ADX AES AVX AVX2 BMI1 BMI2 PCLMULQDQ POPCNT SSE SSE2 SSE3 | "
+          },
+          {
+            "name": "BIKE-L1 encaps",
+            "value": 100938,
+            "unit": "cycles",
+            "extra": "Target platform: x86_64-Linux-7.0.0-1019-azure | Compiler: gcc (15.2.0) | Compile options: [-Wa,--noexecstack;-fomit-frame-pointer;-fdata-sections;-ffunction-sections;-Wl,--gc-sections;-Wbad-function-cast] | OQS version: 0.16.0 (major: 0, minor: 16, patch: 0) | Git commit: 9f027e7c76ce726ba02ed6b96321e6d0f2ccfd30 | OpenSSL enabled: Yes (OpenSSL 3.5.5 27 Jan 2026) | AES: NI | SHA-2: OpenSSL | SHA-3: AVX2 | OQS build flags: OQS_DIST_BUILD OQS_LIBJADE_BUILD OQS_OPT_TARGET=generic CMAKE_BUILD_TYPE=Release | CPU exts active: ADX AES AVX AVX2 BMI1 BMI2 PCLMULQDQ POPCNT SSE SSE2 SSE3 | "
+          },
+          {
+            "name": "BIKE-L1 decaps",
+            "value": 1511645,
+            "unit": "cycles",
+            "extra": "Target platform: x86_64-Linux-7.0.0-1019-azure | Compiler: gcc (15.2.0) | Compile options: [-Wa,--noexecstack;-fomit-frame-pointer;-fdata-sections;-ffunction-sections;-Wl,--gc-sections;-Wbad-function-cast] | OQS version: 0.16.0 (major: 0, minor: 16, patch: 0) | Git commit: 9f027e7c76ce726ba02ed6b96321e6d0f2ccfd30 | OpenSSL enabled: Yes (OpenSSL 3.5.5 27 Jan 2026) | AES: NI | SHA-2: OpenSSL | SHA-3: AVX2 | OQS build flags: OQS_DIST_BUILD OQS_LIBJADE_BUILD OQS_OPT_TARGET=generic CMAKE_BUILD_TYPE=Release | CPU exts active: ADX AES AVX AVX2 BMI1 BMI2 PCLMULQDQ POPCNT SSE SSE2 SSE3 | "
           }
         ]
       }
