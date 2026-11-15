@@ -494,7 +494,9 @@ def slh_test_sig_name(variant, testCase):
     if variant["preHash"] != "preHash":
         sig_name = sig_name[:7] + "_PURE" + sig_name[7:]
     else:
-        hashAlg = testCase["hashAlg"].replace("-", "_")
+        # ACVP writes the truncated SHA-512 variants as "SHA2-512/224" and
+        # "SHA2-512/256"; liboqs names them SHA2_512_224 and SHA2_512_256
+        hashAlg = testCase["hashAlg"].replace("-", "_").replace("/", "_")
         sig_name = sig_name[:7] + "_" + hashAlg + "_PREHASH" + sig_name[7:]
 
     return sig_name
@@ -558,9 +560,11 @@ def test_acvp_vec_slh_dsa_sig_gen(sig_name):
     assert resp.status_code == 200
     slh_sig_sig_acvp = json.loads(resp.content)
 
+    vectorFound = False
     for variant in slh_sig_sig_acvp["testGroups"]:
         for testCase in variant["tests"]:
             if slh_test_sig_name(variant, testCase) == sig_name:
+                vectorFound = True
                 sk = testCase["sk"]
                 message = testCase["message"]
                 signature = testCase["signature"]
@@ -598,6 +602,8 @@ def test_acvp_vec_slh_dsa_sig_gen(sig_name):
                         ]
                     )
 
+    assert vectorFound, f"no ACVP sigGen vectors matched {sig_name}"
+
 
 @helpers.filtered_test
 @pytest.mark.skipif(sys.platform.startswith("win"), reason="Not needed on Windows")
@@ -613,9 +619,11 @@ def test_acvp_vec_slh_dsa_sig_ver(sig_name):
     assert resp.status_code == 200
     slh_sig_sig_acvp = json.loads(resp.content)
 
+    vectorFound = False
     for variant in slh_sig_sig_acvp["testGroups"]:
         for testCase in variant["tests"]:
             if slh_test_sig_name(variant, testCase) == sig_name:
+                vectorFound = True
                 message = testCase["message"]
                 signature = testCase["signature"]
                 pk = testCase["pk"]
@@ -647,6 +655,8 @@ def test_acvp_vec_slh_dsa_sig_ver(sig_name):
                             testPassed,
                         ]
                     )
+
+    assert vectorFound, f"no ACVP sigVer vectors matched {sig_name}"
 
 
 if __name__ == "__main__":
