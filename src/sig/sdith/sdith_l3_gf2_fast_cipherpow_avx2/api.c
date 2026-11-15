@@ -43,8 +43,8 @@ OQS_STATUS crypto_sign_sign(
 	size_t message_len,
 	const uint8_t *secret_key)
 {
-  // TODO: there is an opportunity to optimize this by reusing the allocated tmp/entropy space
-  // when repeatedly signing/verifying. Tracked in liboqs as:
+  // explicit buffer reuse showed no speedup in the benchmarks
+  // glibc already reused freed memory between calls
   // https://github.com/open-quantum-safe/liboqs/issues/2619
   uint64_t entropy_bytes = sdith_signature_entropy_bytes(&SIGNATURE_PARAMS);
   uint64_t tmp_bytes = sdith_signature_tmp_bytes(&SIGNATURE_PARAMS);
