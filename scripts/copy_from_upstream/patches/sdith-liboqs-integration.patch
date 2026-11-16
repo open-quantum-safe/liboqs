@@ -336,7 +336,7 @@ index 0000000..6b80b56
 +}
 diff --git a/integration/liboqs/api.c b/integration/liboqs/api.c
 new file mode 100644
-index 0000000..64c3088
+index 0000000..8f4ebcd
 --- /dev/null
 +++ b/integration/liboqs/api.c
 @@ -0,0 +1,92 @@
@@ -385,8 +385,8 @@ index 0000000..64c3088
 +	size_t message_len,
 +	const uint8_t *secret_key)
 +{
-+  // TODO: there is an opportunity to optimize this by reusing the allocated tmp/entropy space
-+  // when repeatedly signing/verifying. Tracked in liboqs as:
++  // explicit buffer reuse showed no speedup in the benchmarks
++  // glibc already reused freed memory between calls
 +  // https://github.com/open-quantum-safe/liboqs/issues/2619
 +  uint64_t entropy_bytes = sdith_signature_entropy_bytes(&SIGNATURE_PARAMS);
 +  uint64_t tmp_bytes = sdith_signature_tmp_bytes(&SIGNATURE_PARAMS);

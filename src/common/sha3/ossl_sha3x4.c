@@ -34,6 +34,7 @@ typedef struct {
 
 static void SHA3_shake128_x4_inc_init(OQS_SHA3_shake128_x4_inc_ctx *state) {
 	state->ctx = OQS_MEM_malloc(sizeof(intrn_shake128_x4_inc_ctx));
+	OQS_EXIT_IF_NULLPTR(state->ctx, "SHA3x4");
 
 	intrn_shake128_x4_inc_ctx *s = (intrn_shake128_x4_inc_ctx *)state->ctx;
 	s->mdctx0 = OSSL_FUNC(EVP_MD_CTX_new)();
@@ -158,6 +159,7 @@ typedef struct {
 
 static void SHA3_shake256_x4_inc_init(OQS_SHA3_shake256_x4_inc_ctx *state) {
 	state->ctx = OQS_MEM_malloc(sizeof(intrn_shake256_x4_inc_ctx));
+	OQS_EXIT_IF_NULLPTR(state->ctx, "SHA3x4");
 
 	intrn_shake256_x4_inc_ctx *s = (intrn_shake256_x4_inc_ctx *)state->ctx;
 	s->mdctx0 = OSSL_FUNC(EVP_MD_CTX_new)();
