@@ -11,6 +11,9 @@ import itertools
 import copy
 import subprocess
 
+SLH_DSA_REPO = 'https://github.com/pq-code-package/slhdsa-c'
+SLH_DSA_COMMIT = '47451432bb04faf8217ffe8a961a75b542bf88e8'
+
 #get contents of a file
 def file_get_contents(filename, encoding=None):
     with open(filename, mode='r', encoding=encoding) as fh:
@@ -24,7 +27,7 @@ def copy_from_commit():
     #clean up code
     shutil.rmtree(os.path.join(slh_dsa_c_dir))
 
-    url = os.path.join('https://github.com/pq-code-package/slhdsa-c/archive/', commit_hash, ".tar.gz")
+    url = os.path.join(SLH_DSA_REPO + '/archive/', SLH_DSA_COMMIT, ".tar.gz")
     
     response = requests.get(url) 
 
@@ -122,7 +125,7 @@ def doc_replacer(template_file, destination_file):
     template = file_get_contents(template_file)
 
     #write to destination
-    contents = jinja2.Template(template).render({'implementations': implementations, 'commitHash': commit_hash})
+    contents = jinja2.Template(template).render({'implementations': implementations, 'commitHash': SLH_DSA_COMMIT})
     with open(destination_file, "w") as f:
                 f.write(contents)
 
@@ -244,13 +247,10 @@ def main():
     os.chdir(os.path.join(os.environ['LIBOQS_DIR']))
 
     #initialize globals
-    global commit_hash, slh_dir, slh_dsa_c_dir, slh_dsa_temp_dir, slh_wrappers_dir, template_dir, slh_patch_dir, meta_file, \
+    global slh_dir, slh_dsa_c_dir, slh_dsa_temp_dir, slh_wrappers_dir, template_dir, slh_patch_dir, meta_file, \
         jinja_header_file, jinja_src_file, jinja_cmake_file, meta, prehashStrings, impl, variants, jinja_sig_c_file, \
         jinja_sig_h_file, jinja_alg_support_file, jinja_oqsconfig_file, sig_c_path, sig_h_path, \
         alg_support_path, oqsconfig_path
-
-    # This commit hash will need to be updated
-    commit_hash = "d25ccc6a2c6512dd44cfaf81e44181a3010757b1"
     
     # internal paths
     slh_dir = os.path.join(os.environ['LIBOQS_DIR'], 'src/sig/slh_dsa')
