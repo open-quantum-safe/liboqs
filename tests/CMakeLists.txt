@@ -264,3 +264,22 @@ add_custom_target(
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
     DEPENDS oqs dump_alg_info ${KEM_TESTS} ${SIG_TESTS} ${SIG_STFL_TESTS} ${UNIX_TESTS}
     USES_TERMINAL)
+
+# One target per test suite. tests/conftest.py is the source of truth for
+# suite definitions; tests/test_suites.py checks this list matches it.
+# Set OQS_TEST_ALGS=ALG[,ALG...] in the environment to limit per-algorithm tests.
+set(OQS_TEST_SUITES basic build correctness extensive vectors leaks distbuild)
+foreach(suite ${OQS_TEST_SUITES})
+    if(suite STREQUAL "basic" OR suite STREQUAL "build")
+        # Source-level and CMake-configure checks: nothing needs to be built first.
+        set(suite_depends "")
+    else()
+        set(suite_depends oqs dump_alg_info ${KEM_TESTS} ${SIG_TESTS} ${SIG_STFL_TESTS} ${UNIX_TESTS})
+    endif()
+    add_custom_target(
+        run_tests_${suite}
+        COMMAND ${CMAKE_COMMAND} -E env OQS_BUILD_DIR=${CMAKE_BINARY_DIR} ${PYTHON3_EXEC} -m pytest tests --verbose --numprocesses=${OQS_PYTEST_NUMPROCESSES} --suite ${suite}
+        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+        DEPENDS ${suite_depends}
+        USES_TERMINAL)
+endforeach()

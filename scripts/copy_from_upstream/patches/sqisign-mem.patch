@@ -38,16 +38,20 @@ diff --git a/src/quaternion/ref/lvlx/test/random_input_generation.c b/src/quater
  #include <stdio.h>
  #include <prng.h>
  
-@@ -50,7 +50,7 @@
+@@ -50,7 +50,11 @@
                                                  int iterations)
  {
      quat_ideal_t *ideals;
 -    ideals = malloc(iterations * sizeof(quat_ideal_t));
 +    ideals = OQS_MEM_malloc(iterations * sizeof(quat_ideal_t));
++    if (ideals == NULL) {
++        printf("Allocation failure in quat_test_input_random_ideal_lattice_generation\n");
++        return 1;
++    }
      for (int i = 0; i < iterations; i++)
          quat_ideal_init(&(ideals[i]));
      int randret = quat_test_input_random_ideal_generation(ideals, norm_bitsize, iterations);
-@@ -61,7 +61,7 @@
+@@ -61,7 +65,7 @@
              ibz_copy(&(norms[iter]), &(ideals[iter].norm));
          }
      }
