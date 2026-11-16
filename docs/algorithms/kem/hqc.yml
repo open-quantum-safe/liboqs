@@ -5,15 +5,13 @@ principal-submitters:
 crypto-assumption: Syndrome decoding of structure codes (Hamming Quasi-Cyclic)
 website: https://pqc-hqc.org/
 nist-round: 4
-standardization-status: Selected by [NIST](https://pqc-hqc.org/doc/hqc_specifications_2025_08_22.pdf)
-  for upcoming standardization
+standardization-status: Selected by NIST for upcoming standardization
 upstream-maintenance: TBD
 upstream-statement-url: null
 oqs-support-tier: 2
-spec-version: 2025-08-22
+spec-version: 2026-10-12
 upstream-ancestors:
 - https://gitlab.com/pqc-hqc
-- submission 2025-08-22 at https://pqc-hqc.org/implementation.html
 parameter-sets:
 - name: HQC-1
   claimed-nist-level: 1
@@ -33,6 +31,24 @@ parameter-sets:
     large-stack-usage: false
     upstream: primary-upstream
     default: true
+  - upstream-id: x86_64
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - avx
+      - avx2
+      - bmi1
+      - pclmulqdq
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+    upstream: primary-upstream
+    default: false
 - name: HQC-3
   claimed-nist-level: 3
   claimed-security: IND-CCA2
@@ -51,6 +67,24 @@ parameter-sets:
     large-stack-usage: false
     upstream: primary-upstream
     default: true
+  - upstream-id: x86_64
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - avx
+      - avx2
+      - bmi1
+      - pclmulqdq
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+    upstream: primary-upstream
+    default: false
 - name: HQC-5
   claimed-nist-level: 5
   claimed-security: IND-CCA2
@@ -69,6 +103,24 @@ parameter-sets:
     large-stack-usage: false
     upstream: primary-upstream
     default: true
+  - upstream-id: x86_64
+    supported-platforms:
+    - architecture: x86_64
+      operating_systems:
+      - Linux
+      - Darwin
+      required_flags:
+      - avx
+      - avx2
+      - bmi1
+      - pclmulqdq
+    common-crypto:
+    - SHA3: liboqs
+    no-secret-dependent-branching-claimed: true
+    no-secret-dependent-branching-checked-by-valgrind: false
+    large-stack-usage: false
+    upstream: primary-upstream
+    default: false
 primary-upstream:
   spdx-license-identifier: Public domain
   source: https://gitlab.com/pqc-hqc/hqc/commit/06567ccbad10580d78dd7863b15d23f41076d57f

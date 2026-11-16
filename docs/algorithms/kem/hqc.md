@@ -5,13 +5,16 @@
 - **Principal submitters**: Philippe Gaborit.
 - **Auxiliary submitters**: Carlos Aguilar-Melchor, Nicolas Aragon, Slim Bettaieb, Loïc Bidoux, Olivier Blazy, Jean-Christophe Deneuville, Edoardo Persichetti, Gilles Zémor, Jurjen Bos, Arnaud Dion, Jérôme Lacan, Jean-Marc Robert, Pascal Véron, Paulo L. Barreto, Santosh Ghosh, Shay Gueron, Tim Güneysu, Rafael Misoczki, Jan Richter-Brokmann, Nicolas Sendrier, Jean-Pierre Tillich, Valentin Vasseur.
 - **Authors' website**: https://pqc-hqc.org/
-- **Specification version**: 2025-08-22.
+- **Specification version**: 2026-10-12.
 - **Primary Source**<a name="primary-source"></a>:
   - **Source**: https://gitlab.com/pqc-hqc/hqc/commit/06567ccbad10580d78dd7863b15d23f41076d57f with copy_from_upstream patches
   - **Implementation license (SPDX-Identifier)**: Public domain
+- **Optimized Implementation sources**:
+  - **x86_64**:<a name="x86_64"></a>
+      - **Source**: https://gitlab.com/pqc-hqc/hqc/commit/06567ccbad10580d78dd7863b15d23f41076d57f with copy_from_upstream patches
+      - **Implementation license (SPDX-Identifier)**: Public domain
 - **Ancestors of primary source**:
-  - https://gitlab.com/pqc-hqc, which takes it from:
-  - submission 2025-08-22 at https://pqc-hqc.org/implementation.html
+  - https://gitlab.com/pqc-hqc
 
 ## Support
 
@@ -31,6 +34,7 @@
 |       Implementation source       | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?‡   |
 |:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:----------------------|
 | [Primary Source](#primary-source) | ref                      | All                         | All                             | None                    | True                               | False                                          | False                 |
+| [Primary Source](#primary-source) | x86\_64                  | x86\_64                     | Linux,Darwin                    | AVX,AVX2,BMI1,PCLMULQDQ | True                               | False                                          | False                 |
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
@@ -41,6 +45,7 @@ Are implementations chosen based on runtime CPU feature detection? **Yes**.
 |       Implementation source       | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
 |:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
 | [Primary Source](#primary-source) | ref                      | All                         | All                             | None                    | True                               | False                                          | False                |
+| [Primary Source](#primary-source) | x86\_64                  | x86\_64                     | Linux,Darwin                    | AVX,AVX2,BMI1,PCLMULQDQ | True                               | False                                          | False                |
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
@@ -49,6 +54,7 @@ Are implementations chosen based on runtime CPU feature detection? **Yes**.
 |       Implementation source       | Identifier in upstream   | Supported architecture(s)   | Supported operating system(s)   | CPU extension(s) used   | No branching-on-secrets claimed?   | No branching-on-secrets checked by valgrind?   | Large stack usage?   |
 |:---------------------------------:|:-------------------------|:----------------------------|:--------------------------------|:------------------------|:-----------------------------------|:-----------------------------------------------|:---------------------|
 | [Primary Source](#primary-source) | ref                      | All                         | All                             | None                    | True                               | False                                          | False                |
+| [Primary Source](#primary-source) | x86\_64                  | x86\_64                     | Linux,Darwin                    | AVX,AVX2,BMI1,PCLMULQDQ | True                               | False                                          | False                |
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
