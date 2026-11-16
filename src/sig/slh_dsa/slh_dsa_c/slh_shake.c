@@ -166,20 +166,28 @@ static void shake_chain(slh_var_t *var, uint8_t *tmp, const uint8_t *x,
 
   if (s == 0)
   { /* no-op */
-    memcpy(tmp, x, n);
+    memmove(tmp, x, n);
     return;
   }
 
-  memcpy(ks + h, x, n); /* start node */
+  for (k = h; k < l; k++)
+  {
+    ks[k] = 0;
+  }
+  keccak_f1600_xor_bytes(ks, x, 8 * h, n); /* start node */
   for (j = 0; j < s; j++)
   {
     if (j > 0)
     {
       memcpy(ks + h, ks, n); /* chaining */
     }
-    memcpy(ks, var->pk_seed, n);       /* PK.seed */
-    adrs_set_hash_address(var, i + j); /* address */
-    memcpy(ks + n8, (const uint8_t *)var->adrs->u8, 32);
+    for (k = 0; k < h; k++)
+    {
+      ks[k] = 0;
+    }
+    keccak_f1600_xor_bytes(ks, var->pk_seed, 0, n); /* PK.seed */
+    adrs_set_hash_address(var, i + j);              /* address */
+    keccak_f1600_xor_bytes(ks, var->adrs->u8, 8 * n8, 32);
 
     /* padding */
     ks[l] = 0x1F; /* shake padding */
@@ -195,7 +203,7 @@ static void shake_chain(slh_var_t *var, uint8_t *tmp, const uint8_t *x,
 
     keccak_f1600(ks); /* permutation */
   }
-  memcpy(tmp, ks, n);
+  keccak_f1600_extract_bytes(ks, tmp, 0, n);
 }
 
 /* Combination WOTS PRF + Chain */

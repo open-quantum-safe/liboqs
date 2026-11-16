@@ -54,7 +54,10 @@ static size_t hash_slh_dsa_pad(uint8_t *mp, const uint8_t *m, size_t m_sz,
 
   mp[0] = 1;
   mp[1] = ctx_sz & 0xFF;
-  memcpy(mp + 2, ctx, ctx_sz);
+  if (ctx_sz > 0) /* ctx may be NULL */
+  {
+    memcpy(mp + 2, ctx, ctx_sz);
+  }
   mp_sz = 2 + ctx_sz;
 
   if (strcmp(ph, "SHA2-256") == 0)

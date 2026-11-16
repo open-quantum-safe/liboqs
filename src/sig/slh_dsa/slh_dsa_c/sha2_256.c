@@ -142,7 +142,12 @@ void sha2_256_compress(void *v)
 
 /* initialize */
 
-static void sha2_256_init_h0(sha2_256_t *sha, const uint8_t *h0)
+static void sha2_256_init_h0(sha2_256_t *sha, const uint8_t h0[32])
+__contract__(
+  requires(memory_no_alias(sha, sizeof(sha2_256_t)))
+  requires(memory_no_alias(h0, 32))
+  assigns(object_whole(sha))
+)
 {
   memcpy(sha->s, h0, 32);
   sha->i = 0;
@@ -184,6 +189,11 @@ void sha2_256_update(sha2_256_t *sha, const uint8_t *m, size_t m_sz)
 {
   size_t l;
   uint8_t *mp = (uint8_t *)&sha->s[8];
+
+  if (m_sz == 0)
+  {
+    return; /* m may be NULL */
+  }
 
   sha->len += m_sz;
   l = 64 - sha->i;
