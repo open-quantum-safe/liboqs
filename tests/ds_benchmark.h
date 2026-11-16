@@ -128,10 +128,10 @@ static uint64_t _bench_rdtsc(void) {
 	}
 	return li.QuadPart;
 #elif defined(__i586__) || defined(__amd64__)
-	uint64_t x;
+	uint32_t lo, hi;
 	__asm__ volatile(".byte 0x0f, 0x31"
-	                 : "=A"(x));
-	return x;
+	                 : "=a"(lo), "=d"(hi));
+	return ((uint64_t) hi << 32) | lo;
 #elif defined(SPEED_USE_ARM_PMU)
 	/* Use the Performance Monitoring Unit */
 	uint64_t value;
@@ -206,9 +206,6 @@ static void _bench_init_perfcounters(void) {
     _bench_cycles_end = _bench_rdtsc();                                                                                                                                     \
     gettimeofday(&_bench_timeval_end, NULL);                                                                                                                                \
     _bench_iterations += 1;                                                                                                                                                 \
-    if (_bench_cycles_end < _bench_cycles_start) {                                                                                                                          \
-        _bench_cycles_end += (uint64_t) 1 << 32;                                                                                                                            \
-    }                                                                                                                                                                       \
     _bench_cycles_diff = _bench_cycles_end;                                                                                                                                 \
     _bench_cycles_diff -= _bench_cycles_start;                                                                                                                              \
     _bench_cycles_cumulative += _bench_cycles_diff;                                                                                                                         \
