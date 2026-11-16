@@ -91,7 +91,8 @@ def add_cbom_component(out, kem_yaml, parameter_set):
         dic = {
             "all": "generic",
             "x86_64": "x86_64",
-            "ARM64_V8": "armv8-a"
+            "ARM64_V8": "armv8-a",
+            "ppc64le": "ppc64le"
         }
         dep = []
         if 'common-crypto' in impl:

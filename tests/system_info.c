@@ -147,6 +147,9 @@ static void print_cpu_extensions(void) {
 	if (OQS_CPU_has_extension(OQS_CPU_EXT_ARM_NEON)) {
 		printf(" NEON");
 	}
+	if (OQS_CPU_has_extension(OQS_CPU_EXT_POWER8_VECTOR)) {
+		printf(" POWER8_VECTOR");
+	}
 #else
 	printf("CPU exts compile-time: ");
 #ifdef OQS_USE_ADX_INSTRUCTIONS
@@ -196,6 +199,9 @@ static void print_cpu_extensions(void) {
 #endif
 #ifdef OQS_USE_ARM_NEON_INSTRUCTIONS
 	printf(" NEON");
+#endif
+#ifdef OQS_USE_POWER8_VECTOR_INSTRUCTIONS
+	printf(" POWER8_VECTOR");
 #endif
 	printf("\n");
 #endif

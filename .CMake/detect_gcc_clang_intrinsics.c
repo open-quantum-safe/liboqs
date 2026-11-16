@@ -63,5 +63,8 @@ int main(void) {
 #if defined(__ARM_NEON)
 	printf("ARM_NEON;");
 #endif
+#if defined(__POWER8_VECTOR__)
+	printf("POWER8_VECTOR;");
+#endif
 	return 0;
 }
