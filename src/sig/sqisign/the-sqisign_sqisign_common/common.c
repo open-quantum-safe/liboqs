@@ -1,4 +1,4 @@
-#include <fips202.h>
+#include <sqisign_fips202.h>
 #include <tutil.h>
 #include <mp.h>
 #include <encoded_sizes.h>
