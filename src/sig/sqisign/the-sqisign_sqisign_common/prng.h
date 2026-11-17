@@ -5,7 +5,7 @@
 
 #include <stddef.h>
 #include <stdint.h>
-#include <fips202.h>
+#include <sqisign_fips202.h>
 #include <tutil.h>
 #include <sqisign_namespace.h>
 

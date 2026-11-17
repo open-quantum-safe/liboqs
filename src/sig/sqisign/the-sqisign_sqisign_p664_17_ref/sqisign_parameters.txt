@@ -1,3 +1,0 @@
-lvl = 5
-p = 0x10ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
-security = 256
