@@ -123,6 +123,12 @@ if(OQS_BUILD_FUZZ_TESTS AND CMAKE_C_COMPILER_ID MATCHES "Clang")
         COMPILE_FLAGS "${FUZZING_COMPILE_FLAGS}"
         LINK_FLAGS "${FUZZING_LINK_FLAGS}"
     )
+    add_executable(fuzz_test_kem_encaps fuzz_test_kem_encaps.c)
+    target_link_libraries(fuzz_test_kem_encaps PRIVATE ${TEST_DEPS})
+    set_target_properties(fuzz_test_kem_encaps PROPERTIES
+        COMPILE_FLAGS "${FUZZING_COMPILE_FLAGS}"
+        LINK_FLAGS "${FUZZING_LINK_FLAGS}"
+    )
     add_executable(fuzz_test_sig_stfl_xmss fuzz_test_sig_stfl_xmss.c)
     target_link_libraries(fuzz_test_sig_stfl_xmss PRIVATE ${TEST_DEPS})
     set_target_properties(fuzz_test_sig_stfl_xmss PROPERTIES
