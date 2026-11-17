@@ -5,7 +5,7 @@
 #include <prng.h>
 #include <rng.h>
 #include <mem.h>
-#include <fips202.h>
+#include <sqisign_fips202.h>
 
 // Marks a seeded root or domain context. Reduces the risk that reused memory from a stack-allocated domain context
 // would contain a "simple" value such as 1 and be falsely interpreted as seeded.

@@ -1,8 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 // liboqs integration shim: route SQIsign's FIPS202 (SHA3/SHAKE) calls to liboqs OQS_SHA3_*.
-// This header overrides the in-tree src/common/generic/include/fips202.h when SQIsign is built
-// inside liboqs; the bundled fips202.c is excluded from the liboqs source list.
+// It has a unique name so that no other fips202.h on the include path can replace it.
 //
 // The OQS_SHA3 API mirrors the PQClean FIPS202 API used by SQIsign, with matching argument
 // orders, so the incremental + one-shot calls map directly. The only non-trivial part is the
@@ -10,8 +9,8 @@
 // directly: it is emulated on top of the OQS incremental context below. The resulting output is
 // bit-for-bit identical (SHAKE is independent of incremental vs. one-shot absorption).
 
-#ifndef FIPS202_H
-#define FIPS202_H
+#ifndef SQISIGN_FIPS202_H
+#define SQISIGN_FIPS202_H
 
 #include <stddef.h>
 #include <stdint.h>
@@ -132,4 +131,4 @@ shake256_ctx_clone(OQS_SHA3_shake256_inc_ctx *dest, const OQS_SHA3_shake256_inc_
     OQS_SHA3_shake256_inc_ctx_clone(dest, src);
 }
 
-#endif // FIPS202_H
+#endif // SQISIGN_FIPS202_H
