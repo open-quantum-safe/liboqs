@@ -46,3 +46,4 @@ diff --git a/aes.c b/aes.c
 +    }
      memcpy(out, last_block, outlen % IV_SIZE);
    }
+ 
