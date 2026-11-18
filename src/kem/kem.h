@@ -276,6 +276,10 @@ OQS_API OQS_KEM *OQS_KEM_new(const char *method_name);
  * `secret_key`, based on the `length_*` members in this object or the per-scheme
  * compile-time macros `OQS_KEM_*_length_*`.
  *
+ * Caller is also responsible for ensuring that `seed` is exactly
+ * `length_keypair_seed` bytes long. This function cannot check the length of
+ * `seed`: a shorter buffer causes an out-of-bounds read.
+ *
  * @param[in] kem The OQS_KEM object representing the KEM.
  * @param[out] public_key The public key represented as a byte string.
  * @param[out] secret_key The secret key represented as a byte string.
@@ -305,6 +309,12 @@ OQS_API OQS_STATUS OQS_KEM_keypair(const OQS_KEM *kem, uint8_t *public_key, uint
  * `shared_secret`, based on the `length_*` members in this object or the per-scheme
  * compile-time macros `OQS_KEM_*_length_*`.
  *
+ * Caller is also responsible for ensuring that `public_key` is exactly
+ * `length_public_key` bytes long and `seed` is exactly `length_encaps_seed` bytes
+ * long. This function cannot check these lengths: a shorter buffer causes an
+ * out-of-bounds read, and a public key of the wrong length (for example, one for
+ * a different parameter set) may not be detected.
+ *
  * @param[in] kem The OQS_KEM object representing the KEM.
  * @param[out] ciphertext The ciphertext (encapsulation) represented as a byte string.
  * @param[out] shared_secret The shared secret represented as a byte string.
@@ -321,6 +331,12 @@ OQS_API OQS_STATUS OQS_KEM_encaps_derand(const OQS_KEM *kem, uint8_t *ciphertext
  * `shared_secret`, based on the `length_*` members in this object or the per-scheme
  * compile-time macros `OQS_KEM_*_length_*`.
  *
+ * Caller is also responsible for ensuring that `public_key` is exactly
+ * `length_public_key` bytes long. This function cannot check the length of
+ * `public_key`: a shorter buffer causes an out-of-bounds read, and a public key
+ * of the wrong length (for example, one for a different parameter set) may not
+ * be detected.
+ *
  * @param[in] kem The OQS_KEM object representing the KEM.
  * @param[out] ciphertext The ciphertext (encapsulation) represented as a byte string.
  * @param[out] shared_secret The shared secret represented as a byte string.
@@ -335,6 +351,12 @@ OQS_API OQS_STATUS OQS_KEM_encaps(const OQS_KEM *kem, uint8_t *ciphertext, uint8
  * Caller is responsible for allocating sufficient memory for `shared_secret`, based
  * on the `length_*` members in this object or the per-scheme compile-time macros
  * `OQS_KEM_*_length_*`.
+ *
+ * Caller is also responsible for ensuring that `ciphertext` is exactly
+ * `length_ciphertext` bytes long and `secret_key` is exactly `length_secret_key`
+ * bytes long. This function cannot check these lengths: a shorter buffer causes
+ * an out-of-bounds read, and a ciphertext or secret key of the wrong length (for
+ * example, one for a different parameter set) may not be detected.
  *
  * @param[in] kem The OQS_KEM object representing the KEM.
  * @param[out] shared_secret The shared secret represented as a byte string.

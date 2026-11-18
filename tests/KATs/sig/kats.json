@@ -1,4 +1,52 @@
 {
+  "FAEST-128F": {
+    "all": "84f859efc330d8193d8a10cfc7cdd6c30e6e188f4986d6b7f0bf4728ef265061",
+    "single": "a8dc23f6d66282f529c1cf52288566cc0af8650910aa0b00a3c7acc9be380bc9"
+  },
+  "FAEST-128S": {
+    "all": "59104d3ca116b412580d18a51735f46be6e3a1cef1193b222b68ddec8a2566fc",
+    "single": "ac36ff496db5b30a8c4df1768100c0e804c4b627c8df85be27ebd3a14001ca13"
+  },
+  "FAEST-192F": {
+    "all": "90b56d2dcf0242bf284956710a26d0088620ef6f78c7062ae4de7905791d4331",
+    "single": "0d8d585f17687dfad35159b02ebf9d7ed96983bcf4630fe1062f5a0690a3f632"
+  },
+  "FAEST-192S": {
+    "all": "fc33136a80366ddf791c882162bcaaf090b44dc78354b3b838656161dc1ef3cd",
+    "single": "cdff1a6fc7d81eb03522b968a9af6e0db6295e00410c95ea6330c2bf1fa97148"
+  },
+  "FAEST-256F": {
+    "all": "346f5c1ad6ff5b1b11024cab78f7abbffafb42f433d879926967a201d862e250",
+    "single": "77db00b2d70791ed8f710bb226722357c5e155dc0ce596e9356aaf8d80f46f90"
+  },
+  "FAEST-256S": {
+    "all": "6046b49ab226753ea9cca755404b440b78b135b5d82baac5d3ca19435d7b3e6a",
+    "single": "5573247ebd897e38930942910772d58b7fbfe969793a8326180f173131492295"
+  },
+  "FAEST-EM-128F": {
+    "all": "3111062c97cfbfd823c9eea2177ad288bdf0125275f93ec07533fca8fe3e6038",
+    "single": "585e5adc1a1edb610eeec10148e246db86758d0f77fc27137def3a2ab7238a2f"
+  },
+  "FAEST-EM-128S": {
+    "all": "1ad0293fa5f95325558e98d11f02b2ef9a4978ffe27b85a48eaf17ef8949d06f",
+    "single": "ee087b31592cbd1eabc34882fbe22d3c5d270b92ada1e4aab5be5588dc9cbd2e"
+  },
+  "FAEST-EM-192F": {
+    "all": "280b1e26aa2b20049868bfb9eae7c59eb51cd022c43cfbe0c79a0f76dcc80717",
+    "single": "19d56fcb425264ee609c1da98622baa26bd349ab2ac6635a9c1a5338b691480f"
+  },
+  "FAEST-EM-192S": {
+    "all": "71bd442de99fc5184a4843bd37ba4e448fd14144fca0af04036dd7d44b1254cb",
+    "single": "7855c8018fb3a60994722be77b44b0c14902303c649f2b80afa5c21911d0f676"
+  },
+  "FAEST-EM-256F": {
+    "all": "de96ad9eacea34b4c0b21ae33072082d514c380685806979046fc344b783bf3e",
+    "single": "c27139ced48f1bfecc0ced01e3ee03377623f562c86e98fcc3b47dafa7872799"
+  },
+  "FAEST-EM-256S": {
+    "all": "077ce444a0e62e3aeb729b3dd9e78a3d14ca11db41e39ed49e9058fe2b297db0",
+    "single": "3aaf2e891cade204aef3e92e3fc39dd2ee8e6eeaf4cf37ed8ec1888ae6903150"
+  },
   "Falcon-1024": {
     "all": "46f9682ebf6fd31bae60c3191ed1a6c56aa09fb4945a266f86732a90c6c4db67",
     "single": "e699d88eb214fef30597385f40814baeb84ac505d5f05f5c257b0726fc4530b8"

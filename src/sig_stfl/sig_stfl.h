@@ -555,6 +555,13 @@ OQS_API OQS_STATUS OQS_SIG_STFL_sign(const OQS_SIG_STFL *sig, uint8_t *signature
 /**
  * Signature verification algorithm.
  *
+ * Caller is responsible for ensuring that `public_key` is exactly
+ * `length_public_key` bytes long, based on the `length_*` members in this object
+ * or the per-scheme compile-time macros `OQS_SIG_STFL_*_length_*`. This function
+ * cannot check the length of `public_key`: a shorter buffer causes an
+ * out-of-bounds read, and a public key of the wrong length (for example, one for
+ * a different parameter set) may not be detected.
+ *
  * @param[in] sig The OQS_SIG_STFL object representing the signature scheme.
  * @param[in] message The message is represented as a byte string.
  * @param[in] message_len The length of the message.
