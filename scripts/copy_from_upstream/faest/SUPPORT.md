@@ -52,8 +52,7 @@ When built for liboqs (`-DOQS`), FAEST routes cryptographic primitives to liboqs
 | SHAKE | `OQS_SHA3_shake*` (`hash_shake.h`) |
 | Memory helpers | `OQS_MEM_*` via `faest_malloc` / `faest_calloc` / `faest_free` (`compat.h`) |
 | CPU features | `OQS_CPU_has_extension` (`cpu.h`) |
-| AES-128/256 ECB | `OQS_AES128/256_ECB_*` (`aes.c`) |
-| AES-192 ECB | `OQS_AES192_ECB_*` (`aes.c`) |
+| AES-128/192/256 ECB | `OQS_AES128/192/256_ECB_*` (`aes.c`) |
 
 Bare faest-ref globals are renamed with `#define` in `generated/faest_namespace.h`
 (included from `config.h`) to `oqs_faest_<symbol>`. Upstream can later replace

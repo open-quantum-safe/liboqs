@@ -1090,10 +1090,7 @@ void aes_extend_witness_7(uint8_t* w, const uint8_t* key, const uint8_t* in,
   // common part for AES-128, EM-128, EM-192, EM-256, first part for AES-192 and AES-256
   {
     // line 16
-    // liboqs scan-build: zero-init (NOT a known runtime bug). load_state fills
-    // only `block_words` columns of the max-sized block, which the analyzer
-    // cannot correlate with the equally bounded reads in the round functions.
-    aes_block_t state = {0};
+    aes_block_t state;
     load_state(state, in, block_words);
 
     // line 17
@@ -1124,7 +1121,7 @@ void aes_extend_witness_7(uint8_t* w, const uint8_t* key, const uint8_t* in,
     buf[0] ^= 0x1;
 
     // line 16
-    aes_block_t state = {0}; // liboqs scan-build: zero-init; see witness note above
+    aes_block_t state;
     load_state(state, buf, AES_BLOCK_WORDS);
 
     // line 17
