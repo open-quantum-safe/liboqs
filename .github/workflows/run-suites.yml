@@ -82,12 +82,15 @@ jobs:
     timeout-minutes: 85 # max + 3*std over the last thousands of successful runs
     env:
       OQS_TEST_SIG_CTX_STEP: "255"
+      # Fast FAEST variants only; slow "s" sets remain skipped until FAEST CI time is trimmed. See #2658.
+      SKIP_ALGS: 'FAEST-.*S'
     # Steps must run under sh (Alpine has no bash) and pwsh (Windows).
     steps:
       - name: Checkout code
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # pin@v4
       # tests/test_leaks.py skips the slow MQOM and QR-UOV leak tests on PRs and feature-branch
       # pushes unless this step finds changes to that algorithm or to shared code it depends on.
+      # FAEST leak tests are always skipped on PRs; they remain enabled on main.
       - name: Detect algorithm changes
         if: runner.os == 'Linux' && contains(inputs.suites, 'leaks')
         env:

@@ -39,6 +39,7 @@ SUITES = {
         "test_kats_json.py",
         "test_alg_support_generators.py",
         "test_suites.py",
+        "test_faest_integration.py",
     ],
     # build-system checks that configure CMake but run no liboqs code
     "build": [
