@@ -37,6 +37,8 @@ jobs:
       - name: Run tests
         env:
           OQS_TEST_SIG_CTX_STEP: "255"
+          # Fast FAEST variants only per-PR; slow "s" sets run in extended CI. See #2658.
+          SKIP_ALGS: 'FAEST-.*S'
         run: |
           python3 -m pytest --verbose --numprocesses=logical --dist load --maxschedchunk=1 \
           tests/test_cmdline.py \

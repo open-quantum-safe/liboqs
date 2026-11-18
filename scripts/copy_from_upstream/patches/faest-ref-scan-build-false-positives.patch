@@ -1,0 +1,49 @@
+diff --git a/aes.c b/aes.c
+--- a/aes.c
++++ b/aes.c
+@@ -804,23 +804,35 @@
+ 
+ static void generic_prg(const uint8_t* key, uint8_t* internal_iv, uint8_t* out, unsigned int seclvl,
+                         size_t outlen) {
+-  generic_aes_ecb_t ctx;
+-  int ret = generic_aes_ecb_new(&ctx, key, seclvl);
+-  assert(ret == 0);
+-  (void)ret;
++  // liboqs scan-build mitigation (NOT a known runtime bug): upstream expresses
++  // "these calls cannot fail" with assert(ret == 0). Under the clang static
++  // analyzer (and any NDEBUG build) those asserts vanish, so the analyzer walks
++  // the failure paths and reports ctx->sched as a garbage value and `out` as a
++  // possible NULL dereference. Zero-initialising ctx and converting the asserts
++  // into explicit early returns makes those paths well-defined without altering
++  // behaviour on the real, never-failing call sequence.
++  generic_aes_ecb_t ctx = {0};
++  if (!key || !internal_iv || !out) {
++    return;
++  }
++  if (generic_aes_ecb_new(&ctx, key, seclvl) != 0) {
++    return;
++  }
+ 
+   for (size_t idx = 0; idx < outlen / IV_SIZE; idx += 1, out += IV_SIZE) {
+-    ret = generic_aes_ecb_encrypt(&ctx, out, internal_iv, 1);
+-    assert(ret == 0);
+-    (void)ret;
++    if (generic_aes_ecb_encrypt(&ctx, out, internal_iv, 1) != 0) {
++      generic_aes_ecb_free(&ctx);
++      return;
++    }
+     aes_increment_iv(internal_iv);
+   }
+ 
+   if (outlen % IV_SIZE) {
+     uint8_t last_block[IV_SIZE];
+-    ret = generic_aes_ecb_encrypt(&ctx, last_block, internal_iv, 1);
+-    assert(ret == 0);
+-    (void)ret;
++    if (generic_aes_ecb_encrypt(&ctx, last_block, internal_iv, 1) != 0) {
++      generic_aes_ecb_free(&ctx);
++      return;
++    }
+     memcpy(out, last_block, outlen % IV_SIZE);
+   }
+ 

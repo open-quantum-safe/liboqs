@@ -21,7 +21,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # pin@v4
       - name: Set up CodeQL CLI
         id: init
-        uses: github/codeql-action/init@9b3254085494b55a0f7c4c2b3d2d52cc712ce370 # v4.39.1
+        uses: github/codeql-action/init@33d7b85da1a04171e211befe2c739303b9a4c066 # v4.39.3
         with:
           languages: cpp
           build-mode: none
@@ -40,21 +40,24 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # pin@v4
       - name: Initialize CodeQL
-        uses: github/codeql-action/init@9b3254085494b55a0f7c4c2b3d2d52cc712ce370 # v4.39.1
+        uses: github/codeql-action/init@33d7b85da1a04171e211befe2c739303b9a4c066 # v4.39.3
         with:
           languages: cpp
           build-mode: manual
           config-file: ./.github/codeql/codeql-config.yml
       - name: Build liboqs
-        # CodeQL only sees compiled code: build the default algorithms, with
+        # CodeQL only sees compiled code: build the default algorithms plus the
+        # stateful signatures (with key and signature generation), with
         # OpenSSL backing every primitive that supports it. On x86_64 runners
         # OQS_DIST_BUILD forces OQS_USE_AES_OPENSSL off, so aes_ossl.c is not
         # analysed.
         run: |
-          cmake -S . -B build -DOQS_USE_AES_OPENSSL=ON -DOQS_USE_SHA2_OPENSSL=ON -DOQS_USE_SHA3_OPENSSL=ON
+          cmake -S . -B build -DOQS_USE_AES_OPENSSL=ON -DOQS_USE_SHA2_OPENSSL=ON -DOQS_USE_SHA3_OPENSSL=ON \
+            -DOQS_ENABLE_SIG_STFL_XMSS=ON -DOQS_ENABLE_SIG_STFL_LMS=ON \
+            -DOQS_HAZARDOUS_EXPERIMENTAL_ENABLE_SIG_STFL_KEY_SIG_GEN=ON
           cmake --build build --parallel "$(nproc)"
       - name: Run CodeQL queries
-        uses: github/codeql-action/analyze@9b3254085494b55a0f7c4c2b3d2d52cc712ce370 # v4.39.1
+        uses: github/codeql-action/analyze@33d7b85da1a04171e211befe2c739303b9a4c066 # v4.39.3
         with:
           upload: false
           output: sarif-results
