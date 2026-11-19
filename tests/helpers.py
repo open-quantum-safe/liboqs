@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: MIT
 
 import functools
+import hashlib
 import os
 import os.path
 import pytest
@@ -8,6 +9,8 @@ import re
 import subprocess
 import sys
 import json
+import tempfile
+import time
 import unittest.mock
 import requests
 
@@ -265,6 +268,46 @@ def requests_get():
     with unittest.mock.patch("requests.get", wraps=requests.get) as mock_get:
         yield mock_get
 
-@functools.lru_cache
 def cached_requests_get(url: str):
-    return requests.get(url)
+    cache_dir = os.environ.get(
+        "OQS_TEST_CACHE_DIR",
+        os.path.join(tempfile.gettempdir(), "liboqs-test-cache"),
+    )
+    cache_path = os.path.join(cache_dir, hashlib.sha256(url.encode("utf-8")).hexdigest())
+
+    try:
+        with open(cache_path, "rb") as cache_file:
+            response = requests.Response()
+            response.status_code = 200
+            response.url = url
+            response._content = cache_file.read()
+            response._content_consumed = True
+            return response
+    except FileNotFoundError:
+        pass
+
+    for attempt in range(3):
+        try:
+            response = requests.get(url, timeout=30)
+            response.raise_for_status()
+        except requests.RequestException as error:
+            status_code = error.response.status_code if error.response is not None else None
+            retryable = status_code is None or status_code == 429 or status_code >= 500
+            if not retryable or attempt == 2:
+                raise
+            time.sleep(2**attempt)
+            continue
+
+        os.makedirs(cache_dir, exist_ok=True)
+        temporary_path = None
+        try:
+            with tempfile.NamedTemporaryFile(dir=cache_dir, delete=False) as cache_file:
+                temporary_path = cache_file.name
+                cache_file.write(response.content)
+            os.replace(temporary_path, cache_path)
+        finally:
+            if temporary_path is not None and os.path.exists(temporary_path):
+                os.unlink(temporary_path)
+        return response
+
+    raise RuntimeError("Wycheproof download retries exhausted without an error")
