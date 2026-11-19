@@ -159,7 +159,12 @@ void vect_generate_random_support2(shake256_xof_ctx *ctx, uint32_t *support, uin
 void vect_write_support_to_vector(__m256i *v, uint32_t *support, uint16_t weight) {
     __m256i bit256[PARAM_OMEGA_R];
     __m256i bloc256[PARAM_OMEGA_R];
-    const static __m256i posCmp256 = (__m256i){0UL, 1UL, 2UL, 3UL};
+    static const uint64_t posCmp256_data[4] __attribute__((aligned(32))) = {
+        0, 1, 2, 3
+    };
+
+    const __m256i posCmp256 =
+        _mm256_load_si256((const __m256i *)posCmp256_data);
 
     for (uint32_t i = 0; i < weight; i++) {
         uint64_t bloc = support[i] >> 6;

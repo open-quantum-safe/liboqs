@@ -1320,15 +1320,20 @@ index 1935f6c..d4256a4 100644
      rm_vector256_t peak_mask;
      // compute absolute value of transform
 diff --git a/src/x86_64/avx256/vector.c b/src/x86_64/avx256/vector.c
-index 4d38b8f..cb5ba66 100644
+index 4d38b8f..0ead575 100644
 --- a/src/x86_64/avx256/vector.c
 +++ b/src/x86_64/avx256/vector.c
-@@ -159,7 +159,7 @@ void vect_generate_random_support2(shake256_xof_ctx *ctx, uint32_t *support, uin
+@@ -159,7 +159,12 @@ void vect_generate_random_support2(shake256_xof_ctx *ctx, uint32_t *support, uin
  void vect_write_support_to_vector(__m256i *v, uint32_t *support, uint16_t weight) {
      __m256i bit256[PARAM_OMEGA_R];
      __m256i bloc256[PARAM_OMEGA_R];
 -    static __m256i posCmp256 = (__m256i){0UL, 1UL, 2UL, 3UL};
-+    const static __m256i posCmp256 = (__m256i){0UL, 1UL, 2UL, 3UL};
++    static const uint64_t posCmp256_data[4] __attribute__((aligned(32))) = {
++        0, 1, 2, 3
++    };
++
++    const __m256i posCmp256 =
++        _mm256_load_si256((const __m256i *)posCmp256_data);
  
      for (uint32_t i = 0; i < weight; i++) {
          uint64_t bloc = support[i] >> 6;
