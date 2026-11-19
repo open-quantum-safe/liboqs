@@ -461,7 +461,7 @@ cleanup:
 	return ret;
 }
 
-#if defined(OQS_ENABLE_SIG_ml_dsa_44) || defined(OQS_ENABLE_SIG_ml_dsa_65) || defined(OQS_ENABLE_SIG_ml_dsa_87)
+#if defined(OQS_ENABLE_SIG_ml_dsa_44) || defined(OQS_ENABLE_SIG_ml_dsa_65) || defined(OQS_ENABLE_SIG_ml_dsa_87) || defined(OQS_ENABLE_SIG_SLH_DSA)
 /* signature verification external APIs with context tests */
 static int sig_ver_vector_ext(const char *method_name,
                               const uint8_t *sigVer_pk_bytes,
@@ -527,7 +527,9 @@ cleanup:
 	return ret;
 
 }
+#endif
 
+#if defined(OQS_ENABLE_SIG_ml_dsa_44) || defined(OQS_ENABLE_SIG_ml_dsa_65) || defined(OQS_ENABLE_SIG_ml_dsa_87)
 #if defined(OQS_ENABLE_SIG_ml_dsa_44_extmu) || defined(OQS_ENABLE_SIG_ml_dsa_65_extmu) || defined(OQS_ENABLE_SIG_ml_dsa_87_extmu)
 /* signature verification external-MU APIs tests */
 static int sig_ver_vector_extmu(const char *method_name,
@@ -1497,7 +1499,7 @@ int main(int argc, char **argv) {
 			hexStringToByteArray(sigVer_ctx, sigVer_ctx_bytes);
 		}
 
-#if defined(OQS_ENABLE_SIG_ml_dsa_44) || defined(OQS_ENABLE_SIG_ml_dsa_65) || defined(OQS_ENABLE_SIG_ml_dsa_87)
+#if defined(OQS_ENABLE_SIG_ml_dsa_44) || defined(OQS_ENABLE_SIG_ml_dsa_65) || defined(OQS_ENABLE_SIG_ml_dsa_87) || defined(OQS_ENABLE_SIG_SLH_DSA)
 		rc = sig_ver_vector_ext(alg_name, sigVer_pk_bytes, sigVer_msg_bytes, msgLen, sigVer_sig_bytes, strlen(sigVer_sig) / 2, sigVer_ctx_bytes, ctxlen, sigVerPassed);
 #else
 		rc = EXIT_SUCCESS;
