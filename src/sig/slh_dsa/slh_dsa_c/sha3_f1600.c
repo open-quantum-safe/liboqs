@@ -12,6 +12,45 @@
 uint64_t keccak_f1600_count = 0; /* instrumentation */
 #endif
 
+/* byte access to the state; adapted from mlkem-native */
+
+void keccak_f1600_xor_bytes(uint64_t *state, const uint8_t *data, size_t offset,
+                            size_t length)
+{
+  size_t i;
+#if defined(SLH_SYS_LITTLE_ENDIAN)
+  uint8_t *state_ptr = (uint8_t *)state + offset;
+  for (i = 0; i < length; i++)
+  {
+    state_ptr[i] ^= data[i];
+  }
+#else
+  for (i = 0; i < length; i++)
+  {
+    state[(offset + i) >> 3] ^= (uint64_t)data[i]
+                                << (8 * ((offset + i) & 0x07));
+  }
+#endif
+}
+
+void keccak_f1600_extract_bytes(const uint64_t *state, uint8_t *data,
+                                size_t offset, size_t length)
+{
+  size_t i;
+#if defined(SLH_SYS_LITTLE_ENDIAN)
+  const uint8_t *state_ptr = (const uint8_t *)state + offset;
+  for (i = 0; i < length; i++)
+  {
+    data[i] = state_ptr[i];
+  }
+#else
+  for (i = 0; i < length; i++)
+  {
+    data[i] = (state[(offset + i) >> 3] >> (8 * ((offset + i) & 0x07))) & 0xFF;
+  }
+#endif
+}
+
 /* forward permutation */
 
 void keccak_f1600(uint64_t x[25])

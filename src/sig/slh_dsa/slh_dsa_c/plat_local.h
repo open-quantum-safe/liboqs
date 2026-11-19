@@ -107,31 +107,47 @@ extern "C"
 
   /* revert if not big endian */
 
-#if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
-/* nop */
-#define rev8_be32(x) (x)
-#else
-/* RISC-V: grev(x, 0x18) or rev8 */
+#if defined(SLH_SYS_LITTLE_ENDIAN)
 
+  /* RISC-V: grev(x, 0x18) or rev8 */
+  static SLH_INLINE uint32_t rev8_be32(uint32_t x)
+  {
+    return ((x & 0xFF000000) >> 24) | ((x & 0x00FF0000) >> 8) |
+           ((x & 0x0000FF00) << 8) | ((x & 0x000000FF) << 24);
+  }
+
+  /* RISC-V: grev(x, 0x38) or rev8(x) */
+  static SLH_INLINE uint64_t rev8_be64(uint64_t x)
+  {
+    return (x << 56) | ((x & 0x000000000000FF00LL) << 40) |
+           ((x & 0x0000000000FF0000LL) << 24) |
+           ((x & 0x00000000FF000000LL) << 8) |
+           ((x & 0x000000FF00000000LL) >> 8) |
+           ((x & 0x0000FF0000000000LL) >> 24) |
+           ((x & 0x00FF000000000000LL) >> 40) | (x >> 56);
+  }
+
+#else
+
+/* Portable versions that do not depend on the endianness of the host:
+ * read the bytes of the argument in memory order and assemble the
+ * result in big-endian order. */
 static SLH_INLINE uint32_t rev8_be32(uint32_t x)
 {
-  return ((x & 0xFF000000) >> 24) | ((x & 0x00FF0000) >> 8) |
-         ((x & 0x0000FF00) << 8) | ((x & 0x000000FF) << 24);
+  const uint8_t *p = (const uint8_t *)&x;
+  return ((uint32_t)p[0] << 24) | ((uint32_t)p[1] << 16) |
+         ((uint32_t)p[2] << 8) | (uint32_t)p[3];
 }
-#endif
 
-#if __BYTE_ORDER__ == __ORDER_BIG_ENDIAN__
-#define rev8_be64(x) (x)
-#else
-/* RISC-V: grev(x, 0x38) or rev8(x) */
 static SLH_INLINE uint64_t rev8_be64(uint64_t x)
 {
-  return (x << 56) | ((x & 0x000000000000FF00LL) << 40) |
-         ((x & 0x0000000000FF0000LL) << 24) |
-         ((x & 0x00000000FF000000LL) << 8) | ((x & 0x000000FF00000000LL) >> 8) |
-         ((x & 0x0000FF0000000000LL) >> 24) |
-         ((x & 0x00FF000000000000LL) >> 40) | (x >> 56);
+  const uint8_t *p = (const uint8_t *)&x;
+  return ((uint64_t)p[0] << 56) | ((uint64_t)p[1] << 48) |
+         ((uint64_t)p[2] << 40) | ((uint64_t)p[3] << 32) |
+         ((uint64_t)p[4] << 24) | ((uint64_t)p[5] << 16) |
+         ((uint64_t)p[6] << 8) | (uint64_t)p[7];
 }
+
 #endif
 
   /* rotate left */
