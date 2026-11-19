@@ -600,7 +600,7 @@ jobs:
 
   full-code-coverage:
     name: Run full code coverage with ACVP tests
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.runner }}
     strategy:
       fail-fast: false
       matrix:
@@ -642,6 +642,10 @@ jobs:
         with:
           flag-name: ${{ matrix.id }}
           parallel: true
+          # Report under a separate branch name: this job runs a broader test set
+          # than code-coverage.yml, so filing it under the real branch (e.g. main)
+          # would make it the baseline that PR coverage is compared against.
+          git-branch: full-coverage
 
   full-code-coverage-finish:
     needs: full-code-coverage
@@ -652,7 +656,8 @@ jobs:
         uses: coverallsapp/github-action@8d6379e14d29928660c4ba802d8e85393440b329 # pin@v2.3.8
         with:
           parallel-finished: true
-          carry-forward: "x64-generic,x64-distbuild,arm64-distbuild"
+          carryforward: "x64-generic,x64-distbuild,arm64-distbuild"
+          git-branch: full-coverage
 
   nix-full-build:
     name: Nix full flake build

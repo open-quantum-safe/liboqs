@@ -10,7 +10,7 @@ jobs:
     name: Run code coverage testing
     strategy:
       matrix:
-        # The 'id' value for each job should be added to the 'carry-forward' string in the 'finish' job.
+        # The 'id' value for each job should be added to the 'carryforward' string in the 'finish' job.
         include:
           - id: x64-generic
             runner: ubuntu-latest
@@ -60,4 +60,4 @@ jobs:
         uses: coverallsapp/github-action@8d6379e14d29928660c4ba802d8e85393440b329 # pin@v2.3.8
         with:
           parallel-finished: true
-          carry-forward: "x64-generic,x64-distbuild,arm64-distbuild"
+          carryforward: "x64-generic,x64-distbuild,arm64-distbuild"
