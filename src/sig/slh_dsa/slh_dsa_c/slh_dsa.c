@@ -298,6 +298,16 @@ static size_t ht_sign(slh_var_t *var, uint8_t *sh, uint8_t *m, uint64_t i_tree,
   for (j = 1; j < prm->d; j++)
   {
     xmss_pk_from_sig(var, m, i_leaf, sh, m);
+
+    /*
+     * Declassify the XMSS root of layer j-1.
+     * Required to use it in conditional-branches in WOTS+ signing of the
+     * next layer.
+     * This is needed because it is computed from SK.seed, which is marked as
+     * secret (=undefined).
+     */
+    SLH_CT_TESTING_DECLASSIFY(m, prm->n);
+
     sh += sx_sz;
 
     i_leaf = i_tree & ((1 << prm->hp) - 1);
@@ -487,7 +497,11 @@ int slh_keygen_internal(uint8_t *sk, uint8_t *pk, const uint8_t *sk_seed,
   adrs_set_layer_address(&var, prm->d - 1);
   memcpy(pk, pk_seed, n);              /* PK.seed in pk */
   xmss_node(&var, pk + n, 0, prm->hp); /* PK.root in pk (compute) */
-  memcpy(sk + 3 * n, pk + n, n);       /* PK.root in sk */
+
+  /* Declassify public key */
+  SLH_CT_TESTING_DECLASSIFY(pk, 2 * n);
+
+  memcpy(sk + 3 * n, pk + n, n); /* PK.root in sk */
 
   return 0;
 }
@@ -502,7 +516,13 @@ int slh_keygen(uint8_t *sk, uint8_t *pk, int (*rbg)(uint8_t *x, size_t xlen),
   uint8_t pk_root[SLH_MAX_N];
   size_t n = prm->n;
 
-  rbg(sk, 3 * n);                   /* SK.seed || SK.prf || PK.seed */
+  /* SK.seed || SK.prf || PK.seed */
+  if (rbg(sk, 3 * n) != 0)
+  {
+    /* Zeroize sk */
+    memset(sk, 0x00, 4 * n);
+    return -1;
+  }
   memcpy(pk, sk + 2 * n, n);        /* PK.seed */
   memset(sk + 3 * n, 0x00, n);      /* PK.root not generated yet */
   prm->mk_var(&var, NULL, sk, prm); /* fill in partial */
@@ -510,6 +530,9 @@ int slh_keygen(uint8_t *sk, uint8_t *pk, int (*rbg)(uint8_t *x, size_t xlen),
   adrs_zero(&var);
   adrs_set_layer_address(&var, prm->d - 1);
   xmss_node(&var, pk_root, 0, prm->hp);
+
+  /* Declassify PK.root */
+  SLH_CT_TESTING_DECLASSIFY(pk_root, n);
 
   /* fill pk_root */
   memcpy(sk + 3 * n, pk_root, n);
@@ -563,6 +586,14 @@ static size_t slh_sign_digest(slh_var_t *var, uint8_t *sig,
   sig_sz = fors_sign(var, sig, md);
   fors_pk_from_sig(var, pk_fors, sig, md);
 
+  /*
+   * Declassify the FORS public key.
+   * Required to use it in conditional-branches in WOTS+ signing.
+   * This is needed because it is computed from SK.seed, which is marked as
+   * secret (=undefined).
+   */
+  SLH_CT_TESTING_DECLASSIFY(pk_fors, var->prm->n);
+
   /* SIG_HT */
   sig += sig_sz;
   sig_sz += ht_sign(var, sig, pk_fors, i_tree, i_leaf);
@@ -596,6 +627,16 @@ OQS_API size_t slh_sign_internal(uint8_t *sig, const uint8_t *m, size_t m_sz,
   /* randomized hashing; R (first part of signarure) */
   sig_sz = prm->n;
   prm->prf_msg(&var, sig, opt_rand, m, m_sz, NULL, SLH_CTX_SZ_NO_CONTEXT);
+
+  /*
+   * Declassify the randomizer R.
+   * Required to use the message digest derived from it in conditional-branches
+   * and as tree indices.
+   * This is needed because R is computed from SK.prf, which is marked as
+   * secret (=undefined).
+   */
+  SLH_CT_TESTING_DECLASSIFY(sig, prm->n);
+
   prm->h_msg(&var, digest, sig, m, m_sz, NULL, SLH_CTX_SZ_NO_CONTEXT);
 
   /* create FORS and HT signature parts */
@@ -635,6 +676,16 @@ size_t slh_sign(uint8_t *sig, const uint8_t *m, size_t m_sz, const uint8_t *ctx,
   /* randomized hashing; R (first part of signarure) */
   sig_sz = prm->n;
   prm->prf_msg(&var, sig, opt_rand, m, m_sz, ctx, ctx_sz);
+
+  /*
+   * Declassify the randomizer R.
+   * Required to use the message digest derived from it in conditional-branches
+   * and as tree indices.
+   * This is needed because R is computed from SK.prf, which is marked as
+   * secret (=undefined).
+   */
+  SLH_CT_TESTING_DECLASSIFY(sig, prm->n);
+
   prm->h_msg(&var, digest, sig, m, m_sz, ctx, ctx_sz);
 
   /* create FORS and HT signature parts */

@@ -25,35 +25,39 @@ void sha3_init(sha3_var_t *c, size_t md_sz)
 
 void sha3_update(sha3_var_t *c, const void *data, size_t len)
 {
-  size_t i, j;
+  const uint8_t *in = data;
+  size_t l;
 
-  j = c->pt;
-  for (i = 0; i < len; i++)
+  while (len > 0)
   {
-    c->st.b[j++] ^= ((const uint8_t *)data)[i];
-    if (j >= c->r_sz)
+    l = c->r_sz - c->pt;
+    if (l > len)
+    {
+      l = len;
+    }
+    keccak_f1600_xor_bytes(c->st.d, in, c->pt, l);
+    c->pt += l;
+    in += l;
+    len -= l;
+    if (c->pt >= c->r_sz)
     {
       keccak_f1600(c->st.d);
-      j = 0;
+      c->pt = 0;
     }
   }
-  c->pt = j;
 }
 
 /* finalize and output a hash */
 
 void sha3_final(sha3_var_t *c, uint8_t *md)
 {
-  size_t i;
+  const uint8_t pad = 0x06, pad_end = 0x80;
 
-  c->st.b[c->pt] ^= 0x06;
-  c->st.b[c->r_sz - 1] ^= 0x80;
+  keccak_f1600_xor_bytes(c->st.d, &pad, c->pt, 1);
+  keccak_f1600_xor_bytes(c->st.d, &pad_end, c->r_sz - 1, 1);
   keccak_f1600(c->st.d);
 
-  for (i = 0; i < c->md_sz; i++)
-  {
-    md[i] = c->st.b[i];
-  }
+  keccak_f1600_extract_bytes(c->st.d, md, 0, c->md_sz);
 }
 
 /* compute a SHA-3 hash "md" of "md_sz" bytes from data in "in" */
@@ -72,29 +76,36 @@ void sha3(uint8_t *md, size_t md_sz, const void *in, size_t in_sz)
 
 void shake_out(sha3_var_t *c, uint8_t *out, size_t out_sz)
 {
-  size_t i, j;
+  const uint8_t pad = 0x1F, pad_end = 0x80;
+  size_t l;
 
   /* add padding on the first call */
   if (c->md_sz != 0)
   {
-    c->st.b[c->pt] ^= 0x1F;
-    c->st.b[c->r_sz - 1] ^= 0x80;
+    keccak_f1600_xor_bytes(c->st.d, &pad, c->pt, 1);
+    keccak_f1600_xor_bytes(c->st.d, &pad_end, c->r_sz - 1, 1);
     keccak_f1600(c->st.d);
     c->pt = 0;
     c->md_sz = 0;
   }
 
-  j = c->pt;
-  for (i = 0; i < out_sz; i++)
+  while (out_sz > 0)
   {
-    if (j >= c->r_sz)
+    if (c->pt >= c->r_sz)
     {
       keccak_f1600(c->st.d);
-      j = 0;
+      c->pt = 0;
     }
-    out[i] = c->st.b[j++];
+    l = c->r_sz - c->pt;
+    if (l > out_sz)
+    {
+      l = out_sz;
+    }
+    keccak_f1600_extract_bytes(c->st.d, out, c->pt, l);
+    c->pt += l;
+    out += l;
+    out_sz -= l;
   }
-  c->pt = j;
 }
 
 /* compute a SHAKE hash "md" of "md_sz" bytes from data in "in" */

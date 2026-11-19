@@ -7,11 +7,11 @@
 - **Authors' website**: https://csrc.nist.gov/pubs/fips/205/final
 - **Specification version**: SLH-DSA.
 - **Primary Source**<a name="primary-source"></a>:
-  - **Source**: https://github.com/pq-code-package/slhdsa-c/commit/d25ccc6a2c6512dd44cfaf81e44181a3010757b1
+  - **Source**: https://github.com/pq-code-package/slhdsa-c/commit/47451432bb04faf8217ffe8a961a75b542bf88e8
   - **Implementation license (SPDX-Identifier)**: MIT or ISC or Apache 2.0
 - **Optimized Implementation sources**:
   - **slhdsa-c**:<a name="slhdsa-c"></a>
-      - **Source**: https://github.com/pq-code-package/slhdsa-c/commit/d25ccc6a2c6512dd44cfaf81e44181a3010757b1
+      - **Source**: https://github.com/pq-code-package/slhdsa-c/commit/47451432bb04faf8217ffe8a961a75b542bf88e8
       - **Implementation license (SPDX-Identifier)**: MIT or ISC or Apache 2.0
 
 

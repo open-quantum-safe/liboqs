@@ -32,7 +32,7 @@ oqs-support-tier: 3
 spec-version: SLH-DSA
 spdx-license-identifier: MIT or ISC or Apache 2.0
 primary-upstream:
-  source: https://github.com/pq-code-package/slhdsa-c/commit/d25ccc6a2c6512dd44cfaf81e44181a3010757b1
+  source: https://github.com/pq-code-package/slhdsa-c/commit/47451432bb04faf8217ffe8a961a75b542bf88e8
   spdx-license-identifier: MIT or ISC or Apache 2.0
   upstream-ancestors:
   - https://github.com/pq-code-package/slhdsa-c

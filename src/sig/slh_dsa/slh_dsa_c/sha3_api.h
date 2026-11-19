@@ -59,6 +59,12 @@ extern "C"
   /* core permutation */
   void keccak_f1600(uint64_t x[25]);
 
+  /* byte access to the (native-endian) state */
+  void keccak_f1600_xor_bytes(uint64_t *state, const uint8_t *data,
+                              size_t offset, size_t length);
+  void keccak_f1600_extract_bytes(const uint64_t *state, uint8_t *data,
+                                  size_t offset, size_t length);
+
 #ifdef __cplusplus
 }
 #endif

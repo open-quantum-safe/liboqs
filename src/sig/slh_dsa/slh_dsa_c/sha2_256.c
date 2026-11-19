@@ -190,6 +190,11 @@ void sha2_256_update(sha2_256_t *sha, const uint8_t *m, size_t m_sz)
   size_t l;
   uint8_t *mp = (uint8_t *)&sha->s[8];
 
+  if (m_sz == 0)
+  {
+    return; /* m may be NULL */
+  }
+
   sha->len += m_sz;
   l = 64 - sha->i;
 
