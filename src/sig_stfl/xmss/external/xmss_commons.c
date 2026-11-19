@@ -148,6 +148,17 @@ int xmssmt_core_sign_open(const xmss_params *params,
                           const unsigned char *sm, unsigned long long smlen,
                           const unsigned char *pk)
 {
+    /* The signature is a fixed-length blob and every read below consumes
+     * exactly params->sig_bytes of it (the randomizer at offset index_bytes,
+     * the message-hash prefix at sig_bytes - prefix_length, then each layer's
+     * WOTS+ signature and authentication path). Reject a signature that does
+     * not carry that many bytes before dereferencing it. The per-variant verify
+     * wrappers already enforce this length (GHSA-2wxh-55qf-c7wg); checking it
+     * here keeps the core self-contained for every caller. */
+    if (smlen != params->sig_bytes) {
+        return -1;
+    }
+
     const unsigned char *pub_root = pk;
     const unsigned char *pub_seed = pk + params->n;
 
@@ -177,9 +188,6 @@ int xmssmt_core_sign_open(const xmss_params *params,
     set_type(ots_addr, XMSS_ADDR_TYPE_OTS);
     set_type(ltree_addr, XMSS_ADDR_TYPE_LTREE);
     set_type(node_addr, XMSS_ADDR_TYPE_HASHTREE);
-
-    // Unused since smlen is a constant
-    (void) smlen;
 
     if ((m_with_prefix_len == 0) || (m_with_prefix = OQS_MEM_malloc(m_with_prefix_len)) == NULL){
         ret = -1;
