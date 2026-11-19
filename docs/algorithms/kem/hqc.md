@@ -5,7 +5,7 @@
 - **Principal submitters**: Philippe Gaborit.
 - **Auxiliary submitters**: Carlos Aguilar-Melchor, Nicolas Aragon, Slim Bettaieb, Loïc Bidoux, Olivier Blazy, Jean-Christophe Deneuville, Edoardo Persichetti, Gilles Zémor, Jurjen Bos, Arnaud Dion, Jérôme Lacan, Jean-Marc Robert, Pascal Véron, Paulo L. Barreto, Santosh Ghosh, Shay Gueron, Tim Güneysu, Rafael Misoczki, Jan Richter-Brokmann, Nicolas Sendrier, Jean-Pierre Tillich, Valentin Vasseur.
 - **Authors' website**: https://pqc-hqc.org/
-- **Specification version**: 2026-10-12.
+- **Specification version**: v5.1.0.
 - **Primary Source**<a name="primary-source"></a>:
   - **Source**: https://gitlab.com/pqc-hqc/hqc/commit/06567ccbad10580d78dd7863b15d23f41076d57f with copy_from_upstream patches
   - **Implementation license (SPDX-Identifier)**: Public domain
@@ -20,10 +20,6 @@
 
 - **Upstream maintenance**: TBD
 - **OQS support tier**: Tier 2
-
-## Advisories
-
-- HQC's AVX2 backend is not thread-safe. `src/kem/hqc/pqc-hqc_hqc_avx256_common/hqc.c` and `src/kem/hqc/pqc-hqc_hqc-<1,3,5>_x86_64/gf2x.c` use static buffers that might get corrupted when multiple instances of HQC AVX2 backends run concurrently. These `static` declarations were inherited from upstream and were likely put there to reduce stack usage. Set `OQS_ENABLE_KEM_hqc_{1,3,5}_x86_64=OFF` at CMake configure time to turn off AVX256 backends.
 
 ## Parameter set summary
 

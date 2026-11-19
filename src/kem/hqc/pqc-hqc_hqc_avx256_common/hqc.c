@@ -34,21 +34,15 @@ void hqc_pke_keygen(uint8_t *ek_pke, uint8_t *dk_pke, uint8_t *seed) {
     shake256_xof_ctx dk_xof_ctx = {0};
     shake256_xof_ctx ek_xof_ctx = {0};
 
-    static __m256i h[VEC_N_256_NUM_WORDS];
-    static __m256i y[VEC_N_256_NUM_WORDS];
-    static __m256i x[VEC_N_256_NUM_WORDS];
-    static uint64_t s[VEC_N_256_SIZE_64] = {0};
-    static __m256i tmp[VEC_N_256_NUM_WORDS] = {0};
+    __m256i h[VEC_N_256_NUM_WORDS];
+    __m256i y[VEC_N_256_NUM_WORDS];
+    __m256i x[VEC_N_256_NUM_WORDS];
+    uint64_t s[VEC_N_256_SIZE_64] = {0};
+    __m256i tmp[VEC_N_256_NUM_WORDS] = {0};
 
-#ifdef __STDC_LIB_EXT1__
-    memset_s(x, 0, (VEC_N_256_NUM_WORDS) * sizeof(__m256i));
-    memset_s(y, 0, (VEC_N_256_NUM_WORDS) * sizeof(__m256i));
-    memset_s(h, 0, (VEC_N_256_NUM_WORDS) * sizeof(__m256i));
-#else
     memset(x, 0, (VEC_N_256_NUM_WORDS) * sizeof(__m256i));
     memset(y, 0, (VEC_N_256_NUM_WORDS) * sizeof(__m256i));
     memset(h, 0, (VEC_N_256_NUM_WORDS) * sizeof(__m256i));
-#endif
     // Derive keypair seeds
     hash_i(keypair_seed, seed);
 
@@ -109,28 +103,20 @@ void hqc_pke_keygen(uint8_t *ek_pke, uint8_t *dk_pke, uint8_t *seed) {
  */
 void hqc_pke_encrypt(uint64_t *u, uint64_t *v, const uint8_t *ek_pke, const uint64_t *m, const uint8_t *theta) {
     shake256_xof_ctx theta_xof_ctx = {0};
-    static __m256i h[VEC_N_256_NUM_WORDS];
-    static __m256i s[VEC_N_256_NUM_WORDS];
-    static __m256i r2[VEC_N_256_NUM_WORDS];
-    static __m256i r1[VEC_N_256_NUM_WORDS];
-    static __m256i e[VEC_N_256_NUM_WORDS];
-    static __m256i tmp1[VEC_N_256_NUM_WORDS];
-    static __m256i tmp2[VEC_N_256_NUM_WORDS];
-    static uint64_t tmp3[VEC_N_256_SIZE_64];
+    __m256i h[VEC_N_256_NUM_WORDS];
+    __m256i s[VEC_N_256_NUM_WORDS];
+    __m256i r2[VEC_N_256_NUM_WORDS];
+    __m256i r1[VEC_N_256_NUM_WORDS];
+    __m256i e[VEC_N_256_NUM_WORDS];
+    __m256i tmp1[VEC_N_256_NUM_WORDS] = {0};
+    __m256i tmp2[VEC_N_256_NUM_WORDS] = {0};
+    uint64_t tmp3[VEC_N_256_SIZE_64];
 
-#ifdef __STDC_LIB_EXT1__
-    memset_s(r2, 0, (VEC_N_256_NUM_WORDS) * sizeof(__m256i));
-    memset_s(h, 0, (VEC_N_256_NUM_WORDS) * sizeof(__m256i));
-    memset_s(s, 0, (VEC_N_256_NUM_WORDS) * sizeof(__m256i));
-    memset_s(r1, 0, (VEC_N_256_NUM_WORDS) * sizeof(__m256i));
-    memset_s(e, 0, (VEC_N_256_NUM_WORDS) * sizeof(__m256i));
-#else
     memset(r2, 0, (VEC_N_256_NUM_WORDS) * sizeof(__m256i));
     memset(h, 0, (VEC_N_256_NUM_WORDS) * sizeof(__m256i));
     memset(s, 0, (VEC_N_256_NUM_WORDS) * sizeof(__m256i));
     memset(r1, 0, (VEC_N_256_NUM_WORDS) * sizeof(__m256i));
     memset(e, 0, (VEC_N_256_NUM_WORDS) * sizeof(__m256i));
-#endif
 
     // Initialize Xof using theta
     xof_init(&theta_xof_ctx, theta, SEED_BYTES);
@@ -200,18 +186,13 @@ void hqc_pke_encrypt(uint64_t *u, uint64_t *v, const uint8_t *ek_pke, const uint
  *
  */
 uint8_t hqc_pke_decrypt(uint64_t *m, const uint8_t *dk_pke, const uint64_t *u, const uint64_t *v) {
-    static __m256i y[VEC_N_256_NUM_WORDS] = {0};
+    __m256i y[VEC_N_256_NUM_WORDS] = {0};
     __m256i u_vec[VEC_N_256_NUM_WORDS] = {0};
-    static __m256i tmp1[VEC_N_256_NUM_WORDS];
-    static uint64_t tmp2[VEC_N_256_SIZE_64] = {0};
+    __m256i tmp1[VEC_N_256_NUM_WORDS];
+    uint64_t tmp2[VEC_N_256_SIZE_64] = {0};
 
-#ifdef __STDC_LIB_EXT1__
-    memset_s(y, 0, (VEC_N_256_NUM_WORDS) * sizeof(__m256i));
-    memset_s(u_vec, 0, (VEC_N_256_NUM_WORDS) * sizeof(__m256i));
-#else
     memset(y, 0, (VEC_N_256_NUM_WORDS) * sizeof(__m256i));
     memset(u_vec, 0, (VEC_N_256_NUM_WORDS) * sizeof(__m256i));
-#endif
 
     for (size_t i = 0; i < (VEC_N_256_NUM_WORDS); ++i) {
         u_vec[i] = _mm256_set_epi64x(u[i * 4 + 3], u[i * 4 + 2], u[i * 4 + 1], u[i * 4 + 0]);

@@ -226,10 +226,11 @@ static inline int32_t find_peaks(rm_expanded_cdw128_t *transform) {
         tmp = _mm256_or_si256(tmp, _mm256_and_si256(vect_mask, transform->mm[i]));
     }
     uint16_t result = 0;
+    uint16_t lanes[16] = {0};
+    _mm256_storeu_si256((__m256i *)lanes, tmp);
     for (uint32_t i = 0; i < 16; i++) {
-        uint16_t *ptr = (uint16_t *)&tmp;
         int32_t message_mask = (-(int32_t)(i == message % 16)) >> (sizeof(int32_t) * 8 - 1);
-        result |= message_mask & ptr[i];
+        result |= message_mask & lanes[i];
     }
     message |= (0x8000 & ~result) >> 8;
     return message;

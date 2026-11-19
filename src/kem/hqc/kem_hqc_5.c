@@ -13,7 +13,7 @@ OQS_KEM *OQS_KEM_hqc_5_new(void) {
 		return NULL;
 	}
 	kem->method_name = OQS_KEM_alg_hqc_5;
-	kem->alg_version = "2026-10-12";
+	kem->alg_version = "v5.1.0";
 
 	kem->claimed_nist_level = 5;
 	kem->ind_cca = true;

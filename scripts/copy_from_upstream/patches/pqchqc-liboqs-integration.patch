@@ -1,6 +1,6 @@
 diff --git a/integration/liboqs/HQC-1_META.yml b/integration/liboqs/HQC-1_META.yml
 new file mode 100644
-index 0000000..481516a
+index 0000000..93e6469
 --- /dev/null
 +++ b/integration/liboqs/HQC-1_META.yml
 @@ -0,0 +1,77 @@
@@ -50,7 +50,7 @@ index 0000000..481516a
 +- Valentin Vasseur
 +implementations:
 +- name: ref
-+  version: 2026-10-12
++  version: v5.1.0
 +  folder_name: src/ref
 +  compile_opts: -DHQC_PARAMETER_SET=1 -DHQC_NAMESPACE_PREFIX=PQCHQC_HQC1_C
 +  signature_keypair: PQCHQC_HQC1_C_hqc_kem_keygen_oqs
@@ -61,7 +61,7 @@ index 0000000..481516a
 +  sources: hqc-1/parameters.h hqc-1/reed_solomon.h ../../LICENSE
 +  common_dep: hqc_shims hqc_common hqc_ref_common
 +- name: x86_64
-+  version: 2026-10-12
++  version: v5.1.0
 +  folder_name: src/x86_64
 +  compile_opts: -DHQC_PARAMETER_SET=1 -DHQC_NAMESPACE_PREFIX=PQCHQC_HQC1_AVX256
 +  signature_keypair: PQCHQC_HQC1_AVX256_hqc_kem_keygen_oqs
@@ -83,7 +83,7 @@ index 0000000..481516a
 +        - pclmulqdq
 diff --git a/integration/liboqs/HQC-3_META.yml b/integration/liboqs/HQC-3_META.yml
 new file mode 100644
-index 0000000..1b28a98
+index 0000000..de30997
 --- /dev/null
 +++ b/integration/liboqs/HQC-3_META.yml
 @@ -0,0 +1,75 @@
@@ -131,7 +131,7 @@ index 0000000..1b28a98
 +  - Valentin Vasseur
 +implementations:
 +- name: ref
-+  version: 2026-10-12
++  version: v5.1.0
 +  folder_name: src/ref
 +  compile_opts: -DHQC_PARAMETER_SET=3 -DHQC_NAMESPACE_PREFIX=PQCHQC_HQC3_C
 +  signature_keypair: PQCHQC_HQC3_C_hqc_kem_keygen_oqs
@@ -142,7 +142,7 @@ index 0000000..1b28a98
 +  sources: hqc-3/parameters.h hqc-3/reed_solomon.h ../../LICENSE
 +  common_dep: hqc_shims hqc_common hqc_ref_common
 +- name: x86_64
-+  version: 2026-10-12
++  version: v5.1.0
 +  folder_name: src/x86_64
 +  compile_opts: -DHQC_PARAMETER_SET=3 -DHQC_NAMESPACE_PREFIX=PQCHQC_HQC3_AVX256
 +  signature_keypair: PQCHQC_HQC3_AVX256_hqc_kem_keygen_oqs
@@ -164,7 +164,7 @@ index 0000000..1b28a98
 +        - pclmulqdq
 diff --git a/integration/liboqs/HQC-5_META.yml b/integration/liboqs/HQC-5_META.yml
 new file mode 100644
-index 0000000..553ab2c
+index 0000000..7d329b9
 --- /dev/null
 +++ b/integration/liboqs/HQC-5_META.yml
 @@ -0,0 +1,75 @@
@@ -212,7 +212,7 @@ index 0000000..553ab2c
 +  - Valentin Vasseur
 +implementations:
 +- name: ref
-+  version: 2026-10-12
++  version: v5.1.0
 +  folder_name: src/ref
 +  compile_opts: -DHQC_PARAMETER_SET=5 -DHQC_NAMESPACE_PREFIX=PQCHQC_HQC5_C
 +  signature_keypair: PQCHQC_HQC5_C_hqc_kem_keygen_oqs
@@ -223,7 +223,7 @@ index 0000000..553ab2c
 +  sources: hqc-5/parameters.h hqc-5/reed_solomon.h ../../LICENSE
 +  common_dep: hqc_shims hqc_common hqc_ref_common
 +- name: x86_64
-+  version: 2026-10-12
++  version: v5.1.0
 +  folder_name: src/x86_64
 +  compile_opts: -DHQC_PARAMETER_SET=5 -DHQC_NAMESPACE_PREFIX=PQCHQC_HQC5_AVX256
 +  signature_keypair: PQCHQC_HQC5_AVX256_hqc_kem_keygen_oqs
@@ -1217,7 +1217,7 @@ index c1caeb2..f5507a7 100644
  
  uint16_t gf_mul(uint16_t a, uint16_t b);
 diff --git a/src/x86_64/avx256/hqc-3/reed_solomon.c b/src/x86_64/avx256/hqc-3/reed_solomon.c
-index 48ee057..2b9c93b 100644
+index 48ee057..2da53e1 100644
 --- a/src/x86_64/avx256/hqc-3/reed_solomon.c
 +++ b/src/x86_64/avx256/hqc-3/reed_solomon.c
 @@ -7,6 +7,7 @@
@@ -1228,48 +1228,27 @@ index 48ee057..2b9c93b 100644
  #include "crypto_memset.h"
  #include "gf.h"
  #include "parameters.h"
-@@ -213,6 +214,22 @@ static const __m256i rs_generator_vecs[3] = {
-     {0x0000000000000001, 0x0000000000000000, 0x0000000000000000, 0x0000000000000000},
- };
- 
-+/**
-+ * @brief Get the loc-th uint16_t as if vec is cast as uint16_t array
-+ *
-+ * This is a patch from OQS to get around static analyzer failing to recognize
-+ * __m256i array as initialized uint16_t array
-+ */
-+static inline uint16_t get_rs_poly_coeff(const __m256i *vec, size_t len, size_t loc) {
-+    assert(loc < 16 * len);
-+    (void)len;
-+    size_t row = loc / 16;  // which __m256i
-+    size_t col = (loc % 16) / 4;  // which uint64_t within the chosen __m256i
-+    size_t off = (loc % 16) % 4;  // which 16-bit block in the uint64_t
-+    uint64_t val64 = vec[row][col];
-+    return (uint16_t)((val64 >> (16 * off)) & ((uint16_t)0xffff));
-+}
-+
- /**
-  * @brief Precomputed evaluation powers for message positions (AVX2, 16-lane blocks).
-  *
-@@ -385,7 +402,6 @@ void reed_solomon_encode(uint64_t *cdw, const uint64_t *msg) {
+@@ -385,7 +386,8 @@ void reed_solomon_encode(uint64_t *cdw, const uint64_t *msg) {
      uint8_t msg_bytes[PARAM_K] = {0};
      uint8_t cdw_bytes[PARAM_N1] = {0};
      __m256i *feedback_vecs = (__m256i *)feedback.terms;
 -    uint16_t *PARAM_RS_POLY = (uint16_t *)rs_generator_vecs;
++    uint16_t param_rs_poly[sizeof(rs_generator_vecs) / 2] = {0};
++    memcpy(param_rs_poly, rs_generator_vecs, sizeof(param_rs_poly));
  
      memcpy(msg_bytes, msg, PARAM_K);
  
-@@ -397,7 +413,7 @@ void reed_solomon_encode(uint64_t *cdw, const uint64_t *msg) {
+@@ -397,7 +399,7 @@ void reed_solomon_encode(uint64_t *cdw, const uint64_t *msg) {
          feedback_vecs[1] = gf_mul_vect(gate_vec, rs_generator_vecs[1]);
  
          for (size_t j = 32; j < PARAM_G; ++j) {
 -            feedback.terms[j] = gf_mul(gate_value, PARAM_RS_POLY[j]);
-+            feedback.terms[j] = gf_mul(gate_value, get_rs_poly_coeff(rs_generator_vecs, 3, j));
++            feedback.terms[j] = gf_mul(gate_value, param_rs_poly[j]);
          }
  
          for (size_t k = PARAM_N1 - PARAM_K - 1; k; --k) {
 diff --git a/src/x86_64/avx256/reed_muller.c b/src/x86_64/avx256/reed_muller.c
-index 1935f6c..d4256a4 100644
+index 1935f6c..13ad2c3 100644
 --- a/src/x86_64/avx256/reed_muller.c
 +++ b/src/x86_64/avx256/reed_muller.c
 @@ -29,8 +29,8 @@
@@ -1319,6 +1298,38 @@ index 1935f6c..d4256a4 100644
      __m256i bitmap, abs_rows[8], bound, active_row, max_abs_rows;
      rm_vector256_t peak_mask;
      // compute absolute value of transform
+@@ -226,10 +226,11 @@ inline int32_t find_peaks(rm_expanded_cdw128_t *transform) {
+         tmp = _mm256_or_si256(tmp, _mm256_and_si256(vect_mask, transform->mm[i]));
+     }
+     uint16_t result = 0;
++    uint16_t lanes[16] = {0};
++    _mm256_storeu_si256((__m256i *)lanes, tmp);
+     for (uint32_t i = 0; i < 16; i++) {
+-        uint16_t *ptr = (uint16_t *)&tmp;
+         int32_t message_mask = (-(int32_t)(i == message % 16)) >> (sizeof(int32_t) * 8 - 1);
+-        result |= message_mask & ptr[i];
++        result |= message_mask & lanes[i];
+     }
+     message |= (0x8000 & ~result) >> 8;
+     return message;
+diff --git a/src/x86_64/avx256/vector.c b/src/x86_64/avx256/vector.c
+index 4d38b8f..0ead575 100644
+--- a/src/x86_64/avx256/vector.c
++++ b/src/x86_64/avx256/vector.c
+@@ -159,7 +159,12 @@ void vect_generate_random_support2(shake256_xof_ctx *ctx, uint32_t *support, uin
+ void vect_write_support_to_vector(__m256i *v, uint32_t *support, uint16_t weight) {
+     __m256i bit256[PARAM_OMEGA_R];
+     __m256i bloc256[PARAM_OMEGA_R];
+-    static __m256i posCmp256 = (__m256i){0UL, 1UL, 2UL, 3UL};
++    static const uint64_t posCmp256_data[4] __attribute__((aligned(32))) = {
++        0, 1, 2, 3
++    };
++
++    const __m256i posCmp256 =
++        _mm256_load_si256((const __m256i *)posCmp256_data);
+ 
+     for (uint32_t i = 0; i < weight; i++) {
+         uint64_t bloc = support[i] >> 6;
 diff --git a/src/x86_64/common/gf2x.h b/src/x86_64/common/gf2x.h
 index 5e63142..71d47c9 100644
 --- a/src/x86_64/common/gf2x.h
@@ -1334,20 +1345,25 @@ index 5e63142..71d47c9 100644
  void vect_mul(__m256i *o, const __m256i *v1, const __m256i *v2);
  
 diff --git a/src/x86_64/common/hqc-1/gf2x.c b/src/x86_64/common/hqc-1/gf2x.c
-index ae37f13..6877363 100644
+index ae37f13..c2da760 100644
 --- a/src/x86_64/common/hqc-1/gf2x.c
 +++ b/src/x86_64/common/hqc-1/gf2x.c
-@@ -23,12 +23,12 @@
+@@ -8,6 +8,7 @@
+ #include <stdint.h>
+ #include <string.h>
+ #include "parameters.h"
++#include "crypto_memset.h"
+ 
+ #define VEC_N_ARRAY_SIZE_VEC CEIL_DIVIDE(PARAM_N_MULT, 256) /*!< The number of needed vectors to store PARAM_N bits*/
+ #define WORD                 64
+@@ -23,12 +24,8 @@
  #define T_TM3R_3W_256 ((T_TM3R_3W + 128) / (4 * WORD))
  #define T_TM3R_3W_64  (T_TM3R_3W_256 << 2)
  
 -__m256i a1_times_a2[VEC_N_256_SIZE_64 >> 1];
 -__m256i o256[VEC_N_ARRAY_SIZE_VEC];
 -uint64_t *tmp_reduce = (uint64_t *)o256;
-+static __m256i a1_times_a2[VEC_N_256_SIZE_64 >> 1];
-+static __m256i o256[VEC_N_ARRAY_SIZE_VEC];
-+static uint64_t *tmp_reduce = (uint64_t *)o256;
- 
+-
 -uint64_t bloc64[PARAM_OMEGA_R];  // Allocation with the biggest possible weight
 -uint64_t bit64[PARAM_OMEGA_R];   // Allocation with the biggest possible weight
 +// static uint64_t bloc64[PARAM_OMEGA_R];  // Allocation with the biggest possible weight
@@ -1355,6 +1371,82 @@ index ae37f13..6877363 100644
  
  static inline void reduce(__m256i *o, const __m256i *a);
  static inline void karat_mult_1(__m128i *C, __m128i *A, __m128i *B);
+@@ -48,10 +45,12 @@ static inline void toom_3_mult(__m256i *C, const __m256i *A, const __m256i *B);
+  * @param[in] a256 Pointer to the polynomial a(x)
+  */
+ static inline void reduce(__m256i *o, const __m256i *a256) {
++    __m256i o256[VEC_N_ARRAY_SIZE_VEC];
++    uint64_t *tmp_reduce = (uint64_t *)o256;
+     __m256i r256, carry256;
+     uint64_t *a = (uint64_t *)a256;
+     static const int32_t dec64 = PARAM_N & 0x3f;
+-    static int32_t d0;
++    int32_t d0;
+     int32_t i, i2;
+ 
+     d0 = WORD - dec64;
+@@ -76,6 +75,7 @@ static inline void reduce(__m256i *o, const __m256i *a256) {
+ 
+     tmp_reduce[LAST64] &= BITMASK(PARAM_N, 64);
+     memcpy(o, tmp_reduce, VEC_N_SIZE_BYTES);
++    memset_zero(o256, sizeof o256);
+ }
+ 
+ /**
+@@ -320,12 +320,12 @@ static inline void divide_by_x_plus_one_256(__m256i *out, __m256i *in, int32_t s
+  * @param[in] B256 Pointer to the polynomial B(x)
+  */
+ void toom_3_mult(__m256i *Out, const __m256i *A256, const __m256i *B256) {
+-    static __m256i U0[T_TM3R_3W_256], V0[T_TM3R_3W_256], U1[T_TM3R_3W_256], V1[T_TM3R_3W_256], U2[T_TM3R_3W_256],
++    __m256i U0[T_TM3R_3W_256], V0[T_TM3R_3W_256], U1[T_TM3R_3W_256], V1[T_TM3R_3W_256], U2[T_TM3R_3W_256],
+         V2[T_TM3R_3W_256];
+-    static __m256i W0[2 * (T_TM3R_3W_256)], W1[2 * (T_TM3R_3W_256)], W2[2 * (T_TM3R_3W_256)], W3[2 * (T_TM3R_3W_256)],
++    __m256i W0[2 * (T_TM3R_3W_256)], W1[2 * (T_TM3R_3W_256)], W2[2 * (T_TM3R_3W_256)], W3[2 * (T_TM3R_3W_256)],
+         W4[2 * (T_TM3R_3W_256)];
+-    static __m256i tmp[4 * (T_TM3R_3W_256)];
+-    static __m256i ro256[6 * (T_TM3R_3W_256)];
++    __m256i tmp[4 * (T_TM3R_3W_256)];
++    __m256i ro256[6 * (T_TM3R_3W_256)];
+     const __m256i zero = (__m256i){0ul, 0ul, 0ul, 0ul};
+ 
+     uint64_t *A = (uint64_t *)A256;
+@@ -501,6 +501,20 @@ void toom_3_mult(__m256i *Out, const __m256i *A256, const __m256i *B256) {
+     for (int32_t i = 0; i < 6 * T_TM3R_3W_256 - 2; i++) {
+         _mm256_storeu_si256(((__m256i *)Out) + i, ro256[i]);
+     }
++
++    memset_zero(U0, sizeof U0);
++    memset_zero(U1, sizeof U1);
++    memset_zero(U2, sizeof U2);
++    memset_zero(V0, sizeof V0);
++    memset_zero(V1, sizeof V1);
++    memset_zero(V2, sizeof V2);
++    memset_zero(W0, sizeof W0);
++    memset_zero(W1, sizeof W1);
++    memset_zero(W2, sizeof W2);
++    memset_zero(W3, sizeof W3);
++    memset_zero(W4, sizeof W4);
++    memset_zero(tmp, sizeof tmp);
++    memset_zero(ro256, sizeof ro256);
+ }
+ 
+ /**
+@@ -514,13 +528,8 @@ void toom_3_mult(__m256i *Out, const __m256i *A256, const __m256i *B256) {
+  * @param[in] a2 Pointer to a polynomial
+  */
+ void vect_mul(__m256i *o, const __m256i *a1, const __m256i *a2) {
++    __m256i a1_times_a2[VEC_N_256_SIZE_64 >> 1];
+     toom_3_mult(a1_times_a2, a1, a2);
+     reduce(o, a1_times_a2);
+-
+-// clear all
+-#ifdef __STDC_LIB_EXT1__
+-    memset_s(a1_times_a2, 0, (VEC_N_SIZE_64 >> 1) * sizeof(__m256i));
+-#else
+-    memset(a1_times_a2, 0, (VEC_N_SIZE_64 >> 1) * sizeof(__m256i));
+-#endif
++    memset_zero(a1_times_a2, sizeof a1_times_a2);
+ }
 diff --git a/src/x86_64/common/hqc-1/parameters.h b/src/x86_64/common/hqc-1/parameters.h
 index ec04bcc..18d9b7a 100644
 --- a/src/x86_64/common/hqc-1/parameters.h
@@ -1369,20 +1461,25 @@ index ec04bcc..18d9b7a 100644
  #define PARAM_N                     17669       ///< Define the parameter n of the scheme
  #define PARAM_N1                    46          ///< Define the parameter n1 of the scheme (length of Reed-Solomon code)
 diff --git a/src/x86_64/common/hqc-3/gf2x.c b/src/x86_64/common/hqc-3/gf2x.c
-index 1d75a49..2c89f0d 100644
+index 1d75a49..5ad081b 100644
 --- a/src/x86_64/common/hqc-3/gf2x.c
 +++ b/src/x86_64/common/hqc-3/gf2x.c
-@@ -23,12 +23,12 @@
+@@ -8,6 +8,7 @@
+ #include <stdint.h>
+ #include <string.h>
+ #include "parameters.h"
++#include "crypto_memset.h"
+ 
+ #define VEC_N_ARRAY_SIZE_VEC CEIL_DIVIDE(PARAM_N_MULT, 256) /*!< The number of needed vectors to store PARAM_N bits*/
+ #define WORD                 64
+@@ -23,12 +24,8 @@
  #define T_TM3R_3W_256 ((T_TM3R_3W + 128) / (4 * WORD))
  #define T_TM3R_3W_64  (T_TM3R_3W_256 << 2)
  
 -__m256i a1_times_a2[VEC_N_256_SIZE_64 >> 1];
 -__m256i o256[VEC_N_ARRAY_SIZE_VEC];
 -uint64_t *tmp_reduce = (uint64_t *)o256;
-+static __m256i a1_times_a2[VEC_N_256_SIZE_64 >> 1];
-+static __m256i o256[VEC_N_ARRAY_SIZE_VEC];
-+static uint64_t *tmp_reduce = (uint64_t *)o256;
- 
+-
 -uint64_t bloc64[PARAM_OMEGA_R];  // Allocation with the biggest possible weight
 -uint64_t bit64[PARAM_OMEGA_R];   // Allocation with the biggest possible weight
 +// static uint64_t bloc64[PARAM_OMEGA_R];  // Allocation with the biggest possible weight
@@ -1390,6 +1487,82 @@ index 1d75a49..2c89f0d 100644
  
  static inline void reduce(__m256i *o, const __m256i *a);
  static inline void karat_mult_1(__m128i *C, __m128i *A, __m128i *B);
+@@ -49,10 +46,12 @@ static inline void toom_3_mult(__m256i *C, const __m256i *A, const __m256i *B);
+  * @param[in] a256 Pointer to the polynomial a(x)
+  */
+ static inline void reduce(__m256i *o, const __m256i *a256) {
++    __m256i o256[VEC_N_ARRAY_SIZE_VEC];
++    uint64_t *tmp_reduce = (uint64_t *)o256;
+     __m256i r256, carry256;
+     uint64_t *a = (uint64_t *)a256;
+     static const int32_t dec64 = PARAM_N & 0x3f;
+-    static int32_t d0;
++    int32_t d0;
+     int32_t i, i2;
+ 
+     d0 = WORD - dec64;
+@@ -77,6 +76,7 @@ static inline void reduce(__m256i *o, const __m256i *a256) {
+ 
+     tmp_reduce[LAST64] &= BITMASK(PARAM_N, 64);
+     memcpy(o, tmp_reduce, VEC_N_SIZE_BYTES);
++    memset_zero(o256, sizeof o256);
+ }
+ 
+ /**
+@@ -358,12 +358,12 @@ static inline void divide_by_x_plus_one_256(__m256i *out, __m256i *in, int32_t s
+  * @param[in] B256 Pointer to the polynomial B(x)
+  */
+ void toom_3_mult(__m256i *Out, const __m256i *A256, const __m256i *B256) {
+-    static __m256i U0[T_TM3R_3W_256], V0[T_TM3R_3W_256], U1[T_TM3R_3W_256], V1[T_TM3R_3W_256], U2[T_TM3R_3W_256],
++    __m256i U0[T_TM3R_3W_256], V0[T_TM3R_3W_256], U1[T_TM3R_3W_256], V1[T_TM3R_3W_256], U2[T_TM3R_3W_256],
+         V2[T_TM3R_3W_256];
+-    static __m256i W0[2 * (T_TM3R_3W_256)], W1[2 * (T_TM3R_3W_256)], W2[2 * (T_TM3R_3W_256)], W3[2 * (T_TM3R_3W_256)],
++    __m256i W0[2 * (T_TM3R_3W_256)], W1[2 * (T_TM3R_3W_256)], W2[2 * (T_TM3R_3W_256)], W3[2 * (T_TM3R_3W_256)],
+         W4[2 * (T_TM3R_3W_256)];
+-    static __m256i tmp[4 * (T_TM3R_3W_256)];
+-    static __m256i ro256[6 * (T_TM3R_3W_256)];
++    __m256i tmp[4 * (T_TM3R_3W_256)];
++    __m256i ro256[6 * (T_TM3R_3W_256)];
+     const __m256i zero = (__m256i){0ul, 0ul, 0ul, 0ul};
+ 
+     uint64_t *A = (uint64_t *)A256;
+@@ -540,6 +540,20 @@ void toom_3_mult(__m256i *Out, const __m256i *A256, const __m256i *B256) {
+     for (int32_t i = 0; i < 6 * T_TM3R_3W_256 - 2; i++) {
+         _mm256_storeu_si256(((__m256i *)Out) + i, ro256[i]);
+     }
++
++    memset_zero(U0, sizeof U0);
++    memset_zero(U1, sizeof U1);
++    memset_zero(U2, sizeof U2);
++    memset_zero(V0, sizeof V0);
++    memset_zero(V1, sizeof V1);
++    memset_zero(V2, sizeof V2);
++    memset_zero(W0, sizeof W0);
++    memset_zero(W1, sizeof W1);
++    memset_zero(W2, sizeof W2);
++    memset_zero(W3, sizeof W3);
++    memset_zero(W4, sizeof W4);
++    memset_zero(tmp, sizeof tmp);
++    memset_zero(ro256, sizeof ro256);
+ }
+ 
+ /**
+@@ -554,13 +568,8 @@ void toom_3_mult(__m256i *Out, const __m256i *A256, const __m256i *B256) {
+  * @param[in] a2 Pointer to a polynomial
+  */
+ void vect_mul(__m256i *o, const __m256i *a1, const __m256i *a2) {
++    __m256i a1_times_a2[VEC_N_256_SIZE_64 >> 1];
+     toom_3_mult(a1_times_a2, a1, a2);
+     reduce(o, a1_times_a2);
+-
+-// clear all
+-#ifdef __STDC_LIB_EXT1__
+-    memset_s(a1_times_a2, 0, (VEC_N_SIZE_64 >> 1) * sizeof(__m256i));
+-#else
+-    memset(a1_times_a2, 0, (VEC_N_SIZE_64 >> 1) * sizeof(__m256i));
+-#endif
++    memset_zero(a1_times_a2, sizeof a1_times_a2);
+ }
 diff --git a/src/x86_64/common/hqc-3/parameters.h b/src/x86_64/common/hqc-3/parameters.h
 index 9707d23..bfd2035 100644
 --- a/src/x86_64/common/hqc-3/parameters.h
@@ -1404,10 +1577,18 @@ index 9707d23..bfd2035 100644
  #define PARAM_N                     35851       ///< Define the parameter n of the scheme
  #define PARAM_N1                    56          ///< Define the parameter n1 of the scheme (length of Reed-Solomon code)
 diff --git a/src/x86_64/common/hqc-5/gf2x.c b/src/x86_64/common/hqc-5/gf2x.c
-index f2f3dcf..399ed7f 100644
+index f2f3dcf..6e1e823 100644
 --- a/src/x86_64/common/hqc-5/gf2x.c
 +++ b/src/x86_64/common/hqc-5/gf2x.c
-@@ -24,11 +24,11 @@
+@@ -8,6 +8,7 @@
+ #include <stdint.h>
+ #include <string.h>
+ #include "parameters.h"
++#include "crypto_memset.h"
+ 
+ #define VEC_N_ARRAY_SIZE_VEC CEIL_DIVIDE(PARAM_N, 256) /*!< The number of needed vectors to store PARAM_N bits*/
+ #define WORD                 64
+@@ -24,11 +25,8 @@
  #define T2_5W_256     (2 * T_5W_256)
  #define t5            (5 * T_5W / WORD)
  
@@ -1416,14 +1597,145 @@ index f2f3dcf..399ed7f 100644
 -uint64_t *tmp_reduce = (uint64_t *)o256;
 -uint64_t bloc64[PARAM_OMEGA_R];  // Allocation with the biggest possible weight
 -uint64_t bit64[PARAM_OMEGA_R];   // Allocation with the biggest possible weight
-+static __m256i a1_times_a2[VEC_N_256_SIZE_64 >> 1];
-+static __m256i o256[VEC_N_ARRAY_SIZE_VEC];
-+static uint64_t *tmp_reduce = (uint64_t *)o256;
 +// static uint64_t bloc64[PARAM_OMEGA_R];  // Allocation with the biggest possible weight
 +// static uint64_t bit64[PARAM_OMEGA_R];   // Allocation with the biggest possible weight
  
  static inline void reduce(__m256i *o, const __m256i *a);
  static inline void karat_mult_1(__m128i *C, const __m128i *A, const __m128i *B);
+@@ -49,10 +47,12 @@ static void toom_3_mult(__m256i *Out, const __m256i *A, const __m256i *B);
+  * @param[in] a256 Pointer to the polynomial a(x)
+  */
+ static inline void reduce(__m256i *o, const __m256i *a256) {
++    __m256i o256[VEC_N_ARRAY_SIZE_VEC];
++    uint64_t *tmp_reduce = (uint64_t *)o256;
+     __m256i r256, carry256;
+     uint64_t *a = (uint64_t *)a256;
+     static const int32_t dec64 = PARAM_N & 0x3f;
+-    static int32_t d0;
++    int32_t d0;
+     int32_t i, i2;
+ 
+     d0 = WORD - dec64;
+@@ -77,6 +77,7 @@ static inline void reduce(__m256i *o, const __m256i *a256) {
+ 
+     tmp_reduce[LAST64] &= BITMASK(PARAM_N, 64);
+     memcpy(o, tmp_reduce, VEC_N_SIZE_BYTES);
++    memset_zero(o256, sizeof o256);
+ }
+ 
+ /**
+@@ -281,11 +282,11 @@ static inline void karat_mult_16(__m256i *C, const __m256i *A, const __m256i *B)
+ static inline void karat_mult_5(__m256i *Out, const __m256i *A, const __m256i *B) {
+     const __m256i *a0, *b0, *a1, *b1, *a2, *b2, *a3, *b3, *a4, *b4;
+ 
+-    static __m256i aa01[T_5W_256], bb01[T_5W_256], aa02[T_5W_256], bb02[T_5W_256], aa03[T_5W_256], bb03[T_5W_256],
++    __m256i aa01[T_5W_256], bb01[T_5W_256], aa02[T_5W_256], bb02[T_5W_256], aa03[T_5W_256], bb03[T_5W_256],
+         aa04[T_5W_256], bb04[T_5W_256], aa12[T_5W_256], bb12[T_5W_256], aa13[T_5W_256], bb13[T_5W_256], aa14[T_5W_256],
+         bb14[T_5W_256], aa23[T_5W_256], bb23[T_5W_256], aa24[T_5W_256], bb24[T_5W_256], aa34[T_5W_256], bb34[T_5W_256];
+ 
+-    static __m256i D0[T2_5W_256], D1[T2_5W_256], D2[T2_5W_256], D3[T2_5W_256], D4[T2_5W_256], D01[T2_5W_256],
++    __m256i D0[T2_5W_256], D1[T2_5W_256], D2[T2_5W_256], D3[T2_5W_256], D4[T2_5W_256], D01[T2_5W_256],
+         D02[T2_5W_256], D03[T2_5W_256], D04[T2_5W_256], D12[T2_5W_256], D13[T2_5W_256], D14[T2_5W_256], D23[T2_5W_256],
+         D24[T2_5W_256], D34[T2_5W_256];
+ 
+@@ -378,6 +379,43 @@ static inline void karat_mult_5(__m256i *Out, const __m256i *A, const __m256i *B
+     for (int32_t i = 0; i < T_5W_256 * 10; i++) {
+         Out[i] = ro256[i];
+     }
++
++    memset_zero(aa01, sizeof aa01);
++    memset_zero(bb01, sizeof bb01);
++    memset_zero(aa02, sizeof aa02);
++    memset_zero(bb02, sizeof bb02);
++    memset_zero(aa03, sizeof aa03);
++    memset_zero(bb03, sizeof bb03);
++    memset_zero(aa04, sizeof aa04);
++    memset_zero(bb04, sizeof bb04);
++    memset_zero(aa12, sizeof aa12);
++    memset_zero(bb12, sizeof bb12);
++    memset_zero(aa13, sizeof aa13);
++    memset_zero(bb13, sizeof bb13);
++    memset_zero(aa14, sizeof aa14);
++    memset_zero(bb14, sizeof bb14);
++    memset_zero(aa23, sizeof aa23);
++    memset_zero(bb23, sizeof bb23);
++    memset_zero(aa24, sizeof aa24);
++    memset_zero(bb24, sizeof bb24);
++    memset_zero(aa34, sizeof aa34);
++    memset_zero(bb34, sizeof bb34);
++    memset_zero(D0, sizeof D0);
++    memset_zero(D1, sizeof D1);
++    memset_zero(D2, sizeof D2);
++    memset_zero(D3, sizeof D3);
++    memset_zero(D4, sizeof D4);
++    memset_zero(D01, sizeof D01);
++    memset_zero(D02, sizeof D02);
++    memset_zero(D03, sizeof D03);
++    memset_zero(D04, sizeof D04);
++    memset_zero(D12, sizeof D12);
++    memset_zero(D13, sizeof D13);
++    memset_zero(D14, sizeof D14);
++    memset_zero(D23, sizeof D23);
++    memset_zero(D24, sizeof D24);
++    memset_zero(D34, sizeof D34);
++    memset_zero(ro256, sizeof ro256);
+ }
+ 
+ /**
+@@ -404,12 +442,12 @@ static inline void divide_by_x_plus_one_256(__m256i *in, __m256i *out, int32_t s
+  * @param[in] B Pointer to the polynomial B(x)
+  */
+ static void toom_3_mult(__m256i *Out, const __m256i *A, const __m256i *B) {
+-    static __m256i U0[T_TM3R_3W_256 + 2], V0[T_TM3R_3W_256 + 2], U1[T_TM3R_3W_256 + 2], V1[T_TM3R_3W_256 + 2],
++    __m256i U0[T_TM3R_3W_256 + 2], V0[T_TM3R_3W_256 + 2], U1[T_TM3R_3W_256 + 2], V1[T_TM3R_3W_256 + 2],
+         U2[T_TM3R_3W_256 + 2], V2[T_TM3R_3W_256 + 2];
+-    static __m256i W0[2 * (T_TM3R_3W_256 + 2)], W1[2 * (T_TM3R_3W_256 + 2)], W2[2 * (T_TM3R_3W_256 + 2)],
++    __m256i W0[2 * (T_TM3R_3W_256 + 2)], W1[2 * (T_TM3R_3W_256 + 2)], W2[2 * (T_TM3R_3W_256 + 2)],
+         W3[2 * (T_TM3R_3W_256 + 2)], W4[2 * (T_TM3R_3W_256 + 2)];
+-    static __m256i tmp[2 * (T_TM3R_3W_256 + 2) + 3];
+-    static __m256i ro256[tTM3R / 2];
++    __m256i tmp[2 * (T_TM3R_3W_256 + 2) + 3];
++    __m256i ro256[tTM3R / 2];
+     static const __m256i zero = {0ul, 0ul, 0ul, 0ul};
+     int32_t T2 = T_TM3R_3W_256 << 1;
+ 
+@@ -572,6 +610,20 @@ static void toom_3_mult(__m256i *Out, const __m256i *A, const __m256i *B) {
+     for (int32_t i = 0; i < VEC_N_256_SIZE_64 << 1; i++) {
+         Out64[i] = ro64[i];
+     }
++
++    memset_zero(U0, sizeof U0);
++    memset_zero(U1, sizeof U1);
++    memset_zero(U2, sizeof U2);
++    memset_zero(V0, sizeof V0);
++    memset_zero(V1, sizeof V1);
++    memset_zero(V2, sizeof V2);
++    memset_zero(W0, sizeof W0);
++    memset_zero(W1, sizeof W1);
++    memset_zero(W2, sizeof W2);
++    memset_zero(W3, sizeof W3);
++    memset_zero(W4, sizeof W4);
++    memset_zero(tmp, sizeof tmp);
++    memset_zero(ro256, sizeof ro256);
+ }
+ 
+ /**
+@@ -586,13 +638,8 @@ static void toom_3_mult(__m256i *Out, const __m256i *A, const __m256i *B) {
+  * @param[in] a2 Pointer to a polynomial
+  */
+ void vect_mul(__m256i *o, const __m256i *a1, const __m256i *a2) {
++    __m256i a1_times_a2[VEC_N_256_SIZE_64 >> 1];
+     toom_3_mult(a1_times_a2, a1, a2);
+     reduce(o, a1_times_a2);
+-
+-// clear all
+-#ifdef __STDC_LIB_EXT1__
+-    memset_s(a1_times_a2, 0, (VEC_N_SIZE_64 >> 1) * sizeof(__m256i));
+-#else
+-    memset(a1_times_a2, 0, (VEC_N_SIZE_64 >> 1) * sizeof(__m256i));
+-#endif
++    memset_zero(a1_times_a2, sizeof a1_times_a2);
+ }
 diff --git a/src/x86_64/common/hqc-5/parameters.h b/src/x86_64/common/hqc-5/parameters.h
 index 3a44f0b..deeb747 100644
 --- a/src/x86_64/common/hqc-5/parameters.h
@@ -1438,10 +1750,38 @@ index 3a44f0b..deeb747 100644
  #define PARAM_N                     57637       ///< Define the parameter n of the scheme
  #define PARAM_N1                    90          ///< Define the parameter n1 of the scheme (length of Reed-Solomon code)
 diff --git a/src/x86_64/common/hqc.c b/src/x86_64/common/hqc.c
-index 9f79aca..e649528 100644
+index 9f79aca..1c63abf 100644
 --- a/src/x86_64/common/hqc.c
 +++ b/src/x86_64/common/hqc.c
-@@ -90,8 +90,8 @@ void hqc_pke_keygen(uint8_t *ek_pke, uint8_t *dk_pke, uint8_t *seed) {
+@@ -34,21 +34,15 @@ void hqc_pke_keygen(uint8_t *ek_pke, uint8_t *dk_pke, uint8_t *seed) {
+     shake256_xof_ctx dk_xof_ctx = {0};
+     shake256_xof_ctx ek_xof_ctx = {0};
+ 
+-    static __m256i h[VEC_N_256_NUM_WORDS];
+-    static __m256i y[VEC_N_256_NUM_WORDS];
+-    static __m256i x[VEC_N_256_NUM_WORDS];
+-    static uint64_t s[VEC_N_256_SIZE_64] = {0};
+-    static __m256i tmp[VEC_N_256_NUM_WORDS] = {0};
+-
+-#ifdef __STDC_LIB_EXT1__
+-    memset_s(x, 0, (VEC_N_256_NUM_WORDS) * sizeof(__m256i));
+-    memset_s(y, 0, (VEC_N_256_NUM_WORDS) * sizeof(__m256i));
+-    memset_s(h, 0, (VEC_N_256_NUM_WORDS) * sizeof(__m256i));
+-#else
++    __m256i h[VEC_N_256_NUM_WORDS];
++    __m256i y[VEC_N_256_NUM_WORDS];
++    __m256i x[VEC_N_256_NUM_WORDS];
++    uint64_t s[VEC_N_256_SIZE_64] = {0};
++    __m256i tmp[VEC_N_256_NUM_WORDS] = {0};
++
+     memset(x, 0, (VEC_N_256_NUM_WORDS) * sizeof(__m256i));
+     memset(y, 0, (VEC_N_256_NUM_WORDS) * sizeof(__m256i));
+     memset(h, 0, (VEC_N_256_NUM_WORDS) * sizeof(__m256i));
+-#endif
+     // Derive keypair seeds
+     hash_i(keypair_seed, seed);
+ 
+@@ -90,8 +84,8 @@ void hqc_pke_keygen(uint8_t *ek_pke, uint8_t *dk_pke, uint8_t *seed) {
      memset_zero(x, sizeof x);
      memset_zero(y, sizeof y);
      memset_zero(tmp, sizeof tmp);
@@ -1452,7 +1792,45 @@ index 9f79aca..e649528 100644
  }
  
  /**
-@@ -182,7 +182,7 @@ void hqc_pke_encrypt(uint64_t *u, uint64_t *v, const uint8_t *ek_pke, const uint
+@@ -109,28 +103,20 @@ void hqc_pke_keygen(uint8_t *ek_pke, uint8_t *dk_pke, uint8_t *seed) {
+  */
+ void hqc_pke_encrypt(uint64_t *u, uint64_t *v, const uint8_t *ek_pke, const uint64_t *m, const uint8_t *theta) {
+     shake256_xof_ctx theta_xof_ctx = {0};
+-    static __m256i h[VEC_N_256_NUM_WORDS];
+-    static __m256i s[VEC_N_256_NUM_WORDS];
+-    static __m256i r2[VEC_N_256_NUM_WORDS];
+-    static __m256i r1[VEC_N_256_NUM_WORDS];
+-    static __m256i e[VEC_N_256_NUM_WORDS];
+-    static __m256i tmp1[VEC_N_256_NUM_WORDS];
+-    static __m256i tmp2[VEC_N_256_NUM_WORDS];
+-    static uint64_t tmp3[VEC_N_256_SIZE_64];
+-
+-#ifdef __STDC_LIB_EXT1__
+-    memset_s(r2, 0, (VEC_N_256_NUM_WORDS) * sizeof(__m256i));
+-    memset_s(h, 0, (VEC_N_256_NUM_WORDS) * sizeof(__m256i));
+-    memset_s(s, 0, (VEC_N_256_NUM_WORDS) * sizeof(__m256i));
+-    memset_s(r1, 0, (VEC_N_256_NUM_WORDS) * sizeof(__m256i));
+-    memset_s(e, 0, (VEC_N_256_NUM_WORDS) * sizeof(__m256i));
+-#else
++    __m256i h[VEC_N_256_NUM_WORDS];
++    __m256i s[VEC_N_256_NUM_WORDS];
++    __m256i r2[VEC_N_256_NUM_WORDS];
++    __m256i r1[VEC_N_256_NUM_WORDS];
++    __m256i e[VEC_N_256_NUM_WORDS];
++    __m256i tmp1[VEC_N_256_NUM_WORDS] = {0};
++    __m256i tmp2[VEC_N_256_NUM_WORDS] = {0};
++    uint64_t tmp3[VEC_N_256_SIZE_64];
++
+     memset(r2, 0, (VEC_N_256_NUM_WORDS) * sizeof(__m256i));
+     memset(h, 0, (VEC_N_256_NUM_WORDS) * sizeof(__m256i));
+     memset(s, 0, (VEC_N_256_NUM_WORDS) * sizeof(__m256i));
+     memset(r1, 0, (VEC_N_256_NUM_WORDS) * sizeof(__m256i));
+     memset(e, 0, (VEC_N_256_NUM_WORDS) * sizeof(__m256i));
+-#endif
+ 
+     // Initialize Xof using theta
+     xof_init(&theta_xof_ctx, theta, SEED_BYTES);
+@@ -182,7 +168,7 @@ void hqc_pke_encrypt(uint64_t *u, uint64_t *v, const uint8_t *ek_pke, const uint
      memset_zero(tmp1, sizeof tmp1);
      memset_zero(tmp2, sizeof tmp2);
      memset_zero(tmp3, sizeof tmp3);
@@ -1461,6 +1839,28 @@ index 9f79aca..e649528 100644
  }
  
  /**
+@@ -200,18 +186,13 @@ void hqc_pke_encrypt(uint64_t *u, uint64_t *v, const uint8_t *ek_pke, const uint
+  *
+  */
+ uint8_t hqc_pke_decrypt(uint64_t *m, const uint8_t *dk_pke, const uint64_t *u, const uint64_t *v) {
+-    static __m256i y[VEC_N_256_NUM_WORDS] = {0};
++    __m256i y[VEC_N_256_NUM_WORDS] = {0};
+     __m256i u_vec[VEC_N_256_NUM_WORDS] = {0};
+-    static __m256i tmp1[VEC_N_256_NUM_WORDS];
+-    static uint64_t tmp2[VEC_N_256_SIZE_64] = {0};
++    __m256i tmp1[VEC_N_256_NUM_WORDS];
++    uint64_t tmp2[VEC_N_256_SIZE_64] = {0};
+ 
+-#ifdef __STDC_LIB_EXT1__
+-    memset_s(y, 0, (VEC_N_256_NUM_WORDS) * sizeof(__m256i));
+-    memset_s(u_vec, 0, (VEC_N_256_NUM_WORDS) * sizeof(__m256i));
+-#else
+     memset(y, 0, (VEC_N_256_NUM_WORDS) * sizeof(__m256i));
+     memset(u_vec, 0, (VEC_N_256_NUM_WORDS) * sizeof(__m256i));
+-#endif
+ 
+     for (size_t i = 0; i < (VEC_N_256_NUM_WORDS); ++i) {
+         u_vec[i] = _mm256_set_epi64x(u[i * 4 + 3], u[i * 4 + 2], u[i * 4 + 1], u[i * 4 + 0]);
 diff --git a/src/x86_64/common/hqc.h b/src/x86_64/common/hqc.h
 index 5adbe45..5c54b37 100644
 --- a/src/x86_64/common/hqc.h
