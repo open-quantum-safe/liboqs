@@ -264,8 +264,9 @@ OQS_API int OQS_MEM_secure_bcmp(const void *a, const void *b, size_t len) {
 		r |= ((const uint8_t *)a)[i] ^ ((const uint8_t *)b)[i];
 	}
 
-	// We have 0 <= r < 256, and unsigned int is at least 16 bits.
-	return 1 & ((-(unsigned int)r) >> 8);
+	// We have 0 <= r < 256, and unsigned int is at least 16 bits, so
+	// r + 0xFF cannot wrap and carries into bit 8 exactly when r != 0.
+	return (int)(((unsigned int)r + 0xFFu) >> 8);
 }
 
 OQS_API void OQS_MEM_cleanse(void *ptr, size_t len) {
