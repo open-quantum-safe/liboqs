@@ -446,23 +446,55 @@ static void speed_aes256(void) {
 	OQS_AES256_free_schedule(schedule);
 }
 
-extern struct OQS_AES_callbacks aes_default_callbacks;
+/*
+ * The default backend must be the hardware one whenever the CPU supports it.
+ * Test vectors give identical results on every backend, so without this check
+ * an unintended fall-back to the portable C code would go unnoticed.
+ */
+static int test_aes_default_backend(void) {
+	const char *name = oqs_aes_default_backend_name();
+	const char *expected = NULL;
+
+	if (oqs_aes_default_callbacks() != oqs_aes_default_callbacks()) {
+		printf("oqs_aes_default_callbacks() is not stable\n");
+		return EXIT_FAILURE;
+	}
+#if defined(OQS_USE_AES_OPENSSL)
+	expected = "openssl";
+#elif defined(OQS_DIST_X86_64_BUILD)
+	expected = OQS_CPU_has_extension(OQS_CPU_EXT_AES) ? "aes-ni" : "c";
+#elif defined(OQS_DIST_ARM64_V8_BUILD)
+	expected = OQS_CPU_has_extension(OQS_CPU_EXT_ARM_AES) ? "armv8" : "c";
+#elif defined(OQS_USE_AES_INSTRUCTIONS)
+	expected = "aes-ni";
+#elif defined(OQS_USE_ARM_AES_INSTRUCTIONS)
+	expected = "armv8";
+#else
+	expected = "c";
+#endif
+	printf("AES backend: %s\n", name);
+	if (strcmp(name, expected) != 0) {
+		printf("Unexpected AES backend: got %s, expected %s\n", name, expected);
+		return EXIT_FAILURE;
+	}
+	return EXIT_SUCCESS;
+}
 
 static bool aes_callback_called = false;
 static void override_AES128_ECB_load_schedule(const uint8_t *key, void **_schedule) {
 	aes_callback_called = true;
-	aes_default_callbacks.AES128_ECB_load_schedule(key, _schedule);
+	oqs_aes_default_callbacks()->AES128_ECB_load_schedule(key, _schedule);
 }
 
 int main(int argc, char **argv) {
 	bool bench = false;
 
-	OQS_init();
-
-	struct OQS_AES_callbacks callbacks = aes_default_callbacks;
+	/* OQS_AES_set_callbacks() may be called before OQS_init(). */
+	struct OQS_AES_callbacks callbacks = *oqs_aes_default_callbacks();
 	callbacks.AES128_ECB_load_schedule = override_AES128_ECB_load_schedule;
 	OQS_AES_set_callbacks(&callbacks);
 
+	OQS_init();
 	for (int i = 1; i < argc; i++) {
 		if (argv[i][0] == '-') {
 			if (strcmp(argv[i], "--bench") == 0 || strcmp(argv[i], "-b") == 0) {
@@ -486,6 +518,10 @@ int main(int argc, char **argv) {
 	print_system_info();
 
 	printf("=== test_aes correctness ===\n");
+	if (test_aes_default_backend() != EXIT_SUCCESS) {
+		OQS_destroy();
+		return EXIT_FAILURE;
+	}
 	if (test_aes128_correctness() != EXIT_SUCCESS) {
 		OQS_destroy();
 		return EXIT_FAILURE;

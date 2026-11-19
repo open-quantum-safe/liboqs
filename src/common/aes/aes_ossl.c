@@ -251,7 +251,7 @@ static void AES192_ECB_enc(const uint8_t *plaintext, const size_t plaintext_len,
 	OQS_AES192_free_schedule(schedule);
 }
 
-struct OQS_AES_callbacks aes_default_callbacks = {
+static const struct OQS_AES_callbacks aes_ossl_callbacks = {
 	.AES128_ECB_load_schedule = AES128_ECB_load_schedule,
 	.AES128_CTR_inc_init = AES128_CTR_inc_init,
 	.AES128_CTR_inc_iv = AES128_CTR_inc_iv,
@@ -275,5 +275,10 @@ struct OQS_AES_callbacks aes_default_callbacks = {
 	.AES192_ECB_enc_sch = AES192_ECB_enc_sch,
 };
 
-void OQS_AES_init(void) {
+const struct OQS_AES_callbacks *oqs_aes_default_callbacks(void) {
+	return &aes_ossl_callbacks;
+}
+
+const char *oqs_aes_default_backend_name(void) {
+	return "openssl";
 }

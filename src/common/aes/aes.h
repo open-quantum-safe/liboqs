@@ -233,6 +233,23 @@ void OQS_AES192_ECB_enc(const uint8_t *plaintext, const size_t plaintext_len, co
  */
 void OQS_AES192_ECB_enc_sch(const uint8_t *plaintext, const size_t plaintext_len, const void *schedule, uint8_t *ciphertext);
 
+/**
+ * Returns the name of the backend selected by oqs_aes_default_callbacks():
+ * one of c, aes-ni, armv8 or openssl. Intended for tests and diagnostics.
+ */
+const char *oqs_aes_default_backend_name(void);
+
+/**
+ * Returns the default AES backend, as determined at build time and, for dist
+ * builds, by CPU feature detection.
+ *
+ * The returned table is constant and the same table is returned on every call
+ * for the lifetime of the process. It does not depend on OQS_init() having been
+ * called. Key schedules are specific to a backend, so they must only be
+ * passed to functions of the table that created them.
+ */
+const struct OQS_AES_callbacks *oqs_aes_default_callbacks(void);
+
 #if defined(__cplusplus)
 } // extern "C"
 #endif
