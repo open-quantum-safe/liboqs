@@ -24,9 +24,6 @@
 #define T2_5W_256     (2 * T_5W_256)
 #define t5            (5 * T_5W / WORD)
 
-static __m256i a1_times_a2[VEC_N_256_SIZE_64 >> 1];
-static __m256i o256[VEC_N_ARRAY_SIZE_VEC];
-static uint64_t *tmp_reduce = (uint64_t *)o256;
 // static uint64_t bloc64[PARAM_OMEGA_R];  // Allocation with the biggest possible weight
 // static uint64_t bit64[PARAM_OMEGA_R];   // Allocation with the biggest possible weight
 
@@ -49,10 +46,12 @@ static void toom_3_mult(__m256i *Out, const __m256i *A, const __m256i *B);
  * @param[in] a256 Pointer to the polynomial a(x)
  */
 static inline void reduce(__m256i *o, const __m256i *a256) {
+    __m256i o256[VEC_N_ARRAY_SIZE_VEC];
+    uint64_t *tmp_reduce = (uint64_t *)o256;
     __m256i r256, carry256;
     uint64_t *a = (uint64_t *)a256;
     static const int32_t dec64 = PARAM_N & 0x3f;
-    static int32_t d0;
+    int32_t d0;
     int32_t i, i2;
 
     d0 = WORD - dec64;
@@ -281,11 +280,11 @@ static inline void karat_mult_16(__m256i *C, const __m256i *A, const __m256i *B)
 static inline void karat_mult_5(__m256i *Out, const __m256i *A, const __m256i *B) {
     const __m256i *a0, *b0, *a1, *b1, *a2, *b2, *a3, *b3, *a4, *b4;
 
-    static __m256i aa01[T_5W_256], bb01[T_5W_256], aa02[T_5W_256], bb02[T_5W_256], aa03[T_5W_256], bb03[T_5W_256],
+    __m256i aa01[T_5W_256], bb01[T_5W_256], aa02[T_5W_256], bb02[T_5W_256], aa03[T_5W_256], bb03[T_5W_256],
         aa04[T_5W_256], bb04[T_5W_256], aa12[T_5W_256], bb12[T_5W_256], aa13[T_5W_256], bb13[T_5W_256], aa14[T_5W_256],
         bb14[T_5W_256], aa23[T_5W_256], bb23[T_5W_256], aa24[T_5W_256], bb24[T_5W_256], aa34[T_5W_256], bb34[T_5W_256];
 
-    static __m256i D0[T2_5W_256], D1[T2_5W_256], D2[T2_5W_256], D3[T2_5W_256], D4[T2_5W_256], D01[T2_5W_256],
+    __m256i D0[T2_5W_256], D1[T2_5W_256], D2[T2_5W_256], D3[T2_5W_256], D4[T2_5W_256], D01[T2_5W_256],
         D02[T2_5W_256], D03[T2_5W_256], D04[T2_5W_256], D12[T2_5W_256], D13[T2_5W_256], D14[T2_5W_256], D23[T2_5W_256],
         D24[T2_5W_256], D34[T2_5W_256];
 
@@ -404,12 +403,12 @@ static inline void divide_by_x_plus_one_256(__m256i *in, __m256i *out, int32_t s
  * @param[in] B Pointer to the polynomial B(x)
  */
 static void toom_3_mult(__m256i *Out, const __m256i *A, const __m256i *B) {
-    static __m256i U0[T_TM3R_3W_256 + 2], V0[T_TM3R_3W_256 + 2], U1[T_TM3R_3W_256 + 2], V1[T_TM3R_3W_256 + 2],
+    __m256i U0[T_TM3R_3W_256 + 2], V0[T_TM3R_3W_256 + 2], U1[T_TM3R_3W_256 + 2], V1[T_TM3R_3W_256 + 2],
         U2[T_TM3R_3W_256 + 2], V2[T_TM3R_3W_256 + 2];
-    static __m256i W0[2 * (T_TM3R_3W_256 + 2)], W1[2 * (T_TM3R_3W_256 + 2)], W2[2 * (T_TM3R_3W_256 + 2)],
+    __m256i W0[2 * (T_TM3R_3W_256 + 2)], W1[2 * (T_TM3R_3W_256 + 2)], W2[2 * (T_TM3R_3W_256 + 2)],
         W3[2 * (T_TM3R_3W_256 + 2)], W4[2 * (T_TM3R_3W_256 + 2)];
-    static __m256i tmp[2 * (T_TM3R_3W_256 + 2) + 3];
-    static __m256i ro256[tTM3R / 2];
+    __m256i tmp[2 * (T_TM3R_3W_256 + 2) + 3];
+    __m256i ro256[tTM3R / 2];
     static const __m256i zero = {0ul, 0ul, 0ul, 0ul};
     int32_t T2 = T_TM3R_3W_256 << 1;
 
@@ -586,6 +585,7 @@ static void toom_3_mult(__m256i *Out, const __m256i *A, const __m256i *B) {
  * @param[in] a2 Pointer to a polynomial
  */
 void vect_mul(__m256i *o, const __m256i *a1, const __m256i *a2) {
+    __m256i a1_times_a2[VEC_N_256_SIZE_64 >> 1];
     toom_3_mult(a1_times_a2, a1, a2);
     reduce(o, a1_times_a2);
 

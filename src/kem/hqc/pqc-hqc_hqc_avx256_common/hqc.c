@@ -34,11 +34,11 @@ void hqc_pke_keygen(uint8_t *ek_pke, uint8_t *dk_pke, uint8_t *seed) {
     shake256_xof_ctx dk_xof_ctx = {0};
     shake256_xof_ctx ek_xof_ctx = {0};
 
-    static __m256i h[VEC_N_256_NUM_WORDS];
-    static __m256i y[VEC_N_256_NUM_WORDS];
-    static __m256i x[VEC_N_256_NUM_WORDS];
-    static uint64_t s[VEC_N_256_SIZE_64] = {0};
-    static __m256i tmp[VEC_N_256_NUM_WORDS] = {0};
+    __m256i h[VEC_N_256_NUM_WORDS];
+    __m256i y[VEC_N_256_NUM_WORDS];
+    __m256i x[VEC_N_256_NUM_WORDS];
+    uint64_t s[VEC_N_256_SIZE_64] = {0};
+    __m256i tmp[VEC_N_256_NUM_WORDS] = {0};
 
 #ifdef __STDC_LIB_EXT1__
     memset_s(x, 0, (VEC_N_256_NUM_WORDS) * sizeof(__m256i));
@@ -109,14 +109,14 @@ void hqc_pke_keygen(uint8_t *ek_pke, uint8_t *dk_pke, uint8_t *seed) {
  */
 void hqc_pke_encrypt(uint64_t *u, uint64_t *v, const uint8_t *ek_pke, const uint64_t *m, const uint8_t *theta) {
     shake256_xof_ctx theta_xof_ctx = {0};
-    static __m256i h[VEC_N_256_NUM_WORDS];
-    static __m256i s[VEC_N_256_NUM_WORDS];
-    static __m256i r2[VEC_N_256_NUM_WORDS];
-    static __m256i r1[VEC_N_256_NUM_WORDS];
-    static __m256i e[VEC_N_256_NUM_WORDS];
-    static __m256i tmp1[VEC_N_256_NUM_WORDS];
-    static __m256i tmp2[VEC_N_256_NUM_WORDS];
-    static uint64_t tmp3[VEC_N_256_SIZE_64];
+    __m256i h[VEC_N_256_NUM_WORDS];
+    __m256i s[VEC_N_256_NUM_WORDS];
+    __m256i r2[VEC_N_256_NUM_WORDS];
+    __m256i r1[VEC_N_256_NUM_WORDS];
+    __m256i e[VEC_N_256_NUM_WORDS];
+    __m256i tmp1[VEC_N_256_NUM_WORDS] = {0};
+    __m256i tmp2[VEC_N_256_NUM_WORDS] = {0};
+    uint64_t tmp3[VEC_N_256_SIZE_64];
 
 #ifdef __STDC_LIB_EXT1__
     memset_s(r2, 0, (VEC_N_256_NUM_WORDS) * sizeof(__m256i));
@@ -200,10 +200,10 @@ void hqc_pke_encrypt(uint64_t *u, uint64_t *v, const uint8_t *ek_pke, const uint
  *
  */
 uint8_t hqc_pke_decrypt(uint64_t *m, const uint8_t *dk_pke, const uint64_t *u, const uint64_t *v) {
-    static __m256i y[VEC_N_256_NUM_WORDS] = {0};
+    __m256i y[VEC_N_256_NUM_WORDS] = {0};
     __m256i u_vec[VEC_N_256_NUM_WORDS] = {0};
-    static __m256i tmp1[VEC_N_256_NUM_WORDS];
-    static uint64_t tmp2[VEC_N_256_SIZE_64] = {0};
+    __m256i tmp1[VEC_N_256_NUM_WORDS];
+    uint64_t tmp2[VEC_N_256_SIZE_64] = {0};
 
 #ifdef __STDC_LIB_EXT1__
     memset_s(y, 0, (VEC_N_256_NUM_WORDS) * sizeof(__m256i));
