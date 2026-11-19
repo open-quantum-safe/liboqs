@@ -8,6 +8,7 @@
 #include <stdint.h>
 #include <string.h>
 #include "parameters.h"
+#include "crypto_memset.h"
 
 #define VEC_N_ARRAY_SIZE_VEC CEIL_DIVIDE(PARAM_N_MULT, 256) /*!< The number of needed vectors to store PARAM_N bits*/
 #define WORD                 64
@@ -74,6 +75,7 @@ static inline void reduce(__m256i *o, const __m256i *a256) {
 
     tmp_reduce[LAST64] &= BITMASK(PARAM_N, 64);
     memcpy(o, tmp_reduce, VEC_N_SIZE_BYTES);
+    memset_zero(o256, sizeof o256);
 }
 
 /**
@@ -499,6 +501,20 @@ void toom_3_mult(__m256i *Out, const __m256i *A256, const __m256i *B256) {
     for (int32_t i = 0; i < 6 * T_TM3R_3W_256 - 2; i++) {
         _mm256_storeu_si256(((__m256i *)Out) + i, ro256[i]);
     }
+
+    memset_zero(U0, sizeof U0);
+    memset_zero(U1, sizeof U1);
+    memset_zero(U2, sizeof U2);
+    memset_zero(V0, sizeof V0);
+    memset_zero(V1, sizeof V1);
+    memset_zero(V2, sizeof V2);
+    memset_zero(W0, sizeof W0);
+    memset_zero(W1, sizeof W1);
+    memset_zero(W2, sizeof W2);
+    memset_zero(W3, sizeof W3);
+    memset_zero(W4, sizeof W4);
+    memset_zero(tmp, sizeof tmp);
+    memset_zero(ro256, sizeof ro256);
 }
 
 /**
@@ -515,11 +531,5 @@ void vect_mul(__m256i *o, const __m256i *a1, const __m256i *a2) {
     __m256i a1_times_a2[VEC_N_256_SIZE_64 >> 1];
     toom_3_mult(a1_times_a2, a1, a2);
     reduce(o, a1_times_a2);
-
-// clear all
-#ifdef __STDC_LIB_EXT1__
-    memset_s(a1_times_a2, 0, (VEC_N_SIZE_64 >> 1) * sizeof(__m256i));
-#else
-    memset(a1_times_a2, 0, (VEC_N_SIZE_64 >> 1) * sizeof(__m256i));
-#endif
+    memset_zero(a1_times_a2, sizeof a1_times_a2);
 }

@@ -8,6 +8,7 @@
 #include <stdint.h>
 #include <string.h>
 #include "parameters.h"
+#include "crypto_memset.h"
 
 #define VEC_N_ARRAY_SIZE_VEC CEIL_DIVIDE(PARAM_N, 256) /*!< The number of needed vectors to store PARAM_N bits*/
 #define WORD                 64
@@ -76,6 +77,7 @@ static inline void reduce(__m256i *o, const __m256i *a256) {
 
     tmp_reduce[LAST64] &= BITMASK(PARAM_N, 64);
     memcpy(o, tmp_reduce, VEC_N_SIZE_BYTES);
+    memset_zero(o256, sizeof o256);
 }
 
 /**
@@ -377,6 +379,43 @@ static inline void karat_mult_5(__m256i *Out, const __m256i *A, const __m256i *B
     for (int32_t i = 0; i < T_5W_256 * 10; i++) {
         Out[i] = ro256[i];
     }
+
+    memset_zero(aa01, sizeof aa01);
+    memset_zero(bb01, sizeof bb01);
+    memset_zero(aa02, sizeof aa02);
+    memset_zero(bb02, sizeof bb02);
+    memset_zero(aa03, sizeof aa03);
+    memset_zero(bb03, sizeof bb03);
+    memset_zero(aa04, sizeof aa04);
+    memset_zero(bb04, sizeof bb04);
+    memset_zero(aa12, sizeof aa12);
+    memset_zero(bb12, sizeof bb12);
+    memset_zero(aa13, sizeof aa13);
+    memset_zero(bb13, sizeof bb13);
+    memset_zero(aa14, sizeof aa14);
+    memset_zero(bb14, sizeof bb14);
+    memset_zero(aa23, sizeof aa23);
+    memset_zero(bb23, sizeof bb23);
+    memset_zero(aa24, sizeof aa24);
+    memset_zero(bb24, sizeof bb24);
+    memset_zero(aa34, sizeof aa34);
+    memset_zero(bb34, sizeof bb34);
+    memset_zero(D0, sizeof D0);
+    memset_zero(D1, sizeof D1);
+    memset_zero(D2, sizeof D2);
+    memset_zero(D3, sizeof D3);
+    memset_zero(D4, sizeof D4);
+    memset_zero(D01, sizeof D01);
+    memset_zero(D02, sizeof D02);
+    memset_zero(D03, sizeof D03);
+    memset_zero(D04, sizeof D04);
+    memset_zero(D12, sizeof D12);
+    memset_zero(D13, sizeof D13);
+    memset_zero(D14, sizeof D14);
+    memset_zero(D23, sizeof D23);
+    memset_zero(D24, sizeof D24);
+    memset_zero(D34, sizeof D34);
+    memset_zero(ro256, sizeof ro256);
 }
 
 /**
@@ -571,6 +610,20 @@ static void toom_3_mult(__m256i *Out, const __m256i *A, const __m256i *B) {
     for (int32_t i = 0; i < VEC_N_256_SIZE_64 << 1; i++) {
         Out64[i] = ro64[i];
     }
+
+    memset_zero(U0, sizeof U0);
+    memset_zero(U1, sizeof U1);
+    memset_zero(U2, sizeof U2);
+    memset_zero(V0, sizeof V0);
+    memset_zero(V1, sizeof V1);
+    memset_zero(V2, sizeof V2);
+    memset_zero(W0, sizeof W0);
+    memset_zero(W1, sizeof W1);
+    memset_zero(W2, sizeof W2);
+    memset_zero(W3, sizeof W3);
+    memset_zero(W4, sizeof W4);
+    memset_zero(tmp, sizeof tmp);
+    memset_zero(ro256, sizeof ro256);
 }
 
 /**
@@ -588,11 +641,5 @@ void vect_mul(__m256i *o, const __m256i *a1, const __m256i *a2) {
     __m256i a1_times_a2[VEC_N_256_SIZE_64 >> 1];
     toom_3_mult(a1_times_a2, a1, a2);
     reduce(o, a1_times_a2);
-
-// clear all
-#ifdef __STDC_LIB_EXT1__
-    memset_s(a1_times_a2, 0, (VEC_N_SIZE_64 >> 1) * sizeof(__m256i));
-#else
-    memset(a1_times_a2, 0, (VEC_N_SIZE_64 >> 1) * sizeof(__m256i));
-#endif
+    memset_zero(a1_times_a2, sizeof a1_times_a2);
 }
