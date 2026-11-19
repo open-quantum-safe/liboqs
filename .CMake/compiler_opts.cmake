@@ -12,16 +12,20 @@
 # If OQS_OPT_TARGET=generic we target a generic CPU.
 # Otherwise we target the specified CPU.
 
-# Pedantic checks (-Wall, ...) are not enabled by default for Release
-# builds such as to avoid future build errors introduced by currently
-# unknown compiler warnings
+# Compiler warnings are enabled by default for GCC and Clang (see "Compiler
+# warnings" below). OQS_STRICT_WARNINGS additionally treats warnings as errors.
+# That is meant for development and CI only, so that a newer compiler adding
+# warnings cannot break the build of an existing release.
 
 include(CheckCCompilerFlag)
 check_c_compiler_flag("-Wa,--noexecstack" CC_SUPPORTS_WA_NOEXECSTACK)
 
-# This sets the equivalent of -Werror for supported compilers
-# it can be overriden with --compile-no-warnings-as-errors
+# Treat warnings as errors (-Werror, /WX, ...) via CMake's COMPILE_WARNING_AS_ERROR
+# CMake before 3.24 ignores it, which would silently drop -Werror, so refuse to configure.
 # https://cmake.org/cmake/help/latest/prop_tgt/COMPILE_WARNING_AS_ERROR.html
+if(OQS_STRICT_WARNINGS AND CMAKE_VERSION VERSION_LESS "3.24")
+    message(FATAL_ERROR "OQS_STRICT_WARNINGS requires CMake 3.24 or newer (found ${CMAKE_VERSION}). Upgrade CMake or configure with -DOQS_STRICT_WARNINGS=OFF.")
+endif()
 set(CMAKE_COMPILE_WARNING_AS_ERROR ${OQS_STRICT_WARNINGS})
 
 if(${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.18")
@@ -98,12 +102,7 @@ if(CMAKE_C_COMPILER_ID MATCHES "Clang|GNU")
 endif()
 
 if(CMAKE_C_COMPILER_ID MATCHES "Clang")
-    if(${OQS_STRICT_WARNINGS})
-        add_compile_options(-Wall)
-        add_compile_options(-Wextra)
-        add_compile_options(-Wpedantic)
-        add_compile_options(-Wno-unused-command-line-argument)
-    endif()
+    add_compile_options(-Wno-unused-command-line-argument)
     if(CC_SUPPORTS_WA_NOEXECSTACK)
         add_compile_options("-Wa,--noexecstack")
     endif()
@@ -162,16 +161,6 @@ elseif(CMAKE_C_COMPILER_ID STREQUAL "GNU")
             FATAL_ERROR
             "GCC version ${CMAKE_C_COMPILER_VERSION} below minimally required version ${OQS_MINIMAL_GCC_VERSION}."
         )
-    endif()
-    if(${OQS_STRICT_WARNINGS})
-        add_compile_options(-Wall)
-        add_compile_options(-Wextra)
-        add_compile_options(-Wpedantic)
-        add_compile_options(-Wstrict-prototypes)
-        add_compile_options(-Wshadow)
-        add_compile_options(-Wformat=2)
-        add_compile_options(-Wfloat-equal)
-        add_compile_options(-Wwrite-strings)
     endif()
     if(NOT CMAKE_SYSTEM_NAME STREQUAL "Darwin")
         if(CC_SUPPORTS_WA_NOEXECSTACK)
@@ -237,6 +226,141 @@ if(MINGW OR MSYS OR CYGWIN)
     else()
         set(CMAKE_EXE_LINKER_FLAGS
             "${CMAKE_EXE_LINKER_FLAGS} -Wl,--stack,16777216"
+        )
+    endif()
+endif()
+
+# Hardened compile and link options, following the OpenSSF Compiler Options
+# Hardening Guide for C and C++ (as of the 2026-08-20 revision):
+# https://best.openssf.org/Compiler-Hardening-Guides/Compiler-Options-Hardening-Guide-for-C-and-C++.html
+#
+# Deliberately not used from the guide:
+#   -Wl,-z,nodlopen            (liboqs is loaded with dlopen() by language wrappers.)
+#   -D_GLIBCXX_ASSERTIONS      (C++ only)
+#   -D_LIBCPP_HARDENING_MODE   (C++ only)
+#   -fPIE -pie, -fPIC          (Covered by CMAKE_POSITION_INDEPENDENT_CODE.)
+#   -Wl,-z,noexecstack         (Already added above)
+#   -O2                        (Set by CMAKE_BUILD_TYPE)
+
+# Table 1: Compile-time hardening options
+if(CMAKE_C_COMPILER_ID MATCHES "Clang|GNU")
+    # Embedded builds (e.g. Zephyr) keep the toolchain's own warning set,
+    # since Zephyr's -Werror would turn these additional warnings into errors.
+    if(NOT OQS_EMBEDDED_BUILD)
+        # From the guide
+        add_compile_options(
+            -Wall
+            -Wextra
+            -Wformat
+            -Wformat=2
+            # TODO: Conversion warnings lead to a huge number of warnings.
+            # Enabling these are tracked by: https://github.com/open-quantum-safe/liboqs/issues/2700
+            # -Wconversion
+            # -Wsign-conversion
+            -Wimplicit-fallthrough
+        )
+        # liboqs additions, not part of the guide
+        add_compile_options(
+            -Wpedantic
+            -Wstrict-prototypes
+            -Wshadow
+            -Wfloat-equal
+            -Wwrite-strings
+        )
+        # From the guide, GCC only
+        if(CMAKE_C_COMPILER_ID STREQUAL "GNU")
+            add_compile_options(-Wtrampolines)
+            if(CMAKE_C_COMPILER_VERSION VERSION_GREATER_EQUAL "12")
+                add_compile_options(-Wbidi-chars=any)
+            endif()
+        endif()
+    endif()
+
+    # Obsolete or dangerous constructs, which are errors in every build.
+    # Unlike a blanket -Werror, these checks are stable across compiler releases.
+    add_compile_options(
+        -Werror=format-security
+        -Werror=implicit
+        -Werror=incompatible-pointer-types
+        -Werror=int-conversion
+    )
+endif()
+
+# Table 2: Runtime hardening options
+# These modify the properties of the generated binary to enhance security
+# Because this can affect performance, these are opt-in via OQS_HARDENED_COMPILE_OPTS (default OFF)
+if(OQS_HARDENED_COMPILE_OPTS AND CMAKE_C_COMPILER_ID MATCHES "Clang|GNU")
+    # Supported by every GCC and Clang that liboqs supports.
+    add_compile_options(
+        -fno-delete-null-pointer-checks
+        -fno-strict-overflow
+        -fno-strict-aliasing
+    )
+    if(OQS_USE_PTHREADS)
+        add_compile_options(-fexceptions)
+    endif()
+    # Needs __stack_chk_guard/__stack_chk_fail from the runtime.
+    if(NOT OQS_EMBEDDED_BUILD)
+        add_compile_options(-fstack-protector-strong)
+    endif()
+
+    # Newer flags whose support depends on the compiler version and target.
+    # Each is added only if the compiler accepts it.
+    set(_oqs_checked_flags
+        -fstack-clash-protection
+        -fstrict-flex-arrays=3
+        -fzero-init-padding-bits=all
+    )
+    if(ARCH_X86_64)
+        list(APPEND _oqs_checked_flags -fcf-protection=full)
+    elseif(ARCH_ARM64v8)
+        list(APPEND _oqs_checked_flags -mbranch-protection=standard)
+    endif()
+    # Clang before 16 (AppleClang before 15) miscompiles this flag, so a
+    # support check is not enough.
+    if(
+        (ARCH_X86_64 OR ARCH_ARM64v8)
+        AND NOT (CMAKE_C_COMPILER_ID STREQUAL "Clang" AND CMAKE_C_COMPILER_VERSION VERSION_LESS "16")
+        AND NOT (CMAKE_C_COMPILER_ID STREQUAL "AppleClang" AND CMAKE_C_COMPILER_VERSION VERSION_LESS "15")
+    )
+        list(APPEND _oqs_checked_flags -fzero-call-used-regs=used-gpr)
+    endif()
+    foreach(_flag IN LISTS _oqs_checked_flags)
+        string(MAKE_C_IDENTIFIER "CC_SUPPORTS${_flag}" _var)
+        check_c_compiler_flag("${_flag}" ${_var})
+        if(${_var})
+            add_compile_options("${_flag}")
+        endif()
+    endforeach()
+
+    # Zero-initialize locals in release builds
+    # Skip for sanitizer and constant-time builds, since these are meant to catch uninitialized reads
+    if(NOT USE_SANITIZER AND NOT OQS_ENABLE_TEST_CONSTANT_TIME)
+        check_c_compiler_flag(-ftrivial-auto-var-init=zero CC_SUPPORTS_ftrivial_auto_var_init)
+        if(CC_SUPPORTS_ftrivial_auto_var_init)
+            if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+                # In Debug builds, use `=pattern` to better catch uninitialized reads
+                add_compile_options(-ftrivial-auto-var-init=pattern)
+            else()
+                # As per guide, use `=zero` for release builds
+                add_compile_options(-ftrivial-auto-var-init=zero)
+            endif()
+        endif()
+    endif()
+
+    # _FORTIFY_SOURCE needs optimization (-O1 or higher), so skip Debug.
+    if(NOT OQS_EMBEDDED_BUILD AND NOT MINGW AND NOT CMAKE_BUILD_TYPE STREQUAL "Debug")
+        # As per guide, unset and reset to avoid potential conflicts
+        add_compile_options(-U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=3)
+    endif()
+
+    # These linker options are ELF features exclusively, so exclude non-ELF platforms.
+    if(NOT APPLE AND NOT WIN32 AND NOT CYGWIN AND NOT MSYS AND NOT OQS_EMBEDDED_BUILD)
+        add_link_options(
+            -Wl,-z,relro
+            -Wl,-z,now
+            -Wl,--as-needed
+            -Wl,--no-copy-dt-needed-entries
         )
     endif()
 endif()

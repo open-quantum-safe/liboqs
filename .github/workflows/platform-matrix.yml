@@ -53,7 +53,7 @@ jobs:
           - name: jammy-clang
             runner: ubuntu-latest
             container: openquantumsafe/ci-ubuntu-jammy:latest
-            cmake_args: -DOQS_STRICT_WARNINGS=ON -DCMAKE_C_COMPILER=clang
+            cmake_args: -DCMAKE_C_COMPILER=clang
             pr: build,correctness,distbuild
             main: build,correctness,distbuild,extensive
           - name: alpine-no-stfl-key-sig-gen
@@ -133,7 +133,7 @@ jobs:
           - name: jammy-clang-leaks
             runner: ubuntu-latest
             container: openquantumsafe/ci-ubuntu-jammy:latest
-            cmake_args: -DOQS_STRICT_WARNINGS=ON -DCMAKE_C_COMPILER=clang
+            cmake_args: -DCMAKE_C_COMPILER=clang
             pr: ''
             main: leaks
           # macOS
