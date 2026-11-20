@@ -1269,7 +1269,7 @@ index 48ee057..2b9c93b 100644
  
          for (size_t k = PARAM_N1 - PARAM_K - 1; k; --k) {
 diff --git a/src/x86_64/avx256/reed_muller.c b/src/x86_64/avx256/reed_muller.c
-index 1935f6c..d4256a4 100644
+index 1935f6c..13ad2c3 100644
 --- a/src/x86_64/avx256/reed_muller.c
 +++ b/src/x86_64/avx256/reed_muller.c
 @@ -29,8 +29,8 @@
@@ -1319,6 +1319,20 @@ index 1935f6c..d4256a4 100644
      __m256i bitmap, abs_rows[8], bound, active_row, max_abs_rows;
      rm_vector256_t peak_mask;
      // compute absolute value of transform
+@@ -226,10 +226,11 @@ inline int32_t find_peaks(rm_expanded_cdw128_t *transform) {
+         tmp = _mm256_or_si256(tmp, _mm256_and_si256(vect_mask, transform->mm[i]));
+     }
+     uint16_t result = 0;
++    uint16_t lanes[16] = {0};
++    _mm256_storeu_si256((__m256i *)lanes, tmp);
+     for (uint32_t i = 0; i < 16; i++) {
+-        uint16_t *ptr = (uint16_t *)&tmp;
+         int32_t message_mask = (-(int32_t)(i == message % 16)) >> (sizeof(int32_t) * 8 - 1);
+-        result |= message_mask & ptr[i];
++        result |= message_mask & lanes[i];
+     }
+     message |= (0x8000 & ~result) >> 8;
+     return message;
 diff --git a/src/x86_64/avx256/vector.c b/src/x86_64/avx256/vector.c
 index 4d38b8f..0ead575 100644
 --- a/src/x86_64/avx256/vector.c
