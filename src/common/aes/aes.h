@@ -243,10 +243,14 @@ const char *oqs_aes_default_backend_name(void);
  * Returns the default AES backend, as determined at build time and, for dist
  * builds, by CPU feature detection.
  *
- * The returned table is constant and the same table is returned on every call
- * for the lifetime of the process. It does not depend on OQS_init() having been
- * called. Key schedules are specific to a backend, so they must only be
- * passed to functions of the table that created them.
+ * The returned table is constant, and its functions call only functions of
+ * the same backend, never the callbacks installed with OQS_AES_set_callbacks().
+ * Key schedules are specific to a backend, so they must only be passed to
+ * functions of the table that created them.
+ *
+ * For dist builds, the same table is returned on every call once CPU feature
+ * detection has completed. Without OQS_USE_PTHREADS, detection is not
+ * thread-safe, so call OQS_init() before using AES from more than one thread.
  */
 const struct OQS_AES_callbacks *oqs_aes_default_callbacks(void);
 

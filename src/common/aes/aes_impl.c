@@ -13,9 +13,14 @@
  * The AES backends (portable C, x86-64 AES-NI, ARMv8 crypto extensions) are
  * described by constant callback tables that are never modified at run time.
  * oqs_aes_default_callbacks() picks one of them: at compile time, or, for dist
- * builds, from the (cached) CPU feature detection. It always returns the same
- * table for the lifetime of the process, so a key schedule is always created,
- * used and freed by the same backend and nothing depends on OQS_init().
+ * builds, from the cached result of CPU feature detection. Each table calls
+ * only functions of its own backend. Once detection has completed, the same
+ * table is returned on every call, so a key schedule created through the
+ * default table is used and freed by the same backend.
+ *
+ * With OQS_USE_PTHREADS, detection is synchronized by pthread_once. Without it
+ * (MSVC, MinGW and embedded builds), detection is not thread-safe: call
+ * OQS_init() before using AES from more than one thread.
  */
 #if defined(OQS_DIST_X86_64_BUILD)
 #define OQS_AES_HAVE_C 1
@@ -144,8 +149,8 @@ static const struct OQS_AES_callbacks aes_armv8_callbacks = {
 #endif
 
 /*
- * OQS_CPU_has_extension() caches its result, so this is cheap to call and
- * always returns the same table.
+ * OQS_CPU_has_extension() caches its result, so this is cheap enough to call
+ * on every AES operation.
  */
 const struct OQS_AES_callbacks *oqs_aes_default_callbacks(void) {
 #if defined(OQS_DIST_X86_64_BUILD)

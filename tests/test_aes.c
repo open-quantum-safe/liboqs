@@ -447,9 +447,13 @@ static void speed_aes256(void) {
 }
 
 /*
- * The default backend must be the hardware one whenever the CPU supports it.
- * Test vectors give identical results on every backend, so without this check
- * an unintended fall-back to the portable C code would go unnoticed.
+ * Check that oqs_aes_default_callbacks() returns the backend the build
+ * configuration calls for. Test vectors give identical results on every
+ * backend, so a wrongly wired table would otherwise go unnoticed.
+ *
+ * For dist builds the expected backend comes from OQS_CPU_has_extension(), the
+ * same source the library uses. This test therefore cannot detect a CPU
+ * detection fault that hides AES support.
  */
 static int test_aes_default_backend(void) {
 	const char *name = oqs_aes_default_backend_name();
