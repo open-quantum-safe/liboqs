@@ -685,6 +685,15 @@ int main(int argc, char **argv) {
 		return EXIT_FAILURE;
 	}
 
+	/* Passing NULL restores the default callbacks. */
+	OQS_AES_set_callbacks(NULL);
+	aes_callback_called = false;
+	if (test_aes128_correctness() != EXIT_SUCCESS || aes_callback_called) {
+		printf("OQS_AES_set_callbacks(NULL) did not restore the default callbacks\n");
+		OQS_destroy();
+		return EXIT_FAILURE;
+	}
+
 	printf("Tests passed.\n\n");
 
 	if (bench) {
