@@ -1,6 +1,6 @@
 diff --git a/integration/liboqs/HQC-1_META.yml b/integration/liboqs/HQC-1_META.yml
 new file mode 100644
-index 0000000..481516a
+index 0000000..93e6469
 --- /dev/null
 +++ b/integration/liboqs/HQC-1_META.yml
 @@ -0,0 +1,77 @@
@@ -50,7 +50,7 @@ index 0000000..481516a
 +- Valentin Vasseur
 +implementations:
 +- name: ref
-+  version: 2026-10-12
++  version: v5.1.0
 +  folder_name: src/ref
 +  compile_opts: -DHQC_PARAMETER_SET=1 -DHQC_NAMESPACE_PREFIX=PQCHQC_HQC1_C
 +  signature_keypair: PQCHQC_HQC1_C_hqc_kem_keygen_oqs
@@ -61,7 +61,7 @@ index 0000000..481516a
 +  sources: hqc-1/parameters.h hqc-1/reed_solomon.h ../../LICENSE
 +  common_dep: hqc_shims hqc_common hqc_ref_common
 +- name: x86_64
-+  version: 2026-10-12
++  version: v5.1.0
 +  folder_name: src/x86_64
 +  compile_opts: -DHQC_PARAMETER_SET=1 -DHQC_NAMESPACE_PREFIX=PQCHQC_HQC1_AVX256
 +  signature_keypair: PQCHQC_HQC1_AVX256_hqc_kem_keygen_oqs
@@ -83,7 +83,7 @@ index 0000000..481516a
 +        - pclmulqdq
 diff --git a/integration/liboqs/HQC-3_META.yml b/integration/liboqs/HQC-3_META.yml
 new file mode 100644
-index 0000000..1b28a98
+index 0000000..de30997
 --- /dev/null
 +++ b/integration/liboqs/HQC-3_META.yml
 @@ -0,0 +1,75 @@
@@ -131,7 +131,7 @@ index 0000000..1b28a98
 +  - Valentin Vasseur
 +implementations:
 +- name: ref
-+  version: 2026-10-12
++  version: v5.1.0
 +  folder_name: src/ref
 +  compile_opts: -DHQC_PARAMETER_SET=3 -DHQC_NAMESPACE_PREFIX=PQCHQC_HQC3_C
 +  signature_keypair: PQCHQC_HQC3_C_hqc_kem_keygen_oqs
@@ -142,7 +142,7 @@ index 0000000..1b28a98
 +  sources: hqc-3/parameters.h hqc-3/reed_solomon.h ../../LICENSE
 +  common_dep: hqc_shims hqc_common hqc_ref_common
 +- name: x86_64
-+  version: 2026-10-12
++  version: v5.1.0
 +  folder_name: src/x86_64
 +  compile_opts: -DHQC_PARAMETER_SET=3 -DHQC_NAMESPACE_PREFIX=PQCHQC_HQC3_AVX256
 +  signature_keypair: PQCHQC_HQC3_AVX256_hqc_kem_keygen_oqs
@@ -164,7 +164,7 @@ index 0000000..1b28a98
 +        - pclmulqdq
 diff --git a/integration/liboqs/HQC-5_META.yml b/integration/liboqs/HQC-5_META.yml
 new file mode 100644
-index 0000000..553ab2c
+index 0000000..7d329b9
 --- /dev/null
 +++ b/integration/liboqs/HQC-5_META.yml
 @@ -0,0 +1,75 @@
@@ -212,7 +212,7 @@ index 0000000..553ab2c
 +  - Valentin Vasseur
 +implementations:
 +- name: ref
-+  version: 2026-10-12
++  version: v5.1.0
 +  folder_name: src/ref
 +  compile_opts: -DHQC_PARAMETER_SET=5 -DHQC_NAMESPACE_PREFIX=PQCHQC_HQC5_C
 +  signature_keypair: PQCHQC_HQC5_C_hqc_kem_keygen_oqs
@@ -223,7 +223,7 @@ index 0000000..553ab2c
 +  sources: hqc-5/parameters.h hqc-5/reed_solomon.h ../../LICENSE
 +  common_dep: hqc_shims hqc_common hqc_ref_common
 +- name: x86_64
-+  version: 2026-10-12
++  version: v5.1.0
 +  folder_name: src/x86_64
 +  compile_opts: -DHQC_PARAMETER_SET=5 -DHQC_NAMESPACE_PREFIX=PQCHQC_HQC5_AVX256
 +  signature_keypair: PQCHQC_HQC5_AVX256_hqc_kem_keygen_oqs

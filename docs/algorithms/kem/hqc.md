@@ -5,7 +5,7 @@
 - **Principal submitters**: Philippe Gaborit.
 - **Auxiliary submitters**: Carlos Aguilar-Melchor, Nicolas Aragon, Slim Bettaieb, Loïc Bidoux, Olivier Blazy, Jean-Christophe Deneuville, Edoardo Persichetti, Gilles Zémor, Jurjen Bos, Arnaud Dion, Jérôme Lacan, Jean-Marc Robert, Pascal Véron, Paulo L. Barreto, Santosh Ghosh, Shay Gueron, Tim Güneysu, Rafael Misoczki, Jan Richter-Brokmann, Nicolas Sendrier, Jean-Pierre Tillich, Valentin Vasseur.
 - **Authors' website**: https://pqc-hqc.org/
-- **Specification version**: 2026-10-12.
+- **Specification version**: v5.1.0.
 - **Primary Source**<a name="primary-source"></a>:
   - **Source**: https://gitlab.com/pqc-hqc/hqc/commit/06567ccbad10580d78dd7863b15d23f41076d57f with copy_from_upstream patches
   - **Implementation license (SPDX-Identifier)**: Public domain
