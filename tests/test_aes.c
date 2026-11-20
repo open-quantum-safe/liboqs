@@ -446,18 +446,154 @@ static void speed_aes256(void) {
 	OQS_AES256_free_schedule(schedule);
 }
 
-extern struct OQS_AES_callbacks aes_default_callbacks;
+/*
+ * Check that oqs_aes_default_callbacks() returns the backend the build
+ * configuration calls for. Test vectors give identical results on every
+ * backend, so a wrongly wired table would otherwise go unnoticed.
+ *
+ * For dist builds the expected backend comes from OQS_CPU_has_extension(), the
+ * same source the library uses. This test therefore cannot detect a CPU
+ * detection fault that hides AES support.
+ */
+static int test_aes_default_backend(void) {
+	const char *name = oqs_aes_default_backend_name();
+	const char *expected = NULL;
+
+	if (oqs_aes_default_callbacks() != oqs_aes_default_callbacks()) {
+		printf("oqs_aes_default_callbacks() is not stable\n");
+		return EXIT_FAILURE;
+	}
+#if defined(OQS_USE_AES_OPENSSL)
+	expected = "openssl";
+#elif defined(OQS_DIST_X86_64_BUILD)
+	expected = OQS_CPU_has_extension(OQS_CPU_EXT_AES) ? "aes-ni" : "c";
+#elif defined(OQS_DIST_ARM64_V8_BUILD)
+	expected = OQS_CPU_has_extension(OQS_CPU_EXT_ARM_AES) ? "armv8" : "c";
+#elif defined(OQS_USE_AES_INSTRUCTIONS)
+	expected = "aes-ni";
+#elif defined(OQS_USE_ARM_AES_INSTRUCTIONS)
+	expected = "armv8";
+#else
+	expected = "c";
+#endif
+	printf("AES backend: %s\n", name);
+	if (strcmp(name, expected) != 0) {
+		printf("Unexpected AES backend: got %s, expected %s\n", name, expected);
+		return EXIT_FAILURE;
+	}
+	return EXIT_SUCCESS;
+}
+
+/*
+ * Functions in the default table must call their own backend directly, not the
+ * OQS_AES* dispatchers, which go to whatever table OQS_AES_set_callbacks()
+ * installed. Otherwise a caller that overrides only some entries gets key
+ * schedules passed between backends.
+ *
+ * The test installs a table whose schedule functions record that they ran
+ * (and then forward to the default table, so results stay valid), calls every
+ * function of the default table directly, and checks that nothing was recorded.
+ */
+static const char *dispatcher_reentered = NULL;
+
+#define RECORDING_LOAD_SCHEDULE(field) \
+    static void recording_##field(const uint8_t *key, void **schedule) { \
+        if (dispatcher_reentered == NULL) { \
+            dispatcher_reentered = #field; \
+        } \
+        oqs_aes_default_callbacks()->field(key, schedule); \
+    }
+#define RECORDING_ENC_SCH(field) \
+    static void recording_##field(const uint8_t *plaintext, const size_t plaintext_len, const void *schedule, uint8_t *ciphertext) { \
+        if (dispatcher_reentered == NULL) { \
+            dispatcher_reentered = #field; \
+        } \
+        oqs_aes_default_callbacks()->field(plaintext, plaintext_len, schedule, ciphertext); \
+    }
+#define RECORDING_FREE_SCHEDULE(field) \
+    static void recording_##field(void *schedule) { \
+        if (dispatcher_reentered == NULL) { \
+            dispatcher_reentered = #field; \
+        } \
+        oqs_aes_default_callbacks()->field(schedule); \
+    }
+
+RECORDING_LOAD_SCHEDULE(AES128_ECB_load_schedule)
+RECORDING_LOAD_SCHEDULE(AES192_ECB_load_schedule)
+RECORDING_LOAD_SCHEDULE(AES256_ECB_load_schedule)
+RECORDING_ENC_SCH(AES128_ECB_enc_sch)
+RECORDING_ENC_SCH(AES192_ECB_enc_sch)
+RECORDING_ENC_SCH(AES256_ECB_enc_sch)
+RECORDING_FREE_SCHEDULE(AES128_free_schedule)
+RECORDING_FREE_SCHEDULE(AES192_free_schedule)
+RECORDING_FREE_SCHEDULE(AES256_free_schedule)
+
+static int test_aes_default_table_self_contained(struct OQS_AES_callbacks *restore) {
+	const struct OQS_AES_callbacks *def = oqs_aes_default_callbacks();
+	struct OQS_AES_callbacks recording = *def;
+	uint8_t key[32] = {0};
+	uint8_t iv[16] = {0};
+	uint8_t block[16] = {0};
+	uint8_t out[64];
+	void *schedule = NULL;
+
+	recording.AES128_ECB_load_schedule = recording_AES128_ECB_load_schedule;
+	recording.AES192_ECB_load_schedule = recording_AES192_ECB_load_schedule;
+	recording.AES256_ECB_load_schedule = recording_AES256_ECB_load_schedule;
+	recording.AES128_ECB_enc_sch = recording_AES128_ECB_enc_sch;
+	recording.AES192_ECB_enc_sch = recording_AES192_ECB_enc_sch;
+	recording.AES256_ECB_enc_sch = recording_AES256_ECB_enc_sch;
+	recording.AES128_free_schedule = recording_AES128_free_schedule;
+	recording.AES192_free_schedule = recording_AES192_free_schedule;
+	recording.AES256_free_schedule = recording_AES256_free_schedule;
+	OQS_AES_set_callbacks(&recording);
+	dispatcher_reentered = NULL;
+
+	def->AES128_ECB_load_schedule(key, &schedule);
+	def->AES128_ECB_enc_sch(block, sizeof(block), schedule, out);
+	def->AES128_free_schedule(schedule);
+	def->AES128_ECB_enc(block, sizeof(block), key, out);
+	def->AES128_CTR_inc_init(key, &schedule);
+	def->AES128_CTR_inc_iv(iv, sizeof(iv), schedule);
+	def->AES128_CTR_inc_ivu64(0, schedule);
+	def->AES128_CTR_inc_stream_iv(iv, sizeof(iv), schedule, out, sizeof(out));
+	def->AES128_free_schedule(schedule);
+
+	def->AES192_ECB_load_schedule(key, &schedule);
+	def->AES192_ECB_enc_sch(block, sizeof(block), schedule, out);
+	def->AES192_free_schedule(schedule);
+	def->AES192_ECB_enc(block, sizeof(block), key, out);
+
+	def->AES256_ECB_load_schedule(key, &schedule);
+	def->AES256_ECB_enc_sch(block, sizeof(block), schedule, out);
+	def->AES256_free_schedule(schedule);
+	def->AES256_ECB_enc(block, sizeof(block), key, out);
+	def->AES256_CTR_inc_init(key, &schedule);
+	def->AES256_CTR_inc_iv(iv, sizeof(iv), schedule);
+	def->AES256_CTR_inc_stream_blks(schedule, out, sizeof(out) / 16);
+	def->AES256_CTR_inc_ivu64(0, schedule);
+	def->AES256_CTR_inc_stream_iv(iv, sizeof(iv), schedule, out, sizeof(out));
+	def->AES256_free_schedule(schedule);
+
+	OQS_AES_set_callbacks(restore);
+	if (dispatcher_reentered != NULL) {
+		printf("Default AES table called %s through the installed callbacks\n", dispatcher_reentered);
+		return EXIT_FAILURE;
+	}
+	return EXIT_SUCCESS;
+}
 
 static bool aes_callback_called = false;
 static void override_AES128_ECB_load_schedule(const uint8_t *key, void **_schedule) {
 	aes_callback_called = true;
-	aes_default_callbacks.AES128_ECB_load_schedule(key, _schedule);
+	oqs_aes_default_callbacks()->AES128_ECB_load_schedule(key, _schedule);
 }
 
 int main(int argc, char **argv) {
 	bool bench = false;
 
-	struct OQS_AES_callbacks callbacks = aes_default_callbacks;
+	/* OQS_AES_set_callbacks() may be called before OQS_init(). */
+	struct OQS_AES_callbacks callbacks = *oqs_aes_default_callbacks();
 	callbacks.AES128_ECB_load_schedule = override_AES128_ECB_load_schedule;
 	OQS_AES_set_callbacks(&callbacks);
 
@@ -485,6 +621,14 @@ int main(int argc, char **argv) {
 	print_system_info();
 
 	printf("=== test_aes correctness ===\n");
+	if (test_aes_default_backend() != EXIT_SUCCESS) {
+		OQS_destroy();
+		return EXIT_FAILURE;
+	}
+	if (test_aes_default_table_self_contained(&callbacks) != EXIT_SUCCESS) {
+		OQS_destroy();
+		return EXIT_FAILURE;
+	}
 	if (test_aes128_correctness() != EXIT_SUCCESS) {
 		OQS_destroy();
 		return EXIT_FAILURE;
@@ -537,6 +681,15 @@ int main(int argc, char **argv) {
 
 	if (!aes_callback_called) {
 		printf("AES callback was not called\n");
+		OQS_destroy();
+		return EXIT_FAILURE;
+	}
+
+	/* Passing NULL restores the default callbacks. */
+	OQS_AES_set_callbacks(NULL);
+	aes_callback_called = false;
+	if (test_aes128_correctness() != EXIT_SUCCESS || aes_callback_called) {
+		printf("OQS_AES_set_callbacks(NULL) did not restore the default callbacks\n");
 		OQS_destroy();
 		return EXIT_FAILURE;
 	}

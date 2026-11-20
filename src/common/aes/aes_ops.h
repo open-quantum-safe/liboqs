@@ -130,10 +130,18 @@ struct OQS_AES_callbacks {
  * Set callback functions for AES operations.
  *
  * This function may be called before OQS_init to switch the
- * cryptographic provider for AES operations. If it is not called, the
- * default provider determined at build time will be used.
+ * cryptographic provider for AES operations. If it is not called, or if it is
+ * called with NULL, the default provider is used. The default provider is
+ * determined at build time and, for distributable builds, by CPU feature
+ * detection.
  *
- * @param[in] new_callbacks Callback functions defined in OQS_AES_callbacks
+ * The structure is not copied, so it must remain valid until the callbacks are
+ * replaced. Key schedules belong to the provider that created them: do not call
+ * this function while key schedules created through the current callbacks are
+ * still in use, or while another thread may be performing AES operations.
+ *
+ * @param[in] new_callbacks Callback functions defined in OQS_AES_callbacks, or
+ *                          NULL to restore the default provider
  */
 OQS_API void OQS_AES_set_callbacks(struct OQS_AES_callbacks *new_callbacks);
 

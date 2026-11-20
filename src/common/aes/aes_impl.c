@@ -9,221 +9,175 @@
 #include "aes.h"
 #include "aes_local.h"
 
+/*
+ * The AES backends (portable C, x86-64 AES-NI, ARMv8 crypto extensions) are
+ * described by constant callback tables that are never modified at run time.
+ * oqs_aes_default_callbacks() picks one of them: at compile time, or, for dist
+ * builds, from the cached result of CPU feature detection. Each table calls
+ * only functions of its own backend. Once detection has completed, the same
+ * table is returned on every call, so a key schedule created through the
+ * default table is used and freed by the same backend.
+ *
+ * With OQS_USE_PTHREADS, detection is synchronized by pthread_once. Without it
+ * (MSVC, MinGW and embedded builds), detection is not thread-safe: call
+ * OQS_init() before using AES from more than one thread.
+ */
 #if defined(OQS_DIST_X86_64_BUILD)
-#define C_OR_NI_OR_ARM(stmt_c, stmt_ni, stmt_arm) \
-   do { \
-      if (OQS_CPU_has_extension(OQS_CPU_EXT_AES)) { \
-          stmt_ni; \
-      } else { \
-          stmt_c; \
-      } \
-   } while(0)
+#define OQS_AES_HAVE_C 1
+#define OQS_AES_HAVE_NI 1
+#define OQS_AES_HAVE_ARM 0
 #elif defined(OQS_DIST_ARM64_V8_BUILD)
-#define C_OR_NI_OR_ARM(stmt_c, stmt_ni, stmt_arm) \
-    do { \
-        if (OQS_CPU_has_extension(OQS_CPU_EXT_ARM_AES)) {  \
-            stmt_arm; \
-        } else { \
-            stmt_c; \
-        } \
-    } while(0)
+#define OQS_AES_HAVE_C 1
+#define OQS_AES_HAVE_NI 0
+#define OQS_AES_HAVE_ARM 1
 #elif defined(OQS_USE_AES_INSTRUCTIONS)
-#define C_OR_NI_OR_ARM(stmt_c, stmt_ni, stmt_arm) \
-    stmt_ni
+#define OQS_AES_HAVE_C 0
+#define OQS_AES_HAVE_NI 1
+#define OQS_AES_HAVE_ARM 0
 #elif defined(OQS_USE_ARM_AES_INSTRUCTIONS)
-#define C_OR_NI_OR_ARM(stmt_c, stmt_ni, stmt_arm) \
-    stmt_arm
+#define OQS_AES_HAVE_C 0
+#define OQS_AES_HAVE_NI 0
+#define OQS_AES_HAVE_ARM 1
 #else
-#define C_OR_NI_OR_ARM(stmt_c, stmt_ni, stmt_arm) \
-    stmt_c
+#define OQS_AES_HAVE_C 1
+#define OQS_AES_HAVE_NI 0
+#define OQS_AES_HAVE_ARM 0
 #endif
 
-static void AES128_ECB_load_schedule(const uint8_t *key, void **_schedule) {
-	C_OR_NI_OR_ARM(
-	    oqs_aes128_load_schedule_c(key, _schedule),
-	    oqs_aes128_load_schedule_ni(key, _schedule),
-	    oqs_aes128_load_schedule_no_bitslice(key, _schedule)
-	);
-}
+#define OQS_AES_DEFINE_ECB_ENC(name, load, enc_sch, free_sch) \
+    static void name(const uint8_t *plaintext, const size_t plaintext_len, const uint8_t *key, uint8_t *ciphertext) { \
+        void *schedule = NULL; \
+        load(key, &schedule); \
+        enc_sch(plaintext, plaintext_len, schedule, ciphertext); \
+        free_sch(schedule); \
+    }
 
-static void AES128_CTR_inc_init(const uint8_t *key, void **_schedule) {
-	AES128_ECB_load_schedule(key, _schedule);
-}
+#if OQS_AES_HAVE_C
+OQS_AES_DEFINE_ECB_ENC(aes128_ecb_enc_c, oqs_aes128_load_schedule_c, oqs_aes128_ecb_enc_sch_c, oqs_aes128_free_schedule_c)
+OQS_AES_DEFINE_ECB_ENC(aes256_ecb_enc_c, oqs_aes256_load_schedule_c, oqs_aes256_ecb_enc_sch_c, oqs_aes256_free_schedule_c)
+OQS_AES_DEFINE_ECB_ENC(aes192_ecb_enc_c, oqs_aes192_load_schedule_c, oqs_aes192_ecb_enc_sch_c, oqs_aes192_free_schedule_c)
 
-static void AES128_CTR_inc_iv(const uint8_t *iv, size_t iv_len, void *_schedule) {
-	C_OR_NI_OR_ARM(
-	    oqs_aes128_load_iv_c(iv, iv_len, _schedule),
-	    oqs_aes128_load_iv_ni(iv, iv_len, _schedule),
-	    oqs_aes128_load_iv_armv8(iv, iv_len, _schedule)
-	);
-}
-
-static void AES128_CTR_inc_ivu64(uint64_t iv, void *_schedule) {
-	C_OR_NI_OR_ARM(
-	    oqs_aes128_load_iv_u64_c(iv, _schedule),
-	    oqs_aes128_load_iv_u64_ni(iv, _schedule),
-	    (void) iv; (void) _schedule
-	);
-}
-
-static void AES128_free_schedule(void *schedule) {
-	C_OR_NI_OR_ARM(
-	    oqs_aes128_free_schedule_c(schedule),
-	    oqs_aes128_free_schedule_ni(schedule),
-	    oqs_aes128_free_schedule_no_bitslice(schedule)
-	);
-}
-
-static void AES256_ECB_load_schedule(const uint8_t *key, void **_schedule) {
-	C_OR_NI_OR_ARM(
-	    oqs_aes256_load_schedule_c(key, _schedule),
-	    oqs_aes256_load_schedule_ni(key, _schedule),
-	    oqs_aes256_load_schedule_no_bitslice(key, _schedule)
-	);
-}
-
-static void AES256_CTR_inc_init(const uint8_t *key, void **_schedule) {
-	AES256_ECB_load_schedule(key, _schedule);
-}
-
-static void AES256_CTR_inc_iv(const uint8_t *iv, size_t iv_len, void *_schedule) {
-	C_OR_NI_OR_ARM(
-	    oqs_aes256_load_iv_c(iv, iv_len, _schedule),
-	    oqs_aes256_load_iv_ni(iv, iv_len, _schedule),
-	    oqs_aes256_load_iv_armv8(iv, iv_len, _schedule)
-	);
-}
-
-static void AES256_CTR_inc_ivu64(uint64_t iv, void *_schedule) {
-	C_OR_NI_OR_ARM(
-	    oqs_aes256_load_iv_u64_c(iv, _schedule),
-	    oqs_aes256_load_iv_u64_ni(iv, _schedule),
-	    (void) iv; (void) _schedule
-	);
-}
-
-static void AES256_free_schedule(void *schedule) {
-	C_OR_NI_OR_ARM(
-	    oqs_aes256_free_schedule_c(schedule),
-	    oqs_aes256_free_schedule_ni(schedule),
-	    oqs_aes256_free_schedule_no_bitslice(schedule)
-	);
-}
-
-static void AES128_ECB_enc_sch(const uint8_t *plaintext, const size_t plaintext_len, const void *schedule, uint8_t *ciphertext);
-
-static void AES128_ECB_enc(const uint8_t *plaintext, const size_t plaintext_len, const uint8_t *key, uint8_t *ciphertext) {
-	void *schedule = NULL;
-	AES128_ECB_load_schedule(key, &schedule);
-	AES128_ECB_enc_sch(plaintext, plaintext_len, schedule, ciphertext);
-	AES128_free_schedule(schedule);
-}
-
-static void AES128_ECB_enc_sch(const uint8_t *plaintext, const size_t plaintext_len, const void *schedule, uint8_t *ciphertext) {
-	C_OR_NI_OR_ARM(
-	    oqs_aes128_ecb_enc_sch_c(plaintext, plaintext_len, schedule, ciphertext),
-	    oqs_aes128_ecb_enc_sch_ni(plaintext, plaintext_len, schedule, ciphertext),
-	    oqs_aes128_ecb_enc_sch_armv8(plaintext, plaintext_len, schedule, ciphertext)
-	);
-}
-
-static void AES128_CTR_inc_stream_iv(const uint8_t *iv, const size_t iv_len, const void *schedule, uint8_t *out, size_t out_len) {
-	C_OR_NI_OR_ARM(
-	    oqs_aes128_ctr_enc_sch_c(iv, iv_len, schedule, out, out_len),
-	    oqs_aes128_ctr_enc_sch_ni(iv, iv_len, schedule, out, out_len),
-	    oqs_aes128_ctr_enc_sch_armv8(iv, iv_len, schedule, out, out_len)
-	);
-}
-
-static void AES256_ECB_enc_sch(const uint8_t *plaintext, const size_t plaintext_len, const void *schedule, uint8_t *ciphertext);
-
-static void AES256_ECB_enc(const uint8_t *plaintext, const size_t plaintext_len, const uint8_t *key, uint8_t *ciphertext) {
-	void *schedule = NULL;
-	AES256_ECB_load_schedule(key, &schedule);
-	AES256_ECB_enc_sch(plaintext, plaintext_len, schedule, ciphertext);
-	AES256_free_schedule(schedule);
-}
-
-static void AES256_ECB_enc_sch(const uint8_t *plaintext, const size_t plaintext_len, const void *schedule, uint8_t *ciphertext) {
-	C_OR_NI_OR_ARM(
-	    oqs_aes256_ecb_enc_sch_c(plaintext, plaintext_len, schedule, ciphertext),
-	    oqs_aes256_ecb_enc_sch_ni(plaintext, plaintext_len, schedule, ciphertext),
-	    oqs_aes256_ecb_enc_sch_armv8(plaintext, plaintext_len, schedule, ciphertext)
-	);
-}
-
-static void AES256_CTR_inc_stream_iv(const uint8_t *iv, const size_t iv_len, const void *schedule, uint8_t *out, size_t out_len) {
-	C_OR_NI_OR_ARM(
-	    oqs_aes256_ctr_enc_sch_c(iv, iv_len, schedule, out, out_len),
-	    oqs_aes256_ctr_enc_sch_ni(iv, iv_len, schedule, out, out_len),
-	    oqs_aes256_ctr_enc_sch_armv8(iv, iv_len, schedule, out, out_len)
-	);
-}
-
-static void AES256_CTR_inc_stream_blks(void *schedule, uint8_t *out, size_t out_blks) {
-	C_OR_NI_OR_ARM(
-	    oqs_aes256_ctr_enc_sch_upd_blks_c(schedule, out, out_blks),
-	    oqs_aes256_ctr_enc_sch_upd_blks_ni(schedule, out, out_blks),
-	    oqs_aes256_ctr_enc_sch_upd_blks_armv8(schedule, out, out_blks)
-	);
-}
-
-static void AES192_ECB_load_schedule(const uint8_t *key, void **_schedule) {
-	C_OR_NI_OR_ARM(
-	    oqs_aes192_load_schedule_c(key, _schedule),
-	    oqs_aes192_load_schedule_ni(key, _schedule),
-	    oqs_aes192_load_schedule_no_bitslice(key, _schedule)
-	);
-}
-
-static void AES192_free_schedule(void *schedule) {
-	C_OR_NI_OR_ARM(
-	    oqs_aes192_free_schedule_c(schedule),
-	    oqs_aes192_free_schedule_ni(schedule),
-	    oqs_aes192_free_schedule_no_bitslice(schedule)
-	);
-}
-
-static void AES192_ECB_enc_sch(const uint8_t *plaintext, const size_t plaintext_len, const void *schedule, uint8_t *ciphertext);
-
-static void AES192_ECB_enc(const uint8_t *plaintext, const size_t plaintext_len, const uint8_t *key, uint8_t *ciphertext) {
-	void *schedule = NULL;
-	AES192_ECB_load_schedule(key, &schedule);
-	AES192_ECB_enc_sch(plaintext, plaintext_len, schedule, ciphertext);
-	AES192_free_schedule(schedule);
-}
-
-static void AES192_ECB_enc_sch(const uint8_t *plaintext, const size_t plaintext_len, const void *schedule, uint8_t *ciphertext) {
-	C_OR_NI_OR_ARM(
-	    oqs_aes192_ecb_enc_sch_c(plaintext, plaintext_len, schedule, ciphertext),
-	    oqs_aes192_ecb_enc_sch_ni(plaintext, plaintext_len, schedule, ciphertext),
-	    oqs_aes192_ecb_enc_sch_armv8(plaintext, plaintext_len, schedule, ciphertext)
-	);
-}
-
-struct OQS_AES_callbacks aes_default_callbacks = {
-	.AES128_ECB_load_schedule = AES128_ECB_load_schedule,
-	.AES128_CTR_inc_init = AES128_CTR_inc_init,
-	.AES128_CTR_inc_iv = AES128_CTR_inc_iv,
-	.AES128_CTR_inc_ivu64 = AES128_CTR_inc_ivu64,
-	.AES128_free_schedule = AES128_free_schedule,
-	.AES128_ECB_enc = AES128_ECB_enc,
-	.AES128_ECB_enc_sch = AES128_ECB_enc_sch,
-	.AES128_CTR_inc_stream_iv = AES128_CTR_inc_stream_iv,
-	.AES256_ECB_load_schedule = AES256_ECB_load_schedule,
-	.AES256_CTR_inc_init = AES256_CTR_inc_init,
-	.AES256_CTR_inc_iv = AES256_CTR_inc_iv,
-	.AES256_CTR_inc_ivu64 = AES256_CTR_inc_ivu64,
-	.AES256_free_schedule = AES256_free_schedule,
-	.AES256_ECB_enc = AES256_ECB_enc,
-	.AES256_ECB_enc_sch = AES256_ECB_enc_sch,
-	.AES256_CTR_inc_stream_iv = AES256_CTR_inc_stream_iv,
-	.AES256_CTR_inc_stream_blks = AES256_CTR_inc_stream_blks,
-	.AES192_ECB_load_schedule = AES192_ECB_load_schedule,
-	.AES192_free_schedule = AES192_free_schedule,
-	.AES192_ECB_enc = AES192_ECB_enc,
-	.AES192_ECB_enc_sch = AES192_ECB_enc_sch,
+static const struct OQS_AES_callbacks aes_c_callbacks = {
+	.AES128_ECB_load_schedule = oqs_aes128_load_schedule_c,
+	.AES128_CTR_inc_init = oqs_aes128_load_schedule_c,
+	.AES128_CTR_inc_iv = oqs_aes128_load_iv_c,
+	.AES128_CTR_inc_ivu64 = oqs_aes128_load_iv_u64_c,
+	.AES128_free_schedule = oqs_aes128_free_schedule_c,
+	.AES128_ECB_enc = aes128_ecb_enc_c,
+	.AES128_ECB_enc_sch = oqs_aes128_ecb_enc_sch_c,
+	.AES128_CTR_inc_stream_iv = oqs_aes128_ctr_enc_sch_c,
+	.AES256_ECB_load_schedule = oqs_aes256_load_schedule_c,
+	.AES256_CTR_inc_init = oqs_aes256_load_schedule_c,
+	.AES256_CTR_inc_iv = oqs_aes256_load_iv_c,
+	.AES256_CTR_inc_ivu64 = oqs_aes256_load_iv_u64_c,
+	.AES256_free_schedule = oqs_aes256_free_schedule_c,
+	.AES256_ECB_enc = aes256_ecb_enc_c,
+	.AES256_ECB_enc_sch = oqs_aes256_ecb_enc_sch_c,
+	.AES256_CTR_inc_stream_iv = oqs_aes256_ctr_enc_sch_c,
+	.AES256_CTR_inc_stream_blks = oqs_aes256_ctr_enc_sch_upd_blks_c,
+	.AES192_ECB_load_schedule = oqs_aes192_load_schedule_c,
+	.AES192_free_schedule = oqs_aes192_free_schedule_c,
+	.AES192_ECB_enc = aes192_ecb_enc_c,
+	.AES192_ECB_enc_sch = oqs_aes192_ecb_enc_sch_c,
 };
+#endif
 
-void OQS_AES_init(void) {
+#if OQS_AES_HAVE_NI
+OQS_AES_DEFINE_ECB_ENC(aes128_ecb_enc_ni, oqs_aes128_load_schedule_ni, oqs_aes128_ecb_enc_sch_ni, oqs_aes128_free_schedule_ni)
+OQS_AES_DEFINE_ECB_ENC(aes256_ecb_enc_ni, oqs_aes256_load_schedule_ni, oqs_aes256_ecb_enc_sch_ni, oqs_aes256_free_schedule_ni)
+OQS_AES_DEFINE_ECB_ENC(aes192_ecb_enc_ni, oqs_aes192_load_schedule_ni, oqs_aes192_ecb_enc_sch_ni, oqs_aes192_free_schedule_ni)
+
+static const struct OQS_AES_callbacks aes_ni_callbacks = {
+	.AES128_ECB_load_schedule = oqs_aes128_load_schedule_ni,
+	.AES128_CTR_inc_init = oqs_aes128_load_schedule_ni,
+	.AES128_CTR_inc_iv = oqs_aes128_load_iv_ni,
+	.AES128_CTR_inc_ivu64 = oqs_aes128_load_iv_u64_ni,
+	.AES128_free_schedule = oqs_aes128_free_schedule_ni,
+	.AES128_ECB_enc = aes128_ecb_enc_ni,
+	.AES128_ECB_enc_sch = oqs_aes128_ecb_enc_sch_ni,
+	.AES128_CTR_inc_stream_iv = oqs_aes128_ctr_enc_sch_ni,
+	.AES256_ECB_load_schedule = oqs_aes256_load_schedule_ni,
+	.AES256_CTR_inc_init = oqs_aes256_load_schedule_ni,
+	.AES256_CTR_inc_iv = oqs_aes256_load_iv_ni,
+	.AES256_CTR_inc_ivu64 = oqs_aes256_load_iv_u64_ni,
+	.AES256_free_schedule = oqs_aes256_free_schedule_ni,
+	.AES256_ECB_enc = aes256_ecb_enc_ni,
+	.AES256_ECB_enc_sch = oqs_aes256_ecb_enc_sch_ni,
+	.AES256_CTR_inc_stream_iv = oqs_aes256_ctr_enc_sch_ni,
+	.AES256_CTR_inc_stream_blks = oqs_aes256_ctr_enc_sch_upd_blks_ni,
+	.AES192_ECB_load_schedule = oqs_aes192_load_schedule_ni,
+	.AES192_free_schedule = oqs_aes192_free_schedule_ni,
+	.AES192_ECB_enc = aes192_ecb_enc_ni,
+	.AES192_ECB_enc_sch = oqs_aes192_ecb_enc_sch_ni,
+};
+#endif
+
+#if OQS_AES_HAVE_ARM
+/* The ARMv8 backend has never provided a 64-bit IV loader; keep it a no-op. */
+static void aes_armv8_load_iv_u64_noop(uint64_t iv, void *schedule) {
+	(void) iv;
+	(void) schedule;
+}
+
+OQS_AES_DEFINE_ECB_ENC(aes128_ecb_enc_armv8, oqs_aes128_load_schedule_no_bitslice, oqs_aes128_ecb_enc_sch_armv8, oqs_aes128_free_schedule_no_bitslice)
+OQS_AES_DEFINE_ECB_ENC(aes256_ecb_enc_armv8, oqs_aes256_load_schedule_no_bitslice, oqs_aes256_ecb_enc_sch_armv8, oqs_aes256_free_schedule_no_bitslice)
+OQS_AES_DEFINE_ECB_ENC(aes192_ecb_enc_armv8, oqs_aes192_load_schedule_no_bitslice, oqs_aes192_ecb_enc_sch_armv8, oqs_aes192_free_schedule_no_bitslice)
+
+static const struct OQS_AES_callbacks aes_armv8_callbacks = {
+	.AES128_ECB_load_schedule = oqs_aes128_load_schedule_no_bitslice,
+	.AES128_CTR_inc_init = oqs_aes128_load_schedule_no_bitslice,
+	.AES128_CTR_inc_iv = oqs_aes128_load_iv_armv8,
+	.AES128_CTR_inc_ivu64 = aes_armv8_load_iv_u64_noop,
+	.AES128_free_schedule = oqs_aes128_free_schedule_no_bitslice,
+	.AES128_ECB_enc = aes128_ecb_enc_armv8,
+	.AES128_ECB_enc_sch = oqs_aes128_ecb_enc_sch_armv8,
+	.AES128_CTR_inc_stream_iv = oqs_aes128_ctr_enc_sch_armv8,
+	.AES256_ECB_load_schedule = oqs_aes256_load_schedule_no_bitslice,
+	.AES256_CTR_inc_init = oqs_aes256_load_schedule_no_bitslice,
+	.AES256_CTR_inc_iv = oqs_aes256_load_iv_armv8,
+	.AES256_CTR_inc_ivu64 = aes_armv8_load_iv_u64_noop,
+	.AES256_free_schedule = oqs_aes256_free_schedule_no_bitslice,
+	.AES256_ECB_enc = aes256_ecb_enc_armv8,
+	.AES256_ECB_enc_sch = oqs_aes256_ecb_enc_sch_armv8,
+	.AES256_CTR_inc_stream_iv = oqs_aes256_ctr_enc_sch_armv8,
+	.AES256_CTR_inc_stream_blks = oqs_aes256_ctr_enc_sch_upd_blks_armv8,
+	.AES192_ECB_load_schedule = oqs_aes192_load_schedule_no_bitslice,
+	.AES192_free_schedule = oqs_aes192_free_schedule_no_bitslice,
+	.AES192_ECB_enc = aes192_ecb_enc_armv8,
+	.AES192_ECB_enc_sch = oqs_aes192_ecb_enc_sch_armv8,
+};
+#endif
+
+/*
+ * OQS_CPU_has_extension() caches its result, so this is cheap enough to call
+ * on every AES operation.
+ */
+const struct OQS_AES_callbacks *oqs_aes_default_callbacks(void) {
+#if defined(OQS_DIST_X86_64_BUILD)
+	return OQS_CPU_has_extension(OQS_CPU_EXT_AES) ? &aes_ni_callbacks : &aes_c_callbacks;
+#elif defined(OQS_DIST_ARM64_V8_BUILD)
+	return OQS_CPU_has_extension(OQS_CPU_EXT_ARM_AES) ? &aes_armv8_callbacks : &aes_c_callbacks;
+#elif defined(OQS_USE_AES_INSTRUCTIONS)
+	return &aes_ni_callbacks;
+#elif defined(OQS_USE_ARM_AES_INSTRUCTIONS)
+	return &aes_armv8_callbacks;
+#else
+	return &aes_c_callbacks;
+#endif
+}
+
+const char *oqs_aes_default_backend_name(void) {
+	const struct OQS_AES_callbacks *cb = oqs_aes_default_callbacks();
+#if OQS_AES_HAVE_NI
+	if (cb == &aes_ni_callbacks) {
+		return "aes-ni";
+	}
+#endif
+#if OQS_AES_HAVE_ARM
+	if (cb == &aes_armv8_callbacks) {
+		return "armv8";
+	}
+#endif
+	(void) cb;
+	return "c";
 }
