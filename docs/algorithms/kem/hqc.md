@@ -21,10 +21,6 @@
 - **Upstream maintenance**: TBD
 - **OQS support tier**: Tier 2
 
-## Advisories
-
-- HQC's AVX2 backend is not thread-safe. `src/kem/hqc/pqc-hqc_hqc_avx256_common/hqc.c` and `src/kem/hqc/pqc-hqc_hqc-<1,3,5>_x86_64/gf2x.c` use static buffers that might get corrupted when multiple instances of HQC AVX2 backends run concurrently. These `static` declarations were inherited from upstream and were likely put there to reduce stack usage. Set `OQS_ENABLE_KEM_hqc_{1,3,5}_x86_64=OFF` at CMake configure time to turn off AVX256 backends.
-
 ## Parameter set summary
 
 |  Parameter set  | Parameter set alias   | Security model   |   Claimed NIST Level |   Public key size (bytes) |   Secret key size (bytes) |   Ciphertext size (bytes) |   Shared secret size (bytes) | Keypair seed size (bytes)   | Encapsulation seed size (bytes)   |
