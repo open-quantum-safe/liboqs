@@ -74,6 +74,7 @@ def test_stack_usage_harness(kind, request):
 
 
 def test_measure_stack_usage_script(request):
+    pytest.importorskip('yaml')  # the driver script reads docs/algorithms/**/*.yml
     stack_usage_executable()
     alg = pick_alg('kem', request.config) or pick_alg('sig', request.config)
     if alg is None:
