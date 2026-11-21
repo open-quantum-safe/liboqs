@@ -2,23 +2,23 @@
   "$schema": "https://raw.githubusercontent.com/CycloneDX/specification/1.6/schema/bom-1.6.schema.json",
   "bomFormat": "CycloneDX",
   "specVersion": "1.6",
-  "serialNumber": "urn:uuid:18bf4eed-2bde-4393-afb2-f0d6669c5dd4",
+  "serialNumber": "urn:uuid:53991fc0-3d40-4945-b213-33fe0c58955b",
   "version": 1,
   "metadata": {
-    "timestamp": "2026-11-08T05:45:04.883392+00:00",
+    "timestamp": "2026-11-24T16:20:08.460101+00:00",
     "component": {
       "type": "library",
-      "bom-ref": "pkg:github/open-quantum-safe/liboqs@75f46d856b12af482ad880ec7fa82939b909ae58",
+      "bom-ref": "pkg:github/open-quantum-safe/liboqs@5d13bc5ca4eb5befb165ffcdccd3a1225bd4692c",
       "name": "liboqs",
-      "version": "75f46d856b12af482ad880ec7fa82939b909ae58"
+      "version": "5d13bc5ca4eb5befb165ffcdccd3a1225bd4692c"
     }
   },
   "components": [
     {
       "type": "library",
-      "bom-ref": "pkg:github/open-quantum-safe/liboqs@75f46d856b12af482ad880ec7fa82939b909ae58",
+      "bom-ref": "pkg:github/open-quantum-safe/liboqs@5d13bc5ca4eb5befb165ffcdccd3a1225bd4692c",
       "name": "liboqs",
-      "version": "75f46d856b12af482ad880ec7fa82939b909ae58"
+      "version": "5d13bc5ca4eb5befb165ffcdccd3a1225bd4692c"
     },
     {
       "type": "cryptographic-asset",
@@ -1142,46 +1142,6 @@
     },
     {
       "type": "cryptographic-asset",
-      "bom-ref": "alg:Kyber512:jasmin_ref:x86_64",
-      "name": "Kyber",
-      "cryptoProperties": {
-        "assetType": "algorithm",
-        "algorithmProperties": {
-          "parameterSetIdentifier": "Kyber512",
-          "primitive": "kem",
-          "executionEnvironment": "software-plain-ram",
-          "cryptoFunctions": [
-            "keygen",
-            "encapsulate",
-            "decapsulate"
-          ],
-          "nistQuantumSecurityLevel": 1,
-          "implementationPlatform": "x86_64"
-        }
-      }
-    },
-    {
-      "type": "cryptographic-asset",
-      "bom-ref": "alg:Kyber512:jasmin_avx2:x86_64",
-      "name": "Kyber",
-      "cryptoProperties": {
-        "assetType": "algorithm",
-        "algorithmProperties": {
-          "parameterSetIdentifier": "Kyber512",
-          "primitive": "kem",
-          "executionEnvironment": "software-plain-ram",
-          "cryptoFunctions": [
-            "keygen",
-            "encapsulate",
-            "decapsulate"
-          ],
-          "nistQuantumSecurityLevel": 1,
-          "implementationPlatform": "x86_64"
-        }
-      }
-    },
-    {
-      "type": "cryptographic-asset",
       "bom-ref": "alg:Kyber768:ref:generic",
       "name": "Kyber",
       "cryptoProperties": {
@@ -1237,46 +1197,6 @@
           ],
           "nistQuantumSecurityLevel": 3,
           "implementationPlatform": "armv8-a"
-        }
-      }
-    },
-    {
-      "type": "cryptographic-asset",
-      "bom-ref": "alg:Kyber768:jasmin_ref:x86_64",
-      "name": "Kyber",
-      "cryptoProperties": {
-        "assetType": "algorithm",
-        "algorithmProperties": {
-          "parameterSetIdentifier": "Kyber768",
-          "primitive": "kem",
-          "executionEnvironment": "software-plain-ram",
-          "cryptoFunctions": [
-            "keygen",
-            "encapsulate",
-            "decapsulate"
-          ],
-          "nistQuantumSecurityLevel": 3,
-          "implementationPlatform": "x86_64"
-        }
-      }
-    },
-    {
-      "type": "cryptographic-asset",
-      "bom-ref": "alg:Kyber768:jasmin_avx2:x86_64",
-      "name": "Kyber",
-      "cryptoProperties": {
-        "assetType": "algorithm",
-        "algorithmProperties": {
-          "parameterSetIdentifier": "Kyber768",
-          "primitive": "kem",
-          "executionEnvironment": "software-plain-ram",
-          "cryptoFunctions": [
-            "keygen",
-            "encapsulate",
-            "decapsulate"
-          ],
-          "nistQuantumSecurityLevel": 3,
-          "implementationPlatform": "x86_64"
         }
       }
     },
@@ -11067,7 +10987,7 @@
   ],
   "dependencies": [
     {
-      "ref": "pkg:github/open-quantum-safe/liboqs@25da464094817c3a352749dcf4eb6d553a61cc70",
+      "ref": "pkg:github/open-quantum-safe/liboqs@5d13bc5ca4eb5befb165ffcdccd3a1225bd4692c",
       "provides": [
         "alg:BIKE-L1:master:x86_64",
         "alg:BIKE-L3:master:x86_64",
@@ -11125,13 +11045,9 @@
         "alg:Kyber512:ref:generic",
         "alg:Kyber512:avx2:x86_64",
         "alg:Kyber512:aarch64:armv8-a",
-        "alg:Kyber512:jasmin_ref:x86_64",
-        "alg:Kyber512:jasmin_avx2:x86_64",
         "alg:Kyber768:ref:generic",
         "alg:Kyber768:avx2:x86_64",
         "alg:Kyber768:aarch64:armv8-a",
-        "alg:Kyber768:jasmin_ref:x86_64",
-        "alg:Kyber768:jasmin_avx2:x86_64",
         "alg:Kyber1024:ref:generic",
         "alg:Kyber1024:avx2:x86_64",
         "alg:Kyber1024:aarch64:armv8-a",
