@@ -9,7 +9,6 @@ cd scripts/copy_from_upstream
 export LIBOQS_DIR=/path/to/liboqs
 python3 copy_from_upstream.py copy        # fetch upstreams, copy code, generate build/docs
 python3 copy_from_upstream.py verify      # diff integrated code against upstream
-python3 copy_from_upstream.py libjade     # import libjade (Jasmin) implementations
 ```
 
 **Flags:**

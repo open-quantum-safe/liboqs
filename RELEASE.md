@@ -47,6 +47,14 @@ next release:
   1.1.1 (e.g. Ubuntu 20.04, RHEL 8, Debian 11, Amazon Linux 2) must install
   OpenSSL 3.x or configure with `-DOQS_USE_OPENSSL=OFF`.
   [#2661](https://github.com/open-quantum-safe/liboqs/pull/2661)
+- **The libjade Kyber implementations were removed.** The formally verified
+  Kyber512 and Kyber768 implementations (ref and avx2) imported from libjade are
+  no longer included, because their upstream source can no longer be retrieved
+  or verified. The `OQS_LIBJADE_BUILD` option, the `OQS_ENABLE_LIBJADE_KEM_*`
+  options and their `oqsconfig.h` macros are gone, and configuring with
+  `-DOQS_LIBJADE_BUILD=ON` now fails. Kyber512 and Kyber768 remain available
+  through the pq-crystals implementations, with unchanged outputs.
+  [#2714](https://github.com/open-quantum-safe/liboqs/pull/2714)
 
 ## Release notes
 

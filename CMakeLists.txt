@@ -28,7 +28,6 @@ endif()
 option(OQS_DIST_BUILD "Build distributable library with optimized code for several CPU microarchitectures. Enables run-time CPU feature detection." ON)
 option(OQS_BUILD_ONLY_LIB "Build only liboqs and do not expose build targets for tests, documentation, and pretty-printing available." OFF)
 set(OQS_MINIMAL_BUILD "" CACHE STRING "Only build specifically listed algorithms.")
-option(OQS_LIBJADE_BUILD "Enable formally verified implementation of supported algorithms from libjade." OFF)
 option(OQS_PERMIT_UNSUPPORTED_ARCHITECTURE "Permit compilation on an an unsupported architecture." OFF)
 option(OQS_STRICT_WARNINGS "Enable all compiler warnings." OFF)
 option(OQS_EMBEDDED_BUILD "Compile liboqs for an Embedded environment without a full standard library." OFF)
@@ -180,12 +179,10 @@ if(OQS_USE_ICICLE)
     find_package(icicle_pqc_package REQUIRED)
 endif()
 
-
-if (NOT ((CMAKE_SYSTEM_NAME MATCHES "Linux|Darwin") AND (ARCH_X86_64 STREQUAL "ON")) AND (OQS_LIBJADE_BUILD STREQUAL "ON"))
-    message(FATAL_ERROR "Building liboqs with libjade implementations from libjade is only supported on Linux and Darwin on x86_64.")
-endif()
-
 # intentionally don't switch to variables to avoid --warn-uninitialized report
+if(OQS_LIBJADE_BUILD)
+    message(FATAL_ERROR "OQS_LIBJADE_BUILD was removed: the libjade Kyber implementations are no longer supported. See https://github.com/open-quantum-safe/liboqs/pull/2714")
+endif()
 if(OQS_USE_CPU_EXTENSIONS)
     message(FATAL_ERROR "OQS_USE_CPU_EXTENSIONS is deprecated")
 endif()
