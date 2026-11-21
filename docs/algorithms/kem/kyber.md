@@ -16,10 +16,6 @@
   - **oldpqclean-aarch64**:<a name="oldpqclean-aarch64"></a>
       - **Source**: https://github.com/PQClean/PQClean/commit/8e220a87308154d48fdfac40abbb191ac7fce06a with copy_from_upstream patches
       - **Implementation license (SPDX-Identifier)**: CC0-1.0 and (CC0-1.0 or Apache-2.0) and (CC0-1.0 or MIT) and MIT
-- **Formally-verified Implementation sources**: 
-  - **libjade**:<a name="libjade"></a>
-      - **Source**: https://github.com/formosa-crypto/libjade/tree/release/2023.05-2 with copy_from_upstream patches
-      - **Implementation license (SPDX-Identifier)**: CC0-1.0 OR Apache-2.0
 
 
 ## Support
@@ -42,8 +38,6 @@
 |     [Primary Source](#primary-source)     | ref                      | All                         | All                             | None                    | True                               | True                                           | False                 |
 |     [Primary Source](#primary-source)     | avx2                     | x86\_64                     | Linux,Darwin                    | AVX2,BMI2,POPCNT        | True                               | True                                           | False                 |
 | [oldpqclean-aarch64](#oldpqclean-aarch64) | aarch64                  | ARM64\_V8                   | Linux,Darwin                    | None                    | True                               | False                                          | False                 |
-|            [libjade](#libjade)            | ref                      | x86\_64                     | Linux,Darwin                    | None                    | True                               | False                                          | False                 |
-|            [libjade](#libjade)            | avx2                     | x86\_64                     | Linux,Darwin                    | AVX2,BMI2,POPCNT        | True                               | False                                          | False                 |
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
@@ -56,8 +50,6 @@ Are implementations chosen based on runtime CPU feature detection? **Yes**.
 |     [Primary Source](#primary-source)     | ref                      | All                         | All                             | None                    | True                               | True                                           | False                |
 |     [Primary Source](#primary-source)     | avx2                     | x86\_64                     | Linux,Darwin                    | AVX2,BMI2,POPCNT        | True                               | True                                           | False                |
 | [oldpqclean-aarch64](#oldpqclean-aarch64) | aarch64                  | ARM64\_V8                   | Linux,Darwin                    | None                    | True                               | False                                          | False                |
-|            [libjade](#libjade)            | ref                      | x86\_64                     | Linux,Darwin                    | None                    | True                               | False                                          | False                |
-|            [libjade](#libjade)            | avx2                     | x86\_64                     | Linux,Darwin                    | AVX2,BMI2,POPCNT        | True                               | False                                          | False                |
 
 Are implementations chosen based on runtime CPU feature detection? **Yes**.
 
