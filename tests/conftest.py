@@ -53,6 +53,7 @@ SUITES = {
         "test_alg_info.py",
         "test_hash.py::test_aes",
         "test_hash.py::test_sha3",
+        "test_stack_usage.py",
     ],
     # lengthier functional tests and benchmarks for greater assurance
     "extensive": [
