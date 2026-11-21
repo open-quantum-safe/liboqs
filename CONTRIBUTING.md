@@ -108,6 +108,12 @@ act workflow_call -W '.github/workflows/basic.yml'
 Any PR introducing a new feature is expected to contain a test of this feature
 and this test should be part of the CI pipeline.
 
+### New or updated algorithm implementations
+
+PRs adding or updating algorithm implementations should base the `large-stack-usage`
+flag in `docs/algorithms/**/*.yml` (or the upstream `META.yml`) on a measurement with
+`scripts/measure_stack_usage.py`; see [docs/STACK_USAGE.md](docs/STACK_USAGE.md).
+
 ## Failsafe
 
 If you feel your contribution is not getting proper attention, please be sure to
