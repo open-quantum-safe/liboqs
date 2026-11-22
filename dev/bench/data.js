@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1795309478480,
+  "lastUpdate": 1795309500166,
   "repoUrl": "https://github.com/open-quantum-safe/liboqs",
   "entries": {
     "Dilithium2": [
@@ -109374,6 +109374,46 @@ window.BENCHMARK_DATA = {
             "value": 29665,
             "unit": "cycles",
             "extra": "Target platform: x86_64-Linux-7.0.0-1019-azure | Compiler: gcc (15.2.0) | Compile options: [-Wa,--noexecstack;-fomit-frame-pointer;-fdata-sections;-ffunction-sections;-Wl,--gc-sections;-Wbad-function-cast] | OQS version: 0.16.0 (major: 0, minor: 16, patch: 0) | Git commit: 9f027e7c76ce726ba02ed6b96321e6d0f2ccfd30 | OpenSSL enabled: Yes (OpenSSL 3.5.5 27 Jan 2026) | AES: NI | SHA-2: OpenSSL | SHA-3: AVX2 | OQS build flags: OQS_DIST_BUILD OQS_LIBJADE_BUILD OQS_OPT_TARGET=generic CMAKE_BUILD_TYPE=Release | CPU exts active: ADX AES AVX AVX2 BMI1 BMI2 PCLMULQDQ POPCNT SSE SSE2 SSE3 | "
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "name": "dependabot[bot]",
+            "username": "dependabot[bot]",
+            "email": "49699333+dependabot[bot]@users.noreply.github.com"
+          },
+          "committer": {
+            "name": "GitHub",
+            "username": "web-flow",
+            "email": "noreply@github.com"
+          },
+          "id": "f822b059350af22adad99ef6b09a18819bcd49ed",
+          "message": "Bump the pip group across 1 directory with 3 updates (#2715)\n\nBumps the pip group with 3 updates in the /scripts/copy_from_upstream directory: [importlib-metadata](https://github.com/python/importlib_metadata), [markdown-it-py](https://github.com/executablebooks/markdown-it-py) and [mdit-py-plugins](https://github.com/executablebooks/mdit-py-plugins).\n\n\nUpdates `importlib-metadata` from 10.1.0 to 10.2.0\n- [Release notes](https://github.com/python/importlib_metadata/releases)\n- [Changelog](https://github.com/python/importlib_metadata/blob/main/NEWS.rst)\n- [Commits](https://github.com/python/importlib_metadata/compare/v10.1.0...v10.2.0)\n\nUpdates `markdown-it-py` from 4.2.0 to 4.3.0\n- [Release notes](https://github.com/executablebooks/markdown-it-py/releases)\n- [Changelog](https://github.com/executablebooks/markdown-it-py/blob/master/CHANGELOG.md)\n- [Commits](https://github.com/executablebooks/markdown-it-py/compare/v4.2.0...v4.3.0)\n\nUpdates `mdit-py-plugins` from 0.6.1 to 0.7.0\n- [Release notes](https://github.com/executablebooks/mdit-py-plugins/releases)\n- [Changelog](https://github.com/executablebooks/mdit-py-plugins/blob/master/CHANGELOG.md)\n- [Commits](https://github.com/executablebooks/mdit-py-plugins/compare/v0.6.1...v0.7.0)\n\n---\nupdated-dependencies:\n- dependency-name: importlib-metadata\n  dependency-version: 10.2.0\n  dependency-type: direct:production\n  update-type: version-update:semver-minor\n  dependency-group: pip\n- dependency-name: markdown-it-py\n  dependency-version: 4.3.0\n  dependency-type: direct:production\n  update-type: version-update:semver-minor\n  dependency-group: pip\n- dependency-name: mdit-py-plugins\n  dependency-version: 0.7.0\n  dependency-type: direct:production\n  update-type: version-update:semver-minor\n  dependency-group: pip\n...\n\nSigned-off-by: dependabot[bot] <support@github.com>\nCo-authored-by: dependabot[bot] <49699333+dependabot[bot]@users.noreply.github.com>",
+          "timestamp": "2026-11-19T15:57:30Z",
+          "url": "https://github.com/open-quantum-safe/liboqs/commit/f822b059350af22adad99ef6b09a18819bcd49ed"
+        },
+        "date": 1795309498300,
+        "tool": "customSmallerIsBetter",
+        "benches": [
+          {
+            "name": "ML-KEM-512 keygen",
+            "value": 12721,
+            "unit": "cycles",
+            "extra": "Target platform: x86_64-Linux-7.0.0-1020-azure | Compiler: gcc (15.2.0) | Compile options: [-Wa,--noexecstack;-fomit-frame-pointer;-fdata-sections;-ffunction-sections;-Wl,--gc-sections;-Wbad-function-cast] | OQS version: 0.16.0 (major: 0, minor: 16, patch: 0) | Git commit: f822b059350af22adad99ef6b09a18819bcd49ed | OpenSSL enabled: Yes (OpenSSL 3.5.5 27 Jan 2026) | AES: NI | SHA-2: OpenSSL | SHA-3: AVX512VL | OQS build flags: OQS_DIST_BUILD OQS_LIBJADE_BUILD OQS_OPT_TARGET=generic CMAKE_BUILD_TYPE=Release | CPU exts active: ADX AES AVX AVX2 AVX512 BMI1 BMI2 PCLMULQDQ VPCLMULQDQ POPCNT SSE SSE2 SSE3 | "
+          },
+          {
+            "name": "ML-KEM-512 encaps",
+            "value": 14052,
+            "unit": "cycles",
+            "extra": "Target platform: x86_64-Linux-7.0.0-1020-azure | Compiler: gcc (15.2.0) | Compile options: [-Wa,--noexecstack;-fomit-frame-pointer;-fdata-sections;-ffunction-sections;-Wl,--gc-sections;-Wbad-function-cast] | OQS version: 0.16.0 (major: 0, minor: 16, patch: 0) | Git commit: f822b059350af22adad99ef6b09a18819bcd49ed | OpenSSL enabled: Yes (OpenSSL 3.5.5 27 Jan 2026) | AES: NI | SHA-2: OpenSSL | SHA-3: AVX512VL | OQS build flags: OQS_DIST_BUILD OQS_LIBJADE_BUILD OQS_OPT_TARGET=generic CMAKE_BUILD_TYPE=Release | CPU exts active: ADX AES AVX AVX2 AVX512 BMI1 BMI2 PCLMULQDQ VPCLMULQDQ POPCNT SSE SSE2 SSE3 | "
+          },
+          {
+            "name": "ML-KEM-512 decaps",
+            "value": 16345,
+            "unit": "cycles",
+            "extra": "Target platform: x86_64-Linux-7.0.0-1020-azure | Compiler: gcc (15.2.0) | Compile options: [-Wa,--noexecstack;-fomit-frame-pointer;-fdata-sections;-ffunction-sections;-Wl,--gc-sections;-Wbad-function-cast] | OQS version: 0.16.0 (major: 0, minor: 16, patch: 0) | Git commit: f822b059350af22adad99ef6b09a18819bcd49ed | OpenSSL enabled: Yes (OpenSSL 3.5.5 27 Jan 2026) | AES: NI | SHA-2: OpenSSL | SHA-3: AVX512VL | OQS build flags: OQS_DIST_BUILD OQS_LIBJADE_BUILD OQS_OPT_TARGET=generic CMAKE_BUILD_TYPE=Release | CPU exts active: ADX AES AVX AVX2 AVX512 BMI1 BMI2 PCLMULQDQ VPCLMULQDQ POPCNT SSE SSE2 SSE3 | "
           }
         ]
       }
