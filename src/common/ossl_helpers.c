@@ -13,39 +13,61 @@
 
 static pthread_once_t init_once_control = PTHREAD_ONCE_INIT;
 static pthread_once_t free_once_control = PTHREAD_ONCE_INIT;
-#if OPENSSL_VERSION_NUMBER >= 0x30300000L
+#if defined(OQS_USE_SHA3_OPENSSL) && OPENSSL_VERSION_NUMBER >= 0x30300000L
 static pthread_once_t squeeze_probe_once_control = PTHREAD_ONCE_INIT;
 #endif
 #endif
 
-static EVP_MD *sha256_ptr, *sha384_ptr, *sha512_ptr,
-    *sha3_256_ptr, *sha3_384_ptr, *sha3_512_ptr,
+/* Digests and ciphers are only fetched when the corresponding
+ * OpenSSL-backed implementation is selected at build time
+ * (OQS_USE_SHA2_OPENSSL, OQS_USE_SHA3_OPENSSL, OQS_USE_AES_OPENSSL).
+ * The one exception is AES-256-ECB, which the NIST DRBG in
+ * rand_nist.c uses whenever OpenSSL is available at all. */
+#if defined(OQS_USE_SHA2_OPENSSL)
+static EVP_MD *sha256_ptr, *sha384_ptr, *sha512_ptr;
+#endif
+#if defined(OQS_USE_SHA3_OPENSSL)
+static EVP_MD *sha3_256_ptr, *sha3_384_ptr, *sha3_512_ptr,
     *shake128_ptr, *shake256_ptr;
-
-static EVP_CIPHER *aes128_ecb_ptr, *aes128_ctr_ptr, *aes192_ecb_ptr, *aes256_ecb_ptr, *aes256_ctr_ptr;
+#endif
+static EVP_CIPHER *aes256_ecb_ptr;
+#if defined(OQS_USE_AES_OPENSSL)
+static EVP_CIPHER *aes128_ecb_ptr, *aes128_ctr_ptr, *aes192_ecb_ptr, *aes256_ctr_ptr;
+#endif
 
 static void fetch_ossl_objects(void) {
+#if defined(OQS_USE_SHA2_OPENSSL)
 	sha256_ptr = OSSL_FUNC(EVP_MD_fetch)(NULL, "SHA256", NULL);
 	sha384_ptr = OSSL_FUNC(EVP_MD_fetch)(NULL, "SHA384", NULL);
 	sha512_ptr = OSSL_FUNC(EVP_MD_fetch)(NULL, "SHA512", NULL);
-
+	if (!sha256_ptr || !sha384_ptr || !sha512_ptr) {
+		fprintf(stderr, "liboqs warning: OpenSSL initialization failure. Is provider for SHA2 enabled?\n");
+	}
+#endif
+#if defined(OQS_USE_SHA3_OPENSSL)
 	sha3_256_ptr = OSSL_FUNC(EVP_MD_fetch)(NULL, "SHA3-256", NULL);
 	sha3_384_ptr = OSSL_FUNC(EVP_MD_fetch)(NULL, "SHA3-384", NULL);
 	sha3_512_ptr = OSSL_FUNC(EVP_MD_fetch)(NULL, "SHA3-512", NULL);
 	shake128_ptr = OSSL_FUNC(EVP_MD_fetch)(NULL, "SHAKE128", NULL);
 	shake256_ptr = OSSL_FUNC(EVP_MD_fetch)(NULL, "SHAKE256", NULL);
-
+	if (!sha3_256_ptr || !sha3_384_ptr || !sha3_512_ptr || !shake128_ptr || !shake256_ptr) {
+		fprintf(stderr, "liboqs warning: OpenSSL initialization failure. Is provider for SHA3, SHAKE enabled?\n");
+	}
+#endif
+	aes256_ecb_ptr = OSSL_FUNC(EVP_CIPHER_fetch)(NULL, "AES-256-ECB", NULL);
+#if defined(OQS_USE_AES_OPENSSL)
 	aes128_ecb_ptr = OSSL_FUNC(EVP_CIPHER_fetch)(NULL, "AES-128-ECB", NULL);
 	aes128_ctr_ptr = OSSL_FUNC(EVP_CIPHER_fetch)(NULL, "AES-128-CTR", NULL);
 	aes192_ecb_ptr = OSSL_FUNC(EVP_CIPHER_fetch)(NULL, "AES-192-ECB", NULL);
-	aes256_ecb_ptr = OSSL_FUNC(EVP_CIPHER_fetch)(NULL, "AES-256-ECB", NULL);
 	aes256_ctr_ptr = OSSL_FUNC(EVP_CIPHER_fetch)(NULL, "AES-256-CTR", NULL);
-
-	if (!sha256_ptr || !sha384_ptr || !sha512_ptr || !sha3_256_ptr ||
-	    !sha3_384_ptr || !sha3_512_ptr || !shake128_ptr || !shake256_ptr ||
-	    !aes128_ecb_ptr || !aes128_ctr_ptr || !aes192_ecb_ptr || !aes256_ecb_ptr || !aes256_ctr_ptr) {
-		fprintf(stderr, "liboqs warning: OpenSSL initialization failure. Is provider for SHA, SHAKE, AES enabled?\n");
+	if (!aes128_ecb_ptr || !aes128_ctr_ptr || !aes192_ecb_ptr || !aes256_ctr_ptr || !aes256_ecb_ptr) {
+		fprintf(stderr, "liboqs warning: OpenSSL initialization failure. Is provider for AES enabled?\n");
 	}
+#else
+	if (!aes256_ecb_ptr) {
+		fprintf(stderr, "liboqs warning: OpenSSL initialization failure. Is provider for AES enabled?\n");
+	}
+#endif
 }
 
 static inline void cleanup_evp_md(EVP_MD **mdp) {
@@ -71,29 +93,33 @@ static inline void cleanup_evp_cipher(EVP_CIPHER **cipherp) {
 }
 
 static void free_ossl_objects(void) {
+#if defined(OQS_USE_SHA2_OPENSSL)
 	cleanup_evp_md(&sha256_ptr);
 	cleanup_evp_md(&sha384_ptr);
 	cleanup_evp_md(&sha512_ptr);
+#endif
+#if defined(OQS_USE_SHA3_OPENSSL)
 	cleanup_evp_md(&sha3_256_ptr);
 	cleanup_evp_md(&sha3_384_ptr);
 	cleanup_evp_md(&sha3_512_ptr);
 	cleanup_evp_md(&shake128_ptr);
 	cleanup_evp_md(&shake256_ptr);
+#endif
+	cleanup_evp_cipher(&aes256_ecb_ptr);
+#if defined(OQS_USE_AES_OPENSSL)
 	cleanup_evp_cipher(&aes128_ecb_ptr);
 	cleanup_evp_cipher(&aes128_ctr_ptr);
 	cleanup_evp_cipher(&aes192_ecb_ptr);
-	cleanup_evp_cipher(&aes256_ecb_ptr);
 	cleanup_evp_cipher(&aes256_ctr_ptr);
+#endif
 }
 void oqs_ossl_destroy(void) {
 #if defined(OQS_USE_PTHREADS)
 	pthread_once(&free_once_control, free_ossl_objects);
 #else
-	if (sha256_ptr || sha384_ptr || sha512_ptr || sha3_256_ptr ||
-	    sha3_384_ptr || sha3_512_ptr || shake128_ptr || shake256_ptr ||
-	    aes128_ecb_ptr || aes128_ctr_ptr || aes192_ecb_ptr || aes256_ecb_ptr || aes256_ctr_ptr) {
-		free_ossl_objects();
-	}
+	/* Safe to call unconditionally: free_ossl_objects invokes no
+	 * OpenSSL functions on objects that were never fetched. */
+	free_ossl_objects();
 #endif
 }
 
@@ -101,7 +127,7 @@ void oqs_thread_stop(void) {
 	OSSL_FUNC(OPENSSL_thread_stop)();
 }
 
-#if OPENSSL_VERSION_NUMBER >= 0x30300000L
+#if defined(OQS_USE_SHA3_OPENSSL) && OPENSSL_VERSION_NUMBER >= 0x30300000L
 /* Cached result of probing whether the active provider implements
  * EVP_DigestSqueeze. A FIPS 3.0 provider loaded under libcrypto >= 3.3 will
  * raise EVP_R_METHOD_NOT_SUPPORTED; under OQS_DLOPEN_OPENSSL the symbol itself
@@ -142,6 +168,7 @@ int oqs_ossl_can_digest_squeeze(void) {
 }
 #endif
 
+#if defined(OQS_USE_SHA2_OPENSSL)
 const EVP_MD *oqs_sha256(void) {
 #if defined(OQS_USE_PTHREADS)
 	if (pthread_once(&init_once_control, fetch_ossl_objects)) {
@@ -180,7 +207,9 @@ const EVP_MD *oqs_sha512(void) {
 #endif
 	return sha512_ptr;
 }
+#endif // OQS_USE_SHA2_OPENSSL
 
+#if defined(OQS_USE_SHA3_OPENSSL)
 const EVP_MD *oqs_shake128(void) {
 #if defined(OQS_USE_PTHREADS)
 	if (pthread_once(&init_once_control, fetch_ossl_objects)) {
@@ -245,7 +274,24 @@ const EVP_MD *oqs_sha3_512(void) {
 #endif
 	return sha3_512_ptr;
 }
+#endif // OQS_USE_SHA3_OPENSSL
 
+/* AES-256-ECB is also used by the NIST DRBG (rand_nist.c) whenever
+ * OpenSSL is in use, so it is provided regardless of OQS_USE_AES_OPENSSL. */
+const EVP_CIPHER *oqs_aes_256_ecb(void) {
+#if defined(OQS_USE_PTHREADS)
+	if (pthread_once(&init_once_control, fetch_ossl_objects)) {
+		return NULL;
+	}
+#else
+	if (!aes256_ecb_ptr) {
+		fetch_ossl_objects();
+	}
+#endif
+	return aes256_ecb_ptr;
+}
+
+#if defined(OQS_USE_AES_OPENSSL)
 const EVP_CIPHER *oqs_aes_128_ecb(void) {
 #if defined(OQS_USE_PTHREADS)
 	if (pthread_once(&init_once_control, fetch_ossl_objects)) {
@@ -285,19 +331,6 @@ const EVP_CIPHER *oqs_aes_192_ecb(void) {
 	return aes192_ecb_ptr;
 }
 
-const EVP_CIPHER *oqs_aes_256_ecb(void) {
-#if defined(OQS_USE_PTHREADS)
-	if (pthread_once(&init_once_control, fetch_ossl_objects)) {
-		return NULL;
-	}
-#else
-	if (!aes256_ecb_ptr) {
-		fetch_ossl_objects();
-	}
-#endif
-	return aes256_ecb_ptr;
-}
-
 const EVP_CIPHER *oqs_aes_256_ctr(void) {
 #if defined(OQS_USE_PTHREADS)
 	if (pthread_once(&init_once_control, fetch_ossl_objects)) {
@@ -310,6 +343,7 @@ const EVP_CIPHER *oqs_aes_256_ctr(void) {
 #endif
 	return aes256_ctr_ptr;
 }
+#endif // OQS_USE_AES_OPENSSL
 
 #if defined(OQS_DLOPEN_OPENSSL)
 
