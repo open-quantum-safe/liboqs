@@ -4,3 +4,5 @@
 
 *.png binary
 *.jpe?g binary
+
+scripts/copy_from_upstream/patches/qruov-common-aes-wrapper-compat.patch -whitespace

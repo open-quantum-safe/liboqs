@@ -105,13 +105,13 @@ upstreams:
     sig_meta_path: 'integration/liboqs/{pretty_name_full}_META.yml'
   -
     name: qruov
-    git_url: https://github.com/0rlych1kk4/round3.git
-    git_branch: integration/qruov-aes-wrapper-combined
-    git_commit: 3965b56ca41484f6359ee71f1c508b1da7b77711
+    git_url: https://github.com/qruov/round3-liboqs.git
+    git_branch: main
+    git_commit: fb4a574c8340a95e88923404143d9364a15b7501
     sig_scheme_path: '.'
     sig_meta_path: 'integration/liboqs/{pretty_name_full}_META.yml'
     common_meta_path: 'integration/liboqs/META_Common.yml'
-    patches: [qruov-netbsd-explicit-memset.patch]
+    patches: [qruov-common-aes-wrapper-compat.patch, qruov-netbsd-explicit-memset.patch]
   -
     name: snova
     git_url: https://github.com/PQCLAB-SNOVA/SNOVA
