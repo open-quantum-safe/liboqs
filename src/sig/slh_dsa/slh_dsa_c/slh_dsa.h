@@ -52,6 +52,8 @@ extern "C"
   size_t slh_sig_sz(const slh_param_t *prm);
 
   /* Generate an SLH-DSA key pair; needs an RBG (a "randombytes()" function) */
+  /* that returns 0 on success. Returns 0 on success, and -1 if the RBG */
+  /* fails, in which case *sk is zeroized. */
   int slh_keygen(uint8_t *sk, uint8_t *pk, int (*rbg)(uint8_t *x, size_t xlen),
                  const slh_param_t *prm);
 
