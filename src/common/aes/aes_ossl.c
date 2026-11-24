@@ -49,13 +49,6 @@ static void AES128_free_schedule(void *schedule) {
 	}
 }
 
-static void AES128_ECB_enc(const uint8_t *plaintext, const size_t plaintext_len, const uint8_t *key, uint8_t *ciphertext) {
-	void *schedule = NULL;
-	OQS_AES128_ECB_load_schedule(key, &schedule);
-	OQS_AES128_ECB_enc_sch(plaintext, plaintext_len, schedule, ciphertext);
-	OQS_AES128_free_schedule(schedule);
-}
-
 static void AES128_ECB_enc_sch(const uint8_t *plaintext, const size_t plaintext_len, const void *schedule, uint8_t *ciphertext) {
 	assert(plaintext_len % 16 == 0);
 	int outlen;
@@ -64,6 +57,13 @@ static void AES128_ECB_enc_sch(const uint8_t *plaintext, const size_t plaintext_
 	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_EncryptUpdate)(ks->ctx, ciphertext, &outlen, plaintext, plaintext_len_int));
 	assert(outlen == plaintext_len_int);
 	OQS_OPENSSL_GUARD(OSSL_FUNC(EVP_EncryptFinal_ex)(ks->ctx, ciphertext, &outlen));
+}
+
+static void AES128_ECB_enc(const uint8_t *plaintext, const size_t plaintext_len, const uint8_t *key, uint8_t *ciphertext) {
+	void *schedule = NULL;
+	AES128_ECB_load_schedule(key, &schedule);
+	AES128_ECB_enc_sch(plaintext, plaintext_len, schedule, ciphertext);
+	AES128_free_schedule(schedule);
 }
 
 static void AES128_CTR_inc_stream_iv(const uint8_t *iv, size_t iv_len, const void *schedule, uint8_t *out, size_t out_len) {
@@ -175,19 +175,19 @@ static void AES256_CTR_inc_ivu64(uint64_t iv, void *schedule) {
 
 static void AES256_free_schedule(void *schedule) {
 	// actually same code as AES 128
-	OQS_AES128_free_schedule(schedule);
-}
-
-static void AES256_ECB_enc(const uint8_t *plaintext, const size_t plaintext_len, const uint8_t *key, uint8_t *ciphertext) {
-	void *schedule = NULL;
-	OQS_AES256_ECB_load_schedule(key, &schedule);
-	OQS_AES256_ECB_enc_sch(plaintext, plaintext_len, schedule, ciphertext);
-	OQS_AES256_free_schedule(schedule);
+	AES128_free_schedule(schedule);
 }
 
 static void AES256_ECB_enc_sch(const uint8_t *plaintext, const size_t plaintext_len, const void *schedule, uint8_t *ciphertext) {
 	// actually same code as AES 128
-	OQS_AES128_ECB_enc_sch(plaintext, plaintext_len, schedule, ciphertext);
+	AES128_ECB_enc_sch(plaintext, plaintext_len, schedule, ciphertext);
+}
+
+static void AES256_ECB_enc(const uint8_t *plaintext, const size_t plaintext_len, const uint8_t *key, uint8_t *ciphertext) {
+	void *schedule = NULL;
+	AES256_ECB_load_schedule(key, &schedule);
+	AES256_ECB_enc_sch(plaintext, plaintext_len, schedule, ciphertext);
+	AES256_free_schedule(schedule);
 }
 
 static void AES256_CTR_inc_stream_iv(const uint8_t *iv, size_t iv_len, const void *schedule, uint8_t *out, size_t out_len) {
@@ -246,12 +246,12 @@ static void AES192_ECB_enc_sch(const uint8_t *plaintext, const size_t plaintext_
 
 static void AES192_ECB_enc(const uint8_t *plaintext, const size_t plaintext_len, const uint8_t *key, uint8_t *ciphertext) {
 	void *schedule = NULL;
-	OQS_AES192_ECB_load_schedule(key, &schedule);
-	OQS_AES192_ECB_enc_sch(plaintext, plaintext_len, schedule, ciphertext);
-	OQS_AES192_free_schedule(schedule);
+	AES192_ECB_load_schedule(key, &schedule);
+	AES192_ECB_enc_sch(plaintext, plaintext_len, schedule, ciphertext);
+	AES192_free_schedule(schedule);
 }
 
-struct OQS_AES_callbacks aes_default_callbacks = {
+static const struct OQS_AES_callbacks aes_ossl_callbacks = {
 	.AES128_ECB_load_schedule = AES128_ECB_load_schedule,
 	.AES128_CTR_inc_init = AES128_CTR_inc_init,
 	.AES128_CTR_inc_iv = AES128_CTR_inc_iv,
@@ -274,3 +274,11 @@ struct OQS_AES_callbacks aes_default_callbacks = {
 	.AES192_ECB_enc = AES192_ECB_enc,
 	.AES192_ECB_enc_sch = AES192_ECB_enc_sch,
 };
+
+const struct OQS_AES_callbacks *oqs_aes_default_callbacks(void) {
+	return &aes_ossl_callbacks;
+}
+
+const char *oqs_aes_default_backend_name(void) {
+	return "openssl";
+}
