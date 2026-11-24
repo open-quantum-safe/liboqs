@@ -40,7 +40,10 @@ if(OQS_USE_PTHREADS)
 endif()
 
 if(NOT WIN32)
-    execute_process(COMMAND ${PROJECT_SOURCE_DIR}/scripts/git_commit.sh OUTPUT_VARIABLE GIT_COMMIT)
+    execute_process(
+        COMMAND "${PROJECT_SOURCE_DIR}/scripts/git_commit.sh"
+        WORKING_DIRECTORY "${PROJECT_SOURCE_DIR}"
+        OUTPUT_VARIABLE GIT_COMMIT)
     add_definitions(-DOQS_COMPILE_GIT_COMMIT="${GIT_COMMIT}")
 
     add_executable(test_aes test_aes.c)

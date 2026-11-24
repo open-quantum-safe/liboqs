@@ -165,6 +165,8 @@ The following instructions assume we are in `build`.
 	- `test_aes`, `test_sha3`: Simple test harnesses for crypto sub-components
 	- `test_portability`: Simple test harnesses for checking cross-CPU code portability; requires presence of `qemu`; proper operation validated only on Ubuntu
 
+	On Unix-like systems, the `Git commit` line in benchmark output identifies the source revision at configure time, or reads `unknown` if Git metadata is unavailable.
+
 	The complete test suite can be run using
 
 		ninja run_tests
