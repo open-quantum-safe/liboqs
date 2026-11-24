@@ -29,7 +29,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument("-v", "--verbosity", type=int)
 parser.add_argument("-k", "--keep_data", action='store_true', help='Keep upstream code in the "repos" folder')
 parser.add_argument("-d", "--delete", action='store_true', help='Delete untracked files from implementation directories')
-parser.add_argument("operation", choices=["copy", "verify", "libjade"])
+parser.add_argument("operation", choices=["copy", "verify"])
 args = parser.parse_args()
 
 if args.verbosity:
@@ -93,7 +93,6 @@ def shell(command, expect=0):
         raise Exception("'{}' failed with error {}. Expected {}.".format(" ".join(command), ret, expect))
 
 # Generate template from specified scheme to replace old file in 'copy' mode
-# but preserves additions made to file in prior runs of 'libjade' mode 
 def generator(destination_file_path, template_filename, delimiter, family, scheme_desired):
     template = file_get_contents(
         os.path.join(os.environ['LIBOQS_DIR'], 'scripts', 'copy_from_upstream', template_filename))
@@ -104,17 +103,7 @@ def generator(destination_file_path, template_filename, delimiter, family, schem
         contents = ''
     if scheme_desired != None:
         f['schemes'] = [x for x in f['schemes'] if x == scheme_desired]
-    identifier = '{} OQS_COPY_FROM_{}_FRAGMENT_{}'.format(delimiter, 'LIBJADE', os.path.splitext(os.path.basename(template_filename))[0].upper())
-    if identifier in contents:
-        identifier_start, identifier_end = identifier + '_START', identifier + '_END'
-        contents = contents.split('\n')
-        libjade_contents = '\n'.join(contents[contents.index(identifier_start) + 1: contents.index(identifier_end)])
-        contents = jinja2.Template(template).render(f)
-        preamble = contents[:contents.find(identifier_start)]
-        postamble = contents[contents.find(identifier_end):]
-        contents = preamble + identifier_start + '\n' + libjade_contents + '\n' + postamble
-    else:
-        contents = jinja2.Template(template).render(f)
+    contents = jinja2.Template(template).render(f)
     os.makedirs(os.path.dirname(destination_file_path), exist_ok=True)
     file_put_contents(destination_file_path, contents)
 
@@ -130,7 +119,6 @@ def replace_one_fragment(
     template_path: str,
     instructions: dict,
     delimiter: str,
-    libjade: bool = False,
 ):
     """Replace a single fragment with a rendered Jinja template
 
@@ -149,9 +137,8 @@ def replace_one_fragment(
         template = template_f.read()
         dst_content = dst_f.read()
     identifier, _ = os.path.splitext(os.path.basename(template_path))
-    jade_or_upstream = "LIBJADE" if libjade else "UPSTREAM"
-    identifier_start = f"{delimiter} OQS_COPY_FROM_{jade_or_upstream}_FRAGMENT_{identifier.upper()}_START"
-    identifier_end = f"{delimiter} OQS_COPY_FROM_{jade_or_upstream}_FRAGMENT_{identifier.upper()}_END"
+    identifier_start = f"{delimiter} OQS_COPY_FROM_UPSTREAM_FRAGMENT_{identifier.upper()}_START"
+    identifier_end = f"{delimiter} OQS_COPY_FROM_UPSTREAM_FRAGMENT_{identifier.upper()}_END"
     preamble = dst_content[: dst_content.find(identifier_start)]
     postamble = dst_content[dst_content.find(identifier_end) :]
     dst_content = (
@@ -165,27 +152,27 @@ def replace_one_fragment(
     with open(dst_path, "w") as f:
         f.write(dst_content)
 
-def replacer(filename, instructions, delimiter, libjade=False):
+def replacer(filename, instructions, delimiter):
     fragments = glob.glob(
-        os.path.join(os.environ['LIBOQS_DIR'], 'scripts', 'copy_from_upstream', filename, '*.{}'.format('libjade' if libjade else 'fragment')))
+        os.path.join(os.environ['LIBOQS_DIR'], 'scripts', 'copy_from_upstream', filename, '*.fragment'))
     contents = file_get_contents(os.path.join(os.environ['LIBOQS_DIR'], filename))
     for fragment in fragments:
         template = file_get_contents(fragment)
         identifier = os.path.splitext(os.path.basename(fragment))[0]
-        identifier_start = '{} OQS_COPY_FROM_{}_FRAGMENT_{}_START'.format(delimiter, 'LIBJADE' if libjade else 'UPSTREAM', identifier.upper())
-        identifier_end = '{} OQS_COPY_FROM_{}_FRAGMENT_{}_END'.format(delimiter, 'LIBJADE' if libjade else 'UPSTREAM', identifier.upper())
+        identifier_start = '{} OQS_COPY_FROM_UPSTREAM_FRAGMENT_{}_START'.format(delimiter, identifier.upper())
+        identifier_end = '{} OQS_COPY_FROM_UPSTREAM_FRAGMENT_{}_END'.format(delimiter, identifier.upper())
         preamble = contents[:contents.find(identifier_start)]
         postamble = contents[contents.find(identifier_end):]
         contents = preamble + identifier_start + jinja2.Template(template).render(
             {'instructions': instructions, 'non_upstream_kems': non_upstream_kems}) + postamble
     file_put_contents(os.path.join(os.environ['LIBOQS_DIR'], filename), contents)
 
-def replacer_contextual(destination_file_path, template_file_path, delimiter, family, scheme_desired, libjade=False):
+def replacer_contextual(destination_file_path, template_file_path, delimiter, family, scheme_desired):
     contents = file_get_contents(destination_file_path)
     template = file_get_contents(template_file_path)
     identifier = os.path.basename(template_file_path).split(os.extsep)[0]
-    identifier_start = '{} OQS_COPY_FROM_{}_FRAGMENT_{}_START'.format(delimiter, 'LIBJADE' if libjade else 'UPSTREAM', identifier.upper())
-    identifier_end = '{} OQS_COPY_FROM_{}_FRAGMENT_{}_END'.format(delimiter, 'LIBJADE' if libjade else 'UPSTREAM', identifier.upper())
+    identifier_start = '{} OQS_COPY_FROM_UPSTREAM_FRAGMENT_{}_START'.format(delimiter, identifier.upper())
+    identifier_end = '{} OQS_COPY_FROM_UPSTREAM_FRAGMENT_{}_END'.format(delimiter, identifier.upper())
     f = copy.deepcopy(family)
     if scheme_desired != None:
         f['schemes'] = [x for x in f['schemes'] if x == scheme_desired]
@@ -224,22 +211,8 @@ def load_instructions(file='copy_from_upstream.yml'):
             shell(['git', 'init', work_dir])
             shell(['git', '--git-dir', work_dotgit, 'remote', 'add', 'origin', upstream_git_url])
         shell(['git', '--git-dir', work_dotgit, '--work-tree', work_dir, 'remote', 'set-url', 'origin', upstream_git_url])
-        if file == 'copy_from_libjade.yml':
-            shell(['git', '--git-dir', work_dotgit, '--work-tree', work_dir, 'fetch', '--depth=1', 'origin', upstream_git_branch])
-        else:
-            shell(['git', '--git-dir', work_dotgit, '--work-tree', work_dir, 'fetch', '--depth=1', 'origin', upstream_git_commit])
+        shell(['git', '--git-dir', work_dotgit, '--work-tree', work_dir, 'fetch', '--depth=1', 'origin', upstream_git_commit])
         shell(['git', '--git-dir', work_dotgit, '--work-tree', work_dir, 'reset', '--hard', upstream_git_commit])
-        if file == 'copy_from_libjade.yml':
-            try:
-                version = subprocess.run(['jasminc', '-version'], capture_output=True).stdout.decode('utf-8').strip().split(' ')[-1]
-                if version != instructions['jasmin_version']:
-                    print('Expected Jasmin compiler version {}; got version {}.'.format(instructions['jasmin_version'], version))
-                    print('Must use Jasmin complier version {} or update copy_from_libjade.yml.'.format(instructions['jasmin_version']))
-                    exit(1)
-            except FileNotFoundError:
-                print('Jasmin compiler not found; must add `jasminc` to PATH.')
-                exit(1)
-            shell(['make', '-C', os.path.join(work_dir, 'src')])
         if 'patches' in upstream:
             for patch in upstream['patches']:
                 patch_file = os.path.join('patches', patch)
@@ -648,45 +621,30 @@ def handle_implementation(impl, family, scheme, dst_basedir):
         except FileExistsError as fee:
             print(fee)
             pass
-        if upstream_location == 'libjade':
-            # Flatten directory structure while copying relevant files from libjade repo
-            for root, _, files in os.walk(origfolder):
-                for file in files:
-                    if os.path.splitext(file)[1] in ['.c', '.h']:
-                        source_path = os.path.join(root, file)
-                        dest_path = os.path.join(srcfolder, file)
-                        subprocess.run(['cp', source_path, dest_path])
-                    if os.path.splitext(file)[1] in ['.s']:
-                        file_name, file_ext = os.path.splitext(file)
-                        new_file = ''.join([file_name, file_ext.upper()])
-                        source_path = os.path.join(root, file)
-                        dest_path = os.path.join(srcfolder, new_file)
-                        subprocess.run(['cp', source_path, dest_path])
-        else:
-            # determine list of files to copy:
-            if 'sources' in i:
-                if i['sources']:
-                    preserve_folder_structure = ('preserve_folder_structure' in i['upstream']) and i['upstream']['preserve_folder_structure'] == True
-                    srcs = i['sources'].split(" ")
-                    for s in srcs:
-                        # Copy recursively only in case of directories not with plain files to avoid copying over symbolic links
-                        if os.path.isfile(os.path.join(origfolder, s)):
-                            if preserve_folder_structure:
-                                subprocess.run(['mkdir', '-p', os.path.join(srcfolder, os.path.dirname(s))])
-                                subprocess.run(['cp', os.path.join(origfolder, s), os.path.join(srcfolder, s)])
-                            else:
-                                subprocess.run(['cp', os.path.join(origfolder, s), os.path.join(srcfolder, os.path.basename(s))])
-
+        # determine list of files to copy:
+        if 'sources' in i:
+            if i['sources']:
+                preserve_folder_structure = ('preserve_folder_structure' in i['upstream']) and i['upstream']['preserve_folder_structure'] == True
+                srcs = i['sources'].split(" ")
+                for s in srcs:
+                    # Copy recursively only in case of directories not with plain files to avoid copying over symbolic links
+                    if os.path.isfile(os.path.join(origfolder, s)):
+                        if preserve_folder_structure:
+                            subprocess.run(['mkdir', '-p', os.path.join(srcfolder, os.path.dirname(s))])
+                            subprocess.run(['cp', os.path.join(origfolder, s), os.path.join(srcfolder, s)])
                         else:
-                            if preserve_folder_structure:
-                                subprocess.run(
-                                    ['cp', '-r', os.path.join(origfolder, s), os.path.join(srcfolder, os.path.dirname(s))])                    
-                            else:
-                                subprocess.run(
-                                    ['cp', '-r', os.path.join(origfolder, s), os.path.join(srcfolder, os.path.basename(s))])
-            else:
-                subprocess.run(['cp', '-pr', os.path.join(origfolder, '.'), srcfolder])
-                # raise Exception("Malformed YML file: No sources listed to copy. Check upstream YML file." )
+                            subprocess.run(['cp', os.path.join(origfolder, s), os.path.join(srcfolder, os.path.basename(s))])
+
+                    else:
+                        if preserve_folder_structure:
+                            subprocess.run(
+                                ['cp', '-r', os.path.join(origfolder, s), os.path.join(srcfolder, os.path.dirname(s))])                    
+                        else:
+                            subprocess.run(
+                                ['cp', '-r', os.path.join(origfolder, s), os.path.join(srcfolder, os.path.basename(s))])
+        else:
+            subprocess.run(['cp', '-pr', os.path.join(origfolder, '.'), srcfolder])
+            # raise Exception("Malformed YML file: No sources listed to copy. Check upstream YML file." )
 
     else:
         raise Exception("Mandatory argument upstream_location is missing")
@@ -726,7 +684,7 @@ def handle_implementation(impl, family, scheme, dst_basedir):
     return [x[len(srcfolder) + 1:] for x in ffs]
 
 
-def process_families(instructions, basedir, with_kat, with_generator, with_libjade=False):
+def process_families(instructions, basedir, with_kat, with_generator):
     for family in instructions['kems'] + instructions['sigs']:
         extmu_variants = []
         for s in family['schemes']:
@@ -753,11 +711,6 @@ def process_families(instructions, basedir, with_kat, with_generator, with_libja
                 with os.scandir(os.path.join(basedir, 'src', family['type'], family['name'])) as ls:
                     for entry in ls:
                         if entry.is_dir(follow_symlinks=False):
-                            if with_libjade:
-                                if not entry.name.startswith('libjade'):
-                                    continue
-                            elif entry.name.startswith('libjade'):
-                                continue
                             to_rm = os.path.join(basedir, 'src', family['type'], family['name'], entry.name)
                             if DEBUG > 3:
                                 print("removing %s" % to_rm)
@@ -870,16 +823,6 @@ def process_families(instructions, basedir, with_kat, with_generator, with_libja
                     family,
                     scheme,
                 )
-        
-        if with_libjade:
-            replacer_contextual(
-                os.path.join(os.environ['LIBOQS_DIR'], 'src', family['type'], family['name'], 'CMakeLists.txt'),
-                os.path.join('src', family['type'], 'family', 'CMakeLists.txt.libjade'),
-                '#####',
-                family,
-                None,
-                libjade=True
-            )
 
 
 def copy_from_upstream(slh_dsa_inst: dict):
@@ -929,37 +872,6 @@ def copy_from_upstream(slh_dsa_inst: dict):
     verify_faest_integration_artifacts(os.path.join('repos', 'faest-ref'))
     if not keepdata:
         shutil.rmtree('repos')
-
-# Copy algorithms from libjade specified in copy_from_libjade.yml, apply 
-# patches and generate select templates
-# Can be run independant of 'copy' mode.
-# When adding an algorithm to copy_from_libjade.yml, the boolean 
-# 'libjade_implementation' and list of implementation 'libjade_implementations' 
-# must updated for the relevant algorithm in copy_from_upstream.yml
-def copy_from_libjade():
-    for t in ["kem", "sig"]:
-        with open(os.path.join(os.environ['LIBOQS_DIR'], 'tests', 'KATs', t, 'kats.json'), 'r') as fp:
-            kats[t] = json.load(fp)
-
-    instructions = load_instructions('copy_from_libjade.yml')
-    process_families(instructions, os.environ['LIBOQS_DIR'], True, False, True)
-    replacer('.CMake/alg_support.cmake', instructions, '#####', libjade=True)
-    replacer('src/oqsconfig.h.cmake', instructions, '/////', libjade=True)
-    for t in ["kem", "sig"]:
-        with open(os.path.join(os.environ['LIBOQS_DIR'], 'tests', 'KATs', t, 'kats.json'), "w") as f:
-            json.dump(kats[t], f, indent=2, sort_keys=True)
-            f.write("\n")
-
-    update_upstream_alg_docs.do_it(os.environ['LIBOQS_DIR'], upstream_location='libjade')
-
-    sys.path.insert(1, os.path.join(os.environ['LIBOQS_DIR'], 'scripts'))
-    import update_docs_from_yaml
-    import update_cbom
-    update_docs_from_yaml.do_it(os.environ['LIBOQS_DIR'])
-    update_cbom.update_cbom_if_algs_not_changed(os.environ['LIBOQS_DIR'], "git")
-    if not keepdata:
-        shutil.rmtree('repos')
-
 
 def verify_from_upstream():
     instructions = load_instructions()
@@ -1052,7 +964,5 @@ if args.operation == "copy":
     }
     os.chdir(os.path.join(os.environ['LIBOQS_DIR'],"scripts","copy_from_upstream"))
     copy_from_upstream(slh_dsa_instruction)
-elif args.operation == "libjade":
-    copy_from_libjade()
 elif args.operation == "verify":
     verify_from_upstream()

@@ -228,7 +228,6 @@ liboqs includes some third party libraries or modules that are licensed differen
 - `src/kem/classic_mceliece/pqclean_*`: public domain
 - `src/kem/kyber/pqcrystals-*`: public domain (CC0) or Apache License v2.0
 - `src/kem/kyber/pqclean_*`: public domain (CC0), and public domain (CC0) or Apache License v2.0, and public domain (CC0) or MIT, and MIT
-- `src/kem/kyber/libjade_*` public domain (CC0) or Apache License v2.
 - `src/kem/ml_kem/mlkem-native_*`: MIT or Apache License v2.0 or ISC License
 - `src/kem/ntru/pqclean_*`: public domain (CC0)
 - `src/kem/ntruprime/sntrup761_openssh`: public domain
