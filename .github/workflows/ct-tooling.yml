@@ -97,6 +97,11 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: openquantumsafe/ci-ubuntu-latest:latest
+      # MSan requires `personality(ADDR_NO_RANDOMIZE)` to fix itself when binaries
+      # are started with an incompatible memory layout, which requires the container
+      # to have the seccomp filter lifted.
+      # This is not dangerous, since the container isn't being used as a security boundary.
+      options: --security-opt seccomp=unconfined
     strategy:
       fail-fast: false
       matrix:
