@@ -1,0 +1,10 @@
+This software is released into the public domain.
+
+You are free to use, modify, and distribute this software for any purpose, with or without fee, and without any warranty.
+
+This project incorporates third-party code from the FIPS202 implementation used in the PQClean project, which is itself based on public domain code:
+
+- crypto_hash/keccakc512/simple/ from http://bench.cr.yp.to/supercop.html by Ronny Van Keer
+- TweetFips202 by Gilles Van Assche, Daniel J. Bernstein, and Peter Schwabe (https://twitter.com/tweetfips202)
+
+All of the included code is believed to be in the public domain.
