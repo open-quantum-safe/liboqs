@@ -13,30 +13,35 @@ Settings exported from the UI carry extra fields (`id`, `source`,
 `source_type`, timestamps). They are not needed for import and are left out
 here.
 
-## Current state (classic branch protection, read 2026-11-01)
+## Current state (read 2026-11-24)
 
-Three files reproduce the two classic rules exactly as they stand. Classic
-protection splits its settings into two groups: the review, status check and
-linear history settings are bypassable by admins when "Do not allow bypassing
-the above settings" is unchecked, which it is; the force push and deletion
-blocks apply to everyone including admins. A ruleset has a single bypass list
-for all of its rules, so the `main` rule needs two rulesets to say the same
-thing.
+Two rulesets are live and each file here matches one of them. There is no
+classic branch protection any more.
 
-| File | Classic rule | Rules | Bypass |
-| --- | --- | --- | --- |
-| `main-classic-pr-and-history.json` | 925128 (`main`) | pull request with 2 approvals, dismiss stale approvals, linear history | repository admins, always |
-| `main-classic-no-force-push-no-delete.json` | 925128 (`main`) | block force pushes, block deletion | none |
-| `gh-pages-classic.json` | 63918842 (`gh-pages`) | block force pushes, block deletion | none |
+| File | Ruleset | Branch | Rules | Bypass |
+| --- | --- | --- | --- | --- |
+| `main.json` | [26409422](https://github.com/open-quantum-safe/liboqs/rules/26409422) | default branch | pull request with 1 approval, dismiss stale approvals, linear history, block force pushes, block deletion | none |
+| `gh-pages-classic.json` | [26409549](https://github.com/open-quantum-safe/liboqs/rules/26409549) | `gh-pages` | block force pushes, block deletion | none |
 
-The classic `main` rule has no required status checks, no code owner review,
-no signed commit requirement and no push restrictions, so none appear here.
-Importing these three files changes nothing about who can do what; they
-exist as a baseline to diff the proposal against.
+How it got here:
 
-## Proposal for #2662
+- Until 2026-11-02 `main` and `gh-pages` were protected by classic rules
+  925128 and 63918842. The `main` rule asked for two approvals but let
+  repository admins bypass it.
+- On 2026-11-02 the classic rules were replaced by equivalent rulesets, and
+  the #2662 ruleset was imported in `evaluate` mode alongside them.
+- On 2026-11-24 the #2662 ruleset was made `active`. The two rulesets that
+  carried the old `main` rule were deleted along with their files: 26409518
+  (two approvals, admin-bypassable, `main-classic-pr-and-history.json`) and
+  26409496 (block force pushes and deletion,
+  `main-classic-no-force-push-no-delete.json`), whose rules `main.json`
+  already includes. `main-proposed.json` was renamed to `main.json`.
 
-`main-proposed.json` is the ruleset discussed in issue #2662. It follows the
+## The #2662 ruleset
+
+`main.json` is the ruleset discussed in issue #2662, active since
+2026-11-24. The live ruleset is still named "proposed in #2662", and the
+file keeps that name so that it matches. It follows the
 agreement in that thread between dstebila and baentsch: one required
 approval instead of two, and no admin bypass.
 
@@ -58,6 +63,10 @@ wanted later: code owner review off, last-push approval off, conversation
 resolution not required, no required status checks.
 
 ## What changes in practice
+
+This section and the two after it were written before the change and are
+kept as the record of what was decided and why. "Now" means the classic rule
+as it stood until 2026-11-02; "proposed" is what is in force today.
 
 The configured rule today says two approvals, but the effective rule depends
 on who is merging. The table compares the effective behaviour now with the
@@ -127,13 +136,6 @@ history would have changed.
   as a `repository_ruleset` event, so turning it off is a reviewable act
   rather than a silent bypass.
 
-- **Overlap with the classic rule.** While both the classic rule and the
-  ruleset exist, GitHub applies both and the stricter one wins. Non-admins
-  keep needing two approvals until the classic rule is deleted; admins drop
-  to one with no bypass immediately. Nothing locks anyone out during the
-  overlap, but the classic rule should be deleted promptly so the written
-  rule matches the effective one.
-
 - **Approver who pushes to the PR.** With last-push approval off, a reviewer
   can push a commit to someone else's PR and approve it themselves. That
   still involves two accounts (author and reviewer) and matches today's
@@ -152,17 +154,11 @@ history would have changed.
 
 ## Rollout
 
-The org is on the Enterprise plan, so rulesets support `evaluate` mode and
-rule insights.
-
-1. Import `main-proposed.json` with `enforcement` set to `evaluate` and
-   leave it for a week or two. Settings > Rules > Insights then lists every
-   push and merge the ruleset would have blocked, without blocking anything.
-2. Review the insights. If the only entries are the expected ones (merges
-   with no approval, direct pushes), switch the ruleset to `active`.
-3. Delete classic rule 925128 so there is one source of truth.
-4. `gh-pages` can keep its classic rule or move to `gh-pages-classic.json`;
-   the two are equivalent.
+Done. The ruleset ran in `evaluate` mode from 2026-11-02 to 2026-11-24. Rule
+insights for that period show 28 merges into `main`, of which the ruleset
+would have blocked one: #2642, whose approvals had been dismissed by a later
+push and which was merged with none. It was switched to `active` on
+2026-11-24 with the agreement of the maintainers in #2662.
 
 To re-run the approval count above for a later period, list merged PRs with
 their reviews through GraphQL and count, per PR, the reviewers other than
