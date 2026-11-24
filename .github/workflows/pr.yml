@@ -3,7 +3,9 @@ name: Pull request tests
 permissions:
   contents: read
 
-on: pull_request
+on:
+  pull_request:
+  merge_group:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -20,7 +22,12 @@ jobs:
       - name: Determine skip status
         id: set_output
         run: |
-          if [ "${{ github.event.pull_request.head.repo.fork }}" = "true" ]; then
+          if [ "${{ github.event_name }}" != "pull_request" ]; then
+            # Merge queue: there is no PR head SHA to look up, and the merge
+            # group commit has never been through Push tests.
+            echo "Not a pull_request event - basic-checks cannot be skipped"
+            echo "skip_basic=false" >> $GITHUB_OUTPUT
+          elif [ "${{ github.event.pull_request.head.repo.fork }}" = "true" ]; then
             echo "Fork PR - basic-checks cannot be skipped"
             echo "skip_basic=false" >> $GITHUB_OUTPUT
           else
@@ -95,3 +102,28 @@ jobs:
   codeql:
     needs: check-push-result
     uses: ./.github/workflows/codeql.yml
+
+  # The single check that branch rules require (see .github/rulesets). It
+  # reports under one fixed name on pull_request and merge_group runs alike,
+  # whatever the platform matrix contains and whichever jobs were skipped.
+  # Every other job in this workflow must be listed in `needs`.
+  gate:
+    name: Pull request tests passed
+    if: always()
+    needs:
+      - check-push-result
+      - basic-checks
+      - platform-tests
+      - code-coverage
+      - nix-full-build
+      - scorecard
+      - codeql
+    runs-on: ubuntu-latest
+    permissions: {}
+    steps:
+      - name: Fail unless every job succeeded or was skipped
+        env:
+          NEEDS: ${{ toJSON(needs) }}
+        run: |
+          echo "$NEEDS" | jq -r 'to_entries[] | "\(.key): \(.value.result)"'
+          echo "$NEEDS" | jq -e 'all(.[]; .result == "success" or .result == "skipped")' > /dev/null

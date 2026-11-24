@@ -163,3 +163,69 @@ push and which was merged with none. It was switched to `active` on
 To re-run the approval count above for a later period, list merged PRs with
 their reviews through GraphQL and count, per PR, the reviewers other than
 the author whose latest review is `APPROVED`.
+
+## Merge queue (proposed)
+
+`main-merge-queue.json` turns on a merge queue for the default branch. It is
+a separate ruleset so that it can be imported, disabled or removed without
+touching the review rules in `main.json`; GitHub applies both.
+
+With a queue, "Merge when ready" on an approved pull request adds it to the
+queue instead of merging it. GitHub builds a temporary branch
+(`gh-readonly-queue/main/...`) holding `main` plus the queued changes, runs
+the workflows that trigger on `merge_group` against it, and merges only if
+they pass. The tested commit is the one that lands, so two pull requests
+that each pass alone but break together are caught before `main` does.
+
+| Setting | Value | Reason |
+| --- | --- | --- |
+| `merge_method` | `SQUASH` | linear history is required and nearly every commit on `main` is a squash merge |
+| `grouping_strategy` | `ALLGREEN` | every entry in a group must pass, not only the last one |
+| `max_entries_to_build` | 5 | up to five queued entries run CI at once |
+| `min_entries_to_merge` | 1 | a lone pull request is not held waiting for company |
+| `max_entries_to_merge` | 5 | at most five pull requests land in one group |
+| `min_entries_to_merge_wait_minutes` | 5 | how long to wait for the minimum group size |
+| `check_response_timeout_minutes` | 120 | recent "Pull request tests" runs took 27 to 86 minutes |
+
+The ruleset also requires one status check, `Pull request tests passed`,
+which is what the queue waits for. It is the `gate` job at the end of
+`pr.yml`: it `needs` every other job in that workflow, always runs, and
+fails unless each of them succeeded or was skipped. One fixed name is
+required because the others are not safe to require:
+
+- The platform test jobs are matrix jobs whose names change with the matrix.
+- The `basic-checks / ...` and `code-coverage / ...` jobs are skipped on a
+  pull request when "Push tests" already passed for the same commit. A
+  skipped reusable workflow reports one check named after the caller job,
+  not the inner job names, so a requirement on an inner name would wait
+  forever.
+- `docs-sync` runs on pull requests only when certain paths change, so
+  requiring it would leave every other pull request pending.
+- The DCO check comes from an app and has not been confirmed to report on
+  queue branches.
+
+`integration_id` 15368 is the GitHub Actions app, so only a check reported by
+Actions satisfies the requirement; a status of the same name posted by some
+other app or token does not. `strict_required_status_checks_policy` is off
+because the queue already tests each pull request on top of current `main`.
+
+The bypass list is empty, as in `main.json`: nobody merges to `main`
+around the queue or with the check failing. That is new: today a pull request
+with failing CI can be merged.
+
+### Before importing
+
+- **Merge the workflow changes first.** `pr.yml` must already have the
+  `merge_group` trigger and the `gate` job on `main`, and `docs-sync.yml` the
+  trigger. Imported earlier, the ruleset requires a check that nothing
+  reports, and no pull request can merge.
+- **Open pull requests need the new `pr.yml`.** A branch cut before the
+  workflow change never reports `Pull request tests passed` and cannot enter
+  the queue until it is rebased or has `main` merged into it.
+- **A new job in `pr.yml` must be added to the gate's `needs`.** A job left
+  out can fail without failing the required check.
+- **`docs-sync` runs in the queue but does not gate it,** for the reason
+  above. Drift in the generated docs is still caught by its run on `main`.
+- **`[full tests]` has no effect in the queue.** A queue run has no pull
+  request title or body, so it always runs the `pr` stage of the platform
+  matrix and skips `nix-full-build`.
