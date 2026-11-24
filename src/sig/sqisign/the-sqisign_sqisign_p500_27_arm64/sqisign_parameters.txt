@@ -1,3 +1,0 @@
-lvl = 3
-p = 0x1afffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
-security = 192
