@@ -1,0 +1,88 @@
+# Valgrind suppression file for FAEST and FAEST-EM (ref implementation).
+# Upstream declassifies these values with faest_declassify(), which is a no-op in liboqs.
+# Line numbers refer to src/sig/faest, recheck them when updating faest-ref.
+
+# Rejected keys are discarded
+{
+   Keygen rejection sampling
+   Memcheck:Cond
+   src:faest_*.c:39
+   fun:PQCLEAN_FAEST_*_crypto_sign_keypair
+}
+
+# chall_3 is recomputed by the verifier, ctr is part of the signature
+{
+   Grinding check on chall_3
+   Memcheck:Cond
+   src:faest_impl.c:473
+}
+
+# BAVC opening: i_delta is decoded from chall_3, so the opened nodes are public
+{
+   BAVC open, tree position from i_delta
+   Memcheck:Cond
+   src:bavc.c:106
+}
+
+{
+   BAVC open, bitmap index from i_delta
+   Memcheck:Value8
+   src:bavc.c:347
+}
+
+{
+   BAVC open, path to root from i_delta
+   Memcheck:Cond
+   src:bavc.c:350
+}
+
+{
+   BAVC open, path to root from i_delta
+   Memcheck:Value8
+   src:bavc.c:350
+}
+
+{
+   BAVC open, bitmap index from i_delta
+   Memcheck:Value8
+   src:bavc.c:352
+}
+
+{
+   BAVC open, revealed node from i_delta
+   Memcheck:Cond
+   src:bavc.c:373
+}
+
+# memcpy from an offset that depends on i_delta
+{
+   BAVC open, copy hidden leaf commitment
+   Memcheck:Cond
+   fun:mem*
+   src:compat_mempcpy.c:19
+   src:bavc.c:366
+}
+
+{
+   BAVC open, copy hidden leaf commitment
+   Memcheck:Value8
+   fun:mem*
+   src:compat_mempcpy.c:19
+   src:bavc.c:366
+}
+
+{
+   BAVC open, copy revealed node
+   Memcheck:Cond
+   fun:mem*
+   src:compat_mempcpy.c:19
+   src:bavc.c:375
+}
+
+{
+   BAVC open, copy revealed node
+   Memcheck:Value8
+   fun:mem*
+   src:compat_mempcpy.c:19
+   src:bavc.c:375
+}
