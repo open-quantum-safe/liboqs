@@ -1,4 +1,4 @@
-# liboqs version 0.16.0
+# liboqs version 0.17.0-rc1
 
 The **Open Quantum Safe (OQS) project** has the goal of developing and
 prototyping quantum-resistant cryptography. More information on OQS can be
@@ -36,10 +36,11 @@ language-specific wrappers:
 - Python 3, via <https://github.com/open-quantum-safe/liboqs-python>
 - Rust, via <https://github.com/open-quantum-safe/liboqs-rust>
 
-## Upcoming changes
+## Release notes
 
-The following changes have been merged since 0.16.0 and will be included in the
-next release:
+liboqs 0.17.0-rc1 was released on Tuesday, November 24, 2026.
+
+### Breaking changes
 
 - **OpenSSL 1.1.1 is no longer supported.** When building with the default
   `OQS_USE_OPENSSL=ON`, OpenSSL 3.0 or newer is now required, and CMake fails at
@@ -55,199 +56,216 @@ next release:
   `-DOQS_LIBJADE_BUILD=ON` now fails. Kyber512 and Kyber768 remain available
   through the pq-crystals implementations, with unchanged outputs.
   [#2714](https://github.com/open-quantum-safe/liboqs/pull/2714)
-
-## Release notes
-
-liboqs 0.16.0 was released on Thursday, July 9, 2026.
-
-### Deprecation notice
-
-SPHINCS+ was removed in 0.16.0.
+- **Classic McEliece is disabled by default.** Following the [OQS TSC meeting of
+  2026-10-20](https://github.com/open-quantum-safe/tsc/blob/main/meetings/2026-10-20/minutes.md),
+  and based on recent cryptanalysis reports, a BSI recommendation and the lack
+  of upstream maintenance, `OQS_ENABLE_KEM_CLASSIC_MCELIECE` now defaults to
+  `OFF`; configure with `-DOQS_ENABLE_KEM_CLASSIC_MCELIECE=ON` to build it.
+  `OQS_ALGS_ENABLED=NIST_R4` still enables every Classic McEliece parameter set.
+  [#2640](https://github.com/open-quantum-safe/liboqs/pull/2640)
+- **MQOM v2 was replaced by MQOM v3.** The `mqom2_*` algorithm identifiers are
+  removed and the NIST round 3 `mqom3_*` parameter sets are added. MQOM v3 is a
+  major update of the scheme and is not compatible with v2.
+  [#2563](https://github.com/open-quantum-safe/liboqs/pull/2563)
+- **UOV, MAYO and SNOVA were updated to NIST round 3.** Algorithm identifiers are
+  unchanged, but parameters, key and signature sizes, and outputs differ from
+  0.16.0 for most parameter sets (for UOV, OV-Ip, OV-III and OV-V change; OV-Is
+  is unchanged). Keys and signatures from 0.16.0 are not interoperable.
+  [#2554](https://github.com/open-quantum-safe/liboqs/pull/2554),
+  [#2564](https://github.com/open-quantum-safe/liboqs/pull/2564),
+  [#2562](https://github.com/open-quantum-safe/liboqs/pull/2562)
+- **Windows static builds no longer export the public API.** `OQS_API` now
+  expands to `__declspec(dllexport)` only when liboqs is built as a shared
+  library, so applications linking the static library no longer re-export the
+  entire liboqs API.
+  [#2584](https://github.com/open-quantum-safe/liboqs/pull/2584)
 
 ### Security issues
 
-- Fixed uninitialized `encaps_derand` pointer dereference
-[#2460](https://github.com/open-quantum-safe/liboqs/pull/2460)
-- Fixed out-of-bounds read in XMSS/XMSS^MT signature verification
-[077e32a](https://github.com/open-quantum-safe/liboqs/commit/077e32a)
-[#2384](https://github.com/open-quantum-safe/liboqs/pull/2384)
-- Fixed Integer underflow in CROSS `crypto_sign_open()`
-[25d0a9e](https://github.com/open-quantum-safe/liboqs/commit/25d0a9e)
-- Fixed incorrect array size when calling `secure_clean`
-[ab0e07c](https://github.com/open-quantum-safe/liboqs/commit/ab0e07c)
-- Implemented optimization barrier `OQS_MEM_BLACK_BOX` and applied to
-`ct_select` in FrodoKEM
-[#2431](https://github.com/open-quantum-safe/liboqs/pull/2431)
+- Fixed out-of-bounds read in SLH-DSA verification on a short signature
+[#2587](https://github.com/open-quantum-safe/liboqs/pull/2587)
+- Added missing signature length check in CROSS `crypto_sign_verify`
+[#2555](https://github.com/open-quantum-safe/liboqs/pull/2555)
+- Fixed out-of-bounds access in `xmss_core_sign` on secret key OID mismatch
+[#2511](https://github.com/open-quantum-safe/liboqs/pull/2511)
+- Locked the secret key in XMSS/XMSS^MT `sigs_remaining`
+[#2621](https://github.com/open-quantum-safe/liboqs/pull/2621)
+- Made LMS stateful signing fail closed and validated LMS parameter sets
+[#2608](https://github.com/open-quantum-safe/liboqs/pull/2608)
+- Fixed out-of-bounds read in `hss_validate_signature_init`
+[#2507](https://github.com/open-quantum-safe/liboqs/pull/2507)
+- Fixed out-of-bounds write in SHA-256 `inc_blocks` on a zero-block call
+[#2627](https://github.com/open-quantum-safe/liboqs/pull/2627)
+- Fixed undersized allocation in `oqs_aes128_load_schedule_no_bitslice`
+[#2515](https://github.com/open-quantum-safe/liboqs/pull/2515)
+- Fixed integer overflow in `OQS_MEM_aligned_alloc` size calculation
+[#2492](https://github.com/open-quantum-safe/liboqs/pull/2492)
 
-### Significant change
+### Significant changes
 
-#### FrodoKEM algorithm change
+#### Add remaining NIST on-ramp Round 3 Candidates
 
-[#2192](https://github.com/open-quantum-safe/liboqs/pull/2192),
-[#2342](https://github.com/open-quantum-safe/liboqs/pull/2342)
+Four signature schemes from NIST's Additional Digital Signatures process were
+added, all enabled by default:
 
-Existing FrodoKEM in 0.15.0 was renamed to ephemeral FrodoKEM
-(`KEM_efrodokem_<640|976|1344>_<aes|shake>`), and the salted variant of FrodoKEM
-was added under the prior names (`KEM_frodokem_<640|976|1344>_<aes|shake>`).
+- **SQIsign** (`SQIsign-p324-3`, `SQIsign-p500-27`, `SQIsign-p664-17`), with a
+  portable and an arm64 backend.
+  [#2593](https://github.com/open-quantum-safe/liboqs/pull/2593),
+  [#2711](https://github.com/open-quantum-safe/liboqs/pull/2711)
+- **SDitH** (`SDitH3-L<1|3|5>-gf2-<fast|short>[-cipherpow]`). This is
+  not built on Windows, s390x or ppc64.
+  [#2586](https://github.com/open-quantum-safe/liboqs/pull/2586)
+- **QR-UOV**, with ref, opt and avx2 implementations.
+  [#2582](https://github.com/open-quantum-safe/liboqs/pull/2582)
+- **FAEST** (`FAEST-<128|192|256><F|S>` and `FAEST-EM-<128|192|256><F|S>`).
+  [#2592](https://github.com/open-quantum-safe/liboqs/pull/2592)
 
-Ephemeral FrodoKEM is recommended for applications where each keypair will
-encapsulate only a small number of shared secrets and ciphertexts. Standard
-(salted) FrodoKEM is recommended for applications where each keypair is
-expected to encapsulate large number of ciphertexts. Please consult
-[upstream](https://github.com/microsoft/PQCrypto-LWEKE/#frodokem-learning-with-errors-key-encapsulation)
-for more details.
+#### ML-DSA External-μ
 
-#### mldsa-native integration
+New `ML-DSA-<44|65|87>-extmu` algorithm identifiers expose the FIPS 204
+External-μ signing interface, where the caller supplies the precomputed message
+representative μ. [#2366](https://github.com/open-quantum-safe/liboqs/pull/2366)
 
-[#2284](https://github.com/open-quantum-safe/liboqs/pull/2284),
-[#2391](https://github.com/open-quantum-safe/liboqs/pull/2391),
-[#3445](https://github.com/open-quantum-safe/liboqs/pull/3445)
+#### Updated implementations
 
-mldsa-native is a secure, fast, and portable C90 implementation of the ML-DSA
-post-quantum signature standard. It also includes optimized builds for x86_64
-and aarch64. It is now the default implementation behind
-`SIG_ml_dsa_<44|65|87>`.
+- mlkem-native updated to v2.0.0
+[#2521](https://github.com/open-quantum-safe/liboqs/pull/2521)
+- mldsa-native updated to v2.0.0, and built with `MLD_CONFIG_REDUCE_RAM` when
+`OQS_MEMOPT_BUILD` is set.
+[#2522](https://github.com/open-quantum-safe/liboqs/pull/2522),
+[#2660](https://github.com/open-quantum-safe/liboqs/pull/2660)
+- HQC updated to v5.1.0, with new AVX2 backends, thread-safe x86_64 scratch
+buffers and cleansing of secrets.
+[#2692](https://github.com/open-quantum-safe/liboqs/pull/2692)
 
-#### Updated HQC implementation
+#### AES improvements
 
-[#2407](https://github.com/open-quantum-safe/liboqs/pull/2407)
+Added AES-192 (`OQS_AES192_ECB_*`).
+The AES-NI and ARMv8 ECB and CTR paths now process four blocks at a time.
+[#2571](https://github.com/open-quantum-safe/liboqs/pull/2571),
+[#2594](https://github.com/open-quantum-safe/liboqs/pull/2594)
 
-The HQC implementations in liboqs were updated to 20250822 spec. Its upstream
-switched from PQClean to the [official repo](https://gitlab.com/pqc-hqc/hqc).
-`KEM_hqc_<1|3|5>` is now enabled by default.
+#### Constant-time analysis framework
 
-#### MQOM integration and memory-optimized build flag
-
-[#2385](https://github.com/open-quantum-safe/liboqs/pull/2385),
-[#2367](https://github.com/open-quantum-safe/liboqs/pull/2367)
-
-MQOM is a third-round candidate in NIST's Additional Digital Signatures for the
-PQC Standardization Process. Portable, x86_64-optimized, and memory-optimized
-implementations were integrate into liboqs under `OQS_ENABLE_SIG_MQOM`.
-
-A new build flag `OQS_MEMOPT_BUILD` can now be used to switch to
-memory-optimized builds for algorithms that have memory-optimized
-implementations.
-
-#### OpenSSH implementation of NTRU Prime
-
-[#2356](https://github.com/open-quantum-safe/liboqs/pull/2356)
-
-A public-domain OpenSSH implementation of NTRUPrime761 replaced the PQClean
-implementation as the default backend for `KEM_ntruprime_sntrup761`.
+New constant-time testing framework that leverages Valgrind's memcheck with
+the Kyberslash patch (Valgrind-Varlat) and Clang's MemorySanitizer (MemSan).
+These can be run using the unified `tests/ct_tooling/ct_test.sh` tool.
+[#2449](https://github.com/open-quantum-safe/liboqs/pull/2449)
 
 ### Bug fixes
 
-- Fixed incremental absorption bug in AVX512VL SHA3-512
-[#2442](https://github.com/open-quantum-safe/liboqs/pull/2442)
-- Implemented fallback for when `EVP_DigestSqueeze` is unavailable
-[#2433](https://github.com/open-quantum-safe/liboqs/pull/2433)
-- Added API for detecting stateful signature support at runtime
-[#2434](https://github.com/open-quantum-safe/liboqs/pull/2434)
-- Fixed missing initialization and indexing bug in LMS
-[#2416](https://github.com/open-quantum-safe/liboqs/pull/2416)
-- Fixed erroneous MAYO_OK despite failed sample_solution() attempts in MAYO
-[#2403](https://github.com/open-quantum-safe/liboqs/pull/2403)
-- Limited pytest parallelism to prevent memory exhaustion in constrained
-environment [#2397](https://github.com/open-quantum-safe/liboqs/pull/2397)
-- Fixed cuPQC ML-KEM derand symbol names and `#if/#elif` chains
-[#2396](https://github.com/open-quantum-safe/liboqs/pull/2396)
-- Tightened Windows compiler detection
-[#2394](https://github.com/open-quantum-safe/liboqs/pull/2394)
-- Fixed mismatched macros in LMS
-[#2379](https://github.com/open-quantum-safe/liboqs/pull/2379) <!-- 8f08fd8 has
-no external effect and is ignored -->
-- Made fuzzers tolerant to disabled algorithms
-[#2359](https://github.com/open-quantum-safe/liboqs/pull/2359)
-- Removed inlined exponentiation in CROSS-RSDPG-1
-[#2357](https://github.com/open-quantum-safe/liboqs/pull/2357)
-- Fixed incorrect arg register update in AVX512 Keccak
-[#2330](https://github.com/open-quantum-safe/liboqs/pull/2330)
+- Fixed RDTSC bug on x86_64
+[#2708](https://github.com/open-quantum-safe/liboqs/pull/2708)
+- Fixed XGETBV inline assembly usage in CPU extension detection
+[#2503](https://github.com/open-quantum-safe/liboqs/pull/2503)
+- Fixed ARMv8 SHA3 handling in signature and KEM families
+[#2597](https://github.com/open-quantum-safe/liboqs/pull/2597)
+- Aligned XKCP extraction parameters with the dispatch header
+[#2652](https://github.com/open-quantum-safe/liboqs/pull/2652)
+- Linked libm via a bare `m` flag for portable static and cross linking
+[#2664](https://github.com/open-quantum-safe/liboqs/pull/2664)
+<!-- e77d81d superseded by #2664 -->
+- Allowed `CMAKE_POSITION_INDEPENDENT_CODE` to be overridden
+[#2524](https://github.com/open-quantum-safe/liboqs/pull/2524)
+- Made `OPENSSL_NO_STDIO` visible by including `opensslconf.h`
+[#2576](https://github.com/open-quantum-safe/liboqs/pull/2576)
+- Fixed ARM SHA2 build with AppleClang on macOS
+[#2508](https://github.com/open-quantum-safe/liboqs/pull/2508)
+- Fixed AND separator in ARM64 `required_flags` CMake guard
+[#2567](https://github.com/open-quantum-safe/liboqs/pull/2567)
+- Fixed `strdup` deprecation in the MSVC CRT
+[#2703](https://github.com/open-quantum-safe/liboqs/pull/2703)
+- Fixed two CMP warnings in CMake >= 4.1 and 4.4
+[#2704](https://github.com/open-quantum-safe/liboqs/pull/2704)
+- Fixed XMSS code scanning issues
+[#2577](https://github.com/open-quantum-safe/liboqs/pull/2577)
 
 ### Miscellaneous
 
-- Update mlkem-native to v1.2.0
-[#2470](https://github.com/open-quantum-safe/liboqs/pull/2470)
-<!-- - Update mlkem-native to v1.1.0 -->
-<!-- [#2376](https://github.com/open-quantum-safe/liboqs/pull/2376) -->
-- Removed legacy HQC constant-time test
-[#2467](https://github.com/open-quantum-safe/liboqs/pull/2467)
-- Download Intel SDE from alternative source
-[#2463](https://github.com/open-quantum-safe/liboqs/pull/2463)
-- Updated algorithm support information
-[#2441](https://github.com/open-quantum-safe/liboqs/pull/2441)
-- Added NIST LMS Signature verify KATs
-[#2435](https://github.com/open-quantum-safe/liboqs/pull/2435)
-- Fixed comments on SHA3-AVX512VL assembly file. Thank you Anthony Plank for
-reporting the issue
-[#2438](https://github.com/open-quantum-safe/liboqs/pull/2438)
-- Fixed latent warnings exposed by refreshed CI container images
-[#2430](https://github.com/open-quantum-safe/liboqs/pull/2430)
-- Added common dependencies with `include_only` in `copy_from_upstream`
-[#2382](https://github.com/open-quantum-safe/liboqs/pull/2382)
-- Documented algorithm support levels
-[#2413](https://github.com/open-quantum-safe/liboqs/pull/2413)
-- Updated Dependabot configuration
-[#2420](https://github.com/open-quantum-safe/liboqs/pull/2420)
-- Added @loganaden as codeowner for Kyber
-[#2421](https://github.com/open-quantum-safe/liboqs/pull/2421)
-- Bumped `gitpython` version for `copy_from_upstream`
-[#2414](https://github.com/open-quantum-safe/liboqs/pull/2414)
-- Updated GOVERNANCE.md and CODEOWNERS
-[#2410](https://github.com/open-quantum-safe/liboqs/pull/2410)
-- Added fuzz harness for LMS/XMSS signature verification
-[#2398](https://github.com/open-quantum-safe/liboqs/pull/2398)
-[#2412](https://github.com/open-quantum-safe/liboqs/pull/2412)
-- Added fuzz harness for XMSS signature verification
-[#2399](https://github.com/open-quantum-safe/liboqs/pull/2399)
-[#2400](https://github.com/open-quantum-safe/liboqs/pull/2400)
-- Moved compiler optimization level to CMAKE_BUILD_TYPE
-[#2383](https://github.com/open-quantum-safe/liboqs/pull/2383)
-- Updated pytest package version
-[#2408](https://github.com/open-quantum-safe/liboqs/pull/2408)
-- Demoted armhf to tier 3 supported platform
-[#2406](https://github.com/open-quantum-safe/liboqs/pull/2406)
-- Added Wycheproof tests for ML-DSA
-[#2378](https://github.com/open-quantum-safe/liboqs/pull/2378)
-- Added overflow check for OQS_MEM_calloc arguments
-[#2377](https://github.com/open-quantum-safe/liboqs/pull/2377)
-- Updated Wycheproof tests ML-KEM
-[#2373](https://github.com/open-quantum-safe/liboqs/pull/2373)
-- Updated Zephyr CI tests to recent versions
-[#2369](https://github.com/open-quantum-safe/liboqs/pull/2369)
-- Documented KAT sources and hash verification process
-[#2363](https://github.com/open-quantum-safe/liboqs/pull/2363)
-- Added support for ML-DSA pre-hash sign ACVP test vectors
-[#2362](https://github.com/open-quantum-safe/liboqs/pull/2362)
-- Added external-mu sign gen ACVP tests for ML-DSA
-[#2352](https://github.com/open-quantum-safe/liboqs/pull/2352)
-- Cached ACVP test vectors
-[#2354](https://github.com/open-quantum-safe/liboqs/pull/2354)
-- Added OQS_SIG_sign methods tests in vectors_sig
-[#2350](https://github.com/open-quantum-safe/liboqs/pull/2350)
-- Added the path to the binary include dir
-[#2312](https://github.com/open-quantum-safe/liboqs/pull/2312)
-- Removed local copies of ACVP test vectors
-[#2303](https://github.com/open-quantum-safe/liboqs/pull/2303)
-- New stylesheet for Doxygen-generated documentation
-[#2337](https://github.com/open-quantum-safe/liboqs/pull/2337)
-- Docs: List all optimized implementations
-[#2333](https://github.com/open-quantum-safe/liboqs/pull/2333)
-- Fixed README href formatting
-[#2323](https://github.com/open-quantum-safe/liboqs/pull/2323)
-- Unpined OQS_MINIMAL_BUILD alg list link from specific commit
-[#2326](https://github.com/open-quantum-safe/liboqs/pull/2326)
+- Switched C code formatting from astyle to clang-format
+[#2649](https://github.com/open-quantum-safe/liboqs/pull/2649)
+- Added ML-KEM ACVP tests
+[#2386](https://github.com/open-quantum-safe/liboqs/pull/2386)
+- Adapted and fixed the latest Wycheproof tests
+[#2387](https://github.com/open-quantum-safe/liboqs/pull/2387)
+- Improved SHA3 tests
+[#2450](https://github.com/open-quantum-safe/liboqs/pull/2450)
+- Added a test for NULL guards after `OQS_MEM_malloc` calls
+[#2633](https://github.com/open-quantum-safe/liboqs/pull/2633)
+- Added a CodeQL query enforcing OpenSSL return code handling
+[#2634](https://github.com/open-quantum-safe/liboqs/pull/2634)
+- Fixed minor constant-time testing bugs in CI
+[#2677](https://github.com/open-quantum-safe/liboqs/pull/2677),
+[#2716](https://github.com/open-quantum-safe/liboqs/pull/2716)
+- Marked `rc` as public via declassification in tests
+[#2473](https://github.com/open-quantum-safe/liboqs/pull/2473)
+- Renamed shadowed `test_sig` to `test_sig_stfl` in speed tests
+[#2541](https://github.com/open-quantum-safe/liboqs/pull/2541)
+- Ignored `.venv` in `tests/test_spdx.sh`
+[#2557](https://github.com/open-quantum-safe/liboqs/pull/2557)
+- Added another two batches of declared algorithm support
+[#2505](https://github.com/open-quantum-safe/liboqs/pull/2505),
+[#2722](https://github.com/open-quantum-safe/liboqs/pull/2722)
+- Added security research guidance and a threat model
+[#2477](https://github.com/open-quantum-safe/liboqs/pull/2477)
+- Expanded the SECURITY.md classification of vulnerabilities
+[#2639](https://github.com/open-quantum-safe/liboqs/pull/2639)
+- Documented caller length check responsibilities for FIPS 203
+[#2688](https://github.com/open-quantum-safe/liboqs/pull/2688)
+- Documented the imported implementation status contract
+[#2469](https://github.com/open-quantum-safe/liboqs/pull/2469)
+- Added algorithm-integrator guidance to the `copy_from_upstream` README
+[#2501](https://github.com/open-quantum-safe/liboqs/pull/2501)
+- Fixed stale loop variable in `copy_from_upstream` arch-specific ignore check
+and skipped empty SIG and KEM implementation targets
+[#2547](https://github.com/open-quantum-safe/liboqs/pull/2547),
+[#2654](https://github.com/open-quantum-safe/liboqs/pull/2654)
+- Linked TSC review guidelines from GOVERNANCE.md and removed the README's
+obsolete survey reference
+[#2612](https://github.com/open-quantum-safe/liboqs/pull/2612),
+[#2611](https://github.com/open-quantum-safe/liboqs/pull/2611)
+- Replaced a relative link with an absolute URL
+[#2622](https://github.com/open-quantum-safe/liboqs/pull/2622)
+- Added parentheses around uses of the `sizeof` operator
+[#2471](https://github.com/open-quantum-safe/liboqs/pull/2471)
+- Added Markdown documentation linting
+[#2446](https://github.com/open-quantum-safe/liboqs/pull/2446)
+- Added `requirements.txt` for Python dependencies, pinned `charset-normalizer`
+and fixed the pre-commit hook's requirements path
+[#2510](https://github.com/open-quantum-safe/liboqs/pull/2510),
+[#2578](https://github.com/open-quantum-safe/liboqs/pull/2578),
+[#2544](https://github.com/open-quantum-safe/liboqs/pull/2544)
+- Updated Nixpkgs to 26.05
+[#2457](https://github.com/open-quantum-safe/liboqs/pull/2457)
+- Reduced CI runtime: per-platform and per-stage test suite selection, a lighter
+scope on PRs, a workflow optimizer and runtime report, faster platform-test
+scheduling, and removal of retired macOS 14 runners
+[#2693](https://github.com/open-quantum-safe/liboqs/pull/2693),
+[#2667](https://github.com/open-quantum-safe/liboqs/pull/2667),
+[#2509](https://github.com/open-quantum-safe/liboqs/pull/2509),
+[#2500](https://github.com/open-quantum-safe/liboqs/pull/2500),
+[#2493](https://github.com/open-quantum-safe/liboqs/pull/2493),
+[#2595](https://github.com/open-quantum-safe/liboqs/pull/2595),
+[#2663](https://github.com/open-quantum-safe/liboqs/pull/2663)
 
 ### New contributors
 
-- Vishnu Ajith (@Vishnu2707)
-- William Bates (@will-bates11)
-- Nelonn (@Nelonn)
-- Abhi S (@abhi-dev-engg)
-- Ryad Benadjila (@rben-dev)
-- Billy Brumley (@bbbrumley)
-- saanvi ratra (@Anusaa35)
-- Harshith Vasireddy (@ode)
-- Laugenbraue (@mmarock)
-- Sam Van de Velde (@samvandevelde)
-- Emil Lundberg (@emlun)
+- Joe (@jc2a)
+- @0rlych1kk4
+- @charishma1407
+- Matvey Teslov (@msteslov)
+- Mohamad Momeni (@mohamadm0meni)
+- Scott Arciszewski (@tob-scott-a)
+- Samy (@Ap4sh)
+- Owen Waldron (@owaldron)
+- @Ramya-9353
+- Maxim Gagiev (@maximilliangrand)
+- Eva Crystal (@0xiviel)
+- Mr Water (@MrWater00)
+- Johnson Ajibi (@Johnsonajibi)
+- Aryan K. Gupta (@AKG451)
+- Siyâvash (@mkhellat)
+- Laasya priya Bhadri (@laasyapriya2007)
+- Ishan Kumthekar (@ishanrk)
+- Nikolai Puch (@Dowafu)
+- Jacob Alzén (@Jacalz)

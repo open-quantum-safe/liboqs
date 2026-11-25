@@ -8,8 +8,8 @@ Using any code prior to 0.12.0 is strongly discouraged due to a [known security 
 
 | Version | Supported          |
 | ------- | ------------------ |
-| 0.16.0  | :white_check_mark: |
-| < 0.16  | :x:                |
+| 0.17.0  | :white_check_mark: |
+| < 0.17  | :x:                |
 
 ## Deciding how to report
 
