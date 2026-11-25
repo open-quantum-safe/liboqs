@@ -8,6 +8,7 @@ import re
 import subprocess
 import sys
 import json
+import time
 import unittest.mock
 import requests
 
@@ -266,5 +267,22 @@ def requests_get():
         yield mock_get
 
 @functools.lru_cache
-def cached_requests_get(url: str):
-    return requests.get(url)
+def cached_requests_get(url: str, retries: int = 3, backoff_seconds: float = 1.0):
+    """
+    Fetch ``url`` with retries for transient network failures.
+
+    Only successful (or non-raising HTTP) responses are cached via ``lru_cache``.
+    Connection resets / timeouts raise after ``retries`` attempts so callers can
+    skip rather than fail CI on flaky networks.
+    """
+    last_exc = None
+    for attempt in range(retries):
+        try:
+            return requests.get(url, timeout=30)
+        except (requests.exceptions.ConnectionError,
+                requests.exceptions.Timeout,
+                requests.exceptions.ChunkedEncodingError) as exc:
+            last_exc = exc
+            if attempt + 1 < retries:
+                time.sleep(backoff_seconds * (2 ** attempt))
+    raise last_exc

@@ -7,6 +7,7 @@ from urllib.parse import urljoin
 from collections import namedtuple
 
 import pytest
+import requests
 import helpers
 
 WYCHEPROOF_COMMIT = "45d916899992c5e42dba75106104ca8ce7ff8370"
@@ -36,8 +37,11 @@ def fetch_wycheproof_kem_test_cases(kem_name, suffix, valid_types):
     alg_id = kem_name.lower().replace("ml-kem-", "mlkem_")
     url = urljoin(WYCHE_ROOT, f"{alg_id}_{suffix}.json")
     
-    resp = helpers.cached_requests_get(url)
-    resp.raise_for_status()
+    try:
+        resp = helpers.cached_requests_get(url)
+        resp.raise_for_status()
+    except (requests.exceptions.RequestException, OSError) as exc:
+        pytest.skip(f"Wycheproof vectors unavailable from {url}: {exc}")
 
     data = json.loads(resp.content)
     test_cases = []
@@ -59,8 +63,11 @@ def fetch_wycheproof_sig_test_cases(sig_name, suffix, valid_types):
     alg_id = sig_name.lower().replace("ml-dsa-", "mldsa_")
     url = urljoin(WYCHE_ROOT, f"{alg_id}_{suffix}.json")
     
-    resp = helpers.cached_requests_get(url)
-    resp.raise_for_status()
+    try:
+        resp = helpers.cached_requests_get(url)
+        resp.raise_for_status()
+    except (requests.exceptions.RequestException, OSError) as exc:
+        pytest.skip(f"Wycheproof vectors unavailable from {url}: {exc}")
 
     data = json.loads(resp.content)
     test_cases = []
