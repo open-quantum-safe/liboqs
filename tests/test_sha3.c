@@ -1534,57 +1534,27 @@ int shake_256_x4_kat_test(void) {
 	return status;
 }
 
-extern struct OQS_SHA3_callbacks sha3_default_callbacks;
+extern const struct OQS_SHA3_callbacks sha3_default_callbacks;
 
 static void override_SHA3_sha3_256_inc_init(OQS_SHA3_sha3_256_inc_ctx *state) {
 	sha3_callback_called = true;
 	sha3_default_callbacks.SHA3_sha3_256_inc_init(state);
 }
 
-extern struct OQS_SHA3_x4_callbacks sha3_x4_default_callbacks;
+extern const struct OQS_SHA3_x4_callbacks sha3_x4_default_callbacks;
 
 static void override_SHA3_shake128_x4_inc_init(OQS_SHA3_shake128_x4_inc_ctx *state) {
 	sha3_x4_callback_called = true;
 	sha3_x4_default_callbacks.SHA3_shake128_x4_inc_init(state);
 }
 
-#ifdef OQS_USE_SHA3_AVX512VL
 /**
- * \brief Trigger SHA3 internal callback dispatcher.
- *
- * This is required to trigger runtime AVX512/AVX2 detection and set
- * SHA3 default callbacks before test application callbacks are configured.
- */
-static void sha3_trigger_dispatcher(void) {
-	OQS_SHA3_sha3_256_inc_ctx state;
-
-	OQS_SHA3_sha3_256_inc_init(&state);
-	OQS_SHA3_sha3_256_inc_ctx_release(&state);
-}
-#endif
-
-/**
-* \brief Run the SHA3 and SHAKE KAT tests
+* \brief Run the SHA3 and SHAKE KAT tests through the currently installed callbacks
 */
-int main(UNUSED int argc, UNUSED char **argv) {
+static int run_kat_tests(const char *callbacks_name) {
 	int ret = EXIT_SUCCESS;
 
-#ifdef OQS_USE_SHA3_AVX512VL
-	/* set SHA3 default callbacks */
-	sha3_trigger_dispatcher();
-#endif
-	struct OQS_SHA3_callbacks sha3_callbacks = sha3_default_callbacks;
-
-	sha3_callbacks.SHA3_sha3_256_inc_init = override_SHA3_sha3_256_inc_init;
-	OQS_SHA3_set_callbacks(&sha3_callbacks);
-
-	struct OQS_SHA3_x4_callbacks sha3_x4_callbacks = sha3_x4_default_callbacks;
-
-	sha3_x4_callbacks.SHA3_shake128_x4_inc_init = override_SHA3_shake128_x4_inc_init;
-	OQS_SHA3_x4_set_callbacks(&sha3_x4_callbacks);
-
-	OQS_init();
-	print_system_info();
+	printf("Running known answer tests with %s callbacks\n", callbacks_name);
 
 	if (sha3_256_kat_test() == EXIT_SUCCESS) {
 		printf("Success! passed sha3-256 known answer tests \n");
@@ -1632,6 +1602,39 @@ int main(UNUSED int argc, UNUSED char **argv) {
 		printf("Success! passed four-way parallel shake-256 known answer tests \n");
 	} else {
 		printf("Failure! failed four-way parallel shake-256 known answer tests \n");
+		ret = EXIT_FAILURE;
+	}
+
+	return ret;
+}
+
+/**
+* \brief Run the SHA3 and SHAKE KAT tests
+*/
+int main(UNUSED int argc, UNUSED char **argv) {
+	int ret = EXIT_SUCCESS;
+
+	OQS_init();
+	print_system_info();
+
+	/* Test the backend selected at runtime (e.g. AVX512VL). */
+	if (run_kat_tests("library") == EXIT_FAILURE) {
+		ret = EXIT_FAILURE;
+	}
+
+	/* Test that application callbacks replace the selected backend. The
+	 * default tables are const, so backend selection cannot modify them. */
+	struct OQS_SHA3_callbacks sha3_callbacks = sha3_default_callbacks;
+
+	sha3_callbacks.SHA3_sha3_256_inc_init = override_SHA3_sha3_256_inc_init;
+	OQS_SHA3_set_callbacks(&sha3_callbacks);
+
+	struct OQS_SHA3_x4_callbacks sha3_x4_callbacks = sha3_x4_default_callbacks;
+
+	sha3_x4_callbacks.SHA3_shake128_x4_inc_init = override_SHA3_shake128_x4_inc_init;
+	OQS_SHA3_x4_set_callbacks(&sha3_x4_callbacks);
+
+	if (run_kat_tests("application") == EXIT_FAILURE) {
 		ret = EXIT_FAILURE;
 	}
 
