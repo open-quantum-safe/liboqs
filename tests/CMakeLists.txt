@@ -210,6 +210,13 @@ set(SIG_STFL_TESTS kat_sig_stfl test_sig_stfl test_sig_stfl_lms_regressions spee
 add_executable(dump_alg_info dump_alg_info.c)
 target_link_libraries(dump_alg_info PRIVATE ${TEST_DEPS})
 
+# Peak stack usage measurement by stack painting (needs fork, mmap and pthreads);
+# see docs/STACK_USAGE.md.
+if(UNIX AND OQS_USE_PTHREADS AND NOT CMAKE_SYSTEM_NAME MATCHES "iOS|tvOS|watchOS|visionOS|Emscripten")
+    add_executable(stack_usage stack_usage.c)
+    target_link_libraries(stack_usage PRIVATE ${TEST_DEPS})
+endif()
+
 # Intermediate values vector tests
 add_executable(vectors_sig vectors_sig.c)
 target_link_libraries(vectors_sig PRIVATE ${TEST_DEPS})
