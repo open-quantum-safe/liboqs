@@ -9,6 +9,8 @@ on:
       - 'scripts/generate_algorithms_md.py'
       - 'README.md'
       - 'ALGORITHMS.md'
+  # merge_group does not support path filters, so this runs for every queued group.
+  merge_group:
   push:
     branches: [main]
 
