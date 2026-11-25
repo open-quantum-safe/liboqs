@@ -35,7 +35,24 @@ cmake -GNinja -DOQS_BUILD_FUZZ_TESTS=ON ..
 ninja
 ```
 
-`OQS_BUILD_FUZZ_TESTS` will build two test binaries: `tests/fuzz_test_sig` and `tests/fuzz_test_kem`.
+`OQS_BUILD_FUZZ_TESTS` builds the existing signature and KEM fuzzers, stateful
+signature fuzzers, and `tests/fuzz_test_kem_encaps`, which exercises KEM
+encapsulation with attacker-controlled public keys. It also builds
+`tests/fuzz_seed_kem_encaps` to generate a deterministic valid-public-key seed
+for each enabled KEM.
+
+Generate and run the encapsulation corpus with:
+
+```bash
+mkdir -p build/fuzz/corpus/kem-encaps
+build/fuzz/tests/fuzz_seed_kem_encaps build/fuzz/corpus/kem-encaps
+build/fuzz/tests/fuzz_test_kem_encaps build/fuzz/corpus/kem-encaps -max_total_time=300
+```
+
+Each seed contains a little-endian 32-bit RNG seed, a little-endian 32-bit KEM
+index, and a valid public key. Shorter mutated keys are zero-padded and longer
+ones are truncated by the harness. Malformed keys may be rejected; sanitizer
+findings or inconsistent deterministic encapsulation are treated as failures.
 
 The fuzzer will run indefinitely or;
 - until it finds a bug and crashes,
