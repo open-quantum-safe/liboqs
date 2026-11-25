@@ -9,6 +9,7 @@ A minimal algorithm set is selected to keep the configuration cheap.
 import json
 import os
 import platform
+import shlex
 import shutil
 import subprocess
 
@@ -95,3 +96,15 @@ def test_position_independent_code_kept_for_shared_builds(tmp_path):
     assert len(pic_entries(entries)) == len(entries)
     # CMake hard-wraps warning text, so compare against whitespace-collapsed output.
     assert "not supported together with BUILD_SHARED_LIBS=ON" in " ".join(output.split())
+
+
+def test_out_of_tree_build_records_source_revision(tmp_path, monkeypatch):
+    script = os.path.join(LIBOQS_ROOT, "scripts", "git_commit.sh")
+    revision = subprocess.check_output([script], cwd=LIBOQS_ROOT, universal_newlines=True)
+    if revision == "unknown":
+        pytest.skip("source is not a Git checkout")
+
+    monkeypatch.chdir(tmp_path)
+    _, entries = configure(tmp_path / "build", "-DOQS_BUILD_ONLY_LIB=OFF")
+    command = next(e["command"] for e in entries if os.path.basename(e["file"]) == "speed_kem.c")
+    assert f'-DOQS_COMPILE_GIT_COMMIT="{revision}"' in shlex.split(command)
