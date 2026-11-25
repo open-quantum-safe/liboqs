@@ -6,6 +6,20 @@
 /* === FIPS 180-4 SHA2-256 / Portable C Implementation */
 
 #include <string.h>
+#include <oqs/oqsconfig.h>
+
+#if defined(OQS_USE_SHA2_OPENSSL) && !defined(OQS_DLOPEN_OPENSSL)
+/* The block API preserves SLH-DSA's cached chaining states without allocating
+ * an EVP context for each short hash. Keep the portable path when unavailable. */
+#ifndef OPENSSL_SUPPRESS_DEPRECATED
+#define OPENSSL_SUPPRESS_DEPRECATED
+#endif
+#include <openssl/sha.h>
+#include <openssl/crypto.h>
+#if !defined(OPENSSL_NO_DEPRECATED_3_0)
+#define SLH_SHA2_OPENSSL
+#endif
+#endif
 #include "plat_local.h"
 #include "sha2_api.h"
 
@@ -33,6 +47,23 @@ uint64_t sha2_256_compress_count = 0; /* instrumentation */
 
 void sha2_256_compress(void *v)
 {
+#ifdef SLH_SHA2_OPENSSL
+  uint32_t *sp = (uint32_t *)v;
+  SHA256_CTX ctx = {0};
+
+#ifdef SLH_EXPERIMENTAL
+  sha2_256_compress_count++; /* instrumentation */
+#endif
+
+  /* The cached state is stored in big-endian byte order; OpenSSL uses words. */
+  for (size_t i = 0; i < 8; i++)
+    ctx.h[i] = rev8_be32(sp[i]);
+  SHA256_Transform(&ctx, (const unsigned char *)(sp + 8));
+  for (size_t i = 0; i < 8; i++)
+    sp[i] = rev8_be32(ctx.h[i]);
+  /* PRF calls can leave secret-derived chaining values in this copy. */
+  OPENSSL_cleanse(&ctx, sizeof(ctx));
+#else
   /* 4.2.2 SHA-224 and SHA-256 Constants */
 
   const uint32_t ck[64] = {
@@ -138,6 +169,7 @@ void sha2_256_compress(void *v)
   sp[5] = rev8_be32(sp[5] + f);
   sp[6] = rev8_be32(sp[6] + g);
   sp[7] = rev8_be32(sp[7] + h);
+#endif
 }
 
 /* initialize */
