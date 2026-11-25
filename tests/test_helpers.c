@@ -4,13 +4,14 @@
 #include <string.h>
 
 #include <oqs/oqs.h>
-#include <oqs/rand_nist.h>  // Internal NIST DRBG API
-#include <oqs/sha3.h>       // Internal SHA3 API
+#include <oqs/rand_nist.h> // Internal NIST DRBG API
+#include <oqs/sha3.h> // Internal SHA3 API
 
 #include "test_helpers.h"
 
 /* Helpers for identifying algorithms */
 static int is_mceliece(const char *method_name) {
+	// clang-format off
 	return ( !strcmp(method_name, OQS_KEM_alg_classic_mceliece_348864)
 	         || !strcmp(method_name, OQS_KEM_alg_classic_mceliece_348864f)
 	         || !strcmp(method_name, OQS_KEM_alg_classic_mceliece_460896)
@@ -21,6 +22,7 @@ static int is_mceliece(const char *method_name) {
 	         || !strcmp(method_name, OQS_KEM_alg_classic_mceliece_6960119f)
 	         || !strcmp(method_name, OQS_KEM_alg_classic_mceliece_8192128)
 	         || !strcmp(method_name, OQS_KEM_alg_classic_mceliece_8192128f) );
+	// clang-format on
 }
 
 /* OQS_KAT_PRNG interface implementation */
@@ -114,7 +116,7 @@ OQS_STATUS test_sig_bitflip(OQS_SIG *sig, uint8_t *message, size_t message_len, 
 		size_t tampered_array_len = (test == 1) ? signature_len : message_len;
 		/* select the number of bitflips */
 		uint64_t bitflips_selected = bitflips_all[test] ? tampered_array_len * 8 : bitflips[test];
-		for (uint64_t i = 0; i < bitflips_selected; i ++) {
+		for (uint64_t i = 0; i < bitflips_selected; i++) {
 			uint64_t random_bit_index;
 			OQS_randombytes((uint8_t *)&random_bit_index, sizeof(random_bit_index));
 			OQS_TEST_CT_DECLASSIFY(&random_bit_index, sizeof(random_bit_index));
@@ -158,7 +160,7 @@ OQS_STATUS test_sig_stfl_bitflip(OQS_SIG_STFL *sig, uint8_t *message, size_t mes
 		size_t tampered_array_len = (test == 1) ? signature_len : message_len;
 		/* select the number of bitflips */
 		uint64_t bitflips_selected = bitflips_all[test] ? tampered_array_len * 8 : bitflips[test];
-		for (uint64_t i = 0; i < bitflips_selected; i ++) {
+		for (uint64_t i = 0; i < bitflips_selected; i++) {
 			uint64_t random_bit_index;
 			OQS_randombytes((uint8_t *)&random_bit_index, sizeof(random_bit_index));
 			OQS_TEST_CT_DECLASSIFY(&random_bit_index, sizeof(random_bit_index));

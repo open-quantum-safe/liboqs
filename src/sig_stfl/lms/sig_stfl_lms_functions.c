@@ -87,8 +87,8 @@ static bool oqs_lms_decode_oid(uint32_t oid, unsigned *levels, param_set_t lm_ty
 
 static bool oqs_lms_parameters_match_oid(uint32_t oid, unsigned levels, const param_set_t lm_type[MAX_HSS_LEVELS], const param_set_t lm_ots_type[MAX_HSS_LEVELS]) {
 	unsigned expected_levels = 0;
-	param_set_t expected_lm_type[MAX_HSS_LEVELS] = {0};
-	param_set_t expected_lm_ots_type[MAX_HSS_LEVELS] = {0};
+	param_set_t expected_lm_type[MAX_HSS_LEVELS] = { 0 };
+	param_set_t expected_lm_ots_type[MAX_HSS_LEVELS] = { 0 };
 
 	if (!oqs_lms_decode_oid(oid, &expected_levels, expected_lm_type, expected_lm_ots_type) || expected_levels != levels) {
 		return false;
@@ -106,8 +106,8 @@ static bool oqs_lms_parameters_match_oid(uint32_t oid, unsigned levels, const pa
 #ifdef OQS_ALLOW_LMS_KEY_AND_SIG_GEN
 static bool oqs_lms_private_key_matches_oid(uint32_t oid, const uint8_t *private_key) {
 	unsigned levels = 0;
-	param_set_t lm_type[MAX_HSS_LEVELS] = {0};
-	param_set_t lm_ots_type[MAX_HSS_LEVELS] = {0};
+	param_set_t lm_type[MAX_HSS_LEVELS] = { 0 };
+	param_set_t lm_ots_type[MAX_HSS_LEVELS] = { 0 };
 
 	if (private_key == NULL || !hss_get_parameter_set(&levels, lm_type, lm_ots_type, NULL, (void *)private_key)) {
 		return false;
@@ -150,8 +150,8 @@ static bool oqs_lms_is_hss_public_key(const uint8_t *public_key, const uint8_t *
 
 static bool oqs_lms_public_inputs_match_oid(uint32_t oid, const uint8_t *signature, size_t signature_len, const uint8_t *public_key) {
 	unsigned levels = 0;
-	param_set_t lm_type[MAX_HSS_LEVELS] = {0};
-	param_set_t lm_ots_type[MAX_HSS_LEVELS] = {0};
+	param_set_t lm_type[MAX_HSS_LEVELS] = { 0 };
+	param_set_t lm_ots_type[MAX_HSS_LEVELS] = { 0 };
 	size_t offset = 4;
 
 	if (!oqs_lms_decode_oid(oid, &levels, lm_type, lm_ots_type)) {
@@ -162,17 +162,17 @@ static bool oqs_lms_public_inputs_match_oid(uint32_t oid, const uint8_t *signatu
 	}
 	if (oqs_lms_is_hss_public_key(public_key, signature, signature_len)) {
 		if ((unsigned)get_bigendian(public_key, 4) != levels ||
-		        (param_set_t)get_bigendian(public_key + 4, 4) != lm_type[0] ||
-		        (param_set_t)get_bigendian(public_key + 8, 4) != lm_ots_type[0] ||
-		        (unsigned)get_bigendian(signature, 4) + 1U != levels) {
+		    (param_set_t)get_bigendian(public_key + 4, 4) != lm_type[0] ||
+		    (param_set_t)get_bigendian(public_key + 8, 4) != lm_ots_type[0] ||
+		    (unsigned)get_bigendian(signature, 4) + 1U != levels) {
 			return false;
 		}
 	} else if (levels == 1 &&
 	           oqs_lms_type_list_contains((param_set_t)get_bigendian(public_key, 4)) &&
 	           oqs_lmots_type_list_contains((param_set_t)get_bigendian(public_key + 4, 4))) {
 		if ((param_set_t)get_bigendian(public_key, 4) != lm_type[0] ||
-		        (param_set_t)get_bigendian(public_key + 4, 4) != lm_ots_type[0] ||
-		        (unsigned)get_bigendian(signature, 4) + 1U != levels) {
+		    (param_set_t)get_bigendian(public_key + 4, 4) != lm_ots_type[0] ||
+		    (unsigned)get_bigendian(signature, 4) + 1U != levels) {
 			return false;
 		}
 	} else {
@@ -183,13 +183,13 @@ static bool oqs_lms_public_inputs_match_oid(uint32_t oid, const uint8_t *signatu
 		size_t current_sig_len = lm_get_signature_len(lm_type[i], lm_ots_type[i]);
 		size_t next_public_key_len = lm_get_public_key_len(lm_type[i + 1U]);
 		if (current_sig_len == 0 || next_public_key_len < 8 ||
-		        current_sig_len > signature_len - offset ||
-		        next_public_key_len > signature_len - offset - current_sig_len) {
+		    current_sig_len > signature_len - offset ||
+		    next_public_key_len > signature_len - offset - current_sig_len) {
 			return false;
 		}
 		offset += current_sig_len;
 		if ((param_set_t)get_bigendian(signature + offset, 4) != lm_type[i + 1U] ||
-		        (param_set_t)get_bigendian(signature + offset + 4, 4) != lm_ots_type[i + 1U]) {
+		    (param_set_t)get_bigendian(signature + offset + 4, 4) != lm_ots_type[i + 1U]) {
 			return false;
 		}
 		offset += next_public_key_len;
@@ -200,21 +200,21 @@ static bool oqs_lms_public_inputs_match_oid(uint32_t oid, const uint8_t *signatu
 
 #ifndef OQS_ALLOW_LMS_KEY_AND_SIG_GEN
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_sign(UNUSED uint8_t *signature, UNUSED size_t *signature_length, UNUSED const uint8_t *message,
-        UNUSED size_t message_len, UNUSED OQS_SIG_STFL_SECRET_KEY *secret_key) {
+                                             UNUSED size_t message_len, UNUSED OQS_SIG_STFL_SECRET_KEY *secret_key) {
 	return OQS_ERROR;
 }
 OQS_STATUS oqs_sig_stfl_lms_sign_with_oid(UNUSED uint8_t *signature, UNUSED size_t *signature_length, UNUSED const uint8_t *message,
-        UNUSED size_t message_len, UNUSED OQS_SIG_STFL_SECRET_KEY *secret_key, UNUSED uint32_t expected_oid, UNUSED size_t signature_capacity) {
+                                          UNUSED size_t message_len, UNUSED OQS_SIG_STFL_SECRET_KEY *secret_key, UNUSED uint32_t expected_oid, UNUSED size_t signature_capacity) {
 	return OQS_ERROR;
 }
 #else
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_sign(uint8_t *signature, size_t *signature_length, const uint8_t *message,
-        size_t message_len, OQS_SIG_STFL_SECRET_KEY *secret_key) {
+                                             size_t message_len, OQS_SIG_STFL_SECRET_KEY *secret_key) {
 	return oqs_sig_stfl_lms_sign_with_oid(signature, signature_length, message, message_len, secret_key, 0, SIZE_MAX);
 }
 
 OQS_STATUS oqs_sig_stfl_lms_sign_with_oid(uint8_t *signature, size_t *signature_length, const uint8_t *message,
-        size_t message_len, OQS_SIG_STFL_SECRET_KEY *secret_key, uint32_t expected_oid, size_t signature_capacity) {
+                                          size_t message_len, OQS_SIG_STFL_SECRET_KEY *secret_key, uint32_t expected_oid, size_t signature_capacity) {
 	OQS_STATUS status = OQS_ERROR;
 	OQS_STATUS rc_keyupdate = OQS_ERROR;
 	oqs_lms_key_data *lms_key_data = NULL;
@@ -296,12 +296,12 @@ passed:
 #endif
 
 OQS_API OQS_STATUS OQS_SIG_STFL_alg_lms_verify(const uint8_t *message, size_t message_len,
-        const uint8_t *signature, size_t signature_len, const uint8_t *public_key) {
+                                               const uint8_t *signature, size_t signature_len, const uint8_t *public_key) {
 	return oqs_sig_stfl_lms_verify_with_oid(message, message_len, signature, signature_len, public_key, 0, signature_len);
 }
 
 OQS_STATUS oqs_sig_stfl_lms_verify_with_oid(const uint8_t *message, size_t message_len,
-        const uint8_t *signature, size_t signature_len, const uint8_t *public_key, uint32_t expected_oid, size_t expected_signature_len) {
+                                            const uint8_t *signature, size_t signature_len, const uint8_t *public_key, uint32_t expected_oid, size_t expected_signature_len) {
 
 	if (message == NULL || signature == NULL || public_key == NULL) {
 		return OQS_ERROR;
@@ -313,7 +313,7 @@ OQS_STATUS oqs_sig_stfl_lms_verify_with_oid(const uint8_t *message, size_t messa
 
 	if (oqs_sig_stfl_lms_verify(message, message_len,
 	                            signature, signature_len,
-	                            public_key) != 0 ) {
+	                            public_key) != 0) {
 		return OQS_ERROR;
 	}
 
@@ -328,7 +328,7 @@ OQS_API OQS_STATUS OQS_SIG_STFL_lms_sigs_left(unsigned long long *remain, const 
 	oqs_lms_key_data *oqs_key_data = NULL;
 	bool locked = false;
 
-	if (remain == NULL  || secret_key == NULL) {
+	if (remain == NULL || secret_key == NULL) {
 		return OQS_ERROR;
 	}
 	*remain = 0;
@@ -357,7 +357,7 @@ OQS_API OQS_STATUS OQS_SIG_STFL_lms_sigs_left(unsigned long long *remain, const 
 	if ((unsigned long long)current_count > total_sigs) {
 		goto err;
 	}
-	*remain =  (total_sigs - (unsigned long long)current_count);
+	*remain = (total_sigs - (unsigned long long)current_count);
 	status = OQS_SUCCESS;
 
 err:
@@ -374,7 +374,7 @@ OQS_API OQS_STATUS OQS_SIG_STFL_lms_sigs_total(unsigned long long *total, const 
 	oqs_lms_key_data *oqs_key_data = NULL;
 	struct hss_working_key *working_key = NULL;
 
-	if (total == NULL  || secret_key == NULL) {
+	if (total == NULL || secret_key == NULL) {
 		return OQS_ERROR;
 	}
 
@@ -460,9 +460,9 @@ int oqs_sig_stfl_lms_keypair(uint8_t *pk, OQS_SIG_STFL_SECRET_KEY *sk, const uin
 
 	//Aux Data
 	size_t len_aux_data = DEFAULT_AUX_DATA;
-	uint8_t *aux_data =  OQS_MEM_calloc(len_aux_data, sizeof(uint8_t));
+	uint8_t *aux_data = OQS_MEM_calloc(len_aux_data, sizeof(uint8_t));
 	if (aux_data == NULL) {
-		OQS_MEM_insecure_free( oqs_key_data->sec_key);
+		OQS_MEM_insecure_free(oqs_key_data->sec_key);
 		OQS_MEM_insecure_free(oqs_key_data);
 		return -1;
 	}
@@ -559,93 +559,93 @@ int oqs_sig_stfl_lms_keypair(uint8_t *pk, OQS_SIG_STFL_SECRET_KEY *sk, const uin
 		break;
 	case OQS_LMS_ID_sha256_h5_w8_h5_w8:
 		oqs_key_data->levels = 2;
-		oqs_key_data->lm_type[0]     = LMS_SHA256_N32_H5;
+		oqs_key_data->lm_type[0] = LMS_SHA256_N32_H5;
 		oqs_key_data->lm_ots_type[0] = LMOTS_SHA256_N32_W8;
-		oqs_key_data->lm_type[1]     = LMS_SHA256_N32_H5;
+		oqs_key_data->lm_type[1] = LMS_SHA256_N32_H5;
 		oqs_key_data->lm_ots_type[1] = LMOTS_SHA256_N32_W8;
 		break;
 	case OQS_LMS_ID_sha256_h10_w8_h5_w8:
 		oqs_key_data->levels = 2;
-		oqs_key_data->lm_type[0]     = LMS_SHA256_N32_H10;
+		oqs_key_data->lm_type[0] = LMS_SHA256_N32_H10;
 		oqs_key_data->lm_ots_type[0] = LMOTS_SHA256_N32_W8;
-		oqs_key_data->lm_type[1]     = LMS_SHA256_N32_H5;
+		oqs_key_data->lm_type[1] = LMS_SHA256_N32_H5;
 		oqs_key_data->lm_ots_type[1] = LMOTS_SHA256_N32_W8;
 		break;
 	case OQS_LMS_ID_sha256_h10_w2_h10_w2:
 		oqs_key_data->levels = 2;
-		oqs_key_data->lm_type[0]     = LMS_SHA256_N32_H10;
+		oqs_key_data->lm_type[0] = LMS_SHA256_N32_H10;
 		oqs_key_data->lm_ots_type[0] = LMOTS_SHA256_N32_W2;
-		oqs_key_data->lm_type[1]     = LMS_SHA256_N32_H10;
+		oqs_key_data->lm_type[1] = LMS_SHA256_N32_H10;
 		oqs_key_data->lm_ots_type[1] = LMOTS_SHA256_N32_W2;
 		break;
 	case OQS_LMS_ID_sha256_h10_w4_h5_w8:
 		oqs_key_data->levels = 2;
-		oqs_key_data->lm_type[0]     = LMS_SHA256_N32_H10;
+		oqs_key_data->lm_type[0] = LMS_SHA256_N32_H10;
 		oqs_key_data->lm_ots_type[0] = LMOTS_SHA256_N32_W4;
-		oqs_key_data->lm_type[1]     = LMS_SHA256_N32_H5;
+		oqs_key_data->lm_type[1] = LMS_SHA256_N32_H5;
 		oqs_key_data->lm_ots_type[1] = LMOTS_SHA256_N32_W8;
 		break;
 	case OQS_LMS_ID_sha256_h10_w4_h10_w4:
 		oqs_key_data->levels = 2;
-		oqs_key_data->lm_type[0]     = LMS_SHA256_N32_H10;
+		oqs_key_data->lm_type[0] = LMS_SHA256_N32_H10;
 		oqs_key_data->lm_ots_type[0] = LMOTS_SHA256_N32_W4;
-		oqs_key_data->lm_type[1]     = LMS_SHA256_N32_H10;
+		oqs_key_data->lm_type[1] = LMS_SHA256_N32_H10;
 		oqs_key_data->lm_ots_type[1] = LMOTS_SHA256_N32_W4;
 		break;
 	case OQS_LMS_ID_sha256_h10_w8_h10_w8:
 		oqs_key_data->levels = 2;
-		oqs_key_data->lm_type[0]     = LMS_SHA256_N32_H10;
+		oqs_key_data->lm_type[0] = LMS_SHA256_N32_H10;
 		oqs_key_data->lm_ots_type[0] = LMOTS_SHA256_N32_W8;
-		oqs_key_data->lm_type[1]     = LMS_SHA256_N32_H10;
+		oqs_key_data->lm_type[1] = LMS_SHA256_N32_H10;
 		oqs_key_data->lm_ots_type[1] = LMOTS_SHA256_N32_W8;
 		break;
 	case OQS_LMS_ID_sha256_h15_w8_h5_w8:
 		oqs_key_data->levels = 2;
-		oqs_key_data->lm_type[0]     = LMS_SHA256_N32_H15;
+		oqs_key_data->lm_type[0] = LMS_SHA256_N32_H15;
 		oqs_key_data->lm_ots_type[0] = LMOTS_SHA256_N32_W8;
-		oqs_key_data->lm_type[1]     = LMS_SHA256_N32_H5;
+		oqs_key_data->lm_type[1] = LMS_SHA256_N32_H5;
 		oqs_key_data->lm_ots_type[1] = LMOTS_SHA256_N32_W8;
 		break;
 	case OQS_LMS_ID_sha256_h15_w8_h10_w8:
 		oqs_key_data->levels = 2;
-		oqs_key_data->lm_type[0]     = LMS_SHA256_N32_H15;
+		oqs_key_data->lm_type[0] = LMS_SHA256_N32_H15;
 		oqs_key_data->lm_ots_type[0] = LMOTS_SHA256_N32_W8;
-		oqs_key_data->lm_type[1]     = LMS_SHA256_N32_H10;
+		oqs_key_data->lm_type[1] = LMS_SHA256_N32_H10;
 		oqs_key_data->lm_ots_type[1] = LMOTS_SHA256_N32_W8;
 		break;
 	case OQS_LMS_ID_sha256_h15_w8_h15_w8:
 		oqs_key_data->levels = 2;
-		oqs_key_data->lm_type[0]     = LMS_SHA256_N32_H15;
+		oqs_key_data->lm_type[0] = LMS_SHA256_N32_H15;
 		oqs_key_data->lm_ots_type[0] = LMOTS_SHA256_N32_W8;
-		oqs_key_data->lm_type[1]     = LMS_SHA256_N32_H15;
+		oqs_key_data->lm_type[1] = LMS_SHA256_N32_H15;
 		oqs_key_data->lm_ots_type[1] = LMOTS_SHA256_N32_W8;
 		break;
 	case OQS_LMS_ID_sha256_h20_w8_h5_w8:
 		oqs_key_data->levels = 2;
-		oqs_key_data->lm_type[0]     = LMS_SHA256_N32_H20;
+		oqs_key_data->lm_type[0] = LMS_SHA256_N32_H20;
 		oqs_key_data->lm_ots_type[0] = LMOTS_SHA256_N32_W8;
-		oqs_key_data->lm_type[1]     = LMS_SHA256_N32_H5;
+		oqs_key_data->lm_type[1] = LMS_SHA256_N32_H5;
 		oqs_key_data->lm_ots_type[1] = LMOTS_SHA256_N32_W8;
 		break;
 	case OQS_LMS_ID_sha256_h20_w8_h10_w8:
 		oqs_key_data->levels = 2;
-		oqs_key_data->lm_type[0]     = LMS_SHA256_N32_H20;
+		oqs_key_data->lm_type[0] = LMS_SHA256_N32_H20;
 		oqs_key_data->lm_ots_type[0] = LMOTS_SHA256_N32_W8;
-		oqs_key_data->lm_type[1]     = LMS_SHA256_N32_H10;
+		oqs_key_data->lm_type[1] = LMS_SHA256_N32_H10;
 		oqs_key_data->lm_ots_type[1] = LMOTS_SHA256_N32_W8;
 		break;
 	case OQS_LMS_ID_sha256_h20_w8_h15_w8:
 		oqs_key_data->levels = 2;
-		oqs_key_data->lm_type[0]     = LMS_SHA256_N32_H20;
+		oqs_key_data->lm_type[0] = LMS_SHA256_N32_H20;
 		oqs_key_data->lm_ots_type[0] = LMOTS_SHA256_N32_W8;
-		oqs_key_data->lm_type[1]     = LMS_SHA256_N32_H15;
+		oqs_key_data->lm_type[1] = LMS_SHA256_N32_H15;
 		oqs_key_data->lm_ots_type[1] = LMOTS_SHA256_N32_W8;
 		break;
 	case OQS_LMS_ID_sha256_h20_w8_h20_w8:
 		oqs_key_data->levels = 2;
-		oqs_key_data->lm_type[0]     = LMS_SHA256_N32_H20;
+		oqs_key_data->lm_type[0] = LMS_SHA256_N32_H20;
 		oqs_key_data->lm_ots_type[0] = LMOTS_SHA256_N32_W8;
-		oqs_key_data->lm_type[1]     = LMS_SHA256_N32_H20;
+		oqs_key_data->lm_type[1] = LMS_SHA256_N32_H20;
 		oqs_key_data->lm_ots_type[1] = LMOTS_SHA256_N32_W8;
 		break;
 	default:
@@ -694,15 +694,15 @@ int oqs_sig_stfl_lms_keypair(uint8_t *pk, OQS_SIG_STFL_SECRET_KEY *sk, const uin
 	 * This returns true on success, false on failure
 	 */
 	b_ret = hss_generate_private_key(
-	            LMS_randombytes,
-	            oqs_key_data->levels,
-	            oqs_key_data->lm_type,
-	            oqs_key_data->lm_ots_type,
-	            NULL, //File handler function?
-	            oqs_key_data->sec_key,
-	            oqs_key_data->public_key, len_public_key,
-	            oqs_key_data->aux_data, oqs_key_data->len_aux_data,
-	            NULL);
+	    LMS_randombytes,
+	    oqs_key_data->levels,
+	    oqs_key_data->lm_type,
+	    oqs_key_data->lm_ots_type,
+	    NULL, //File handler function?
+	    oqs_key_data->sec_key,
+	    oqs_key_data->public_key, len_public_key,
+	    oqs_key_data->aux_data, oqs_key_data->len_aux_data,
+	    NULL);
 	if (b_ret) {
 		memcpy(pk, oqs_key_data->public_key, len_public_key);
 		sk->secret_key_data = oqs_key_data;
@@ -773,23 +773,23 @@ int oqs_sig_stfl_lms_sign(OQS_SIG_STFL_SECRET_KEY *sk,
 	}
 
 	(void)hss_sign_init(
-	    &ctx,                 /* Incremental signing context */
-	    w,                    /* Working key */
-	    NULL,                 /* Routine to update the */
-	    priv_key,       /* private key */
-	    sig, sig_len,         /* Where to place the signature */
+	    &ctx, /* Incremental signing context */
+	    w, /* Working key */
+	    NULL, /* Routine to update the */
+	    priv_key, /* private key */
+	    sig, sig_len, /* Where to place the signature */
 	    0);
 
 	(void)hss_sign_update(
-	    &ctx,           /* Incremental signing context */
-	    m,         /* Next piece of the message */
-	    mlen);             /* Length of this piece */
+	    &ctx, /* Incremental signing context */
+	    m, /* Next piece of the message */
+	    mlen); /* Length of this piece */
 
 	status = hss_sign_finalize(
-	             &ctx,               /* Incremental signing context */
-	             w,                  /* Working key */
-	             sig,                /* Signature */
-	             0);
+	    &ctx, /* Incremental signing context */
+	    w, /* Working key */
+	    sig, /* Signature */
+	    0);
 
 	if (!status) {
 		hss_free_working_key(w);
@@ -812,21 +812,21 @@ int oqs_sig_stfl_lms_verify(const uint8_t *m, size_t mlen,
 
 	struct hss_validate_inc ctx;
 	(void)hss_validate_signature_init(
-	    &ctx,               /* Incremental validate context */
-	    (const unsigned char *)pk,                /* Public key */
+	    &ctx, /* Incremental validate context */
+	    (const unsigned char *)pk, /* Public key */
 	    (const unsigned char *)signature,
-	    (size_t)signature_len,       /* Signature */
-	    0);                 /* Use the defaults for extra info */
+	    (size_t)signature_len, /* Signature */
+	    0); /* Use the defaults for extra info */
 
 	(void)hss_validate_signature_update(
-	    &ctx,           /* Incremental validate context */
-	    (const void *) m,        /* Next piece of the message */
-	    (size_t)mlen);             /* Length of this piece */
+	    &ctx, /* Incremental validate context */
+	    (const void *)m, /* Next piece of the message */
+	    (size_t)mlen); /* Length of this piece */
 
 	bool status = hss_validate_signature_finalize(
-	                  &ctx,               /* Incremental validate context */
-	                  (const unsigned char *)signature,                /* Signature */
-	                  0);                 /* Use the defaults for extra info */
+	    &ctx, /* Incremental validate context */
+	    (const unsigned char *)signature, /* Signature */
+	    0); /* Use the defaults for extra info */
 
 	if (status) {
 		/* Signature verified */
@@ -913,9 +913,9 @@ OQS_STATUS oqs_deserialize_lms_key(OQS_SIG_STFL_SECRET_KEY *sk, const uint8_t *s
 	uint8_t *lms_sk = NULL;
 	uint8_t *lms_aux = NULL;
 	size_t aux_buf_len = 0;
-	size_t lms_sk_len = hss_get_private_key_len((unsigned )(1), NULL, NULL);
+	size_t lms_sk_len = hss_get_private_key_len((unsigned)(1), NULL, NULL);
 
-	if (sk == NULL || sk_buf == NULL || (sk_len == 0) || (sk_len < lms_sk_len )) {
+	if (sk == NULL || sk_buf == NULL || (sk_len == 0) || (sk_len < lms_sk_len)) {
 		return OQS_ERROR;
 	}
 
@@ -932,8 +932,8 @@ OQS_STATUS oqs_deserialize_lms_key(OQS_SIG_STFL_SECRET_KEY *sk, const uint8_t *s
 
 	unsigned levels = 0;
 
-	param_set_t lm_type[ MAX_HSS_LEVELS ];
-	param_set_t lm_ots_type[ MAX_HSS_LEVELS ];
+	param_set_t lm_type[MAX_HSS_LEVELS];
+	param_set_t lm_ots_type[MAX_HSS_LEVELS];
 
 	// validate sk_buf for lms params
 	if (!hss_get_parameter_set(&levels,

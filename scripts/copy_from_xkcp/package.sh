@@ -94,21 +94,6 @@ unifdef -k -m \
 
 cp "${BASE}/CMakeLists.txt" "${BUILD_XKCP}/CMakeLists.txt"
 
-# Apply liboqs formatting 
-astyle \
-  --style=google \
-  --indent=tab \
-  --pad-oper \
-  --pad-comma \
-  --pad-header \
-  --align-pointer=name \
-  --add-braces \
-  --convert-tabs \
-  --mode=c \
-  --suffix=none \
-  --lineend=linux \
-  "${BUILD_XKCP}"/*/*/*.{c,h} >/dev/null
-
 # Package
 ( cd "${BUILD}" || exit
   tar czf "${BASE}"/liboqs-xkcp-"$(date +'%Y%m%d')".tar.gz src

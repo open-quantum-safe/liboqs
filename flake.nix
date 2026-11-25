@@ -76,8 +76,8 @@
         pkgs.mkShell {
           inherit (packageSet.shared) nativeBuildInputs buildInputs;
 
-          # astyle formats C source code and alejandra formats nix source code
-          packages = with pkgs; [astyle alejandra];
+          # alejandra formats nix source code; clang-format for C source code is pinned in requirements-linter.txt
+          packages = with pkgs; [alejandra];
 
           shellHook = ''
             export CMAKE_EXPORT_COMPILE_COMMANDS=1
