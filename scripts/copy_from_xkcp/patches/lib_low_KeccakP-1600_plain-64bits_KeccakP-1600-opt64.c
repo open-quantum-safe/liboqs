@@ -75,6 +75,15 @@
  void KeccakP1600_AddByte(void *state, unsigned char byte, unsigned int offset)
  {
      uint64_t lane = byte;
+@@ -204,7 +213,7 @@
+     if ((lanePosition == 1) || (lanePosition == 2) || (lanePosition == 8) || (lanePosition == 12) || (lanePosition == 17) || (lanePosition == 20)) {
+         unsigned int i;
+         for(i=0; i<length; i++)
+-            ((unsigned char*)state)[lanePosition*8+offset+i] = ~data[i];
++            ((unsigned char*)state)[lanePosition*8+offset+i] = (unsigned char)~data[i];
+     }
+     else
+ #endif
 @@ -235,11 +244,11 @@
  #ifdef KeccakP1600_useLaneComplementing
      unsigned int lanePosition;
@@ -120,7 +129,7 @@
          fromWordToBytes(data+(i*8), ((const uint64_t*)state)[i]);
  #endif
  #ifdef KeccakP1600_useLaneComplementing
-+    #define COMPL(lane) for(unsigned int i=0; i<8; i++) data[8*lane+i] = ~data[8*lane+i]
++    #define COMPL(lane) for(unsigned int i=0; i<8; i++) data[8*lane+i] = (unsigned char)~data[8*lane+i]
      if (laneCount > 1) {
 -        ((uint64_t*)data)[ 1] = ~((uint64_t*)data)[ 1];
 +        COMPL(1);
@@ -191,7 +200,7 @@
  #endif
      }
  #ifdef KeccakP1600_useLaneComplementing
-+    #define COMPL(lane) for(i=0; i<8; i++) output[8*lane+i] = ~output[8*lane+i]
++    #define COMPL(lane) for(i=0; i<8; i++) output[8*lane+i] = (unsigned char)~output[8*lane+i]
      if (laneCount > 1) {
 -        ((uint64_t*)output)[ 1] = ~((uint64_t*)output)[ 1];
 +        COMPL(1);

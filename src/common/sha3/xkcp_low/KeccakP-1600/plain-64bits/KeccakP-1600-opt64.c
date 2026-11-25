@@ -197,7 +197,7 @@ void KeccakP1600_OverwriteBytesInLane(void *state, unsigned int lanePosition, co
 	if ((lanePosition == 1) || (lanePosition == 2) || (lanePosition == 8) || (lanePosition == 12) || (lanePosition == 17) || (lanePosition == 20)) {
 		unsigned int i;
 		for (i = 0; i < length; i++) {
-			((unsigned char *)state)[lanePosition * 8 + offset + i] = ~data[i];
+			((unsigned char *)state)[lanePosition * 8 + offset + i] = (unsigned char)~data[i];
 		}
 	} else {
 		memcpy((unsigned char *)state + lanePosition * 8 + offset, data, length);
@@ -379,7 +379,7 @@ void KeccakP1600_ExtractLanes(const void *state, unsigned char *data, unsigned i
 		fromWordToBytes(data + (i * 8), ((const uint64_t *)state)[i]);
 	}
 #endif
-#define COMPL(lane) for(unsigned int i=0; i<8; i++) data[8*lane+i] = ~data[8*lane+i]
+#define COMPL(lane) for(unsigned int i=0; i<8; i++) data[8*lane+i] = (unsigned char)~data[8*lane+i]
 	if (laneCount > 1) {
 		COMPL(1);
 		if (laneCount > 2) {
@@ -454,7 +454,7 @@ void KeccakP1600_ExtractAndAddLanes(const void *state, const unsigned char *inpu
 		}
 #endif
 	}
-#define COMPL(lane) for(i=0; i<8; i++) output[8*lane+i] = ~output[8*lane+i]
+#define COMPL(lane) for(i=0; i<8; i++) output[8*lane+i] = (unsigned char)~output[8*lane+i]
 	if (laneCount > 1) {
 		COMPL(1);
 		if (laneCount > 2) {
