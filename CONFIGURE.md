@@ -152,6 +152,7 @@ When `OQS_USE_OPENSSL` is `ON`, OpenSSL 3.0 or newer is required. CMake scans th
 ### OQS_DLOPEN_OPENSSL
 
 Dynamically load OpenSSL through `dlopen`. When using liboqs from other cryptographic libraries, hard dependency on OpenSSL is sometimes undesirable. If this option is `ON`, loading of OpenSSL will be deferred until any of the OpenSSL functions is used.
+OpenSSL development files are still needed to build liboqs, but are not a link-time dependency for consumers using `pkg-config`.
 
 Only has an effect if the system supports `dlopen` and ELF binary format, such as Linux or BSD family.
 

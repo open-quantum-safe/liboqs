@@ -4,6 +4,7 @@ import helpers
 import os
 import pytest
 import re
+import shutil
 import sys
 import glob
 
@@ -99,6 +100,19 @@ def test_static_lib_does_not_export_api():
             print("Static library re-exports the liboqs API: {}".format(lib))
 
     assert(len(exporting) == 0)
+
+@helpers.filtered_test
+@helpers.test_requires_build_options("OQS_USE_OPENSSL", "OQS_DLOPEN_OPENSSL")
+@pytest.mark.skipif(shutil.which("pkg-config") is None, reason="requires pkg-config")
+def test_dlopen_pkg_config():
+    # Expose only liboqs.pc: consumers of this build do not need openssl.pc.
+    pc_dir = os.path.abspath(os.path.join(helpers.get_current_build_dir_name(), "src"))
+    libs = helpers.run_subprocess(
+        ["pkg-config", "--static", "--libs", "liboqs"],
+        env={"PKG_CONFIG_LIBDIR": pc_dir, "PKG_CONFIG_PATH": ""},
+    ).split()
+    assert "-loqs" in libs
+    assert "-lcrypto" not in libs
 
 if __name__ == "__main__":
     import sys

@@ -132,9 +132,11 @@ if(${OQS_USE_OPENSSL})
   if(${OQS_DLOPEN_OPENSSL})
     target_link_libraries(oqs PRIVATE ${CMAKE_DL_LIBS})
     target_link_libraries(oqs-internal PRIVATE ${CMAKE_DL_LIBS})
+    list(TRANSFORM CMAKE_DL_LIBS PREPEND "-l" REGEX "^[^-]" OUTPUT_VARIABLE _oqs_pkgconfig_libs_private)
   else()
     target_link_libraries(oqs PRIVATE ${OPENSSL_CRYPTO_LIBRARY})
     target_link_libraries(oqs-internal PRIVATE ${OPENSSL_CRYPTO_LIBRARY})
+    set(_oqs_pkgconfig_requires_private "openssl >= 3.0")
   endif()
 endif()
 if(${OQS_USE_CUPQC})
@@ -157,7 +159,7 @@ endif()
 if(NOT MSVC)
     target_link_libraries(oqs PRIVATE m)
     target_link_libraries(oqs-internal PRIVATE m)
-    set(_oqs_pkgconfig_libs_private "-lm")
+    list(APPEND _oqs_pkgconfig_libs_private "-lm")
 endif()
 
 target_include_directories(oqs
@@ -209,11 +211,8 @@ write_basic_package_version_file(
   COMPATIBILITY AnyNewerVersion
 )
 
-if(OQS_USE_OPENSSL)
-    set(_oqs_pkgconfig_requires_private "openssl >= 3.0")
-endif()
-
 # generate pkg-config file
+list(JOIN _oqs_pkgconfig_libs_private " " _oqs_pkgconfig_libs_private)
 configure_file(
   ${CMAKE_CURRENT_SOURCE_DIR}/liboqs.pc.in
   ${CMAKE_CURRENT_BINARY_DIR}/liboqs.pc
