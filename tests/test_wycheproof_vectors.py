@@ -1,6 +1,8 @@
 # SPDX-License-Identifier: MIT
 
 import json
+import time
+from requests.exceptions import RequestException
 import subprocess
 import sys
 from urllib.parse import urljoin
@@ -28,6 +30,21 @@ ML_DSA_PARAMS = {
     "ML-DSA-87": MlDsaParam(2592, 4896),
 }
 
+
+def _cached_requests_get_with_retries(url):
+    """Retry failed network downloads with exponential backoff."""
+    for attempt in range(3):
+        try:
+            response = helpers.cached_requests_get(url)
+            response.raise_for_status()
+            return response
+        except RequestException as error:
+            helpers.cached_requests_get.cache_clear()
+            if attempt == 2:
+                pytest.skip(f"Wycheproof download failed: {error}")
+            time.sleep(2 ** attempt)
+
+
 def fetch_wycheproof_kem_test_cases(kem_name, suffix, valid_types):
     """
     Fetches Wycheproof vectors and returns a list of individual test cases.
@@ -36,8 +53,7 @@ def fetch_wycheproof_kem_test_cases(kem_name, suffix, valid_types):
     alg_id = kem_name.lower().replace("ml-kem-", "mlkem_")
     url = urljoin(WYCHE_ROOT, f"{alg_id}_{suffix}.json")
     
-    resp = helpers.cached_requests_get(url)
-    resp.raise_for_status()
+    resp = _cached_requests_get_with_retries(url)
 
     data = json.loads(resp.content)
     test_cases = []
@@ -59,8 +75,7 @@ def fetch_wycheproof_sig_test_cases(sig_name, suffix, valid_types):
     alg_id = sig_name.lower().replace("ml-dsa-", "mldsa_")
     url = urljoin(WYCHE_ROOT, f"{alg_id}_{suffix}.json")
     
-    resp = helpers.cached_requests_get(url)
-    resp.raise_for_status()
+    resp = _cached_requests_get_with_retries(url)
 
     data = json.loads(resp.content)
     test_cases = []
