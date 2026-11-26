@@ -1,0 +1,21 @@
+{
+    "name": "Release tag creation",
+    "target": "tag",
+    "enforcement": "active",
+    "conditions": {
+        "ref_name": {
+            "include": ["~ALL"],
+            "exclude": []
+        }
+    },
+    "rules": [
+        {"type": "creation"}
+    ],
+    "bypass_actors": [
+        {
+            "actor_id": 11108184,
+            "actor_type": "Team",
+            "bypass_mode": "always"
+        }
+    ]
+}

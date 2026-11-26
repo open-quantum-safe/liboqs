@@ -1,0 +1,22 @@
+{
+    "name": "Release branch lifecycle",
+    "target": "branch",
+    "enforcement": "active",
+    "conditions": {
+        "ref_name": {
+            "include": ["refs/heads/release/**/*"],
+            "exclude": []
+        }
+    },
+    "rules": [
+        {"type": "creation"},
+        {"type": "deletion"}
+    ],
+    "bypass_actors": [
+        {
+            "actor_id": 11108184,
+            "actor_type": "Team",
+            "bypass_mode": "always"
+        }
+    ]
+}
