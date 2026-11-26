@@ -127,7 +127,7 @@ __contract__(
 static MLK_INLINE int16_t mlk_scalar_decompress_d4(uint8_t u)
 __contract__(
   requires(0 <= u && u < 16)
-  ensures(return_value <= (MLKEM_Q - 1))
+  ensures(0 <= return_value && return_value <= (MLKEM_Q - 1))
 )
 {
   /* The return value is in 0..MLKEM_Q-1, hence not altered by the
@@ -518,8 +518,7 @@ void mlk_poly_decompress_d11(mlk_poly *r,
 #if !defined(MLK_CONFIG_NO_KEYPAIR_API) || !defined(MLK_CONFIG_NO_ENCAPS_API)
 #define mlk_poly_tobytes MLK_NAMESPACE(poly_tobytes)
 /**
- * Serialization of a polynomial. Signed coefficients are converted to
- * unsigned form before serialization.
+ * Serialization of a polynomial.
  *
  * @spec{Implements ByteEncode_12 @[FIPS203, Algorithm 5]. Extended to
  * vectors as per @[FIPS203, 2.4.8 Applying Algorithms to Arrays].}
@@ -570,7 +569,7 @@ __contract__(
  * @spec{Implements `Decompress_1 (ByteDecode_1 (a))`: ByteDecode_d
  * @[FIPS203, Algorithm 6], Decompress_d @[FIPS203, Eq (4.8)], extended to
  * vectors as per @[FIPS203, 2.4.8 Applying Algorithms to Arrays].
- * `Decompress_1 (ByteDecode_1 (w))` appears in @[FIPS203, Algorithm 15
+ * `Decompress_1 (ByteDecode_1 (w))` appears in @[FIPS203, Algorithm 14
  * (K-PKE.Encrypt), L20].}
  *
  * @param[out] r   Output polynomial.
@@ -594,7 +593,7 @@ __contract__(
  * @spec{Implements `ByteEncode_1 (Compress_1 (a))`: ByteEncode_d
  * @[FIPS203, Algorithm 5], Compress_d @[FIPS203, Eq (4.7)], extended to
  * vectors as per @[FIPS203, 2.4.8 Applying Algorithms to Arrays].
- * `ByteEncode_1 (Compress_1 (w))` appears in @[FIPS203, Algorithm 14
+ * `ByteEncode_1 (Compress_1 (w))` appears in @[FIPS203, Algorithm 15
  * (K-PKE.Decrypt), L7].}
  *
  * @param[out] msg Output message.

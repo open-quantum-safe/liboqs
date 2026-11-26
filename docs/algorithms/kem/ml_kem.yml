@@ -29,7 +29,7 @@ advisories:
   other FIPS 203 input checks (the encapsulation key modulus check and the decapsulation
   key hash check) and return ``OQS_ERROR`` if they fail.
 primary-upstream:
-  source: https://github.com/pq-code-package/mlkem-native/commit/d1b2fe782888bdb761a50336012923180be7f502
+  source: https://github.com/pq-code-package/mlkem-native/commit/4d69d6b0358e678e3a694ea1bb8404a41770f68e
   spdx-license-identifier: MIT or Apache-2.0 or ISC
 optimized-upstreams:
   cupqc-cuda:

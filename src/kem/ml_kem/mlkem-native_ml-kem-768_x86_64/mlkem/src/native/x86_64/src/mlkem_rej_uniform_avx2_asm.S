@@ -13,19 +13,20 @@
  *                                     16-bit coefficients.
  *              - const uint8_t *buf:  pointer to input buffer
  *                                     (assumed to be uniform random bytes)
- *              - unsigned buflen:     length of input buffer in bytes.
+ *              - uint64_t buflen:     length of input buffer in bytes.
  *                                     Must be a multiple of 12.
  *
  * Returns number of sampled 16-bit integers (at most MLKEM_N).
  **************************************************/
 #include "../../../common.h"
 
-#if defined(MLK_ARITH_BACKEND_X86_64_DEFAULT) && \
+#if defined(MLK_SYS_X86_64_AVX2) && \
+    defined(MLK_ARITH_BACKEND_X86_64_DEFAULT) && \
     !defined(MLK_CONFIG_MULTILEVEL_NO_SHARED)
 /*yaml
   Name: rej_uniform_avx2_asm
   Description: x86_64 AVX2 rejection sampling
-  Signature: uint64_t mlk_rej_uniform_avx2_asm(int16_t *r, const uint8_t *buf, unsigned buflen, const uint8_t *table)
+  Signature: uint64_t mlk_rej_uniform_avx2_asm(int16_t *r, const uint8_t *buf, uint64_t buflen, const uint8_t *table)
   ABI:
     Architecture: x86_64
     CallingConvention: SysV
@@ -44,7 +45,7 @@
       description: Input buffer
     rdx:
       type: scalar
-      c_parameter: unsigned buflen
+      c_parameter: uint64_t buflen
       description: Length of input buffer (must be multiple of 12)
       test_with: 504  # MLKEM_GEN_MATRIX_NBLOCKS * MLK_XOF_RATE
     rcx:
@@ -128,8 +129,8 @@ Lmlk_rej_uniform_asm_end:
 
 MLK_ASM_FN_SIZE(rej_uniform_avx2_asm)
 
-#endif /* MLK_ARITH_BACKEND_X86_64_DEFAULT && !MLK_CONFIG_MULTILEVEL_NO_SHARED \
-        */
+#endif /* MLK_SYS_X86_64_AVX2 && MLK_ARITH_BACKEND_X86_64_DEFAULT && \
+          !MLK_CONFIG_MULTILEVEL_NO_SHARED */
 
 #if defined(__ELF__)
 .section .note.GNU-stack,"",%progbits

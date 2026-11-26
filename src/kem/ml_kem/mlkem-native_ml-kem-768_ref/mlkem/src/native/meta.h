@@ -10,7 +10,7 @@
  */
 #include "../sys.h"
 
-#ifdef MLK_SYS_AARCH64_NEON
+#if defined(MLK_SYS_AARCH64_NEON)
 #include "aarch64/meta.h"
 #endif
 
@@ -23,7 +23,7 @@
 #include "riscv64/meta.h"
 #endif
 
-#ifdef MLK_SYS_PPC64LE
+#if defined(MLK_SYS_PPC64LE_POWER8_VECTOR)
 #include "ppc64le/meta.h"
 #endif
 

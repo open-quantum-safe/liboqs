@@ -22,6 +22,7 @@
 #define MLK_COMMON_H
 
 #ifndef __ASSEMBLER__
+#include <stddef.h>
 #include <stdint.h>
 #endif
 
@@ -33,8 +34,30 @@
 #include "mlkem_native_config.h"
 #endif
 
+#include "capability.h"
 #include "params.h"
 #include "sys.h"
+
+#if !defined(MLK_CONFIG_NO_ASM) && (defined(__GNUC__) || defined(__clang__))
+#define MLK_HAVE_INLINE_ASM
+#endif
+
+#if defined(MLK_CONFIG_CT_TESTING_ENABLED) && !defined(__ASSEMBLER__)
+#include <valgrind/memcheck.h>
+#define MLK_CT_TESTING_SECRET(ptr, len) \
+  VALGRIND_MAKE_MEM_UNDEFINED((ptr), (len))
+#define MLK_CT_TESTING_DECLASSIFY(ptr, len) \
+  VALGRIND_MAKE_MEM_DEFINED((ptr), (len))
+#else /* MLK_CONFIG_CT_TESTING_ENABLED && !__ASSEMBLER__ */
+#define MLK_CT_TESTING_SECRET(ptr, len) \
+  do                                    \
+  {                                     \
+  } while (0)
+#define MLK_CT_TESTING_DECLASSIFY(ptr, len) \
+  do                                        \
+  {                                         \
+  } while (0)
+#endif /* !(MLK_CONFIG_CT_TESTING_ENABLED && !__ASSEMBLER__) */
 
 /* Internal and public API have external linkage by default, but
  * this can be overwritten by the user, e.g. for single-CU builds. */
@@ -201,11 +224,18 @@
 /* Allocation macros for large local structures
  *
  * MLK_ALLOC(v, T, N) declares T *v and attempts to point it to an T[N]
+ *                    Additionally, if non-NULL, the value of v must respect
+ *                    MLK_DEFAULT_ALIGN alignment
  * MLK_FREE(v, T, N) zeroizes and frees the allocation
  *
  * Default implementation uses stack allocation.
  * Can be overridden by setting the config option MLK_CONFIG_CUSTOM_ALLOC_FREE
  * and defining MLK_CUSTOM_ALLOC and MLK_CUSTOM_FREE.
+ *
+ * Plain malloc() does not guarantee MLK_DEFAULT_ALIGN alignment.
+ * For examples of custom allocators that meet this requirement, see
+ * test/configs/custom_heap_alloc_config.h or the allocator in
+ * test/src/test_alloc.c configured by test/configs/test_alloc_config.h.
  */
 #if defined(MLK_CONFIG_CUSTOM_ALLOC_FREE) != \
     (defined(MLK_CUSTOM_ALLOC) && defined(MLK_CUSTOM_FREE))

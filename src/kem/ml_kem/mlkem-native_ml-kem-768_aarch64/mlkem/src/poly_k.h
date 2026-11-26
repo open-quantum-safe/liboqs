@@ -552,7 +552,7 @@ __contract__(
  * @spec{Implements `SamplePolyCBD_{eta2} (PRF_{eta2} (sigma, N))`:
  * @[FIPS203, Algorithm 8, SamplePolyCBD_eta] and @[FIPS203, Eq (4.3),
  * PRF_eta]. `SamplePolyCBD_{eta2} (PRF_{eta2} (sigma, N))` appears in
- * @[FIPS203, Algorithm 14, K-PKE.Encrypt, L14].}
+ * @[FIPS203, Algorithm 14, K-PKE.Encrypt, L17].}
  *
  * @param[out] r     Output polynomial.
  * @param[in]  seed  Input seed (of length MLKEM_SYMBYTES bytes).

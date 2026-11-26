@@ -18,7 +18,6 @@
  */
 
 #include "indcpa.h"
-
 #include "debug.h"
 #include "randombytes.h"
 #include "sampling.h"
@@ -398,7 +397,7 @@ __contract__(
  * mlk_indcpa_enc(). Uses x4-batched versions of `poly_getnoise` to leverage
  * batched Keccak-f1600.
  *
- * @spec{Implements @[FIPS203, Algorithm 14 (K-PKE.Encrypt)] steps 9-16.}
+ * @spec{Implements @[FIPS203, Algorithm 14 (K-PKE.Encrypt)] steps 9-17.}
  *
  * @param[out] sp    Output polynomial vector.
  * @param[out] ep    Output polynomial vector.

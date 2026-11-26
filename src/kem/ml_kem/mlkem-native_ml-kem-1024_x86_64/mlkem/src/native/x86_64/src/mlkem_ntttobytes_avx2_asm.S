@@ -19,7 +19,8 @@
 
 #include "../../../common.h"
 
-#if defined(MLK_ARITH_BACKEND_X86_64_DEFAULT) && \
+#if defined(MLK_SYS_X86_64_AVX2) && \
+    defined(MLK_ARITH_BACKEND_X86_64_DEFAULT) && \
     !defined(MLK_CONFIG_MULTILEVEL_NO_SHARED) && \
     (!defined(MLK_CONFIG_NO_KEYPAIR_API) || \
      !defined(MLK_CONFIG_NO_ENCAPS_API))
@@ -192,13 +193,15 @@ MLK_ASM_FN_SYMBOL(ntttobytes_avx2_asm)
         vmovdqu %ymm8, 0x120(%rdi)
         vmovdqu %ymm3, 0x140(%rdi)
         vmovdqu %ymm9, 0x160(%rdi)
+        vzeroupper
         retq
         .cfi_endproc
 
 MLK_ASM_FN_SIZE(ntttobytes_avx2_asm)
 
-#endif /* MLK_ARITH_BACKEND_X86_64_DEFAULT && !MLK_CONFIG_MULTILEVEL_NO_SHARED \
-          && (!MLK_CONFIG_NO_KEYPAIR_API || !MLK_CONFIG_NO_ENCAPS_API) */
+#endif /* MLK_SYS_X86_64_AVX2 && MLK_ARITH_BACKEND_X86_64_DEFAULT && \
+          !MLK_CONFIG_MULTILEVEL_NO_SHARED && (!MLK_CONFIG_NO_KEYPAIR_API || \
+          !MLK_CONFIG_NO_ENCAPS_API) */
 
 #if defined(__ELF__)
 .section .note.GNU-stack,"",%progbits

@@ -320,7 +320,7 @@ __contract__(ensures(return_value == (cond ? a : b)))
  * @spec{Used to securely compute conditional move in @[FIPS203, Algorithm
  * 18 (ML-KEM.Decaps_Internal, L9-11].}
  *
- * @reference{`cmov()` in the reference implementation @[REF]. We return
+ * @reference{`verify()` in the reference implementation @[REF]. We return
  * `uint8_t`, not `int`. We use an additional XOR-accumulator in the
  * comparison loop which prevents early abort if the OR-accumulator is 0xFF.
  * We use a value barrier to convert the OR-accumulator into a mask; the

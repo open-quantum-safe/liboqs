@@ -1,0 +1,53 @@
+/*
+ * Copyright (c) The mlkem-native project authors
+ * SPDX-License-Identifier: Apache-2.0 OR ISC OR MIT
+ */
+
+/*
+ * WARNING: This file is auto-generated from scripts/autogen
+ *          in the mlkem-native repository.
+ *          Do not modify it directly.
+ */
+
+#include "../../../common.h"
+
+#if defined(MLK_ARITH_BACKEND_AARCH64) &&        \
+    !defined(MLK_CONFIG_MULTILEVEL_NO_SHARED) && \
+    !defined(MLK_CONFIG_NO_DECAPS_API) &&        \
+    (defined(MLK_CONFIG_MULTILEVEL_WITH_SHARED) || MLKEM_K == 4)
+
+#include "arith_native_aarch64.h"
+
+/*
+ * Constant vectors used by poly_decompress_d5_aarch64_asm:
+ * TBL indices for groups starting at bytes 0, 5, 10 and 11 (rows
+ * 0..3), USHL shift amounts (row 4), AND mask (row 5) and
+ * SQRDMULH multiplier (row 6). See autogen for details.
+ */
+MLK_ALIGN MLK_INTERNAL_DATA_DEFINITION const uint8_t
+    mlk_aarch64_decompress_d5_table[112] = {
+        0x00, 0x01, 0x00, 0x01, 0x01, 0x02, 0x01, 0x02, 0x02,
+        0x03, 0x03, 0x04, 0x03, 0x04, 0x04, 0x05, /* idx0 */
+        0x05, 0x06, 0x05, 0x06, 0x06, 0x07, 0x06, 0x07, 0x07,
+        0x08, 0x08, 0x09, 0x08, 0x09, 0x09, 0x0a, /* idx5 */
+        0x0a, 0x0b, 0x0a, 0x0b, 0x0b, 0x0c, 0x0b, 0x0c, 0x0c,
+        0x0d, 0x0d, 0x0e, 0x0d, 0x0e, 0x0e, 0x0f, /* idx10 */
+        0x0b, 0x0c, 0x0b, 0x0c, 0x0c, 0x0d, 0x0c, 0x0d, 0x0d,
+        0x0e, 0x0e, 0x0f, 0x0e, 0x0f, 0x0f, 0x10, /* idx11 */
+        0x07, 0x00, 0x02, 0x00, 0x05, 0x00, 0x00, 0x00, 0x03,
+        0x00, 0x06, 0x00, 0x01, 0x00, 0x04, 0x00, /* shifts (16-bit lanes) */
+        0x80, 0x0f, 0x80, 0x0f, 0x80, 0x0f, 0x80, 0x0f, 0x80,
+        0x0f, 0x80, 0x0f, 0x80, 0x0f, 0x80, 0x0f, /* mask (16-bit lanes) */
+        0x08, 0x68, 0x08, 0x68, 0x08, 0x68, 0x08, 0x68, 0x08,
+        0x68, 0x08, 0x68, 0x08, 0x68, 0x08, 0x68, /* mult (16-bit lanes) */
+};
+
+#else /* MLK_ARITH_BACKEND_AARCH64 && !MLK_CONFIG_MULTILEVEL_NO_SHARED &&   \
+         !MLK_CONFIG_NO_DECAPS_API && (MLK_CONFIG_MULTILEVEL_WITH_SHARED || \
+         MLKEM_K == 4) */
+
+MLK_EMPTY_CU(aarch64_decompress_d5_table)
+
+#endif /* !(MLK_ARITH_BACKEND_AARCH64 && !MLK_CONFIG_MULTILEVEL_NO_SHARED && \
+          !MLK_CONFIG_NO_DECAPS_API && (MLK_CONFIG_MULTILEVEL_WITH_SHARED || \
+          MLKEM_K == 4)) */

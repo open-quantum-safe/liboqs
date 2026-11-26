@@ -677,6 +677,7 @@ void mlk_poly_frombytes(mlk_poly *r, const uint8_t a[MLKEM_POLYBYTES])
   ret = mlk_poly_frombytes_native(r->coeffs, a);
   if (ret == MLK_NATIVE_FUNC_SUCCESS)
   {
+    mlk_assert_bound(r, MLKEM_N, 0, MLKEM_UINT12_LIMIT);
     return;
   }
 #endif /* MLK_USE_NATIVE_POLY_FROMBYTES */

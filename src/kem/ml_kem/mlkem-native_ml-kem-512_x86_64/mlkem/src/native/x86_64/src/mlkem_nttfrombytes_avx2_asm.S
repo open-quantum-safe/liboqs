@@ -19,7 +19,8 @@
 
 #include "../../../common.h"
 
-#if defined(MLK_ARITH_BACKEND_X86_64_DEFAULT) && \
+#if defined(MLK_SYS_X86_64_AVX2) && \
+    defined(MLK_ARITH_BACKEND_X86_64_DEFAULT) && \
     !defined(MLK_CONFIG_MULTILEVEL_NO_SHARED) && \
     (!defined(MLK_CONFIG_NO_ENCAPS_API) || \
      !defined(MLK_CONFIG_NO_DECAPS_API))
@@ -120,7 +121,7 @@ MLK_ASM_FN_SYMBOL(nttfrombytes_avx2_asm)
         vpand %ymm0, %ymm14, %ymm14
         vpsrlw $0x8, %ymm5, %ymm15
         vpsllw $0x8, %ymm9, %ymm1
-        vpor %ymm15, %ymm1, %ymm15
+        vpor %ymm1, %ymm15, %ymm15
         vpand %ymm0, %ymm15, %ymm15
         vpsrlw $0x4, %ymm9, %ymm1
         vpand %ymm0, %ymm1, %ymm1
@@ -192,7 +193,7 @@ MLK_ASM_FN_SYMBOL(nttfrombytes_avx2_asm)
         vpand %ymm0, %ymm14, %ymm14
         vpsrlw $0x8, %ymm5, %ymm15
         vpsllw $0x8, %ymm9, %ymm1
-        vpor %ymm15, %ymm1, %ymm15
+        vpor %ymm1, %ymm15, %ymm15
         vpand %ymm0, %ymm15, %ymm15
         vpsrlw $0x4, %ymm9, %ymm1
         vpand %ymm0, %ymm1, %ymm1
@@ -204,13 +205,15 @@ MLK_ASM_FN_SYMBOL(nttfrombytes_avx2_asm)
         vmovdqa %ymm14, 0x1a0(%rdi)
         vmovdqa %ymm15, 0x1c0(%rdi)
         vmovdqa %ymm1, 0x1e0(%rdi)
+        vzeroupper
         retq
         .cfi_endproc
 
 MLK_ASM_FN_SIZE(nttfrombytes_avx2_asm)
 
-#endif /* MLK_ARITH_BACKEND_X86_64_DEFAULT && !MLK_CONFIG_MULTILEVEL_NO_SHARED \
-          && (!MLK_CONFIG_NO_ENCAPS_API || !MLK_CONFIG_NO_DECAPS_API) */
+#endif /* MLK_SYS_X86_64_AVX2 && MLK_ARITH_BACKEND_X86_64_DEFAULT && \
+          !MLK_CONFIG_MULTILEVEL_NO_SHARED && (!MLK_CONFIG_NO_ENCAPS_API || \
+          !MLK_CONFIG_NO_DECAPS_API) */
 
 #if defined(__ELF__)
 .section .note.GNU-stack,"",%progbits

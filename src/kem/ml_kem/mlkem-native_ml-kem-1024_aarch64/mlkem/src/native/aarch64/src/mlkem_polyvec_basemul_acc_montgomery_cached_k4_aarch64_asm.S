@@ -52,7 +52,8 @@
 /* Re-implementation of asymmetric base multiplication following @[NeonNTT] */
 
 #include "../../../common.h"
-#if defined(MLK_ARITH_BACKEND_AARCH64) &&  !defined(MLK_CONFIG_MULTILEVEL_NO_SHARED) &&  (defined(MLK_CONFIG_MULTILEVEL_WITH_SHARED) || MLKEM_K == 4)
+#if defined(MLK_SYS_AARCH64_NEON) && \
+    defined(MLK_ARITH_BACKEND_AARCH64) &&  !defined(MLK_CONFIG_MULTILEVEL_NO_SHARED) &&  (defined(MLK_CONFIG_MULTILEVEL_WITH_SHARED) || MLKEM_K == 4)
 
 /*
  * WARNING: This file is auto-derived from the mlkem-native source file
@@ -363,7 +364,8 @@ Lmlk_polyvec_basemul_acc_montgomery_cached_k4_loop_start:
 
 MLK_ASM_FN_SIZE(polyvec_basemul_acc_montgomery_cached_k4_aarch64_asm)
 
-#endif /* MLK_ARITH_BACKEND_AARCH64 && !MLK_CONFIG_MULTILEVEL_NO_SHARED && \
+#endif /* MLK_SYS_AARCH64_NEON && MLK_ARITH_BACKEND_AARCH64 && \
+          !MLK_CONFIG_MULTILEVEL_NO_SHARED && \
           (MLK_CONFIG_MULTILEVEL_WITH_SHARED || MLKEM_K == 4) */
 
 #if defined(__ELF__)

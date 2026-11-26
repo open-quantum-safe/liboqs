@@ -14,6 +14,15 @@
 #define MLK_USE_NATIVE_POLY_MULCACHE_COMPUTE
 #define MLK_USE_NATIVE_POLYVEC_BASEMUL_ACC_MONTGOMERY_CACHED
 #define MLK_USE_NATIVE_POLY_TOBYTES
+#define MLK_USE_NATIVE_POLY_FROMBYTES
+#define MLK_USE_NATIVE_POLY_COMPRESS_D4
+#define MLK_USE_NATIVE_POLY_COMPRESS_D5
+#define MLK_USE_NATIVE_POLY_COMPRESS_D10
+#define MLK_USE_NATIVE_POLY_COMPRESS_D11
+#define MLK_USE_NATIVE_POLY_DECOMPRESS_D4
+#define MLK_USE_NATIVE_POLY_DECOMPRESS_D5
+#define MLK_USE_NATIVE_POLY_DECOMPRESS_D10
+#define MLK_USE_NATIVE_POLY_DECOMPRESS_D11
 #define MLK_USE_NATIVE_REJ_UNIFORM
 
 /* Identifier for this backend so that source and assembly files
@@ -147,6 +156,153 @@ static MLK_INLINE int mlk_poly_tobytes_native(uint8_t r[MLKEM_POLYBYTES],
   return MLK_NATIVE_FUNC_SUCCESS;
 }
 #endif /* !MLK_CONFIG_NO_KEYPAIR_API || !MLK_CONFIG_NO_ENCAPS_API */
+
+#if !defined(MLK_CONFIG_NO_ENCAPS_API) || !defined(MLK_CONFIG_NO_DECAPS_API)
+MLK_MUST_CHECK_RETURN_VALUE
+static MLK_INLINE int mlk_poly_frombytes_native(
+    int16_t r[MLKEM_N], const uint8_t a[MLKEM_POLYBYTES])
+{
+  if (!mlk_sys_check_capability(MLK_SYS_CAP_AARCH64_NEON))
+  {
+    return MLK_NATIVE_FUNC_FALLBACK;
+  }
+  mlk_poly_frombytes_aarch64_asm(r, a);
+  return MLK_NATIVE_FUNC_SUCCESS;
+}
+#endif /* !MLK_CONFIG_NO_ENCAPS_API || !MLK_CONFIG_NO_DECAPS_API */
+
+#if (!defined(MLK_CONFIG_NO_ENCAPS_API) ||                         \
+     !defined(MLK_CONFIG_NO_DECAPS_API)) &&                        \
+    (defined(MLK_CONFIG_MULTILEVEL_WITH_SHARED) || MLKEM_K == 2 || \
+     MLKEM_K == 3)
+MLK_MUST_CHECK_RETURN_VALUE
+static MLK_INLINE int mlk_poly_compress_d4_native(
+    uint8_t r[MLKEM_POLYCOMPRESSEDBYTES_D4], const int16_t a[MLKEM_N])
+{
+  if (!mlk_sys_check_capability(MLK_SYS_CAP_AARCH64_NEON))
+  {
+    return MLK_NATIVE_FUNC_FALLBACK;
+  }
+  mlk_poly_compress_d4_aarch64_asm(r, a);
+  return MLK_NATIVE_FUNC_SUCCESS;
+}
+#endif /* (!MLK_CONFIG_NO_ENCAPS_API || !MLK_CONFIG_NO_DECAPS_API) &&         \
+          (MLK_CONFIG_MULTILEVEL_WITH_SHARED || MLKEM_K == 2 || MLKEM_K == 3) \
+        */
+
+#if (!defined(MLK_CONFIG_NO_ENCAPS_API) ||  \
+     !defined(MLK_CONFIG_NO_DECAPS_API)) && \
+    (defined(MLK_CONFIG_MULTILEVEL_WITH_SHARED) || MLKEM_K == 4)
+MLK_MUST_CHECK_RETURN_VALUE
+static MLK_INLINE int mlk_poly_compress_d5_native(
+    uint8_t r[MLKEM_POLYCOMPRESSEDBYTES_D5], const int16_t a[MLKEM_N])
+{
+  if (!mlk_sys_check_capability(MLK_SYS_CAP_AARCH64_NEON))
+  {
+    return MLK_NATIVE_FUNC_FALLBACK;
+  }
+  mlk_poly_compress_d5_aarch64_asm(r, a, mlk_aarch64_compress_d5_table);
+  return MLK_NATIVE_FUNC_SUCCESS;
+}
+#endif /* (!MLK_CONFIG_NO_ENCAPS_API || !MLK_CONFIG_NO_DECAPS_API) && \
+          (MLK_CONFIG_MULTILEVEL_WITH_SHARED || MLKEM_K == 4) */
+
+#if (!defined(MLK_CONFIG_NO_ENCAPS_API) ||                         \
+     !defined(MLK_CONFIG_NO_DECAPS_API)) &&                        \
+    (defined(MLK_CONFIG_MULTILEVEL_WITH_SHARED) || MLKEM_K == 2 || \
+     MLKEM_K == 3)
+MLK_MUST_CHECK_RETURN_VALUE
+static MLK_INLINE int mlk_poly_compress_d10_native(
+    uint8_t r[MLKEM_POLYCOMPRESSEDBYTES_D10], const int16_t a[MLKEM_N])
+{
+  if (!mlk_sys_check_capability(MLK_SYS_CAP_AARCH64_NEON))
+  {
+    return MLK_NATIVE_FUNC_FALLBACK;
+  }
+  mlk_poly_compress_d10_aarch64_asm(r, a);
+  return MLK_NATIVE_FUNC_SUCCESS;
+}
+#endif /* (!MLK_CONFIG_NO_ENCAPS_API || !MLK_CONFIG_NO_DECAPS_API) &&         \
+          (MLK_CONFIG_MULTILEVEL_WITH_SHARED || MLKEM_K == 2 || MLKEM_K == 3) \
+        */
+
+#if (!defined(MLK_CONFIG_NO_ENCAPS_API) ||  \
+     !defined(MLK_CONFIG_NO_DECAPS_API)) && \
+    (defined(MLK_CONFIG_MULTILEVEL_WITH_SHARED) || MLKEM_K == 4)
+MLK_MUST_CHECK_RETURN_VALUE
+static MLK_INLINE int mlk_poly_compress_d11_native(
+    uint8_t r[MLKEM_POLYCOMPRESSEDBYTES_D11], const int16_t a[MLKEM_N])
+{
+  if (!mlk_sys_check_capability(MLK_SYS_CAP_AARCH64_NEON))
+  {
+    return MLK_NATIVE_FUNC_FALLBACK;
+  }
+  mlk_poly_compress_d11_aarch64_asm(r, a);
+  return MLK_NATIVE_FUNC_SUCCESS;
+}
+#endif /* (!MLK_CONFIG_NO_ENCAPS_API || !MLK_CONFIG_NO_DECAPS_API) && \
+          (MLK_CONFIG_MULTILEVEL_WITH_SHARED || MLKEM_K == 4) */
+
+#if !defined(MLK_CONFIG_NO_DECAPS_API) &&                          \
+    (defined(MLK_CONFIG_MULTILEVEL_WITH_SHARED) || MLKEM_K == 2 || \
+     MLKEM_K == 3)
+MLK_MUST_CHECK_RETURN_VALUE
+static MLK_INLINE int mlk_poly_decompress_d4_native(
+    int16_t r[MLKEM_N], const uint8_t a[MLKEM_POLYCOMPRESSEDBYTES_D4])
+{
+  if (!mlk_sys_check_capability(MLK_SYS_CAP_AARCH64_NEON))
+  {
+    return MLK_NATIVE_FUNC_FALLBACK;
+  }
+  mlk_poly_decompress_d4_aarch64_asm(r, a, mlk_aarch64_decompress_d4_table);
+  return MLK_NATIVE_FUNC_SUCCESS;
+}
+
+MLK_MUST_CHECK_RETURN_VALUE
+static MLK_INLINE int mlk_poly_decompress_d10_native(
+    int16_t r[MLKEM_N], const uint8_t a[MLKEM_POLYCOMPRESSEDBYTES_D10])
+{
+  if (!mlk_sys_check_capability(MLK_SYS_CAP_AARCH64_NEON))
+  {
+    return MLK_NATIVE_FUNC_FALLBACK;
+  }
+  mlk_poly_decompress_d10_aarch64_asm(r, a, mlk_aarch64_decompress_d10_table);
+  return MLK_NATIVE_FUNC_SUCCESS;
+}
+#endif /* !MLK_CONFIG_NO_DECAPS_API && (MLK_CONFIG_MULTILEVEL_WITH_SHARED || \
+          MLKEM_K == 2 || MLKEM_K == 3) */
+
+#if !defined(MLK_CONFIG_NO_DECAPS_API) && \
+    (defined(MLK_CONFIG_MULTILEVEL_WITH_SHARED) || MLKEM_K == 4)
+MLK_MUST_CHECK_RETURN_VALUE
+static MLK_INLINE int mlk_poly_decompress_d5_native(
+    int16_t r[MLKEM_N], const uint8_t a[MLKEM_POLYCOMPRESSEDBYTES_D5])
+{
+  if (!mlk_sys_check_capability(MLK_SYS_CAP_AARCH64_NEON))
+  {
+    return MLK_NATIVE_FUNC_FALLBACK;
+  }
+  mlk_poly_decompress_d5_aarch64_asm(r, a, mlk_aarch64_decompress_d5_table);
+  return MLK_NATIVE_FUNC_SUCCESS;
+}
+#endif /* !MLK_CONFIG_NO_DECAPS_API && (MLK_CONFIG_MULTILEVEL_WITH_SHARED || \
+          MLKEM_K == 4) */
+
+#if !defined(MLK_CONFIG_NO_DECAPS_API) && \
+    (defined(MLK_CONFIG_MULTILEVEL_WITH_SHARED) || MLKEM_K == 4)
+MLK_MUST_CHECK_RETURN_VALUE
+static MLK_INLINE int mlk_poly_decompress_d11_native(
+    int16_t r[MLKEM_N], const uint8_t a[MLKEM_POLYCOMPRESSEDBYTES_D11])
+{
+  if (!mlk_sys_check_capability(MLK_SYS_CAP_AARCH64_NEON))
+  {
+    return MLK_NATIVE_FUNC_FALLBACK;
+  }
+  mlk_poly_decompress_d11_aarch64_asm(r, a, mlk_aarch64_decompress_d11_table);
+  return MLK_NATIVE_FUNC_SUCCESS;
+}
+#endif /* !MLK_CONFIG_NO_DECAPS_API && (MLK_CONFIG_MULTILEVEL_WITH_SHARED || \
+          MLKEM_K == 4) */
 
 MLK_MUST_CHECK_RETURN_VALUE
 static MLK_INLINE int mlk_rej_uniform_native(int16_t *r, unsigned len,

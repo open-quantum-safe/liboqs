@@ -32,7 +32,9 @@
  * # API conventions
  *
  * Conventions shared by all functions below (return values, pointer validity,
- * output buffers on error) are documented in API-CONVENTIONS.md.
+ * buffer overlap, output buffers on error) are documented in
+ * API-CONVENTIONS.md. In particular, buffers passed to the same function must
+ * not overlap.
  *
  * # Multi-level builds
  *
@@ -109,11 +111,7 @@
  * pair failed its encaps/decaps self-test. */
 #define MLK_ERR_PCT_FAIL (-6)
 
-/********************* Namespacing and Qualifiers *****************************/
-
-#define MLK_API_CONCAT_(x, y) x##y
-#define MLK_API_CONCAT(x, y) MLK_API_CONCAT_(x, y)
-#define MLK_API_CONCAT_UNDERSCORE(x, y) MLK_API_CONCAT(MLK_API_CONCAT(x, _), y)
+/****************************** Configuration *********************************/
 
 /* You need to make sure the config file is in the include path. */
 #if defined(MLK_CONFIG_FILE)
@@ -121,6 +119,14 @@
 #else
 #include "mlkem_native_config.h"
 #endif
+
+/********************* Namespacing and Qualifiers *****************************/
+
+#if !defined(MLK_CONFIG_CONSTANTS_ONLY)
+
+#define MLK_API_CONCAT_(x, y) x##y
+#define MLK_API_CONCAT(x, y) MLK_API_CONCAT_(x, y)
+#define MLK_API_CONCAT_UNDERSCORE(x, y) MLK_API_CONCAT(MLK_API_CONCAT(x, _), y)
 
 /* Namespace prefix for the public API symbols. For multi-level builds, the
  * parameter set is appended to disambiguate the security levels. */
@@ -148,8 +154,6 @@
 
 /****************************** Function API **********************************/
 
-#if !defined(MLK_CONFIG_CONSTANTS_ONLY)
-
 #include <stdint.h>
 
 #ifdef __cplusplus
@@ -161,7 +165,16 @@ extern "C"
 /**
  * Generate a public/private keypair for the ML-KEM key encapsulation mechanism.
  *
- * @spec{Implements @[FIPS203, Algorithm 16, ML-KEM.KeyGen_Internal].}
+ * @spec{Implements @[FIPS203, Algorithm 16, ML-KEM.KeyGen_Internal]. When
+ * `MLK_CONFIG_KEYGEN_PCT` is enabled, also performs the encapsulation-key
+ * modulus check, decapsulation-key hash check, and pairwise consistency test
+ * described in steps 2-4 of @[FIPS203, Section 7.1, Key pair check].}
+ *
+ * @note If MLK_CONFIG_KEYGEN_PCT is enabled, the keypair is written to
+ *       the output buffers before the PCT is run, and zeroized if the PCT
+ *       fails. A keypair failing the PCT is thus temporarily present in
+ *       the output buffers. If this is a concern, pass buffers that are
+ *       not accessible to untrusted parties, and copy out upon success.
  *
  * @param[out] pk      Output public key, an array of
  *                     MLKEM{512,768,1024}_PUBLICKEYBYTES bytes.
@@ -197,7 +210,16 @@ int MLK_API_NAMESPACE(keypair_derand)(
 /**
  * Generate a public/private keypair for the ML-KEM key encapsulation mechanism.
  *
- * @spec{Implements @[FIPS203, Algorithm 19, ML-KEM.KeyGen].}
+ * @spec{Implements @[FIPS203, Algorithm 19, ML-KEM.KeyGen]. When
+ * `MLK_CONFIG_KEYGEN_PCT` is enabled, also performs the encapsulation-key
+ * modulus check, decapsulation-key hash check, and pairwise consistency test
+ * described in steps 2-4 of @[FIPS203, Section 7.1, Key pair check].}
+ *
+ * @note If MLK_CONFIG_KEYGEN_PCT is enabled, the keypair is written to
+ *       the output buffers before the PCT is run, and zeroized if the PCT
+ *       fails. A keypair failing the PCT is thus temporarily present in
+ *       the output buffers. If this is a concern, pass buffers that are
+ *       not accessible to untrusted parties, and copy out upon success.
  *
  * @param[out] pk      Output public key, an array of
  *                     MLKEM{512,768,1024}_PUBLICKEYBYTES bytes.
@@ -230,7 +252,9 @@ int MLK_API_NAMESPACE(keypair)(
 /**
  * Generate ciphertext and shared secret for a given public key.
  *
- * @spec{Implements @[FIPS203, Algorithm 17, ML-KEM.Encaps_Internal].}
+ * @spec{Implements @[FIPS203, Algorithm 17, ML-KEM.Encaps_Internal] and
+ * performs the encapsulation-key modulus check from
+ * @[FIPS203, Section 7.2, Encapsulation key check] before using the key.}
  *
  * @param[out] ct      Output ciphertext, an array of
  *                     MLKEM{512,768,1024}_CIPHERTEXTBYTES bytes.
@@ -265,7 +289,9 @@ int MLK_API_NAMESPACE(enc_derand)(
 /**
  * Generate ciphertext and shared secret for a given public key.
  *
- * @spec{Implements @[FIPS203, Algorithm 20, ML-KEM.Encaps].}
+ * @spec{Implements @[FIPS203, Algorithm 20, ML-KEM.Encaps] and performs the
+ * encapsulation-key modulus check from
+ * @[FIPS203, Section 7.2, Encapsulation key check] before using the key.}
  *
  * @param[out] ct      Output ciphertext, an array of
  *                     MLKEM{512,768,1024}_CIPHERTEXTBYTES bytes.
@@ -301,7 +327,9 @@ int MLK_API_NAMESPACE(enc)(
 /**
  * Generate shared secret for a given ciphertext and private key.
  *
- * @spec{Implements @[FIPS203, Algorithm 21, ML-KEM.Decaps].}
+ * @spec{Implements @[FIPS203, Algorithm 21, ML-KEM.Decaps] and performs the
+ * decapsulation-key hash check from
+ * @[FIPS203, Section 7.3, Decapsulation key check] before using the key.}
  *
  * @param[out] ss      Output shared secret, an array of MLKEM_BYTES bytes.
  * @param[in]  ct      Input ciphertext, an array of
