@@ -35,7 +35,8 @@
 */
 
 #include "../../../common.h"
-#if defined(MLD_ARITH_BACKEND_X86_64_DEFAULT) && \
+#if defined(MLD_SYS_X86_64_AVX2) && \
+    defined(MLD_ARITH_BACKEND_X86_64_DEFAULT) && \
     !defined(MLD_CONFIG_MULTILEVEL_NO_SHARED)
 
 /*
@@ -241,13 +242,14 @@ MLD_ASM_FN_SYMBOL(nttunpack_avx2_asm)
         vmovdqa %ymm4, 0x3a0(%rdi)
         vmovdqa %ymm3, 0x3c0(%rdi)
         vmovdqa %ymm11, 0x3e0(%rdi)
+        vzeroupper
         retq
         .cfi_endproc
 
 MLD_ASM_FN_SIZE(nttunpack_avx2_asm)
 
-#endif /* MLD_ARITH_BACKEND_X86_64_DEFAULT && !MLD_CONFIG_MULTILEVEL_NO_SHARED \
-        */
+#endif /* MLD_SYS_X86_64_AVX2 && MLD_ARITH_BACKEND_X86_64_DEFAULT && \
+          !MLD_CONFIG_MULTILEVEL_NO_SHARED */
 
 #if defined(__ELF__)
 .section .note.GNU-stack,"",%progbits

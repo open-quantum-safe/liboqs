@@ -105,6 +105,15 @@
  * Note that the range on qvar is _exclusive_ between qvar_lb .. qvar_ub
  * https://diffblue.github.io/cbmc/contracts-quantifiers.html
  *
+ * forall(qvar, qvar_lb, qvar_ub, predicate) quantifies directly over
+ * [qvar_lb, qvar_ub).
+ *
+ * forall(qvar, qvar_lb, qvar_ub, qvar_max, predicate) additionally takes a
+ * compile-time constant qvar_max. It quantifies over [0, qvar_max) and
+ * restricts to [qvar_lb, qvar_ub) via an implication. Use this form when
+ * qvar_ub is variable, so the propositional backend can expand a constant
+ * range. A variable qvar_lb alone does not require this form.
+ *
  * The quantified variable is declared as uint32_t, so these macros
  * quantify only over indices in [0, UINT32_MAX). Bounds larger than
  * UINT32_MAX (4 GiB) are NOT supported: the explicit (uint32_t) casts
@@ -122,12 +131,23 @@
  * Prevent clang-format from corrupting CBMC's special ==> operator
  */
 /* clang-format off */
-#define forall(qvar, qvar_lb, qvar_ub, predicate)                              \
+#define CBMC_FORALL(qvar, qvar_lb, qvar_ub, predicate)                         \
   __CPROVER_forall                                                             \
   {                                                                            \
     uint32_t qvar;                                                             \
     ((uint32_t) (qvar_lb) <= (qvar) && (qvar) < (uint32_t) (qvar_ub)) ==> (predicate) \
   }
+
+#define CBMC_FORALL_BOUNDED(qvar, qvar_lb, qvar_ub, qvar_max, predicate)       \
+  CBMC_FORALL(qvar, 0, qvar_max,                                               \
+              ((uint32_t)(qvar_lb) <= (qvar) &&                                \
+               (qvar) < (uint32_t)(qvar_ub)) ==> (predicate))
+
+/* The final argument keeps the selector's variadic tail nonempty in C99. */
+#define CBMC_FORALL_SELECT(_1, _2, _3, _4, _5, NAME, ...) NAME
+#define forall(...)                                                        \
+  CBMC_FORALL_SELECT(__VA_ARGS__, CBMC_FORALL_BOUNDED, CBMC_FORALL,           \
+                     unused)(__VA_ARGS__)
 
 #define exists(qvar, qvar_lb, qvar_ub, predicate)                              \
   __CPROVER_exists                                                             \
@@ -157,9 +177,32 @@
          (((array_var)[(qvar)]) < (int)(value_ub)))                    \
   }
 
-#define array_bound(array_var, qvar_lb, qvar_ub, value_lb, value_ub) \
-  array_bound_core(CBMC_CONCAT(_cbmc_idx, __COUNTER__), (qvar_lb),   \
+#define array_bound_bounded_core(qvar, qvar_lb, qvar_ub, qvar_max,       \
+                                 array_var, value_lb, value_ub)          \
+  CBMC_FORALL(qvar, 0, qvar_max,                                         \
+              ((uint32_t)(qvar_lb) <= (qvar) &&                          \
+               (qvar) < (uint32_t)(qvar_ub)) ==>                         \
+                  (((int)(value_lb) <= ((array_var)[(qvar)])) &&         \
+                   (((array_var)[(qvar)]) < (int)(value_ub))))
+
+/*
+ * array_bound(array_var, qvar_lb, qvar_ub, value_lb, value_ub) and
+ * array_bound(array_var, qvar_lb, qvar_ub, qvar_max, value_lb, value_ub)
+ * mirror the two forms of forall.
+ */
+#define CBMC_ARRAY_BOUND(array_var, qvar_lb, qvar_ub, value_lb, value_ub) \
+  array_bound_core(CBMC_CONCAT(_cbmc_idx, __COUNTER__), (qvar_lb),        \
       (qvar_ub), (array_var), (value_lb), (value_ub))
+
+#define CBMC_ARRAY_BOUND_BOUNDED(array_var, qvar_lb, qvar_ub, qvar_max,       \
+                                 value_lb, value_ub)                          \
+  array_bound_bounded_core(CBMC_CONCAT(_cbmc_idx, __COUNTER__), (qvar_lb),    \
+      (qvar_ub), (qvar_max), (array_var), (value_lb), (value_ub))
+
+#define CBMC_ARRAY_BOUND_SELECT(_1, _2, _3, _4, _5, _6, NAME, ...) NAME
+#define array_bound(...)                                                       \
+  CBMC_ARRAY_BOUND_SELECT(__VA_ARGS__, CBMC_ARRAY_BOUND_BOUNDED,               \
+                          CBMC_ARRAY_BOUND, unused)(__VA_ARGS__)
 
 #define array_unchanged_core(qvar, qvar_lb, qvar_ub, array_var)                   \
   __CPROVER_forall                                                                \
@@ -225,8 +268,16 @@
  * Note that since the lower bound in array_bound is inclusive, we have to
  * raise it by 1 here.
  */
-#define array_abs_bound(arr, lb, ub, k) \
+#define CBMC_ARRAY_ABS_BOUND(arr, lb, ub, k) \
   array_bound((arr), (lb), (ub), -((int)(k)) + 1, (k))
+
+#define CBMC_ARRAY_ABS_BOUND_BOUNDED(arr, lb, ub, max, k) \
+  array_bound((arr), (lb), (ub), (max), -((int)(k)) + 1, (k))
+
+/* array_abs_bound takes an optional constant max like array_bound. */
+#define array_abs_bound(...)                                    \
+  CBMC_FORALL_SELECT(__VA_ARGS__, CBMC_ARRAY_ABS_BOUND_BOUNDED, \
+                     CBMC_ARRAY_ABS_BOUND, unused)(__VA_ARGS__)
 
 #endif /* CBMC */
 

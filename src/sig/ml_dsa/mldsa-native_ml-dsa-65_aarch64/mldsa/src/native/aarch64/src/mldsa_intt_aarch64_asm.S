@@ -56,7 +56,8 @@
 */
 
 #include "../../../common.h"
-#if defined(MLD_ARITH_BACKEND_AARCH64) &&  !defined(MLD_CONFIG_MULTILEVEL_NO_SHARED)
+#if defined(MLD_SYS_AARCH64_NEON) && \
+    defined(MLD_ARITH_BACKEND_AARCH64) &&  !defined(MLD_CONFIG_MULTILEVEL_NO_SHARED)
 
 /*
  * WARNING: This file is auto-derived from the mldsa-native source file
@@ -779,7 +780,8 @@ Lmld_intt_layer1234_start:
 
 MLD_ASM_FN_SIZE(intt_aarch64_asm)
 
-#endif /* MLD_ARITH_BACKEND_AARCH64 && !MLD_CONFIG_MULTILEVEL_NO_SHARED */
+#endif /* MLD_SYS_AARCH64_NEON && MLD_ARITH_BACKEND_AARCH64 && \
+          !MLD_CONFIG_MULTILEVEL_NO_SHARED */
 
 #if defined(__ELF__)
 .section .note.GNU-stack,"",%progbits

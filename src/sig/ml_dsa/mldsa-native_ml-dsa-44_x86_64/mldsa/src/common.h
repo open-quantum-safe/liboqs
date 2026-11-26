@@ -7,6 +7,7 @@
 #define MLD_COMMON_H
 
 #ifndef __ASSEMBLER__
+#include <stddef.h>
 #include <stdint.h>
 #endif
 
@@ -19,8 +20,30 @@
 #include "mldsa_native_config.h"
 #endif
 
+#include "capability.h"
 #include "params.h"
 #include "sys.h"
+
+#if !defined(MLD_CONFIG_NO_ASM) && (defined(__GNUC__) || defined(__clang__))
+#define MLD_HAVE_INLINE_ASM
+#endif
+
+#if defined(MLD_CONFIG_CT_TESTING_ENABLED) && !defined(__ASSEMBLER__)
+#include <valgrind/memcheck.h>
+#define MLD_CT_TESTING_SECRET(ptr, len) \
+  VALGRIND_MAKE_MEM_UNDEFINED((ptr), (len))
+#define MLD_CT_TESTING_DECLASSIFY(ptr, len) \
+  VALGRIND_MAKE_MEM_DEFINED((ptr), (len))
+#else /* MLD_CONFIG_CT_TESTING_ENABLED && !__ASSEMBLER__ */
+#define MLD_CT_TESTING_SECRET(ptr, len) \
+  do                                    \
+  {                                     \
+  } while (0)
+#define MLD_CT_TESTING_DECLASSIFY(ptr, len) \
+  do                                        \
+  {                                         \
+  } while (0)
+#endif /* !(MLD_CONFIG_CT_TESTING_ENABLED && !__ASSEMBLER__) */
 
 /* Internal and public API have external linkage by default, but
  * this can be overwritten by the user, e.g. for single-CU builds. */
@@ -195,11 +218,18 @@
 /* Allocation macros for large local structures
  *
  * MLD_ALLOC(v, T, N) declares T *v and attempts to point it to an T[N]
+ *                    Additionally, if non-NULL, the value of v must respect
+ *                    MLD_DEFAULT_ALIGN alignment
  * MLD_FREE(v, T, N) zeroizes and frees the allocation
  *
  * Default implementation uses stack allocation.
  * Can be overridden by setting the config option MLD_CONFIG_CUSTOM_ALLOC_FREE
  * and defining MLD_CUSTOM_ALLOC and MLD_CUSTOM_FREE.
+ *
+ * Plain malloc() does not guarantee MLD_DEFAULT_ALIGN alignment.
+ * For examples of custom allocators that meet this requirement, see
+ * test/configs/custom_heap_alloc_config.h or the allocator in
+ * test/src/test_alloc.c configured by test/configs/test_alloc_config.h.
  */
 #if defined(MLD_CONFIG_CUSTOM_ALLOC_FREE) != \
     (defined(MLD_CUSTOM_ALLOC) && defined(MLD_CUSTOM_FREE))

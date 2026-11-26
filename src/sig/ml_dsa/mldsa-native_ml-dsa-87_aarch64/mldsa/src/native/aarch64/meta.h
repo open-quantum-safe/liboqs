@@ -92,8 +92,9 @@ static MLD_INLINE int mld_rej_uniform_eta2_native(int32_t *r, unsigned len,
   /* Constant time: Inputs and outputs to this function are secret.
    * It is safe to leak which coefficients are accepted/rejected.
    * The assembly implementation must not leak any other information about the
-   * accepted coefficients. Constant-time testing cannot cover this, and we
-   * hence have to manually verify the assembly.
+   * accepted coefficients. Constant-time testing cannot cover this, but the
+   * HOL Light proof of the assembly does: its timing depends only on which
+   * coefficients are accepted.
    * We declassify prior the input data and mark the outputs as secret.
    */
   MLD_CT_TESTING_DECLASSIFY(buf, buflen);
@@ -121,8 +122,9 @@ static MLD_INLINE int mld_rej_uniform_eta4_native(int32_t *r, unsigned len,
   /* Constant time: Inputs and outputs to this function are secret.
    * It is safe to leak which coefficients are accepted/rejected.
    * The assembly implementation must not leak any other information about the
-   * accepted coefficients. Constant-time testing cannot cover this, and we
-   * hence have to manually verify the assembly.
+   * accepted coefficients. Constant-time testing cannot cover this, but the
+   * HOL Light proof of the assembly does: its timing depends only on which
+   * coefficients are accepted.
    * We declassify prior the input data and mark the outputs as secret.
    */
   MLD_CT_TESTING_DECLASSIFY(buf, buflen);

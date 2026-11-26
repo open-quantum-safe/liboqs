@@ -79,6 +79,9 @@
 #define mld_yvec_eager MLD_ADD_PARAM_SET(mld_yvec_eager)
 #define mld_yvec_lazy MLD_ADD_PARAM_SET(mld_yvec_lazy)
 #define mld_yvec MLD_ADD_PARAM_SET(mld_yvec)
+#define mld_yvec_scratch MLD_ADD_PARAM_SET(mld_yvec_scratch)
+#define mld_yvec_scratch_eager MLD_ADD_PARAM_SET(mld_yvec_scratch_eager)
+#define mld_yvec_scratch_lazy MLD_ADD_PARAM_SET(mld_yvec_scratch_lazy)
 #define mld_yvec_init_eager MLD_ADD_PARAM_SET(mld_yvec_init_eager)
 #define mld_yvec_init_lazy MLD_ADD_PARAM_SET(mld_yvec_init_lazy)
 #define mld_yvec_get_poly_eager MLD_ADD_PARAM_SET(mld_yvec_get_poly_eager)
@@ -127,12 +130,18 @@ typedef struct
   mld_polyvecl vec; /**< Masking vector y. */
 } mld_yvec_eager;
 
+/** Scratch for the eager matrix-vector product: holds NTT(y) in full. */
+typedef mld_polyvecl mld_yvec_scratch_eager;
+
 /** Lazy yvec: store seed and base counter kappa, regenerate y[i] on demand. */
 typedef struct
 {
   const uint8_t *rhoprime; /**< Pointer to seed used to derive y. */
   uint16_t kappa;          /**< Base counter; component i uses kappa + i. */
 } mld_yvec_lazy;
+
+/** Scratch for the lazy matrix-vector product: holds one element of y. */
+typedef mld_poly mld_yvec_scratch_lazy;
 
 #if !defined(MLD_CONFIG_NO_KEYPAIR_API) || !defined(MLD_CONFIG_NO_SIGN_API)
 /* s1vec */
@@ -275,11 +284,11 @@ __contract__(
 )
 {
   unsigned int i;
-  for (i = 0; i < MLDSA_K; ++i)
+  for (i = 0; i < MLDSA_K; i++)
   __loop__(
     assigns(i, memory_slice(t0, sizeof(mld_sk_t0hat_eager)))
     invariant(i <= MLDSA_K)
-    invariant(forall(k0, 0, i,
+    invariant(forall(k0, 0, i, MLDSA_K,
       array_bound(t0->vec.vec[k0].coeffs, 0, MLDSA_N,
                   -(1 << (MLDSA_D - 1)) + 1, (1 << (MLDSA_D - 1)) + 1)))
     decreases(MLDSA_K - i)
@@ -502,21 +511,20 @@ __contract__(
  * @param[out] scratch Scratch polyvecl for NTT'd copy of y.
  */
 MLD_INTERNAL_API
-void mld_polyvec_matrix_pointwise_montgomery_yvec_eager(mld_polyveck *w,
-                                                        mld_polymat_eager *mat,
-                                                        const mld_yvec_eager *y,
-                                                        mld_polyvecl *scratch)
+void mld_polyvec_matrix_pointwise_montgomery_yvec_eager(
+    mld_polyveck *w, mld_polymat_eager *mat, const mld_yvec_eager *y,
+    mld_yvec_scratch_eager *scratch)
 __contract__(
   requires(memory_no_alias(w, sizeof(mld_polyveck)))
   requires(memory_no_alias(mat, sizeof(mld_polymat_eager)))
   requires(memory_no_alias(y, sizeof(mld_yvec_eager)))
-  requires(memory_no_alias(scratch, sizeof(mld_polyvecl)))
+  requires(memory_no_alias(scratch, sizeof(mld_yvec_scratch_eager)))
   requires(forall(k1, 0, MLDSA_K, forall(l1, 0, MLDSA_L,
     array_bound(mat->vec[k1].vec[l1].coeffs, 0, MLDSA_N, 0, MLDSA_Q))))
   requires(forall(l2, 0, MLDSA_L,
     array_bound(y->vec.vec[l2].coeffs, 0, MLDSA_N, -(MLDSA_GAMMA1 - 1), MLDSA_GAMMA1 + 1)))
   assigns(memory_slice(w, sizeof(mld_polyveck)))
-  assigns(memory_slice(scratch, sizeof(mld_polyvecl)))
+  assigns(memory_slice(scratch, sizeof(mld_yvec_scratch_eager)))
   ensures(forall(k0, 0, MLDSA_K,
     array_abs_bound(w->vec[k0].coeffs, 0, MLDSA_N, MLD_INTT_BOUND)))
 );
@@ -569,33 +577,29 @@ __contract__(
 /**
  * Compute w = invNTT(A * NTT(y)) for the signing y vector.
  *
- * The lazy variant samples one column of y at a time, NTTs it into
- * &scratch->vec[0], and accumulates the matrix-vector product
- * column-by-column with on-demand sampling of A[k][l]. Only the first poly of
- * the polyvecl scratch is used; the polyvecl type is shared with the eager
- * variant for API uniformity (the storage is provided "for free" by the
- * caller's polyveck/polyvecl union in REDUCE_RAM mode).
+ * The lazy variant samples one element of y at a time, NTTs it into scratch,
+ * and accumulates the matrix-vector product column-by-column with on-demand
+ * sampling of A[k][l].
  *
  * @param[out]    w       Pointer to output vector.
  * @param[in,out] mat     Pointer to input matrix.
  * @param[in]     y       Pointer to y seed/kappa.
- * @param[out]    scratch Scratch (only &scratch->vec[0] used).
+ * @param[out]    scratch Scratch for the NTT of the current element of y.
  */
 MLD_INTERNAL_API
-void mld_polyvec_matrix_pointwise_montgomery_yvec_lazy(mld_polyveck *w,
-                                                       mld_polymat_lazy *mat,
-                                                       const mld_yvec_lazy *y,
-                                                       mld_polyvecl *scratch)
+void mld_polyvec_matrix_pointwise_montgomery_yvec_lazy(
+    mld_polyveck *w, mld_polymat_lazy *mat, const mld_yvec_lazy *y,
+    mld_yvec_scratch_lazy *scratch)
 __contract__(
   requires(memory_no_alias(w, sizeof(mld_polyveck)))
   requires(memory_no_alias(mat, sizeof(mld_polymat_lazy)))
   requires(memory_no_alias(y, sizeof(mld_yvec_lazy)))
-  requires(memory_no_alias(scratch, sizeof(mld_polyvecl)))
+  requires(memory_no_alias(scratch, sizeof(mld_yvec_scratch_lazy)))
   requires(memory_no_alias(y->rhoprime, MLDSA_CRHBYTES))
   requires(y->kappa <= MLD_MAX_KAPPA)
   assigns(memory_slice(w, sizeof(mld_polyveck)))
   assigns(memory_slice(mat, sizeof(mld_polymat_lazy)))
-  assigns(memory_slice(scratch, sizeof(mld_polyvecl)))
+  assigns(memory_slice(scratch, sizeof(mld_yvec_scratch_lazy)))
   ensures(forall(k0, 0, MLDSA_K,
     array_abs_bound(w->vec[k0].coeffs, 0, MLDSA_N, MLD_INTT_BOUND)))
 );
@@ -609,6 +613,7 @@ typedef mld_sk_s2hat_lazy mld_sk_s2hat;
 typedef mld_sk_t0hat_lazy mld_sk_t0hat;
 typedef mld_polymat_lazy mld_polymat;
 typedef mld_yvec_lazy mld_yvec;
+typedef mld_yvec_scratch_lazy mld_yvec_scratch;
 #define mld_unpack_sk_s1hat mld_unpack_sk_s1hat_lazy
 #define mld_unpack_sk_s2hat mld_unpack_sk_s2hat_lazy
 #define mld_unpack_sk_t0hat mld_unpack_sk_t0hat_lazy
@@ -630,6 +635,7 @@ typedef mld_sk_s2hat_eager mld_sk_s2hat;
 typedef mld_sk_t0hat_eager mld_sk_t0hat;
 typedef mld_polymat_eager mld_polymat;
 typedef mld_yvec_eager mld_yvec;
+typedef mld_yvec_scratch_eager mld_yvec_scratch;
 #define mld_unpack_sk_s1hat mld_unpack_sk_s1hat_eager
 #define mld_unpack_sk_s2hat mld_unpack_sk_s2hat_eager
 #define mld_unpack_sk_t0hat mld_unpack_sk_t0hat_eager

@@ -44,7 +44,8 @@
 
 #include "../../../common.h"
 
-#if defined(MLD_ARITH_BACKEND_X86_64_DEFAULT) &&   \
+#if defined(MLD_SYS_X86_64_AVX2) && \
+    defined(MLD_ARITH_BACKEND_X86_64_DEFAULT) &&   \
     (!defined(MLD_CONFIG_NO_SIGN_API) ||           \
      !defined(MLD_CONFIG_NO_VERIFY_API)) &&        \
     !defined(MLD_CONFIG_MULTILEVEL_NO_SHARED) &&   \
@@ -339,14 +340,16 @@ MLD_ASM_FN_SYMBOL(polyz_unpack_19_avx2_asm)
         vpand %ymm3, %ymm0, %ymm0
         vpsubd %ymm0, %ymm4, %ymm0
         vmovdqa %ymm0, 0x3e0(%rdi)
+        vzeroupper
         retq
         .cfi_endproc
 
 MLD_ASM_FN_SIZE(polyz_unpack_19_avx2_asm)
 
 
-#endif /* MLD_ARITH_BACKEND_X86_64_DEFAULT && (!MLD_CONFIG_NO_SIGN_API || \
-          !MLD_CONFIG_NO_VERIFY_API) && !MLD_CONFIG_MULTILEVEL_NO_SHARED && \
+#endif /* MLD_SYS_X86_64_AVX2 && MLD_ARITH_BACKEND_X86_64_DEFAULT && \
+          (!MLD_CONFIG_NO_SIGN_API || !MLD_CONFIG_NO_VERIFY_API) && \
+          !MLD_CONFIG_MULTILEVEL_NO_SHARED && \
           (MLD_CONFIG_MULTILEVEL_WITH_SHARED || MLD_CONFIG_PARAMETER_SET == 65 \
           || MLD_CONFIG_PARAMETER_SET == 87) */
 

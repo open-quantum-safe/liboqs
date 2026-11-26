@@ -26,7 +26,9 @@
  * # API conventions
  *
  * Conventions shared by all functions below (return values, pointer validity,
- * output buffers on error) are documented in API-CONVENTIONS.md.
+ * buffer overlap, output buffers on error) are documented in
+ * API-CONVENTIONS.md. In particular, buffers passed to the same function must
+ * not overlap.
  *
  * # Multi-level builds
  *
@@ -35,6 +37,10 @@
  * in the configuration file and include this header multiple times, setting
  * MLD_CONFIG_PARAMETER_SET accordingly for each, and #undef'ing the MLD_H
  * guard to allow multiple inclusions.
+ *
+ * In this case, the configuration file must also set
+ * MLD_CONFIG_MULTILEVEL_BUILD. Without it, the parameter set is not appended
+ * to the namespace prefix and all inclusions declare the same symbol names.
  */
 
 /******************************* Key sizes ************************************/
@@ -128,11 +134,7 @@
  * string longer than 255 bytes. */
 #define MLD_ERR_INVALID_ARG (-9)
 
-/********************* Namespacing and Qualifiers *****************************/
-
-#define MLD_API_CONCAT_(x, y) x##y
-#define MLD_API_CONCAT(x, y) MLD_API_CONCAT_(x, y)
-#define MLD_API_CONCAT_UNDERSCORE(x, y) MLD_API_CONCAT(MLD_API_CONCAT(x, _), y)
+/****************************** Configuration *********************************/
 
 /* You need to make sure the config file is in the include path. */
 #if defined(MLD_CONFIG_FILE)
@@ -140,6 +142,32 @@
 #else
 #include "mldsa_native_config.h"
 #endif
+
+/* Hash algorithm constants for domain separation */
+#define MLD_PREHASH_NONE 0
+#define MLD_PREHASH_SHA2_224 1
+#define MLD_PREHASH_SHA2_256 2
+#define MLD_PREHASH_SHA2_384 3
+#define MLD_PREHASH_SHA2_512 4
+#define MLD_PREHASH_SHA2_512_224 5
+#define MLD_PREHASH_SHA2_512_256 6
+#define MLD_PREHASH_SHA3_224 7
+#define MLD_PREHASH_SHA3_256 8
+#define MLD_PREHASH_SHA3_384 9
+#define MLD_PREHASH_SHA3_512 10
+#define MLD_PREHASH_SHAKE_128 11
+#define MLD_PREHASH_SHAKE_256 12
+
+/* Maximum formatted domain separation message length */
+#define MLD_DOMAIN_SEPARATION_MAX_BYTES (2 + 255 + 11 + 64)
+
+/********************* Namespacing and Qualifiers *****************************/
+
+#if !defined(MLD_CONFIG_CONSTANTS_ONLY)
+
+#define MLD_API_CONCAT_(x, y) x##y
+#define MLD_API_CONCAT(x, y) MLD_API_CONCAT_(x, y)
+#define MLD_API_CONCAT_UNDERSCORE(x, y) MLD_API_CONCAT(MLD_API_CONCAT(x, _), y)
 
 /* Namespace prefix for the public API symbols. For multi-level builds, the
  * parameter set is appended to disambiguate the security levels. */
@@ -165,27 +193,7 @@
 #define MLD_API_QUALIFIER
 #endif
 
-/* Hash algorithm constants for domain separation */
-#define MLD_PREHASH_NONE 0
-#define MLD_PREHASH_SHA2_224 1
-#define MLD_PREHASH_SHA2_256 2
-#define MLD_PREHASH_SHA2_384 3
-#define MLD_PREHASH_SHA2_512 4
-#define MLD_PREHASH_SHA2_512_224 5
-#define MLD_PREHASH_SHA2_512_256 6
-#define MLD_PREHASH_SHA3_224 7
-#define MLD_PREHASH_SHA3_256 8
-#define MLD_PREHASH_SHA3_384 9
-#define MLD_PREHASH_SHA3_512 10
-#define MLD_PREHASH_SHAKE_128 11
-#define MLD_PREHASH_SHAKE_256 12
-
-/* Maximum formatted domain separation message length */
-#define MLD_DOMAIN_SEPARATION_MAX_BYTES (2 + 255 + 11 + 64)
-
 /****************************** Function API **********************************/
-
-#if !defined(MLD_CONFIG_CONSTANTS_ONLY)
 
 #include <stddef.h>
 #include <stdint.h>
@@ -309,8 +317,8 @@ int MLD_API_NAMESPACE(keypair)(
  *                        message representative mu (when externalmu != 0).
  * @param      mlen       Length of m. Must equal MLDSA_CRHBYTES when
  *                        externalmu != 0.
- * @param[in]  pre        Pointer to prefix string. Ignored when
- *                        externalmu != 0.
+ * @param[in]  pre        Pointer to prefix string. May be NULL if
+ *                        prelen == 0. Ignored when externalmu != 0.
  * @param      prelen     Length of prefix string. Ignored when
  *                        externalmu != 0.
  * @param[in]  rnd        Random seed.
@@ -380,8 +388,10 @@ int MLD_API_NAMESPACE(signature_internal)(
  * @retval MLD_ERR_SIGN_ATTEMPTS_EXHAUSTED The rejection-sampling loop exceeded
  *                                         MLD_CONFIG_MAX_SIGNING_ATTEMPTS
  *                                         iterations.
- * @retval MLD_ERR_SIGNING_PAUSED          A MLD_CONFIG_SIGN_HOOK_ATTEMPT hook
- *                                         paused signing; re-invoke to resume.
+ * @retval MLD_ERR_SIGNING_PAUSED          This should currently never happen:
+ *                                         signing hooks require
+ *                                         MLD_CONFIG_NO_RANDOMIZED_API, which
+ *                                         removes this function.
  * @retval MLD_ERR_INVALID_ARG             The context string exceeded 255
  *                                         bytes.
  */
@@ -426,8 +436,10 @@ int MLD_API_NAMESPACE(signature)(
  * @retval MLD_ERR_SIGN_ATTEMPTS_EXHAUSTED The rejection-sampling loop exceeded
  *                                         MLD_CONFIG_MAX_SIGNING_ATTEMPTS
  *                                         iterations.
- * @retval MLD_ERR_SIGNING_PAUSED          A MLD_CONFIG_SIGN_HOOK_ATTEMPT hook
- *                                         paused signing; re-invoke to resume.
+ * @retval MLD_ERR_SIGNING_PAUSED          This should currently never happen:
+ *                                         signing hooks require
+ *                                         MLD_CONFIG_NO_RANDOMIZED_API, which
+ *                                         removes this function.
  */
 MLD_API_QUALIFIER
 MLD_API_MUST_CHECK_RETURN_VALUE
@@ -458,7 +470,8 @@ int MLD_API_NAMESPACE(signature_extmu)(
  *                       externalmu != 0).
  * @param     mlen       Length of m. Must equal MLDSA_CRHBYTES when
  *                       externalmu != 0.
- * @param[in] pre        Pointer to prefix string. Ignored when externalmu != 0.
+ * @param[in] pre        Pointer to prefix string. May be NULL if prelen == 0.
+ *                       Ignored when externalmu != 0.
  * @param     prelen     Length of prefix string. Ignored when externalmu != 0.
  * @param[in] pk         Bit-packed public key.
  * @param     externalmu 0: m/mlen is the raw message; mu = H(H(pk), pre, m) is
@@ -780,6 +793,7 @@ int MLD_API_NAMESPACE(verify_pre_hash_shake256)(
 #endif /* !MLD_CONFIG_CORE_API_ONLY */
 
 #if !defined(MLD_CONFIG_CORE_API_ONLY)
+#if !defined(MLD_CONFIG_NO_SIGN_API) || !defined(MLD_CONFIG_NO_VERIFY_API)
 /**
  * Prepare domain separation prefix for ML-DSA signing.
  *
@@ -815,14 +829,15 @@ int MLD_API_NAMESPACE(verify_pre_hash_shake256)(
  * @return The total length of the formatted prefix, or 0 on error.
  *         Errors are:
  *         - The context string exceeded 255 bytes.
- *         - For HashML-DSA: hashalg was unsupported, ph was NULL, or phlen
- *           did not match the output length of hashalg.
+ *         - For HashML-DSA: hashalg was unsupported, or phlen did not match
+ *           the output length of hashalg.
  */
 MLD_API_QUALIFIER
 MLD_API_MUST_CHECK_RETURN_VALUE
 size_t MLD_API_NAMESPACE(prepare_domain_separation_prefix)(
     uint8_t prefix[MLD_DOMAIN_SEPARATION_MAX_BYTES], const uint8_t *ph,
     size_t phlen, const uint8_t *ctx, size_t ctxlen, int hashalg);
+#endif /* !MLD_CONFIG_NO_SIGN_API || !MLD_CONFIG_NO_VERIFY_API */
 
 #if !defined(MLD_CONFIG_NO_KEYPAIR_API)
 /**
@@ -888,36 +903,36 @@ int MLD_API_NAMESPACE(pk_from_sk)(
  */
 /* check-magic: off */
 #if !defined(MLD_CONFIG_REDUCE_RAM)
-#define MLD_TOTAL_ALLOC_44_KEYPAIR_NO_PCT 26912
-#define MLD_TOTAL_ALLOC_44_KEYPAIR_PCT 48480
-#define MLD_TOTAL_ALLOC_44_PK_FROM_SK 28480
-#define MLD_TOTAL_ALLOC_44_SIGN 44704
+#define MLD_TOTAL_ALLOC_44_KEYPAIR_NO_PCT 22816
+#define MLD_TOTAL_ALLOC_44_KEYPAIR_PCT 48224
+#define MLD_TOTAL_ALLOC_44_PK_FROM_SK 25408
+#define MLD_TOTAL_ALLOC_44_SIGN 44448
 #define MLD_TOTAL_ALLOC_44_VERIFY 24448
-#define MLD_TOTAL_ALLOC_65_KEYPAIR_NO_PCT 44320
-#define MLD_TOTAL_ALLOC_65_KEYPAIR_PCT 74624
-#define MLD_TOTAL_ALLOC_65_PK_FROM_SK 46720
-#define MLD_TOTAL_ALLOC_65_SIGN 69312
+#define MLD_TOTAL_ALLOC_65_KEYPAIR_NO_PCT 38176
+#define MLD_TOTAL_ALLOC_65_KEYPAIR_PCT 73344
+#define MLD_TOTAL_ALLOC_65_PK_FROM_SK 41600
+#define MLD_TOTAL_ALLOC_65_SIGN 68032
 #define MLD_TOTAL_ALLOC_65_VERIFY 39872
-#define MLD_TOTAL_ALLOC_87_KEYPAIR_NO_PCT 75040
-#define MLD_TOTAL_ALLOC_87_KEYPAIR_PCT 115488
-#define MLD_TOTAL_ALLOC_87_PK_FROM_SK 78272
-#define MLD_TOTAL_ALLOC_87_SIGN 108224
+#define MLD_TOTAL_ALLOC_87_KEYPAIR_NO_PCT 66848
+#define MLD_TOTAL_ALLOC_87_KEYPAIR_PCT 114464
+#define MLD_TOTAL_ALLOC_87_PK_FROM_SK 71104
+#define MLD_TOTAL_ALLOC_87_SIGN 107200
 #define MLD_TOTAL_ALLOC_87_VERIFY 68800
 #else /* !MLD_CONFIG_REDUCE_RAM */
-#define MLD_TOTAL_ALLOC_44_KEYPAIR_NO_PCT 11584
-#define MLD_TOTAL_ALLOC_44_KEYPAIR_PCT 16896
-#define MLD_TOTAL_ALLOC_44_PK_FROM_SK 13152
-#define MLD_TOTAL_ALLOC_44_SIGN 13120
+#define MLD_TOTAL_ALLOC_44_KEYPAIR_NO_PCT 7488
+#define MLD_TOTAL_ALLOC_44_KEYPAIR_PCT 13568
+#define MLD_TOTAL_ALLOC_44_PK_FROM_SK 10080
+#define MLD_TOTAL_ALLOC_44_SIGN 9792
 #define MLD_TOTAL_ALLOC_44_VERIFY 9120
-#define MLD_TOTAL_ALLOC_65_KEYPAIR_NO_PCT 14656
-#define MLD_TOTAL_ALLOC_65_KEYPAIR_PCT 22560
-#define MLD_TOTAL_ALLOC_65_PK_FROM_SK 17056
-#define MLD_TOTAL_ALLOC_65_SIGN 17248
+#define MLD_TOTAL_ALLOC_65_KEYPAIR_NO_PCT 8512
+#define MLD_TOTAL_ALLOC_65_KEYPAIR_PCT 17184
+#define MLD_TOTAL_ALLOC_65_PK_FROM_SK 11936
+#define MLD_TOTAL_ALLOC_65_SIGN 11872
 #define MLD_TOTAL_ALLOC_65_VERIFY 10208
-#define MLD_TOTAL_ALLOC_87_KEYPAIR_NO_PCT 18752
-#define MLD_TOTAL_ALLOC_87_KEYPAIR_PCT 28608
-#define MLD_TOTAL_ALLOC_87_PK_FROM_SK 21984
-#define MLD_TOTAL_ALLOC_87_SIGN 21344
+#define MLD_TOTAL_ALLOC_87_KEYPAIR_NO_PCT 10560
+#define MLD_TOTAL_ALLOC_87_KEYPAIR_PCT 21440
+#define MLD_TOTAL_ALLOC_87_PK_FROM_SK 14816
+#define MLD_TOTAL_ALLOC_87_SIGN 14176
 #define MLD_TOTAL_ALLOC_87_VERIFY 12512
 #endif /* MLD_CONFIG_REDUCE_RAM */
 /* check-magic: on */

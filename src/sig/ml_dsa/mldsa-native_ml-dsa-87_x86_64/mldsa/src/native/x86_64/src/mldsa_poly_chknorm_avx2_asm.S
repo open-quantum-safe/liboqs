@@ -24,7 +24,7 @@
     Check the infinity norm of the polynomial against the given bound B.
     Returns 0 if the norm is strictly smaller than B; otherwise returns 1
     (i.e. returns 1 if any |coefficient| >= B, 0 otherwise).
-  Signature: int mld_poly_chknorm_avx2_asm(const int32_t *a, int32_t B)
+  Signature: int mld_poly_chknorm_avx2_asm(const int32_t *a, int64_t B)
   ABI:
     Architecture: x86_64
     CallingConvention: SysV
@@ -37,14 +37,15 @@
       description: Input polynomial (256 x int32_t)
     rsi:
       type: scalar
-      c_parameter: int32_t B
+      c_parameter: int64_t B
       description: Norm bound (must be non-negative)
       test_with: 131072  # representative non-negative bound (1 << 17)
 */
 
 #include "../../../common.h"
 
-#if defined(MLD_ARITH_BACKEND_X86_64_DEFAULT) && \
+#if defined(MLD_SYS_X86_64_AVX2) && \
+    defined(MLD_ARITH_BACKEND_X86_64_DEFAULT) && \
     !defined(MLD_CONFIG_MULTILEVEL_NO_SHARED)
 
 
@@ -162,14 +163,15 @@ MLD_ASM_FN_SYMBOL(poly_chknorm_avx2_asm)
         xorl %eax, %eax
         vptest %ymm1, %ymm1
         setne %al
+        vzeroupper
         retq
         .cfi_endproc
 
 MLD_ASM_FN_SIZE(poly_chknorm_avx2_asm)
 
 
-#endif /* MLD_ARITH_BACKEND_X86_64_DEFAULT && !MLD_CONFIG_MULTILEVEL_NO_SHARED \
-        */
+#endif /* MLD_SYS_X86_64_AVX2 && MLD_ARITH_BACKEND_X86_64_DEFAULT && \
+          !MLD_CONFIG_MULTILEVEL_NO_SHARED */
 
 #if defined(__ELF__)
 .section .note.GNU-stack,"",%progbits

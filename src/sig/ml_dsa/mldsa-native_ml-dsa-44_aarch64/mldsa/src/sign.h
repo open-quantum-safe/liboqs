@@ -16,6 +16,7 @@
 #define MLD_SIGN_H
 
 #include <stddef.h>
+
 #include "cbmc.h"
 #include "common.h"
 #include "poly.h"
@@ -787,8 +788,8 @@ __contract__(
  * @return The total length of the formatted prefix, or 0 on error.
  *         Errors are:
  *         - The context string exceeded 255 bytes.
- *         - For HashML-DSA: hashalg was unsupported, ph was NULL, or phlen
- *           did not match the output length of hashalg.
+ *         - For HashML-DSA: hashalg was unsupported, or phlen did not match
+ *           the output length of hashalg.
  */
 MLD_MUST_CHECK_RETURN_VALUE
 MLD_EXTERNAL_API
@@ -796,13 +797,15 @@ size_t mld_prepare_domain_separation_prefix(
     uint8_t prefix[MLD_DOMAIN_SEPARATION_MAX_BYTES], const uint8_t *ph,
     size_t phlen, const uint8_t *ctx, size_t ctxlen, int hashalg)
 __contract__(
-  requires(ctxlen <= 255)
+  requires(ctxlen <= MLD_MAX_BUFFER_SIZE)
   requires(phlen <= MLD_MAX_BUFFER_SIZE)
   requires(ctxlen == 0 || memory_no_alias(ctx, ctxlen))
   requires(hashalg == MLD_PREHASH_NONE || memory_no_alias(ph, phlen))
   requires(memory_no_alias(prefix, MLD_DOMAIN_SEPARATION_MAX_BYTES))
   assigns(memory_slice(prefix, MLD_DOMAIN_SEPARATION_MAX_BYTES))
   ensures(return_value <= MLD_DOMAIN_SEPARATION_MAX_BYTES)
+  ensures(ctxlen > 255 ==> return_value == 0)
+  ensures((hashalg == MLD_PREHASH_NONE && ctxlen <= 255) ==> return_value != 0)
 );
 #endif /* !MLD_CONFIG_NO_SIGN_API || !MLD_CONFIG_NO_VERIFY_API */
 
