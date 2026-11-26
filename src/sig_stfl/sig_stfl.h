@@ -39,8 +39,7 @@
  */
 
 #if defined(__cplusplus)
-extern "C"
-{
+extern "C" {
 #endif
 
 /** Algorithm identifier for XMSS-SHA2_10_256  */

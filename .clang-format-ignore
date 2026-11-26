@@ -1,0 +1,17 @@
+# SPDX-License-Identifier: MIT
+#
+# Files clang-format skips (requires clang-format >= 18). Patterns are relative to
+# this directory; `*` does not cross `/`, `**` does.
+
+# Upstream implementations imported by scripts/copy_from_upstream
+src/kem/*/*/**
+src/sig/*/*/**
+
+# Third-party code
+**/external/**
+
+# Copied from the BIKE additional implementation alongside src/kem/bike/additional_r4
+src/kem/bike/functions_renaming.h
+
+# XKCP, imported (and formatted) by scripts/copy_from_xkcp/package.sh
+src/common/sha3/xkcp_low/**

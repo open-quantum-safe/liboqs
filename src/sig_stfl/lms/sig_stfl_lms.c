@@ -63,7 +63,7 @@ static void OQS_SECRET_KEY_LMS_set_store_cb(OQS_SIG_STFL_SECRET_KEY *sk, secure_
 #define LMS_SIGN_FN(lms_variant) \
 static OQS_STATUS OQS_SIG_STFL_alg_lms_##lms_variant##_sign(uint8_t *signature, size_t *signature_length, const uint8_t *message, size_t message_len, OQS_SIG_STFL_SECRET_KEY *secret_key) { \
         return oqs_sig_stfl_lms_sign_with_oid(signature, signature_length, message, message_len, secret_key, OQS_LMS_ID_##lms_variant, OQS_SIG_STFL_alg_lms_##lms_variant##_length_signature); \
-} \
+}
 
 #else
 #define LMS_SIGGEN(lms_variant, LMS_VARIANT)
