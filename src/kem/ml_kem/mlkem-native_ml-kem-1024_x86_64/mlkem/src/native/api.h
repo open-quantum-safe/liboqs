@@ -99,7 +99,6 @@ __contract__(
   assigns(memory_slice(p, sizeof(int16_t) * MLKEM_N))
   ensures(return_value == MLK_NATIVE_FUNC_FALLBACK || return_value == MLK_NATIVE_FUNC_SUCCESS)
   ensures((return_value == MLK_NATIVE_FUNC_SUCCESS) ==> array_abs_bound(p, 0, MLKEM_N, MLK_NTT_BOUND))
-  ensures((return_value == MLK_NATIVE_FUNC_FALLBACK) ==> array_abs_bound(p, 0, MLKEM_N, MLKEM_Q))
   ensures((return_value == MLK_NATIVE_FUNC_FALLBACK) ==> array_unchanged(p, MLKEM_N))
 );
 #endif /* MLK_USE_NATIVE_NTT */

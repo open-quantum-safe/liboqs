@@ -5,9 +5,9 @@
 #ifndef MLK_SYS_H
 #define MLK_SYS_H
 
-#if !defined(MLK_CONFIG_NO_ASM) && (defined(__GNUC__) || defined(__clang__))
-#define MLK_HAVE_INLINE_ASM
-#endif
+/* This header must not depend on configuration options: configuration
+ * hooks may include it before all options are defined, and its include
+ * guard prevents re-evaluation. Evaluate options in common.h instead. */
 
 /* Try to find endianness, if not forced through CFLAGS already */
 #if !defined(MLK_SYS_LITTLE_ENDIAN) && !defined(MLK_SYS_BIG_ENDIAN)
@@ -57,8 +57,9 @@
 #define MLK_SYS_AARCH64_EB
 #endif
 
-/* Check if we're running on an Armv8.1-M system with MVE */
-#if defined(__ARM_ARCH_8_1M_MAIN__) || defined(__ARM_FEATURE_MVE)
+/* Check if the Armv8.1-M compilation target supports MVE. Armv8.1-M
+ * architecture support alone does not imply that MVE is enabled. */
+#if defined(__ARM_FEATURE_MVE)
 #define MLK_SYS_ARMV81M_MVE
 #endif
 
@@ -68,20 +69,38 @@
 #if defined(__AVX2__)
 #define MLK_SYS_X86_64_AVX2
 #endif
+/* Check if the compilation target supports the AVX-512 extensions used by
+ * the AVX-512 backend: AVX-512F, AVX-512VL and AVX-512DQ. */
+#if defined(__AVX512F__) && defined(__AVX512VL__) && defined(__AVX512DQ__)
+#define MLK_SYS_X86_64_AVX512
+#endif
 #endif /* __x86_64__ || _M_X64 || _M_AMD64 */
 
 #if defined(MLK_SYS_LITTLE_ENDIAN) && defined(__powerpc64__)
 #define MLK_SYS_PPC64LE
 #endif
 
+/* Check if the PPC64LE compilation target supports the vector instructions
+ * used by the POWER8 backend: AltiVec/VMX, VSX, and POWER8 vector extensions
+ * (Power ISA 2.07). AltiVec predates POWER8; VSX was introduced in POWER7. */
+#if defined(MLK_SYS_PPC64LE) && defined(__ALTIVEC__) && defined(__VSX__) && \
+    defined(__POWER8_VECTOR__)
+#define MLK_SYS_PPC64LE_POWER8_VECTOR
+#endif
+
 #if defined(__riscv) && defined(__riscv_xlen) && __riscv_xlen == 64
 #define MLK_SYS_RISCV64
 #endif
 
+/* check-magic: off */
+/* The RVV backend requires v0.12 or later of the RVV intrinsics
+ * (__riscv_v_intrinsic >= 12000); older compilers such as gcc 13 fall
+ * back to C. */
 #if defined(MLK_SYS_RISCV64) && defined(__riscv_vector) && \
-    defined(__riscv_v_intrinsic)
+    defined(__riscv_v_intrinsic) && __riscv_v_intrinsic >= 12000
 #define MLK_SYS_RISCV64_RVV
 #endif
+/* check-magic: on */
 
 #if defined(__riscv) && defined(__riscv_xlen) && __riscv_xlen == 32
 #define MLK_SYS_RISCV32
@@ -235,23 +254,6 @@
 #endif
 #endif /* MLK_SYS_X86_64 */
 
-#if defined(MLK_CONFIG_CT_TESTING_ENABLED) && !defined(__ASSEMBLER__)
-#include <valgrind/memcheck.h>
-#define MLK_CT_TESTING_SECRET(ptr, len) \
-  VALGRIND_MAKE_MEM_UNDEFINED((ptr), (len))
-#define MLK_CT_TESTING_DECLASSIFY(ptr, len) \
-  VALGRIND_MAKE_MEM_DEFINED((ptr), (len))
-#else /* MLK_CONFIG_CT_TESTING_ENABLED && !__ASSEMBLER__ */
-#define MLK_CT_TESTING_SECRET(ptr, len) \
-  do                                    \
-  {                                     \
-  } while (0)
-#define MLK_CT_TESTING_DECLASSIFY(ptr, len) \
-  do                                        \
-  {                                         \
-  } while (0)
-#endif /* !(MLK_CONFIG_CT_TESTING_ENABLED && !__ASSEMBLER__) */
-
 #if defined(__GNUC__) || defined(__clang__)
 #define MLK_MUST_CHECK_RETURN_VALUE __attribute__((warn_unused_result))
 #else
@@ -289,32 +291,17 @@ typedef enum
 {
   /* x86_64 */
   MLK_SYS_CAP_X86_64_AVX2,
+  /* AVX-512F, AVX-512VL and AVX-512DQ */
+  MLK_SYS_CAP_X86_64_AVX512,
   /* AArch64 */
   MLK_SYS_CAP_AARCH64_NEON,
   MLK_SYS_CAP_AARCH64_SHA3,
   /* Armv8.1-M */
-  MLK_SYS_CAP_ARMV81M_MVE
+  MLK_SYS_CAP_ARMV81M_MVE,
+  /* PowerPC64 */
+  /* AltiVec/VMX, VSX, and POWER8 vector extensions (Power ISA 2.07). */
+  MLK_SYS_CAP_PPC64LE_POWER8_VECTOR
 } mlk_sys_cap;
-
-#if !defined(MLK_CONFIG_CUSTOM_CAPABILITY_FUNC)
-#include "cbmc.h"
-
-MLK_MUST_CHECK_RETURN_VALUE
-static MLK_INLINE int mlk_sys_check_capability(mlk_sys_cap cap)
-__contract__(
-  ensures(return_value == 0 || return_value == 1)
-)
-{
-  /* By default, we rely on compile-time feature detection/specification:
-   * If a feature is enabled at compile-time, we assume it is supported by
-   * the host that the resulting library/binary will be built on.
-   * If this assumption is not true, you MUST overwrite this function.
-   * See the documentation of MLK_CONFIG_CUSTOM_CAPABILITY_FUNC in
-   * mlkem_native_config.h for more information. */
-  (void)cap;
-  return 1;
-}
-#endif /* !MLK_CONFIG_CUSTOM_CAPABILITY_FUNC */
 #endif /* !__ASSEMBLER__ */
 
 #endif /* !MLK_SYS_H */

@@ -5,9 +5,9 @@
 #ifndef MLK_NATIVE_X86_64_SRC_ARITH_NATIVE_X86_64_H
 #define MLK_NATIVE_X86_64_SRC_ARITH_NATIVE_X86_64_H
 
-#include "../../../common.h"
-
 #include <stdint.h>
+
+#include "../../../common.h"
 #include "compress_consts.h"
 #include "consts.h"
 
@@ -20,7 +20,7 @@ MLK_INTERNAL_DATA_DECLARATION const uint8_t mlk_rej_uniform_table[4096];
 #define mlk_rej_uniform_avx2_asm MLK_NAMESPACE(rej_uniform_avx2_asm)
 MLK_MUST_CHECK_RETURN_VALUE MLK_SYSV_ABI
 uint64_t mlk_rej_uniform_avx2_asm(int16_t *r, const uint8_t *buf,
-                                  unsigned buflen, const uint8_t *table)
+                                  uint64_t buflen, const uint8_t *table)
 /* This must be kept in sync with the HOL-Light specification
  * in proofs/hol_light/x86_64/proofs/mlkem_rej_uniform_avx2_asm.ml. */
 __contract__(
@@ -40,11 +40,11 @@ void mlk_ntt_avx2_asm(int16_t *r, const int16_t *qdata)
  * in proofs/hol_light/x86_64/proofs/mlkem_ntt_avx2_asm.ml */
 __contract__(
   requires(memory_no_alias(r, sizeof(int16_t) * MLKEM_N))
-  requires(array_abs_bound(r, 0, MLKEM_N, 8192))
+  requires(array_abs_bound(r, 0, MLKEM_N, MLKEM_Q))
   requires(qdata == mlk_qdata)
   assigns(memory_slice(r, sizeof(int16_t) * MLKEM_N))
   /* check-magic: off */
-  ensures(array_abs_bound(r, 0, MLKEM_N, 23595))
+  ensures(array_abs_bound(r, 0, MLKEM_N, 16188))
   /* check-magic: on */
 );
 

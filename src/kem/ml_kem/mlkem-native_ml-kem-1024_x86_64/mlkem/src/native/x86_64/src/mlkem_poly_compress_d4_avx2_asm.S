@@ -29,7 +29,8 @@
  **************************************************/
 
 #include "../../../common.h"
-#if defined(MLK_ARITH_BACKEND_X86_64_DEFAULT) && \
+#if defined(MLK_SYS_X86_64_AVX2) && \
+    defined(MLK_ARITH_BACKEND_X86_64_DEFAULT) && \
     !defined(MLK_CONFIG_MULTILEVEL_NO_SHARED) && \
     (!defined(MLK_CONFIG_NO_ENCAPS_API) || \
      !defined(MLK_CONFIG_NO_DECAPS_API)) && \
@@ -179,15 +180,16 @@ MLK_ASM_FN_SYMBOL(poly_compress_d4_avx2_asm)
         vpackuswb %ymm7, %ymm5, %ymm5
         vpermd %ymm5, %ymm4, %ymm5
         vmovdqu %ymm5, 0x60(%rdi)
+        vzeroupper
         retq
         .cfi_endproc
 
 MLK_ASM_FN_SIZE(poly_compress_d4_avx2_asm)
 
-#endif /* MLK_ARITH_BACKEND_X86_64_DEFAULT && !MLK_CONFIG_MULTILEVEL_NO_SHARED \
-          && (!MLK_CONFIG_NO_ENCAPS_API || !MLK_CONFIG_NO_DECAPS_API) && \
-          (MLK_CONFIG_MULTILEVEL_WITH_SHARED || MLKEM_K == 2 || MLKEM_K == 3) \
-        */
+#endif /* MLK_SYS_X86_64_AVX2 && MLK_ARITH_BACKEND_X86_64_DEFAULT && \
+          !MLK_CONFIG_MULTILEVEL_NO_SHARED && (!MLK_CONFIG_NO_ENCAPS_API || \
+          !MLK_CONFIG_NO_DECAPS_API) && (MLK_CONFIG_MULTILEVEL_WITH_SHARED || \
+          MLKEM_K == 2 || MLKEM_K == 3) */
 
 #if defined(__ELF__)
 .section .note.GNU-stack,"",%progbits
