@@ -961,7 +961,11 @@ INPUT                  = src/common/aes/aes_ops.h \
                          README.md \
                          CONFIGURE.md \
                          SECURITY.md \
-                         CONTRIBUTORS
+                         CONTRIBUTORS \
+                         docs/algorithms/kem \
+                         docs/algorithms/sig \
+                         docs/algorithms/sig_stfl \
+                         $(DOXYGEN_DESTIONATION_DIR)/algorithms.md
 
 # This tag can be used to specify the character encoding of the source files
 # that doxygen parses. Internally doxygen uses the UTF-8 encoding. Doxygen uses
@@ -1148,7 +1152,7 @@ INPUT_FILTER           =
 # need to set EXTENSION_MAPPING for the extension otherwise the files are not
 # properly processed by doxygen.
 
-FILTER_PATTERNS        =
+FILTER_PATTERNS        = "*/docs/algorithms/*.md=python3 scripts/doxyfy_datasheet.py"
 
 # If the FILTER_SOURCE_FILES tag is set to YES, the input filter (if set using
 # INPUT_FILTER) will also be used to filter the input files that are used for

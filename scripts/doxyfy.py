@@ -1,7 +1,21 @@
 # SPDX-License-Identifier: MIT
 
+import re
 import sys
 from pathlib import Path
+
+# Relative links to the algorithm datasheets (docs/algorithms and
+# docs/algorithms/<type>/<name>.md) work on GitHub, but Doxygen does not
+# reliably map them to its pages (1.18 reports an unresolved reference,
+# older versions write a dead link). Point them at the Doxygen pages
+# explicitly; see scripts/doxyfy_datasheet.py and
+# scripts/doxygen_algorithms_index.py.
+DATASHEET_LINK_RE = re.compile(r"\]\(docs/algorithms/(kem|sig|sig_stfl)/([A-Za-z0-9_]+)\.md\)")
+DATASHEET_INDEX_LINK_RE = re.compile(r"\]\(docs/algorithms/?\)")
+
+def reformat_datasheet_links(s):
+   s = DATASHEET_LINK_RE.sub(r"](@ref algorithms-\1-\2)", s)
+   return DATASHEET_INDEX_LINK_RE.sub("](@ref algorithms)", s)
 
 def anchorstring(str):
     doxyref=str.replace("/", "")
@@ -52,7 +66,7 @@ with open(sys.argv[2], "w") as outfile:
             if ll is not None:
                ll = reformat_anchors(ll)
         # write last line
-        if ll is not None: outfile.write(ll)
+        if ll is not None: outfile.write(reformat_datasheet_links(ll))
         ll = nl
     # write final line
-    outfile.write(ll)
+    outfile.write(reformat_datasheet_links(ll))

@@ -7,6 +7,12 @@ if [ "$#" -ne 3 ]; then
    exit 1
 fi
 
+mkdir -p "$3/docs"
+
+# index page that groups the algorithm datasheets (docs/algorithms); the
+# datasheets themselves are converted by the doxyfy_datasheet.py input filter
+python3 scripts/doxygen_algorithms_index.py . "$3/docs/algorithms.md" || exit 1
+
 # Doxygen can't handle Github Markdown so we temporarily reformat it
 for file in README.md CONFIGURE.md SECURITY.md
 do
@@ -15,7 +21,6 @@ do
 done
 
 # run doxygen:
-mkdir -p "$3/docs"
 env DOXYGEN_DESTIONATION_DIR="$3/docs" "$1" "$2"
 EXITCODE=$?
 

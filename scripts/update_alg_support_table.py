@@ -84,8 +84,6 @@ def render_alg_support_tbl(doc_dir: str, anchor_alg_name: bool = False) -> str:
     the corresponding markdown document under docs/algorithms/<kem|sig|sig_stfl>
     otherwise "algorithm family" will be plain text with no link.
     """
-    # TODO: anchor_alg_name is turned off because Doxygen cannot handle links
-    # to markdown files under docs/algorithms/xxx
     yaml_paths = [
         os.path.abspath(os.path.join(doc_dir, filepath))
         for filepath in os.listdir(doc_dir)
@@ -97,11 +95,8 @@ def render_alg_support_tbl(doc_dir: str, anchor_alg_name: bool = False) -> str:
         with open(yaml_path) as f:
             algdata = yaml.safe_load(f)
         alg_name = algdata["name"]
-        dirname = "kem"
-        if "sig/" in yaml_path:
-            dirname = "sig"
-        elif "sig_stfl/" in yaml_path:
-            dirname = "sig_stfl"
+        # kem, sig or sig_stfl
+        dirname = os.path.basename(os.path.dirname(yaml_path))
         md_basename = os.path.splitext(os.path.split(yaml_path)[1])[0]
         md_url = f"docs/algorithms/{dirname}/{md_basename}.md"
         std_status = algdata["standardization-status"]
@@ -134,11 +129,11 @@ def update_readme(liboqs_dir: str):
     - (WIP) Maintenance status
     """
     kem_doc_dir = os.path.join(liboqs_dir, "docs", "algorithms", "kem")
-    kem_tbl = render_alg_support_tbl(kem_doc_dir)
+    kem_tbl = render_alg_support_tbl(kem_doc_dir, anchor_alg_name=True)
     sig_doc_dir = os.path.join(liboqs_dir, "docs", "algorithms", "sig")
-    sig_tbl = render_alg_support_tbl(sig_doc_dir)
+    sig_tbl = render_alg_support_tbl(sig_doc_dir, anchor_alg_name=True)
     sig_stfl_doc_dir = os.path.join(liboqs_dir, "docs", "algorithms", "sig_stfl")
-    sig_stfl_tbl = render_alg_support_tbl(sig_stfl_doc_dir)
+    sig_stfl_tbl = render_alg_support_tbl(sig_stfl_doc_dir, anchor_alg_name=True)
     md_str = f"""#### Key encapsulation mechanisms
 {kem_tbl}
 
