@@ -138,7 +138,7 @@ MLD_INTERNAL_API
 void mld_poly_shiftl(mld_poly *a)
 __contract__(
   requires(memory_no_alias(a, sizeof(mld_poly)))
-  requires(array_bound(a->coeffs, 0, MLDSA_N, 0, 1 << 10))
+  requires(array_bound(a->coeffs, 0, MLDSA_N, 0, 1 << MLDSA_POLYT1_PACKEDBITS))
   assigns(memory_slice(a, sizeof(mld_poly)))
   ensures(array_bound(a->coeffs, 0, MLDSA_N, 0, MLDSA_Q))
 );
@@ -318,7 +318,7 @@ void mld_polyt1_pack(uint8_t r[MLDSA_POLYT1_PACKEDBYTES], const mld_poly *a)
 __contract__(
   requires(memory_no_alias(r, MLDSA_POLYT1_PACKEDBYTES))
   requires(memory_no_alias(a, sizeof(mld_poly)))
-  requires(array_bound(a->coeffs, 0, MLDSA_N, 0, 1 << 10))
+  requires(array_bound(a->coeffs, 0, MLDSA_N, 0, 1 << MLDSA_POLYT1_PACKEDBITS))
   assigns(memory_slice(r, MLDSA_POLYT1_PACKEDBYTES))
 );
 #endif /* !MLD_CONFIG_NO_KEYPAIR_API */
@@ -340,7 +340,7 @@ __contract__(
   requires(memory_no_alias(r, sizeof(mld_poly)))
   requires(memory_no_alias(a, MLDSA_POLYT1_PACKEDBYTES))
   assigns(memory_slice(r, sizeof(mld_poly)))
-  ensures(array_bound(r->coeffs, 0, MLDSA_N, 0, 1 << 10))
+  ensures(array_bound(r->coeffs, 0, MLDSA_N, 0, 1 << MLDSA_POLYT1_PACKEDBITS))
 );
 #endif /* !MLD_CONFIG_NO_VERIFY_API */
 
@@ -385,6 +385,10 @@ __contract__(
 );
 #endif /* !MLD_CONFIG_NO_SIGN_API || MLD_UNIT_TEST */
 
+#if !defined(MLD_CONFIG_NO_SIGN_API) || !defined(MLD_CONFIG_NO_VERIFY_API) || \
+    (!defined(MLD_CONFIG_NO_KEYPAIR_API) &&                                   \
+     !defined(MLD_CONFIG_CORE_API_ONLY)) ||                                   \
+    defined(MLD_UNIT_TEST)
 #define mld_poly_chknorm MLD_NAMESPACE(poly_chknorm)
 /**
  * Check infinity norm of polynomial against given bound. Assumes input
@@ -413,6 +417,9 @@ __contract__(
   ensures(return_value == 0 || return_value == 0xFFFFFFFF)
   ensures((return_value == 0) == array_abs_bound(a->coeffs, 0, MLDSA_N, B))
 );
+#endif /* !MLD_CONFIG_NO_SIGN_API || !MLD_CONFIG_NO_VERIFY_API ||      \
+          (!MLD_CONFIG_NO_KEYPAIR_API && !MLD_CONFIG_CORE_API_ONLY) || \
+          MLD_UNIT_TEST */
 
 #if !defined(MLD_CONFIG_NO_SIGN_API) || !defined(MLD_CONFIG_NO_VERIFY_API)
 #if defined(MLD_CONFIG_MULTILEVEL_WITH_SHARED) || MLD_CONFIG_PARAMETER_SET == 44
@@ -460,5 +467,56 @@ __contract__(
 #endif /* MLD_CONFIG_MULTILEVEL_WITH_SHARED || MLD_CONFIG_PARAMETER_SET == 65 \
           || MLD_CONFIG_PARAMETER_SET == 87 */
 #endif /* !MLD_CONFIG_NO_SIGN_API || !MLD_CONFIG_NO_VERIFY_API */
+
+#if !defined(MLD_CONFIG_NO_SIGN_API)
+#if defined(MLD_CONFIG_MULTILEVEL_WITH_SHARED) || MLD_CONFIG_PARAMETER_SET == 44
+#define mld_polyw1_unpack_88 MLD_NAMESPACE(polyw1_unpack_88)
+/**
+ * Unpack polynomial w1 packed with 6 bits per coefficient.
+ * This is the variant for parameter sets with MLDSA_GAMMA2 = (MLDSA_Q-1)/88
+ * (ML-DSA-44). Inverse of mld_polyw1_pack_88.
+ *
+ * @spec{Implements @[FIPS204, Algorithm 18, SimpleBitUnpack] for b = 43.}
+ *
+ * @param[out] r Pointer to output polynomial.
+ * @param[in]  a Byte array with bit-packed polynomial.
+ */
+MLD_INTERNAL_API
+void mld_polyw1_unpack_88(mld_poly *r,
+                          const uint8_t a[MLDSA_POLYW1_PACKEDBYTES_88])
+__contract__(
+  requires(memory_no_alias(r, sizeof(mld_poly)))
+  requires(memory_no_alias(a, MLDSA_POLYW1_PACKEDBYTES_88))
+  assigns(memory_slice(r, sizeof(mld_poly)))
+  ensures(array_bound(r->coeffs, 0, MLDSA_N, 0, 1 << MLDSA_POLYW1_PACKEDBITS_88))
+);
+#endif /* MLD_CONFIG_MULTILEVEL_WITH_SHARED || MLD_CONFIG_PARAMETER_SET == 44 \
+        */
+
+#if defined(MLD_CONFIG_MULTILEVEL_WITH_SHARED) || \
+    (MLD_CONFIG_PARAMETER_SET == 65 || MLD_CONFIG_PARAMETER_SET == 87)
+#define mld_polyw1_unpack_32 MLD_NAMESPACE(polyw1_unpack_32)
+/**
+ * Unpack polynomial w1 packed with 4 bits per coefficient.
+ * This is the variant for parameter sets with MLDSA_GAMMA2 = (MLDSA_Q-1)/32
+ * (ML-DSA-65 and ML-DSA-87). Inverse of mld_polyw1_pack_32.
+ *
+ * @spec{Implements @[FIPS204, Algorithm 18, SimpleBitUnpack] for b = 15.}
+ *
+ * @param[out] r Pointer to output polynomial.
+ * @param[in]  a Byte array with bit-packed polynomial.
+ */
+MLD_INTERNAL_API
+void mld_polyw1_unpack_32(mld_poly *r,
+                          const uint8_t a[MLDSA_POLYW1_PACKEDBYTES_32])
+__contract__(
+  requires(memory_no_alias(r, sizeof(mld_poly)))
+  requires(memory_no_alias(a, MLDSA_POLYW1_PACKEDBYTES_32))
+  assigns(memory_slice(r, sizeof(mld_poly)))
+  ensures(array_bound(r->coeffs, 0, MLDSA_N, 0, 1 << MLDSA_POLYW1_PACKEDBITS_32))
+);
+#endif /* MLD_CONFIG_MULTILEVEL_WITH_SHARED || MLD_CONFIG_PARAMETER_SET == 65 \
+          || MLD_CONFIG_PARAMETER_SET == 87 */
+#endif /* !MLD_CONFIG_NO_SIGN_API */
 
 #endif /* !MLD_POLY_H */

@@ -76,12 +76,12 @@ upstreams:
   -
     name: mldsa-native
     git_url: https://github.com/pq-code-package/mldsa-native.git
-    git_branch: v2.0.0
-    git_commit: 834a90d5e846ffa1e1611bd24e160bb2e9b86d35
+    git_branch: v2.1.0
+    git_commit: c9999d77599a9f0f0281ad745ad59a83f177b22c
     sig_meta_path: 'integration/liboqs/{pretty_name_full}_META.yml'
     sig_scheme_path: '.'
     preserve_folder_structure: True
-    patches: [mldsa-native-memopt-compile-opts.patch]
+    patches: []
   -
     name: pqmayo
     git_url: https://github.com/PQCMayo/MAYO-C.git

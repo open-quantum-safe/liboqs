@@ -5,7 +5,7 @@
 /*yaml
   Name: poly_chknorm_aarch64_asm
   Description: AArch64 infinity-norm bound check on polynomial coefficients
-  Signature: int mld_poly_chknorm_aarch64_asm(const int32_t a[256], int32_t B)
+  Signature: int mld_poly_chknorm_aarch64_asm(const int32_t a[256], int64_t B)
   ABI:
     Architecture: aarch64
     CallingConvention: AAPCS64
@@ -18,14 +18,15 @@
       description: Input polynomial (256 x int32_t)
     x1:
       type: scalar
-      c_parameter: int32_t B
+      c_parameter: int64_t B
       description: Norm bound
       test_with: 131072  # representative non-negative bound (1 << 17)
 */
 
 #include "../../../common.h"
 
-#if defined(MLD_ARITH_BACKEND_AARCH64) && !defined(MLD_CONFIG_MULTILEVEL_NO_SHARED)
+#if defined(MLD_SYS_AARCH64_NEON) && \
+    defined(MLD_ARITH_BACKEND_AARCH64) && !defined(MLD_CONFIG_MULTILEVEL_NO_SHARED)
 
 /*
  * WARNING: This file is auto-derived from the mldsa-native source file
@@ -69,7 +70,8 @@ Lmld_poly_chknorm_loop:
 
 MLD_ASM_FN_SIZE(poly_chknorm_aarch64_asm)
 
-#endif /* MLD_ARITH_BACKEND_AARCH64 && !MLD_CONFIG_MULTILEVEL_NO_SHARED */
+#endif /* MLD_SYS_AARCH64_NEON && MLD_ARITH_BACKEND_AARCH64 && \
+          !MLD_CONFIG_MULTILEVEL_NO_SHARED */
 
 #if defined(__ELF__)
 .section .note.GNU-stack,"",%progbits

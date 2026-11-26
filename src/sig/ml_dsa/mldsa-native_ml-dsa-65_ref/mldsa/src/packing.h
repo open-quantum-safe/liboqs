@@ -19,57 +19,30 @@
 #include "polyvec_lazy.h"
 
 #if !defined(MLD_CONFIG_NO_KEYPAIR_API)
-#define mld_pack_sk_s1 MLD_NAMESPACE_KL(pack_sk_s1)
+#define mld_pack_sk_rho_key_tr MLD_NAMESPACE_KL(pack_sk_rho_key_tr)
 /**
- * Bit-pack the s1 component into the secret key.
+ * Bit-pack rho, key, tr into the secret key.
  *
- * @spec{Partially implements @[FIPS204, Algorithm 24, skEncode] (s1
- * component).}
+ * s1 and s2 must already be packed, and t0 via mld_compute_pack_t0_t1.
  *
- * @param[out] sk Output byte array.
- * @param[in]  s1 Pointer to vector s1.
- */
-MLD_INTERNAL_API
-void mld_pack_sk_s1(uint8_t sk[MLDSA_CRYPTO_SECRETKEYBYTES],
-                    const mld_polyvecl *s1)
-__contract__(
-  requires(memory_no_alias(sk, MLDSA_CRYPTO_SECRETKEYBYTES))
-  requires(memory_no_alias(s1, sizeof(mld_polyvecl)))
-  requires(forall(k1, 0, MLDSA_L,
-    array_abs_bound(s1->vec[k1].coeffs, 0, MLDSA_N, MLDSA_ETA + 1)))
-  assigns(memory_slice(sk, MLDSA_CRYPTO_SECRETKEYBYTES))
-);
-
-#define mld_pack_sk_rho_key_tr_s2 MLD_NAMESPACE_KL(pack_sk_rho_key_tr_s2)
-/**
- * Bit-pack rho, key, tr, s2 into the secret key.
- *
- * s1 must already be packed via mld_pack_sk_s1, and t0 via
- * mld_compute_pack_t0_t1.
- *
- * @spec{Partially implements @[FIPS204, Algorithm 24, skEncode] (rho, key, tr,
- * s2 components).}
+ * @spec{Partially implements @[FIPS204, Algorithm 24, skEncode] (rho, key, tr
+ * components).}
  *
  * @param[out] sk  Output byte array.
  * @param[in]  rho Byte array containing rho.
  * @param[in]  tr  Byte array containing tr.
  * @param[in]  key Byte array containing key.
- * @param[in]  s2  Pointer to vector s2.
  */
 MLD_INTERNAL_API
-void mld_pack_sk_rho_key_tr_s2(uint8_t sk[MLDSA_CRYPTO_SECRETKEYBYTES],
-                               const uint8_t rho[MLDSA_SEEDBYTES],
-                               const uint8_t tr[MLDSA_TRBYTES],
-                               const uint8_t key[MLDSA_SEEDBYTES],
-                               const mld_polyveck *s2)
+void mld_pack_sk_rho_key_tr(uint8_t sk[MLDSA_CRYPTO_SECRETKEYBYTES],
+                            const uint8_t rho[MLDSA_SEEDBYTES],
+                            const uint8_t tr[MLDSA_TRBYTES],
+                            const uint8_t key[MLDSA_SEEDBYTES])
 __contract__(
   requires(memory_no_alias(sk, MLDSA_CRYPTO_SECRETKEYBYTES))
   requires(memory_no_alias(rho, MLDSA_SEEDBYTES))
   requires(memory_no_alias(tr, MLDSA_TRBYTES))
   requires(memory_no_alias(key, MLDSA_SEEDBYTES))
-  requires(memory_no_alias(s2, sizeof(mld_polyveck)))
-  requires(forall(k2, 0, MLDSA_K,
-    array_abs_bound(s2->vec[k2].coeffs, 0, MLDSA_N, MLDSA_ETA + 1)))
   assigns(memory_slice(sk, MLDSA_CRYPTO_SECRETKEYBYTES))
 );
 #endif /* !MLD_CONFIG_NO_KEYPAIR_API */
@@ -107,9 +80,12 @@ __contract__(
  * MakeHint valid only for the values arising during signing; see the block
  * comment in mld_attempt_signature_generation (sign.c).}
  *
- * @param[in,out] sig Byte array containing signature.
- * @param[in]     w0  Pointer to low part of input vector.
- * @param[in]     w1  Pointer to high part of input vector.
+ * @param[in,out] sig       Byte array containing signature.
+ * @param[in]     w0        Pointer to low part of input vector.
+ * @param[in]     w1_packed Bit-packed high part of input vector, as produced
+ *                          by mld_polyw1_pack.
+ * @param[out]    scratch   Scratch polynomial, used to unpack one row of the
+ *                          high part at a time.
  *
  * @retval 0            Success.
  * @retval MLD_ERR_FAIL The total number of hints exceeds MLDSA_OMEGA. In this
@@ -120,12 +96,15 @@ __contract__(
 MLD_INTERNAL_API
 MLD_MUST_CHECK_RETURN_VALUE
 int mld_pack_sig_h(uint8_t sig[MLDSA_CRYPTO_BYTES], const mld_polyveck *w0,
-                   const mld_polyveck *w1)
+                   const uint8_t w1_packed[MLDSA_K * MLDSA_POLYW1_PACKEDBYTES],
+                   mld_poly *scratch)
 __contract__(
   requires(memory_no_alias(sig, MLDSA_CRYPTO_BYTES))
   requires(memory_no_alias(w0, sizeof(mld_polyveck)))
-  requires(memory_no_alias(w1, sizeof(mld_polyveck)))
+  requires(memory_no_alias(w1_packed, MLDSA_K * MLDSA_POLYW1_PACKEDBYTES))
+  requires(memory_no_alias(scratch, sizeof(mld_poly)))
   assigns(memory_slice(sig + MLDSA_SIG_H_OFFSET, MLDSA_POLYVECH_PACKEDBYTES))
+  assigns(memory_slice(scratch, sizeof(mld_poly)))
   ensures(return_value == 0 || return_value == MLD_ERR_FAIL)
 );
 
@@ -177,7 +156,7 @@ __contract__(
   requires(memory_no_alias(t1, sizeof(mld_poly)))
   requires(i < MLDSA_K)
   assigns(memory_slice(t1, sizeof(mld_poly)))
-  ensures(array_bound(t1->coeffs, 0, MLDSA_N, 0, 1 << 10))
+  ensures(array_bound(t1->coeffs, 0, MLDSA_N, 0, 1 << MLDSA_POLYT1_PACKEDBITS))
 );
 #endif /* !MLD_CONFIG_NO_VERIFY_API */
 

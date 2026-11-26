@@ -96,7 +96,7 @@ __contract__(
 #define mld_rej_uniform_aarch64_asm MLD_NAMESPACE(rej_uniform_aarch64_asm)
 MLD_MUST_CHECK_RETURN_VALUE
 uint64_t mld_rej_uniform_aarch64_asm(int32_t r[MLDSA_N], const uint8_t *buf,
-                                     unsigned buflen, const uint8_t table[256])
+                                     uint64_t buflen, const uint8_t table[256])
 /* This must be kept in sync with the HOL-Light specification
  * in proofs/hol_light/aarch64/proofs/mldsa_rej_uniform_aarch64_asm.ml. */
 __contract__(
@@ -114,7 +114,7 @@ __contract__(
   MLD_NAMESPACE(rej_uniform_eta2_aarch64_asm)
 MLD_MUST_CHECK_RETURN_VALUE
 uint64_t mld_rej_uniform_eta2_aarch64_asm(int32_t r[MLDSA_N],
-                                          const uint8_t *buf, unsigned buflen,
+                                          const uint8_t *buf, uint64_t buflen,
                                           const uint8_t table[4096])
 /* This must be kept in sync with the HOL-Light specification
  * in proofs/hol_light/aarch64/proofs/mldsa_rej_uniform_eta2_aarch64_asm.ml */
@@ -126,7 +126,6 @@ __contract__(
   requires(table == mld_rej_uniform_eta_table)
   assigns(memory_slice(r, sizeof(int32_t) * MLDSA_N))
   ensures(return_value <= MLDSA_N)
-  /* check-magic: 3 == 2 + 1 (asm is eta=2-specific) */
   ensures(array_abs_bound(r, 0, return_value, 3))
 );
 
@@ -134,7 +133,7 @@ __contract__(
   MLD_NAMESPACE(rej_uniform_eta4_aarch64_asm)
 MLD_MUST_CHECK_RETURN_VALUE
 uint64_t mld_rej_uniform_eta4_aarch64_asm(int32_t r[MLDSA_N],
-                                          const uint8_t *buf, unsigned buflen,
+                                          const uint8_t *buf, uint64_t buflen,
                                           const uint8_t table[4096])
 /* This must be kept in sync with the HOL-Light specification
  * in proofs/hol_light/aarch64/proofs/mldsa_rej_uniform_eta4_aarch64_asm.ml */
@@ -146,7 +145,6 @@ __contract__(
   requires(table == mld_rej_uniform_eta_table)
   assigns(memory_slice(r, sizeof(int32_t) * MLDSA_N))
   ensures(return_value <= MLDSA_N)
-  /* check-magic: 5 == 4 + 1 (asm is eta=4-specific) */
   ensures(array_abs_bound(r, 0, return_value, 5))
 );
 #endif /* !MLD_CONFIG_NO_KEYPAIR_API */
@@ -232,13 +230,14 @@ __contract__(
 
 #define mld_poly_chknorm_aarch64_asm MLD_NAMESPACE(poly_chknorm_aarch64_asm)
 MLD_MUST_CHECK_RETURN_VALUE
-int mld_poly_chknorm_aarch64_asm(const int32_t a[MLDSA_N], int32_t B)
+int mld_poly_chknorm_aarch64_asm(const int32_t a[MLDSA_N], int64_t B)
 /* This must be kept in sync with the HOL-Light specification
  * in proofs/hol_light/aarch64/proofs/mldsa_poly_chknorm_aarch64_asm.ml */
 __contract__(
   requires(memory_no_alias(a, sizeof(int32_t) * MLDSA_N))
   /* HOL Light precondition: abs(ival(x i)) < 2^31, i.e., a[i] != INT32_MIN */
   requires(forall(k0, 0, MLDSA_N, a[k0] > INT32_MIN))
+  requires(0 <= B && B <= INT32_MAX)
   ensures(return_value == 0 || return_value == 1)
   ensures((return_value == 0) == array_abs_bound(a, 0, MLDSA_N, B))
 );

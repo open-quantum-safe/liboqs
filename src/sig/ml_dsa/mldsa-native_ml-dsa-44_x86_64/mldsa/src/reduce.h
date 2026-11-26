@@ -20,9 +20,6 @@
 #include "ct.h"
 #include "debug.h"
 
-/* check-magic: -4186625 == pow(2,32,MLDSA_Q) */
-#define MLD_MONT (-4186625)
-
 /* Upper bound for domain of mld_reduce32() */
 #define MLD_REDUCE32_DOMAIN_MAX (INT32_MAX - ((int32_t)1 << 22))
 
@@ -36,13 +33,11 @@
  *
  * @spec{Implements @[FIPS204, Algorithm 49, MontgomeryReduce].}
  *
- * @param a Input integer to be reduced, of absolute value smaller or equal
- *          to INT64_MAX - 2^31 * MLDSA_Q.
+ * @param a Input integer to be reduced, of absolute value smaller than
+ *          2^31 * MLDSA_Q.
  *
  * @return Integer congruent to a * R^-1 modulo MLDSA_Q, with absolute value
- *         <= |a| / 2^32 + MLDSA_Q / 2.
- *         In particular, if |a| < 2^31 * MLDSA_Q, the absolute value of the
- *         return value is < MLDSA_Q.
+ *         <= |a| / 2^32 + MLDSA_Q / 2, and in particular < MLDSA_Q.
  */
 MLD_MUST_CHECK_RETURN_VALUE
 static MLD_INLINE int32_t mld_montgomery_reduce(int64_t a)
@@ -114,6 +109,11 @@ __contract__(
 {
   int32_t t;
 
+  /*
+   * PORTABILITY: Right-shift on a signed integer is, strictly-speaking,
+   * implementation-defined for negative left argument. Here,
+   * we assume it's sign-preserving "arithmetic" shift right. (C99 6.5.7 (5))
+   */
   t = (a + ((int32_t)1 << 22)) >> 23;
   t = a - t * MLDSA_Q;
   mld_assert((t - a) % MLDSA_Q == 0);

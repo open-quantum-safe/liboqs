@@ -44,7 +44,8 @@
 
 #include "../../../common.h"
 
-#if defined(MLD_ARITH_BACKEND_X86_64_DEFAULT) &&   \
+#if defined(MLD_SYS_X86_64_AVX2) && \
+    defined(MLD_ARITH_BACKEND_X86_64_DEFAULT) &&   \
     !defined(MLD_CONFIG_NO_VERIFY_API) &&          \
     !defined(MLD_CONFIG_MULTILEVEL_NO_SHARED) &&   \
     (defined(MLD_CONFIG_MULTILEVEL_WITH_SHARED) || \
@@ -68,38 +69,32 @@ MLD_ASM_FN_SYMBOL(poly_use_hint_88_avx2_asm)
         vmovd %r8d, %xmm8
         vpbroadcastd %xmm8, %ymm8
         vmovd %ecx, %xmm4
-        movl $0x7e6c00, %ecx         # imm = 0x7E6C00
         movl $0x80, %r9d
         vmovd %r9d, %xmm7
         vpbroadcastd %xmm7, %ymm7
         movl $0x2b, %r10d
         vmovd %r10d, %xmm6
         vpbroadcastd %xmm6, %ymm6
-        vmovd %ecx, %xmm3
         vpbroadcastd %xmm4, %ymm4
-        vpbroadcastd %xmm3, %ymm3
 
 Lmld_poly_use_hint_88_avx2_asm_loop:
         vmovdqa (%rdi), %ymm0
         vmovdqa (%rsi), %ymm1
-        vpaddd %ymm0, %ymm4, %ymm10
-        vpsrld $0x7, %ymm10, %ymm10
-        vpmulhuw %ymm8, %ymm10, %ymm10
-        vpmulhrsw %ymm7, %ymm10, %ymm10
-        vpcmpgtd %ymm3, %ymm0, %ymm11
-        vpandn %ymm10, %ymm11, %ymm9
-        vpslld $0x1, %ymm10, %ymm12
-        vpaddd %ymm10, %ymm12, %ymm12
-        vpslld $0x5, %ymm12, %ymm10
-        vpsubd %ymm12, %ymm10, %ymm10
+        vpaddd %ymm0, %ymm4, %ymm9
+        vpsrld $0x7, %ymm9, %ymm9
+        vpmulhuw %ymm8, %ymm9, %ymm9
+        vpmulhrsw %ymm7, %ymm9, %ymm9
+        vpslld $0x1, %ymm9, %ymm11
+        vpaddd %ymm9, %ymm11, %ymm11
+        vpslld $0x5, %ymm11, %ymm10
+        vpsubd %ymm11, %ymm10, %ymm10
         vpslld $0xb, %ymm10, %ymm10
         vpsubd %ymm10, %ymm0, %ymm0
-        vpaddd %ymm11, %ymm0, %ymm0
         vpcmpgtd %ymm5, %ymm0, %ymm0
         vpandn %ymm1, %ymm0, %ymm0
         vpslld $0x1, %ymm0, %ymm0
         vpsubd %ymm0, %ymm1, %ymm0
-        vpaddd %ymm9, %ymm0, %ymm0
+        vpaddd %ymm0, %ymm9, %ymm0
         vpblendvb %ymm0, %ymm6, %ymm0, %ymm0
         vpcmpgtd %ymm6, %ymm0, %ymm1
         vpandn %ymm0, %ymm1, %ymm0
@@ -109,14 +104,15 @@ Lmld_poly_use_hint_88_avx2_asm_loop:
         addq $0x20, %rax
         cmpq $0x400, %rax            # imm = 0x400
         jne Lmld_poly_use_hint_88_avx2_asm_loop
+        vzeroupper
         retq
         .cfi_endproc
 
 MLD_ASM_FN_SIZE(poly_use_hint_88_avx2_asm)
 
 
-#endif /* MLD_ARITH_BACKEND_X86_64_DEFAULT && !MLD_CONFIG_NO_VERIFY_API && \
-          !MLD_CONFIG_MULTILEVEL_NO_SHARED && \
+#endif /* MLD_SYS_X86_64_AVX2 && MLD_ARITH_BACKEND_X86_64_DEFAULT && \
+          !MLD_CONFIG_NO_VERIFY_API && !MLD_CONFIG_MULTILEVEL_NO_SHARED && \
           (MLD_CONFIG_MULTILEVEL_WITH_SHARED || MLD_CONFIG_PARAMETER_SET == 44) \
         */
 

@@ -10,6 +10,7 @@
 #if !defined(__ASSEMBLER__)
 
 #include <stdint.h>
+
 #include "cbmc.h"
 #include "sys.h"
 

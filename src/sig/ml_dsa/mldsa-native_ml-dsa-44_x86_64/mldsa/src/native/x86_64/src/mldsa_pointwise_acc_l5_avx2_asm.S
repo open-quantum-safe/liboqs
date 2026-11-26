@@ -52,7 +52,8 @@
 */
 
 #include "../../../common.h"
-#if defined(MLD_ARITH_BACKEND_X86_64_DEFAULT) && \
+#if defined(MLD_SYS_X86_64_AVX2) && \
+    defined(MLD_ARITH_BACKEND_X86_64_DEFAULT) && \
     !defined(MLD_CONFIG_MULTILEVEL_NO_SHARED) && \
     (defined(MLD_CONFIG_MULTILEVEL_WITH_SHARED) || MLDSA_L == 5)
 
@@ -176,13 +177,15 @@ Lmld_pointwise_acc_l5_avx2_looptop2:
         addl $0x1, %eax
         cmpl $0x10, %eax
         jb Lmld_pointwise_acc_l5_avx2_looptop2
+        vzeroupper
         retq
         .cfi_endproc
 
 MLD_ASM_FN_SIZE(pointwise_acc_l5_avx2_asm)
 
-#endif /* MLD_ARITH_BACKEND_X86_64_DEFAULT && !MLD_CONFIG_MULTILEVEL_NO_SHARED \
-          && (MLD_CONFIG_MULTILEVEL_WITH_SHARED || MLDSA_L == 5) */
+#endif /* MLD_SYS_X86_64_AVX2 && MLD_ARITH_BACKEND_X86_64_DEFAULT && \
+          !MLD_CONFIG_MULTILEVEL_NO_SHARED && \
+          (MLD_CONFIG_MULTILEVEL_WITH_SHARED || MLDSA_L == 5) */
 
 #if defined(__ELF__)
 .section .note.GNU-stack,"",%progbits

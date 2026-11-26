@@ -364,4 +364,34 @@ __contract__(
 }
 #endif /* !MLD_CONFIG_NO_SIGN_API || !MLD_CONFIG_NO_VERIFY_API */
 
+#if !defined(MLD_CONFIG_NO_SIGN_API)
+#define mld_polyw1_unpack MLD_NAMESPACE_KL(polyw1_unpack)
+/**
+ * Unpack polynomial w1. Inverse of mld_polyw1_pack; dispatches to the
+ * value-specialized variant for the selected parameter set.
+ *
+ * @spec{Implements @[FIPS204, Algorithm 18, SimpleBitUnpack] for the two
+ * values of b arising for w1: b = 43 (ML-DSA-44) and b = 15 (ML-DSA-65 and
+ * ML-DSA-87).}
+ *
+ * @param[out] r Pointer to output polynomial.
+ * @param[in]  a Byte array with bit-packed polynomial.
+ */
+static MLD_INLINE void mld_polyw1_unpack(
+    mld_poly *r, const uint8_t a[MLDSA_POLYW1_PACKEDBYTES])
+__contract__(
+  requires(memory_no_alias(r, sizeof(mld_poly)))
+  requires(memory_no_alias(a, MLDSA_POLYW1_PACKEDBYTES))
+  assigns(memory_slice(r, sizeof(mld_poly)))
+  ensures(array_bound(r->coeffs, 0, MLDSA_N, 0, 1 << MLDSA_POLYW1_PACKEDBITS))
+)
+{
+#if MLD_CONFIG_PARAMETER_SET == 44
+  mld_polyw1_unpack_88(r, a);
+#else
+  mld_polyw1_unpack_32(r, a);
+#endif
+}
+#endif /* !MLD_CONFIG_NO_SIGN_API */
+
 #endif /* !MLD_POLY_KL_H */

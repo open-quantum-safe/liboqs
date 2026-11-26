@@ -49,7 +49,8 @@
 */
 
 #include "../../../common.h"
-#if defined(MLD_ARITH_BACKEND_X86_64_DEFAULT) && !defined(MLD_CONFIG_MULTILEVEL_NO_SHARED)
+#if defined(MLD_SYS_X86_64_AVX2) && \
+    defined(MLD_ARITH_BACKEND_X86_64_DEFAULT) && !defined(MLD_CONFIG_MULTILEVEL_NO_SHARED)
 
 /*
  * WARNING: This file is auto-derived from the mldsa-native source file
@@ -163,13 +164,14 @@ Lmld_rej_uniform_eta4_avx2_asm_high_nibble:
         jmp Lmld_rej_uniform_eta4_avx2_asm_scalar
 
 Lmld_rej_uniform_eta4_avx2_asm_done:
+        vzeroupper
         retq
         .cfi_endproc
 
 MLD_ASM_FN_SIZE(rej_uniform_eta4_avx2_asm)
 
-#endif /* MLD_ARITH_BACKEND_X86_64_DEFAULT && !MLD_CONFIG_MULTILEVEL_NO_SHARED \
-        */
+#endif /* MLD_SYS_X86_64_AVX2 && MLD_ARITH_BACKEND_X86_64_DEFAULT && \
+          !MLD_CONFIG_MULTILEVEL_NO_SHARED */
 
 #if defined(__ELF__)
 .section .note.GNU-stack,"",%progbits
