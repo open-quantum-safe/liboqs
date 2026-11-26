@@ -119,6 +119,7 @@ Votes are to be executed by way of open GitHub discussions. No quorum is needed 
 @mkannwischer
 @RodriM11
 @xuganyu96
+@owaldron
 
 ## Former Maintainers and Committers
 
