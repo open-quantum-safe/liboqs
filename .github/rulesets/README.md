@@ -13,6 +13,32 @@ Settings exported from the UI carry extra fields (`id`, `source`,
 `source_type`, timestamps). They are not needed for import and are left out
 here.
 
+## Release branch and tag rulesets
+
+Release references include release branches (`release/major.minor`) and release
+tags (`major.minor.patch[-rcN]`). The branch rulesets cover all branches under
+`release/`. The tag rulesets cover all tags. These rulesets are defined across
+four files.
+
+| File                           | Rule | Bypass |
+|--------------------------------|---|---|
+| `release-branch-lifecycles.json` | Restrict branch creation and deletion | `oqs-release-managers` |
+| `release-branch-protection.json` | Block force pushes (non-fast-forward) and require a pull request | No bypass |
+| `release-tag-creation.json`      | Restrict tag creation | `oqs-release-managers` |
+| `release-tag-immutability.json`  | No tag can be updated or deleted | No bypass |
+
+The release lifecycle begins when a release manager creates a new `release/x.y`
+branch. All subsequent changes to the release branch, such as updating the version
+string and release notes, must go through a pull request. The pull request has
+the same requirements as merging into main: one approval, no bypass, automatic
+dismissal of stale approvals, etc. Only release managers can create tags to
+finalize a release. Tags must be immutable. Release managers can delete release
+branches for versions that reach end of life. Tags cannot be deleted.
+
+Note that `release-branch-protection.json` does not require linear commit history.
+This is because liboqs `main` currently contains a merge commit, so enforcing
+linear history on release branch will block release branches from being created.
+
 ## Current state (classic branch protection, read 2026-11-01)
 
 Three files reproduce the two classic rules exactly as they stand. Classic

@@ -1,0 +1,16 @@
+{
+    "name": "Release tag immutability",
+    "target": "tag",
+    "enforcement": "active",
+    "conditions": {
+        "ref_name": {
+            "include": ["~ALL"],
+            "exclude": []
+        }
+    },
+    "rules": [
+        {"type": "update"},
+        {"type": "deletion"}
+    ],
+    "bypass_actors": []
+}
