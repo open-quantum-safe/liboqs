@@ -11,8 +11,9 @@ function(filter_algs alglist)
   #     one of the requested algorithms, e.g. OQS_ENABLE_KEM_kyber_768_avx2.
 
   get_cmake_property(_vars VARIABLES)
+  list(FILTER _vars INCLUDE REGEX "^OQS_ENABLE_..._") # Only process OQS_ENABLE_* variables to avoid CMP0218 warnings with CMake >= 4.4.
   foreach (_var ${_vars})
-      if(_var MATCHES "^OQS_ENABLE_..._" AND NOT _var MATCHES "_AVAILABLE$" AND ${_var})
+      if(NOT _var MATCHES "_AVAILABLE$" AND ${_var})
           set(${_var} OFF PARENT_SCOPE)
           # Case 1, family name
 	  foreach (_alg ${ARGV0})
@@ -332,6 +333,20 @@ option(OQS_ENABLE_SIG_SQISIGN "Enable sqisign algorithm family" ON)
 cmake_dependent_option(OQS_ENABLE_SIG_sqisign_p324_3 "" ON "OQS_ENABLE_SIG_SQISIGN" OFF)
 cmake_dependent_option(OQS_ENABLE_SIG_sqisign_p500_27 "" ON "OQS_ENABLE_SIG_SQISIGN" OFF)
 cmake_dependent_option(OQS_ENABLE_SIG_sqisign_p664_17 "" ON "OQS_ENABLE_SIG_SQISIGN" OFF)
+
+option(OQS_ENABLE_SIG_FAEST "Enable faest algorithm family" ON)
+cmake_dependent_option(OQS_ENABLE_SIG_faest_128s "" ON "OQS_ENABLE_SIG_FAEST" OFF)
+cmake_dependent_option(OQS_ENABLE_SIG_faest_128f "" ON "OQS_ENABLE_SIG_FAEST" OFF)
+cmake_dependent_option(OQS_ENABLE_SIG_faest_em_128s "" ON "OQS_ENABLE_SIG_FAEST" OFF)
+cmake_dependent_option(OQS_ENABLE_SIG_faest_em_128f "" ON "OQS_ENABLE_SIG_FAEST" OFF)
+cmake_dependent_option(OQS_ENABLE_SIG_faest_192s "" ON "OQS_ENABLE_SIG_FAEST" OFF)
+cmake_dependent_option(OQS_ENABLE_SIG_faest_192f "" ON "OQS_ENABLE_SIG_FAEST" OFF)
+cmake_dependent_option(OQS_ENABLE_SIG_faest_em_192s "" ON "OQS_ENABLE_SIG_FAEST" OFF)
+cmake_dependent_option(OQS_ENABLE_SIG_faest_em_192f "" ON "OQS_ENABLE_SIG_FAEST" OFF)
+cmake_dependent_option(OQS_ENABLE_SIG_faest_256s "" ON "OQS_ENABLE_SIG_FAEST" OFF)
+cmake_dependent_option(OQS_ENABLE_SIG_faest_256f "" ON "OQS_ENABLE_SIG_FAEST" OFF)
+cmake_dependent_option(OQS_ENABLE_SIG_faest_em_256s "" ON "OQS_ENABLE_SIG_FAEST" OFF)
+cmake_dependent_option(OQS_ENABLE_SIG_faest_em_256f "" ON "OQS_ENABLE_SIG_FAEST" OFF)
 ##### OQS_COPY_FROM_UPSTREAM_FRAGMENT_ADD_ENABLE_BY_ALG_END
 ##### OQS_COPY_FROM_SLH_DSA_FRAGMENT_ADD_ENABLE_BY_ALG_START
 option(OQS_ENABLE_SIG_SLH_DSA "Enable slh_dsa algorithm family" ON)
@@ -493,15 +508,6 @@ cmake_dependent_option(OQS_ENABLE_SIG_slh_dsa_shake_256_prehash_shake_256s "" ON
 cmake_dependent_option(OQS_ENABLE_SIG_slh_dsa_shake_256_prehash_shake_256f "" ON "OQS_ENABLE_SIG_SLH_DSA" OFF)
 ##### OQS_COPY_FROM_SLH_DSA_FRAGMENT_ADD_ENABLE_BY_ALG_END
 
-##### OQS_COPY_FROM_LIBJADE_FRAGMENT_ADD_ENABLE_BY_ALG_START
-if ((OQS_LIBJADE_BUILD STREQUAL "ON"))
-
-option(OQS_ENABLE_LIBJADE_KEM_KYBER "Enable libjade implementation of kyber algorithm family" ON)
-cmake_dependent_option(OQS_ENABLE_LIBJADE_KEM_kyber_512 "" ON "OQS_ENABLE_LIBJADE_KEM_KYBER" OFF)
-cmake_dependent_option(OQS_ENABLE_LIBJADE_KEM_kyber_768 "" ON "OQS_ENABLE_LIBJADE_KEM_KYBER" OFF)
-endif()
-##### OQS_COPY_FROM_LIBJADE_FRAGMENT_ADD_ENABLE_BY_ALG_END
-
 if((OQS_MINIMAL_BUILD STREQUAL "ON"))
    message(FATAL_ERROR "OQS_MINIMAL_BUILD option ${OQS_MINIMAL_BUILD} no longer supported")
 endif()
@@ -586,6 +592,24 @@ if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS AND OQS_USE_POPCNT_INSTRU
 endif()
 endif()
 
+
+if(CMAKE_SYSTEM_NAME MATCHES "Linux|Darwin")
+if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX_INSTRUCTIONS AND OQS_USE_AVX2_INSTRUCTIONS AND OQS_USE_BMI1_INSTRUCTIONS AND OQS_USE_PCLMULQDQ_INSTRUCTIONS))
+    cmake_dependent_option(OQS_ENABLE_KEM_hqc_1_x86_64 "" ON "OQS_ENABLE_KEM_hqc_1" OFF)
+endif()
+endif()
+
+if(CMAKE_SYSTEM_NAME MATCHES "Linux|Darwin")
+if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX_INSTRUCTIONS AND OQS_USE_AVX2_INSTRUCTIONS AND OQS_USE_BMI1_INSTRUCTIONS AND OQS_USE_PCLMULQDQ_INSTRUCTIONS))
+    cmake_dependent_option(OQS_ENABLE_KEM_hqc_3_x86_64 "" ON "OQS_ENABLE_KEM_hqc_3" OFF)
+endif()
+endif()
+
+if(CMAKE_SYSTEM_NAME MATCHES "Linux|Darwin")
+if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX_INSTRUCTIONS AND OQS_USE_AVX2_INSTRUCTIONS AND OQS_USE_BMI1_INSTRUCTIONS AND OQS_USE_PCLMULQDQ_INSTRUCTIONS))
+    cmake_dependent_option(OQS_ENABLE_KEM_hqc_5_x86_64 "" ON "OQS_ENABLE_KEM_hqc_5" OFF)
+endif()
+endif()
 
 
 if(CMAKE_SYSTEM_NAME MATCHES "Linux|Darwin")
@@ -1929,25 +1953,8 @@ if(OQS_DIST_ARM64_V8_BUILD OR (OQS_USE_ARM_NEON_INSTRUCTIONS))
 endif()
 endif()
 
+
 ##### OQS_COPY_FROM_UPSTREAM_FRAGMENT_ADD_ENABLE_BY_ALG_CONDITIONAL_END
-
-##### OQS_COPY_FROM_LIBJADE_FRAGMENT_ADD_ENABLE_BY_ALG_CONDITIONAL_START
-if ((OQS_LIBJADE_BUILD STREQUAL "ON"))
-
-if(CMAKE_SYSTEM_NAME MATCHES "Linux|Darwin")
-if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS AND OQS_USE_BMI2_INSTRUCTIONS AND OQS_USE_POPCNT_INSTRUCTIONS))
-    cmake_dependent_option(OQS_ENABLE_LIBJADE_KEM_kyber_512_avx2 "" ON "OQS_ENABLE_LIBJADE_KEM_kyber_512" OFF)
-endif()
-endif()
-
-if(CMAKE_SYSTEM_NAME MATCHES "Linux|Darwin")
-if(OQS_DIST_X86_64_BUILD OR (OQS_USE_AVX2_INSTRUCTIONS AND OQS_USE_BMI2_INSTRUCTIONS AND OQS_USE_POPCNT_INSTRUCTIONS))
-    cmake_dependent_option(OQS_ENABLE_LIBJADE_KEM_kyber_768_avx2 "" ON "OQS_ENABLE_LIBJADE_KEM_kyber_768" OFF)
-endif()
-endif()
-
-endif()
-##### OQS_COPY_FROM_LIBJADE_FRAGMENT_ADD_ENABLE_BY_ALG_CONDITIONAL_END
 
 option(OQS_ENABLE_SIG_STFL_XMSS "Enable XMSS algorithm family" OFF)
 cmake_dependent_option(OQS_ENABLE_SIG_STFL_xmss_sha256_h10 "" ON "OQS_ENABLE_SIG_STFL_XMSS" OFF)

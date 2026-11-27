@@ -1,3 +1,0 @@
-lvl = 1
-p = 0x2fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
-security = 128

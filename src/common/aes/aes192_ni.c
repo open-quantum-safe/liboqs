@@ -81,7 +81,7 @@ void oqs_aes192_load_schedule_ni(const uint8_t *key, void **_schedule) {
 	*_schedule = OQS_MEM_malloc(sizeof(aes192ctx));
 	OQS_EXIT_IF_NULLPTR(*_schedule, "AES");
 	assert(*_schedule != NULL);
-	__m128i *schedule = ((aes192ctx *) *_schedule)->sk_exp;
+	__m128i *schedule = ((aes192ctx *)*_schedule)->sk_exp;
 	aes192ni_setkey_encrypt(key, schedule);
 }
 
@@ -145,13 +145,13 @@ static inline void aes192ni_encrypt_x4(const __m128i rkeys[13], __m128i n0, __m1
 }
 
 void oqs_aes192_enc_sch_block_ni(const uint8_t *plaintext, const void *_schedule, uint8_t *ciphertext) {
-	const __m128i *schedule = ((const aes192ctx *) _schedule)->sk_exp;
+	const __m128i *schedule = ((const aes192ctx *)_schedule)->sk_exp;
 	aes192ni_encrypt(schedule, _mm_loadu_si128((const __m128i *)plaintext), ciphertext);
 }
 
 void oqs_aes192_ecb_enc_sch_ni(const uint8_t *plaintext, const size_t plaintext_len, const void *schedule, uint8_t *ciphertext) {
 	assert(plaintext_len % 16 == 0);
-	const __m128i *rkeys = ((const aes192ctx *) schedule)->sk_exp;
+	const __m128i *rkeys = ((const aes192ctx *)schedule)->sk_exp;
 	const size_t nblocks = plaintext_len / 16;
 	size_t block = 0;
 	/* Four blocks at a time with interleaved AESENC chains, then the remainder one at a time. */

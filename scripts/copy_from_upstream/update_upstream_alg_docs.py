@@ -20,6 +20,11 @@ def load_yaml(filename, encoding='utf-8'):
     with open(filename, mode='r', encoding=encoding) as fh:
         return yaml.safe_load(fh.read())
 
+def resolve_upstream_meta_path(liboqs_root, upstream_info, relative_path):
+    if upstream_info.get('meta_root') == 'liboqs':
+        return os.path.join(liboqs_root, relative_path)
+    return os.path.join(upstream_info['upstream_root'], relative_path)
+
 def store_yaml(filename, contents, encoding='utf-8'):
     with open(filename, mode='w', encoding=encoding) as fh:
         yaml.dump(contents, fh, sort_keys=False, allow_unicode=True)
@@ -138,7 +143,8 @@ def update_upstream_kem_alg_docs(liboqs_root, kems, upstream_info, write_changes
             # hence use helper function get_oqs_yaml(alg_name)
             for scheme in kem['schemes']:
                 meta_yaml_path_template = ui['kem_meta_path']
-                upstream_meta_path = os.path.join(upstream_root, meta_yaml_path_template.format_map(scheme))
+                upstream_meta_path = resolve_upstream_meta_path(
+                    liboqs_root, ui, meta_yaml_path_template.format_map(scheme))
                 if DEBUG > 0:
                     print("Examining {}'s META.yml.".format(scheme['pretty_name_full']))
                 upstream_yaml = load_yaml(upstream_meta_path)
@@ -173,131 +179,57 @@ def update_upstream_kem_alg_docs(liboqs_root, kems, upstream_info, write_changes
 
                 _upstream_yaml = upstream_yaml
                 for impl_index, impl in enumerate(oqs_scheme_yaml['implementations']):
-                    if impl['upstream'] != 'libjade':
-                        upstream_yaml = _upstream_yaml
-                        if impl['upstream'] in ouis:
-                            upstream_name = impl['upstream']
-                            meta_yaml_path_template = ouis[upstream_name]['kem_meta_path']
-                            opt_upstream_root = ouis[upstream_name]['upstream_root']
-                            upstream_meta_path = os.path.join(opt_upstream_root, meta_yaml_path_template.format_map(scheme))
-                            upstream_yaml = load_yaml(upstream_meta_path)
+                    upstream_yaml = _upstream_yaml
+                    if impl['upstream'] in ouis:
+                        upstream_name = impl['upstream']
+                        meta_yaml_path_template = ouis[upstream_name]['kem_meta_path']
+                        upstream_meta_path = resolve_upstream_meta_path(
+                            liboqs_root, ouis[upstream_name], meta_yaml_path_template.format_map(scheme))
+                        upstream_yaml = load_yaml(upstream_meta_path)
 
-                        for upstream_impl in upstream_yaml['implementations']:
-                            if impl['upstream-id'] == upstream_impl['name']:
-                                break
-                        # Logic to add Common_META.yml components
+                    for upstream_impl in upstream_yaml['implementations']:
+                        if impl['upstream-id'] == upstream_impl['name']:
+                            break
+                    # Logic to add Common_META.yml components
 
-                        implementations = upstream_yaml['implementations']
-                        uir = get_upstream_info(implementations, impl['upstream-id'])
-                        if (uir != None) and ('common_dep' in uir):
-                            current_ui = ouis[upstream_name] if impl['upstream'] in ouis else ui
-                            if 'common_meta_path' in current_ui:
-                                upstream_common_path = os.path.join(current_ui['upstream_root'], current_ui['common_meta_path'])
-                            else:
-                                upstream_common_path = upstream_meta_path.replace(scheme['pretty_name_full'], "Common")
-                            upstream_common_yaml = load_yaml(upstream_common_path)
-                            for c in uir['common_dep'].split(' '):
-                                ur = get_upstream_info(upstream_common_yaml['commons'], c)
-                                if (ur != None) and ('supported_platforms' in ur):
-                                    if 'required_flags' in ur['supported_platforms'][0] and not ur['supported_platforms'][0]['required_flags']:
-                                        del ur['supported_platforms'][0]['required_flags']
-                                    if 'required_flags' in ur['supported_platforms'][0].keys():
-                                        upstream_impl['supported_platforms'][0]['required_flags']=list(set(upstream_impl['supported_platforms'][0]['required_flags']+ur['supported_platforms'][0]['required_flags']))
-                                        upstream_impl['supported_platforms'][0]['required_flags'].sort()
-                        if 'supported_platforms' in upstream_impl:
-                            for i in range(len(upstream_impl['supported_platforms'])):
-                                if upstream_impl['supported_platforms'][i]['architecture'] == 'arm_8':
-                                    upstream_impl['supported_platforms'][i]['architecture'] = 'ARM64_V8'
-                                    if 'asimd' in upstream_impl['supported_platforms'][i]['required_flags']:
-                                        upstream_impl['supported_platforms'][i]['required_flags'].remove('asimd')
-                                if 'required_flags' in upstream_impl['supported_platforms'][i] and not upstream_impl['supported_platforms'][i]['required_flags']:
-                                    del upstream_impl['supported_platforms'][i]['required_flags']
-
-                            impl['supported-platforms'] = rhs_if_not_equal(impl['supported-platforms'], upstream_impl['supported_platforms'], "supported-platforms")
+                    implementations = upstream_yaml['implementations']
+                    uir = get_upstream_info(implementations, impl['upstream-id'])
+                    if (uir != None) and ('common_dep' in uir):
+                        current_ui = ouis[upstream_name] if impl['upstream'] in ouis else ui
+                        if 'common_meta_path' in current_ui:
+                            upstream_common_path = resolve_upstream_meta_path(
+                                liboqs_root, current_ui, current_ui['common_meta_path'])
                         else:
-                            impl['supported-platforms'] = rhs_if_not_equal(impl['supported-platforms'], "all", "supported-platforms")
-                        if 'default_implementation' in kem and impl['upstream-id'] == kem['default_implementation']:
-                            impl['default'] = True
-                        oqs_scheme_yaml['implementations'][impl_index] = impl
+                            upstream_common_path = upstream_meta_path.replace(scheme['pretty_name_full'], "Common")
+                        upstream_common_yaml = load_yaml(upstream_common_path)
+                        for c in uir['common_dep'].split(' '):
+                            ur = get_upstream_info(upstream_common_yaml['commons'], c)
+                            if (ur != None) and ('supported_platforms' in ur):
+                                if 'required_flags' in ur['supported_platforms'][0] and not ur['supported_platforms'][0]['required_flags']:
+                                    del ur['supported_platforms'][0]['required_flags']
+                                if 'required_flags' in ur['supported_platforms'][0].keys():
+                                    upstream_impl['supported_platforms'][0]['required_flags']=list(set(upstream_impl['supported_platforms'][0]['required_flags']+ur['supported_platforms'][0]['required_flags']))
+                                    upstream_impl['supported_platforms'][0]['required_flags'].sort()
+                    if 'supported_platforms' in upstream_impl:
+                        for i in range(len(upstream_impl['supported_platforms'])):
+                            if upstream_impl['supported_platforms'][i]['architecture'] == 'arm_8':
+                                upstream_impl['supported_platforms'][i]['architecture'] = 'ARM64_V8'
+                                if 'asimd' in upstream_impl['supported_platforms'][i]['required_flags']:
+                                    upstream_impl['supported_platforms'][i]['required_flags'].remove('asimd')
+                            if 'required_flags' in upstream_impl['supported_platforms'][i] and not upstream_impl['supported_platforms'][i]['required_flags']:
+                                del upstream_impl['supported_platforms'][i]['required_flags']
+
+                        impl['supported-platforms'] = rhs_if_not_equal(impl['supported-platforms'], upstream_impl['supported_platforms'], "supported-platforms")
+                    else:
+                        impl['supported-platforms'] = rhs_if_not_equal(impl['supported-platforms'], "all", "supported-platforms")
+                    if 'default_implementation' in kem and impl['upstream-id'] == kem['default_implementation']:
+                        impl['default'] = True
+                    oqs_scheme_yaml['implementations'][impl_index] = impl
 
                 oqs_yaml['parameter-sets'][index] = oqs_scheme_yaml
 
             if write_changes:
                 store_yaml(oqs_yaml_path, oqs_yaml)
-
-
-# Merge documentation in liboqs_root/docs/algorithms/kem/kem['name'].yml with 
-# upstream information from libjade (patched with copy_from_upstream.py):
-# Args:
-# kems: List of kems in copy_from_libjade.yml
-# upstream_info: Hashtable of upstream information (keyed by upstream source)
-#  incl. entry: 'upstream_root' pointing to local folder containing source code
-def update_libjade_kem_alg_docs(liboqs_root, kems, upstream_info, write_changes=False):
-    for kem in kems:
-        ui = get_upstream_info(upstream_info, kem['upstream_location'])
-        upstream_root = ui['upstream_root']
-        meta_yaml_path_template = ui['kem_meta_path']
-
-        oqs_yaml_path = os.path.join(liboqs_root, 'docs', 'algorithms', 'kem', '{}.yml'.format(kem['name']))
-        oqs_yaml = load_yaml(oqs_yaml_path)
-        # We cannot assume that the ordering of "parameter-sets"
-        # in the OQS YAML files matches that of copy_from_upstream.yml
-        # hence use helper function get_oqs_yaml(alg_name)
-        for scheme in kem['schemes']:
-            scheme['family'] = kem['name']
-            upstream_meta_path = os.path.join(upstream_root, meta_yaml_path_template.format_map(scheme))
-            upstream_yaml = load_yaml(upstream_meta_path)
-
-            oqs_yaml['type'] = rhs_if_not_equal(oqs_yaml['type'], upstream_yaml['type'], "type")
-
-            oqs_yaml['principal-submitters'] = rhs_if_not_equal(oqs_yaml['principal-submitters'], upstream_yaml['principal-submitters'], "principal-submitters")
-            if 'auxiliary-submitters' in upstream_yaml:
-                oqs_yaml['auxiliary-submitters'] = rhs_if_not_equal(oqs_yaml['auxiliary-submitters'] if 'auxiliary-submitters' in oqs_yaml else '', upstream_yaml['auxiliary-submitters'], "auxiliary-submitters")
-
-            for upstream in upstream_info:
-                verified_upstream_base_url = upstream['git_url'][:-len(".git")]
-                for patchfilename in upstream['patches']:
-                    if kem['name'] in patchfilename:
-                        patches_done=" with copy_from_upstream patches"
-                patches_done=""
-                if 'patches' in upstream:
-                    for patchfilename in upstream['patches']:
-                        if kem['name'] in patchfilename:
-                            patches_done=" with copy_from_upstream patches"
-                if 'formally-verified-upstreams' in oqs_yaml and upstream['name'] in oqs_yaml['formally-verified-upstreams']:
-                    
-                    lhs = oqs_yaml['formally-verified-upstreams'][upstream['name']]['source']
-                else:
-                    lhs = ''
-                git_branch = upstream['git_branch']
-                oqs_yaml['formally-verified-upstreams'][upstream['name']]['source'] = rhs_if_not_equal(lhs, ("{}/tree/{}"+patches_done).format(verified_upstream_base_url, git_branch), "formally-verified-upstreams")
-
-            index, oqs_scheme_yaml = get_oqs_yaml(oqs_yaml['parameter-sets'], scheme['pretty_name_full'])
-
-            oqs_scheme_yaml['claimed-nist-level'] = rhs_if_not_equal(oqs_scheme_yaml['claimed-nist-level'], upstream_yaml['claimed-nist-level'], "claimed-nist-level")
-            oqs_scheme_yaml['claimed-security'] = rhs_if_not_equal(oqs_scheme_yaml['claimed-security'], upstream_yaml['claimed-security'], "claimed-security")
-            oqs_scheme_yaml['length-public-key'] = rhs_if_not_equal(oqs_scheme_yaml['length-public-key'], upstream_yaml['length-public-key'], "length-public-key")
-            oqs_scheme_yaml['length-ciphertext'] = rhs_if_not_equal(oqs_scheme_yaml['length-ciphertext'], upstream_yaml['length-ciphertext'], "length-ciphertext")
-            oqs_scheme_yaml['length-secret-key'] = rhs_if_not_equal(oqs_scheme_yaml['length-secret-key'], upstream_yaml['length-secret-key'], "legnth-secret-key")
-            oqs_scheme_yaml['length-shared-secret'] = rhs_if_not_equal(oqs_scheme_yaml['length-shared-secret'], upstream_yaml['length-shared-secret'], "length-shared-secret")
-
-            for impl_index, impl in enumerate(oqs_scheme_yaml['implementations']):
-                if impl['upstream'] == kem['upstream_location']:
-                    for upstream_impl in upstream_yaml['implementations']:
-                        if impl['upstream-id'] == upstream_impl['name']:
-                            break
-                    if 'supported_platforms' in upstream_impl:
-                        impl['supported-platforms'] = rhs_if_not_equal(impl['supported-platforms'], upstream_impl['supported_platforms'], "supported-platforms")
-                        for i in range(len(impl['supported-platforms'])):
-                            if not impl['supported-platforms'][i]['required_flags']:
-                                del impl['supported-platforms'][i]['required_flags']
-
-                    oqs_scheme_yaml['implementations'][impl_index] = impl
-
-                oqs_yaml['parameter-sets'][index] = oqs_scheme_yaml
-        if write_changes:
-            store_yaml(oqs_yaml_path, oqs_yaml)
-            
 
 
 def update_upstream_sig_alg_docs(liboqs_root, sigs, upstream_info, write_changes=False):
@@ -331,7 +263,8 @@ def update_upstream_sig_alg_docs(liboqs_root, sigs, upstream_info, write_changes
             # hence use helper function get_oqs_yaml(alg_name)
             for scheme in sig['schemes']:
                 meta_yaml_path_template = ui['sig_meta_path']
-                upstream_meta_path = os.path.join(upstream_root, meta_yaml_path_template.format_map(scheme))
+                upstream_meta_path = resolve_upstream_meta_path(
+                    liboqs_root, ui, meta_yaml_path_template.format_map(scheme))
                 if DEBUG > 0:
                     print("Examining {}'s META.yml.".format(scheme['pretty_name_full']))
                 upstream_yaml = load_yaml(upstream_meta_path)
@@ -398,8 +331,8 @@ def update_upstream_sig_alg_docs(liboqs_root, sigs, upstream_info, write_changes
                     if impl['upstream'] in ouis:
                         upstream_name = impl['upstream']
                         meta_yaml_path_template = ouis[upstream_name]['sig_meta_path']
-                        opt_upstream_root = ouis[upstream_name]['upstream_root']
-                        upstream_meta_path = os.path.join(opt_upstream_root, meta_yaml_path_template.format_map(scheme))
+                        upstream_meta_path = resolve_upstream_meta_path(
+                            liboqs_root, ouis[upstream_name], meta_yaml_path_template.format_map(scheme))
                         upstream_yaml = load_yaml(upstream_meta_path)
 
                     for upstream_impl in upstream_yaml['implementations']:
@@ -418,7 +351,8 @@ def update_upstream_sig_alg_docs(liboqs_root, sigs, upstream_info, write_changes
                     if (uir != None) and ('common_dep' in uir):
                         current_ui = ouis[upstream_name] if impl['upstream'] in ouis else ui
                         if 'common_meta_path' in current_ui:
-                            upstream_common_path = os.path.join(current_ui['upstream_root'], current_ui['common_meta_path'])
+                            upstream_common_path = resolve_upstream_meta_path(
+                                liboqs_root, current_ui, current_ui['common_meta_path'])
                         else:
                             upstream_common_path = upstream_meta_path.replace(scheme['pretty_name_full'], "Common")
                         upstream_common_yaml = load_yaml(upstream_common_path)
@@ -479,11 +413,8 @@ def do_it(liboqs_root, upstream_location='upstream'):
      if 'git_url' in upstream.keys():
        upstream['upstream_root'] = fetch_upstream(liboqs_root, upstream)
 
-   if upstream_location == 'libjade':
-     update_libjade_kem_alg_docs(liboqs_root, instructions['kems'], instructions['upstreams'], write_changes)
-   else:
-     update_upstream_kem_alg_docs(liboqs_root, instructions['kems'], instructions['upstreams'], write_changes)
-     update_upstream_sig_alg_docs(liboqs_root, instructions['sigs'], instructions['upstreams'], write_changes)
+   update_upstream_kem_alg_docs(liboqs_root, instructions['kems'], instructions['upstreams'], write_changes)
+   update_upstream_sig_alg_docs(liboqs_root, instructions['sigs'], instructions['upstreams'], write_changes)
 
 if __name__ == "__main__":
    do_it(None)

@@ -33,7 +33,7 @@
 
 /* Identifying the CPU is expensive so we cache the results in cpu_ext_data */
 #if defined(OQS_DIST_BUILD)
-static unsigned int cpu_ext_data[OQS_CPU_EXT_COUNT] = {0};
+static unsigned int cpu_ext_data[OQS_CPU_EXT_COUNT] = { 0 };
 #if defined(OQS_USE_PTHREADS)
 static pthread_once_t once_control = PTHREAD_ONCE_INIT;
 #endif
@@ -457,6 +457,9 @@ OQS_API char *OQS_MEM_strdup(const char *str) {
 		memcpy(dup, str, len);
 	}
 	return dup;
+#elif defined(_MSC_VER)
+	// strdup is deprecated in MSVC CRT, gives error C4996 with /sdl enabled.
+	return _strdup(str);
 #else
 	return strdup(str); // IGNORE memory-check
 #endif

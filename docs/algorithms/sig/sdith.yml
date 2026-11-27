@@ -508,7 +508,7 @@ parameter-sets:
     no-secret-dependent-branching-claimed: true
     no-secret-dependent-branching-checked-by-valgrind: false
     large-stack-usage: false
-upstream-maintenance: TBD
+upstream-maintenance: Best effort
 upstream-statement-url: null
 oqs-support-tier: 3
 auxiliary-submitters: []

@@ -4,8 +4,45 @@
    fun:PQCHQC_HQC3_C_vect_generate_random_support1
    fun:PQCHQC_HQC3_C_vect_sample_fixed_weight1
    fun:PQCHQC_HQC3_C_hqc_pke_keygen
-   fun:PQCHQC_HQC3_C_crypto_kem_keypair
+   fun:hqc_kem_keygen_internal
+   fun:PQCHQC_HQC3_C_hqc_kem_keygen
+   fun:PQCHQC_HQC3_C_hqc_kem_keygen_oqs
 }
+
+
+{
+   This implementation of HQC-3 is not validated against branching on secret
+   Memcheck:Value8
+   fun:PQCHQC_HQC3_C_vect_generate_random_support1
+   fun:PQCHQC_HQC3_C_vect_sample_fixed_weight1
+   fun:PQCHQC_HQC3_C_hqc_pke_keygen
+   fun:hqc_kem_keygen_internal
+   fun:PQCHQC_HQC3_C_hqc_kem_keygen
+   fun:PQCHQC_HQC3_C_hqc_kem_keygen_oqs
+}
+
+{
+   This implementation of HQC-3 is not validated against branching on secret
+   Memcheck:Cond
+   fun:PQCHQC_HQC3_C_vect_generate_random_support1
+   fun:PQCHQC_HQC3_C_vect_sample_fixed_weight1
+   fun:PQCHQC_HQC3_C_hqc_pke_keygen
+   fun:hqc_kem_decaps_internal
+   fun:PQCHQC_HQC3_C_hqc_kem_decaps
+   fun:PQCHQC_HQC3_C_hqc_kem_decaps_oqs
+}
+
+{
+   This implementation of HQC-3 is not validated against branching on secret
+   Memcheck:Value8
+   fun:PQCHQC_HQC3_C_vect_generate_random_support1
+   fun:PQCHQC_HQC3_C_vect_sample_fixed_weight1
+   fun:PQCHQC_HQC3_C_hqc_pke_keygen
+   fun:hqc_kem_decaps_internal
+   fun:PQCHQC_HQC3_C_hqc_kem_decaps
+   fun:PQCHQC_HQC3_C_hqc_kem_decaps_oqs
+}
+
 {
    This implementation of HQC-3 is not validated against branching on secret
    Memcheck:Cond
@@ -13,8 +50,21 @@
    fun:PQCHQC_HQC3_C_vect_sample_fixed_weight1
    fun:PQCHQC_HQC3_C_hqc_dk_pke_from_string
    fun:PQCHQC_HQC3_C_hqc_pke_decrypt
-   fun:PQCHQC_HQC3_C_crypto_kem_dec
+   fun:hqc_kem_decaps_internal
 }
+
+{
+   This implementation of HQC-3 is not validated against branching on secret
+   Memcheck:Value8
+   fun:PQCHQC_HQC3_C_vect_generate_random_support1
+   fun:PQCHQC_HQC3_C_vect_sample_fixed_weight1
+   fun:PQCHQC_HQC3_C_hqc_dk_pke_from_string
+   fun:PQCHQC_HQC3_C_hqc_pke_decrypt
+   fun:hqc_kem_decaps_internal
+   fun:PQCHQC_HQC3_C_hqc_kem_decaps
+   fun:PQCHQC_HQC3_C_hqc_kem_decaps_oqs
+}
+
 {
    This implementation of HQC-3 is not validated against branching on secret
    Memcheck:Cond
@@ -22,201 +72,121 @@
    fun:PQCHQC_HQC3_C_reed_muller_decode
    fun:PQCHQC_HQC3_C_code_decode
    fun:PQCHQC_HQC3_C_hqc_pke_decrypt
-   fun:PQCHQC_HQC3_C_crypto_kem_dec
+   fun:hqc_kem_decaps_internal
+   fun:PQCHQC_HQC3_C_hqc_kem_decaps
+   fun:PQCHQC_HQC3_C_hqc_kem_decaps_oqs
 }
+
 {
    This implementation of HQC-3 is not validated against branching on secret
    Memcheck:Cond
-   fun:PQCHQC_HQC3_C_vect_write_support_to_vector
-   fun:PQCHQC_HQC3_C_vect_sample_fixed_weight2
-   fun:PQCHQC_HQC3_C_hqc_pke_encrypt
-   fun:PQCHQC_HQC3_C_crypto_kem_dec
-   fun:kem_test_correctness
-   fun:test_wrapper
-   fun:start_thread
-   fun:clone
+   fun:PQCHQC_HQC3_AVX256_vect_generate_random_support1
+   fun:PQCHQC_HQC3_AVX256_vect_sample_fixed_weight1
+   fun:PQCHQC_HQC3_AVX256_hqc_pke_keygen
+   fun:hqc_kem_keygen_internal
+   fun:PQCHQC_HQC3_AVX256_hqc_kem_keygen
+   fun:PQCHQC_HQC3_AVX256_hqc_kem_keygen_oqs
 }
+
 {
    This implementation of HQC-3 is not validated against branching on secret
-   Memcheck:Value1
-   fun:PQCHQC_HQC3_C_vect_write_support_to_vector
-   fun:PQCHQC_HQC3_C_vect_sample_fixed_weight2
-   fun:PQCHQC_HQC3_C_hqc_pke_encrypt
-   fun:PQCHQC_HQC3_C_crypto_kem_dec
-   fun:kem_test_correctness
-   fun:test_wrapper
-   fun:start_thread
-   fun:clone
+   Memcheck:Value8
+   fun:PQCHQC_HQC3_AVX256_vect_generate_random_support1
+   fun:PQCHQC_HQC3_AVX256_vect_sample_fixed_weight1
+   fun:PQCHQC_HQC3_AVX256_hqc_pke_keygen
+   fun:hqc_kem_keygen_internal
+   fun:PQCHQC_HQC3_AVX256_hqc_kem_keygen
+   fun:PQCHQC_HQC3_AVX256_hqc_kem_keygen_oqs
 }
-{
-   This implementation of HQC-3 is not validated against branching on secret
-   Memcheck:Value1
-   fun:PQCHQC_HQC3_C_vect_write_support_to_vector
-   fun:PQCHQC_HQC3_C_vect_sample_fixed_weight1
-   fun:PQCHQC_HQC3_C_hqc_pke_keygen
-   fun:PQCHQC_HQC3_C_crypto_kem_keypair
-   fun:kem_test_correctness
-   fun:test_wrapper
-   fun:start_thread
-   fun:clone
-}
+
 {
    This implementation of HQC-3 is not validated against branching on secret
    Memcheck:Cond
-   fun:PQCHQC_HQC3_C_vect_write_support_to_vector
-   fun:PQCHQC_HQC3_C_vect_sample_fixed_weight1
-   fun:PQCHQC_HQC3_C_hqc_pke_keygen
-   fun:PQCHQC_HQC3_C_crypto_kem_keypair
-   fun:kem_test_correctness
-   fun:test_wrapper
-   fun:start_thread
-   fun:clone
+   fun:PQCHQC_HQC3_AVX256_vect_generate_random_support1
+   fun:PQCHQC_HQC3_AVX256_vect_sample_fixed_weight1
+   fun:PQCHQC_HQC3_AVX256_hqc_pke_keygen
+   fun:hqc_kem_decaps_internal
+   fun:PQCHQC_HQC3_AVX256_hqc_kem_decaps
+   fun:PQCHQC_HQC3_AVX256_hqc_kem_decaps_oqs
 }
+
 {
    This implementation of HQC-3 is not validated against branching on secret
-   Memcheck:Value1
-   fun:PQCHQC_HQC3_C_vect_write_support_to_vector
-   fun:PQCHQC_HQC3_C_vect_sample_fixed_weight1
-   fun:PQCHQC_HQC3_C_hqc_pke_keygen
-   fun:PQCHQC_HQC3_C_crypto_kem_keypair
-   fun:kem_test_correctness
-   fun:test_wrapper
-   fun:start_thread
-   fun:clone
+   Memcheck:Value8
+   fun:PQCHQC_HQC3_AVX256_vect_generate_random_support1
+   fun:PQCHQC_HQC3_AVX256_vect_sample_fixed_weight1
+   fun:PQCHQC_HQC3_AVX256_hqc_pke_keygen
+   fun:hqc_kem_decaps_internal
+   fun:PQCHQC_HQC3_AVX256_hqc_kem_decaps
+   fun:PQCHQC_HQC3_AVX256_hqc_kem_decaps_oqs
 }
-{
-   This implementation of HQC-3 is not validated against branching on secret
-   Memcheck:Cond
-   fun:PQCHQC_HQC3_C_vect_write_support_to_vector
-   fun:PQCHQC_HQC3_C_vect_sample_fixed_weight1
-   fun:PQCHQC_HQC3_C_hqc_pke_keygen
-   fun:PQCHQC_HQC3_C_crypto_kem_keypair
-   fun:kem_test_correctness
-   fun:test_wrapper
-   fun:start_thread
-   fun:clone
-}
-{
-   This implementation of HQC-3 is not validated against branching on secret
-   Memcheck:Value1
-   fun:PQCHQC_HQC3_C_vect_write_support_to_vector
-   fun:PQCHQC_HQC3_C_vect_sample_fixed_weight2
-   fun:PQCHQC_HQC3_C_hqc_pke_encrypt
-   fun:PQCHQC_HQC3_C_crypto_kem_enc
-   fun:kem_test_correctness
-   fun:test_wrapper
-   fun:start_thread
-   fun:clone
-}
+
 {
    This implementation of HQC-3 is not validated against branching on secret
    Memcheck:Cond
-   fun:PQCHQC_HQC3_C_vect_write_support_to_vector
-   fun:PQCHQC_HQC3_C_vect_sample_fixed_weight2
-   fun:PQCHQC_HQC3_C_hqc_pke_encrypt
-   fun:PQCHQC_HQC3_C_crypto_kem_enc
-   fun:kem_test_correctness
-   fun:test_wrapper
-   fun:start_thread
-   fun:clone
+   fun:PQCHQC_HQC3_AVX256_vect_generate_random_support1
+   fun:PQCHQC_HQC3_AVX256_vect_sample_fixed_weight1
+   fun:PQCHQC_HQC3_AVX256_hqc_dk_pke_from_string
+   fun:PQCHQC_HQC3_AVX256_hqc_pke_decrypt
+   fun:hqc_kem_decaps_internal
+   fun:PQCHQC_HQC3_AVX256_hqc_kem_decaps
+   fun:PQCHQC_HQC3_AVX256_hqc_kem_decaps_oqs
 }
+
 {
    This implementation of HQC-3 is not validated against branching on secret
-   Memcheck:Value1
-   fun:PQCHQC_HQC3_C_vect_write_support_to_vector
-   fun:PQCHQC_HQC3_C_vect_sample_fixed_weight2
-   fun:PQCHQC_HQC3_C_hqc_pke_encrypt
-   fun:PQCHQC_HQC3_C_crypto_kem_enc
-   fun:kem_test_correctness
-   fun:test_wrapper
-   fun:start_thread
-   fun:clone
+   Memcheck:Value8
+   fun:PQCHQC_HQC3_AVX256_vect_generate_random_support1
+   fun:PQCHQC_HQC3_AVX256_vect_sample_fixed_weight1
+   fun:PQCHQC_HQC3_AVX256_hqc_dk_pke_from_string
+   fun:PQCHQC_HQC3_AVX256_hqc_pke_decrypt
+   fun:hqc_kem_decaps_internal
+   fun:PQCHQC_HQC3_AVX256_hqc_kem_decaps
+   fun:PQCHQC_HQC3_AVX256_hqc_kem_decaps_oqs
 }
-{
-   This implementation of HQC-3 is not validated against branching on secret
-   Memcheck:Cond
-   fun:PQCHQC_HQC3_C_vect_write_support_to_vector
-   fun:PQCHQC_HQC3_C_vect_sample_fixed_weight2
-   fun:PQCHQC_HQC3_C_hqc_pke_encrypt
-   fun:PQCHQC_HQC3_C_crypto_kem_enc
-   fun:kem_test_correctness
-   fun:test_wrapper
-   fun:start_thread
-   fun:clone
-}
-{
-   This implementation of HQC-3 is not validated against branching on secret
-   Memcheck:Value1
-   fun:PQCHQC_HQC3_C_vect_write_support_to_vector
-   fun:PQCHQC_HQC3_C_vect_sample_fixed_weight2
-   fun:PQCHQC_HQC3_C_hqc_pke_encrypt
-   fun:PQCHQC_HQC3_C_crypto_kem_enc
-   fun:kem_test_correctness
-   fun:test_wrapper
-   fun:start_thread
-   fun:clone
-}
+
 {
    This implementation of HQC-3 is not validated against branching on secret
    Memcheck:Cond
-   fun:PQCHQC_HQC3_C_vect_write_support_to_vector
-   fun:PQCHQC_HQC3_C_vect_sample_fixed_weight2
-   fun:PQCHQC_HQC3_C_hqc_pke_encrypt
-   fun:PQCHQC_HQC3_C_crypto_kem_enc
-   fun:kem_test_correctness
-   fun:test_wrapper
-   fun:start_thread
-   fun:clone
+   fun:keccak_inc_squeeze
+   fun:SHA3_shake256_inc_squeeze
+   fun:OQS_SHA3_shake256_inc_squeeze
+   fun:PQCHQC_HQC3_AVX256_xof_get_bytes
+   fun:PQCHQC_HQC3_AVX256_vect_generate_random_support1
+   fun:PQCHQC_HQC3_AVX256_vect_sample_fixed_weight1
+   fun:PQCHQC_HQC3_AVX256_hqc_pke_keygen
+   fun:hqc_kem_keygen_internal
+   fun:PQCHQC_HQC3_AVX256_hqc_kem_keygen
+   fun:PQCHQC_HQC3_AVX256_hqc_kem_keygen_oqs
 }
-{
-   This implementation of HQC-3 is not validated against branching on secret
-   Memcheck:Value1
-   fun:PQCHQC_HQC3_C_vect_write_support_to_vector
-   fun:PQCHQC_HQC3_C_vect_sample_fixed_weight1
-   fun:PQCHQC_HQC3_C_hqc_dk_pke_from_string
-   fun:PQCHQC_HQC3_C_hqc_pke_decrypt
-   fun:PQCHQC_HQC3_C_crypto_kem_dec
-   fun:kem_test_correctness
-   fun:test_wrapper
-   fun:start_thread
-   fun:clone
-}
+
 {
    This implementation of HQC-3 is not validated against branching on secret
    Memcheck:Cond
-   fun:PQCHQC_HQC3_C_vect_write_support_to_vector
-   fun:PQCHQC_HQC3_C_vect_sample_fixed_weight1
-   fun:PQCHQC_HQC3_C_hqc_dk_pke_from_string
-   fun:PQCHQC_HQC3_C_hqc_pke_decrypt
-   fun:PQCHQC_HQC3_C_crypto_kem_dec
-   fun:kem_test_correctness
-   fun:test_wrapper
-   fun:start_thread
-   fun:clone
+   fun:KeccakP1600_ExtractBytes
+   fun:SHA3_shake256_inc_squeeze
+   fun:OQS_SHA3_shake256_inc_squeeze
+   fun:PQCHQC_HQC3_AVX256_xof_get_bytes
+   fun:PQCHQC_HQC3_AVX256_vect_generate_random_support1
+   fun:PQCHQC_HQC3_AVX256_vect_sample_fixed_weight1
+   fun:PQCHQC_HQC3_AVX256_hqc_pke_keygen
+   fun:hqc_kem_keygen_internal
+   fun:PQCHQC_HQC3_AVX256_hqc_kem_keygen
+   fun:PQCHQC_HQC3_AVX256_hqc_kem_keygen_oqs
 }
+
 {
    This implementation of HQC-3 is not validated against branching on secret
-   Memcheck:Cond
-   fun:compute_error_values
-   fun:PQCHQC_HQC3_C_reed_solomon_decode
-   fun:PQCHQC_HQC3_C_code_decode
-   fun:PQCHQC_HQC3_C_hqc_pke_decrypt
-   fun:PQCHQC_HQC3_C_crypto_kem_dec
-   fun:kem_test_correctness
-   fun:test_wrapper
-   fun:start_thread
-   fun:clone
+   Memcheck:Value8
+   fun:KeccakP1600_ExtractBytes
+   fun:SHA3_shake256_inc_squeeze
+   fun:OQS_SHA3_shake256_inc_squeeze
+   fun:PQCHQC_HQC3_AVX256_xof_get_bytes
+   fun:PQCHQC_HQC3_AVX256_vect_generate_random_support1
+   fun:PQCHQC_HQC3_AVX256_vect_sample_fixed_weight1
+   fun:PQCHQC_HQC3_AVX256_hqc_pke_keygen
+   fun:hqc_kem_keygen_internal
+   fun:PQCHQC_HQC3_AVX256_hqc_kem_keygen
+   fun:PQCHQC_HQC3_AVX256_hqc_kem_keygen_oqs
 }
-{
-   This implementation of HQC-3 is not validated against branching on secret
-   Memcheck:Cond
-   fun:compute_error_values
-   fun:PQCHQC_HQC3_C_reed_solomon_decode
-   fun:PQCHQC_HQC3_C_code_decode
-   fun:PQCHQC_HQC3_C_hqc_pke_decrypt
-   fun:PQCHQC_HQC3_C_crypto_kem_dec
-   fun:kem_test_correctness
-   fun:test_wrapper
-   fun:start_thread
-   fun:clone
-}
+

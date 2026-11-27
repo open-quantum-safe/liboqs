@@ -35,7 +35,7 @@
  * H5 ID                               is.........5
  * W1 ID                               is..........1
  *
-* For OQS_LMS_ID_sha256_h10_w4_h5_w8 the is 0x026354
+ * For OQS_LMS_ID_sha256_h10_w4_h5_w8 the is 0x026354
  * Number of levels                    is.......0x02
  * Level 1 H10 ID                      is...........6
  * Level 1 W4 ID                       is............3

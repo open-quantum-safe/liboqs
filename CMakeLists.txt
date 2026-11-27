@@ -18,12 +18,16 @@ if(POLICY CMP0067)
     cmake_policy(SET CMP0067 NEW)
 endif()
 
-project(liboqs C ASM)
+project(liboqs C)
+
+# cl.exe does not handle assembly, triggers CMP0194 with CMake >= 4.1.
+if(NOT CMAKE_C_COMPILER_ID STREQUAL "MSVC")
+    enable_language(ASM)
+endif()
 
 option(OQS_DIST_BUILD "Build distributable library with optimized code for several CPU microarchitectures. Enables run-time CPU feature detection." ON)
-option(OQS_BUILD_ONLY_LIB "Build only liboqs and do not expose build targets for tests, documentation, and pretty-printing available." OFF)
+option(OQS_BUILD_ONLY_LIB "Build only liboqs and do not expose build targets for tests, documentation, and code formatting available." OFF)
 set(OQS_MINIMAL_BUILD "" CACHE STRING "Only build specifically listed algorithms.")
-option(OQS_LIBJADE_BUILD "Enable formally verified implementation of supported algorithms from libjade." OFF)
 option(OQS_PERMIT_UNSUPPORTED_ARCHITECTURE "Permit compilation on an an unsupported architecture." OFF)
 option(OQS_STRICT_WARNINGS "Enable all compiler warnings." OFF)
 option(OQS_EMBEDDED_BUILD "Compile liboqs for an Embedded environment without a full standard library." OFF)
@@ -175,12 +179,10 @@ if(OQS_USE_ICICLE)
     find_package(icicle_pqc_package REQUIRED)
 endif()
 
-
-if (NOT ((CMAKE_SYSTEM_NAME MATCHES "Linux|Darwin") AND (ARCH_X86_64 STREQUAL "ON")) AND (OQS_LIBJADE_BUILD STREQUAL "ON"))
-    message(FATAL_ERROR "Building liboqs with libjade implementations from libjade is only supported on Linux and Darwin on x86_64.")
-endif()
-
 # intentionally don't switch to variables to avoid --warn-uninitialized report
+if(OQS_LIBJADE_BUILD)
+    message(FATAL_ERROR "OQS_LIBJADE_BUILD was removed: the libjade Kyber implementations are no longer supported. See https://github.com/open-quantum-safe/liboqs/pull/2714")
+endif()
 if(OQS_USE_CPU_EXTENSIONS)
     message(FATAL_ERROR "OQS_USE_CPU_EXTENSIONS is deprecated")
 endif()
@@ -314,6 +316,9 @@ endif()
 if(OQS_ENABLE_SIG_SQISIGN)
     set(PUBLIC_HEADERS ${PUBLIC_HEADERS} ${PROJECT_SOURCE_DIR}/src/sig/sqisign/sig_sqisign.h)
 endif()
+if(OQS_ENABLE_SIG_FAEST)
+    set(PUBLIC_HEADERS ${PUBLIC_HEADERS} ${PROJECT_SOURCE_DIR}/src/sig/faest/sig_faest.h)
+endif()
 ##### OQS_COPY_FROM_UPSTREAM_FRAGMENT_INCLUDE_HEADERS_END
 if(OQS_ENABLE_SIG_SLH_DSA)
     set(PUBLIC_HEADERS ${PUBLIC_HEADERS} ${PROJECT_SOURCE_DIR}/src/sig/slh_dsa/sig_slh_dsa.h)
@@ -351,8 +356,8 @@ if(NOT ${OQS_BUILD_ONLY_LIB})
 
     if(NOT WIN32)
         add_custom_target(
-            prettyprint
-            COMMAND find src tests -name '*.[ch]' | grep -v '/external/' | grep -v 'kem.*/pqclean_' | grep -v 'sig.*/pqclean_' | xargs astyle --options=.astylerc
+            format_code
+            COMMAND ${PROJECT_SOURCE_DIR}/scripts/format_code.sh
             WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
             USES_TERMINAL)
     endif()

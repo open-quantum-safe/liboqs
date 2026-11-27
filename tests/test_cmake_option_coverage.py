@@ -12,8 +12,7 @@ because the implementations of one scheme agree on their vectors.
 Scope, so the name is not read as broader than the check: this compares the
 options a CMakeLists *references* against the options `alg_support.cmake`
 *declares*. Sources that ship under `src/` and are referenced by no
-CMakeLists at all are a different problem and are not covered here. Libjade
-uses `OQS_ENABLE_LIBJADE_*`, which is outside the pattern on both sides.
+CMakeLists at all are a different problem and are not covered here.
 
 Whether an option can exist at all is decided by
 `scripts/copy_from_upstream/.CMake/alg_support.cmake/add_enable_by_alg_conditional.fragment`,

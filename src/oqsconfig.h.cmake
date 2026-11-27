@@ -137,8 +137,11 @@
 
 #cmakedefine OQS_ENABLE_KEM_HQC 1
 #cmakedefine OQS_ENABLE_KEM_hqc_1 1
+#cmakedefine OQS_ENABLE_KEM_hqc_1_x86_64 1
 #cmakedefine OQS_ENABLE_KEM_hqc_3 1
+#cmakedefine OQS_ENABLE_KEM_hqc_3_x86_64 1
 #cmakedefine OQS_ENABLE_KEM_hqc_5 1
+#cmakedefine OQS_ENABLE_KEM_hqc_5_x86_64 1
 
 #cmakedefine OQS_ENABLE_KEM_KYBER 1
 #cmakedefine OQS_ENABLE_KEM_kyber_512 1
@@ -568,6 +571,20 @@
 #cmakedefine OQS_ENABLE_SIG_sqisign_p664_17 1
 #cmakedefine OQS_ENABLE_SIG_sqisign_p664_17_broadwell 1
 #cmakedefine OQS_ENABLE_SIG_sqisign_p664_17_arm64 1
+
+#cmakedefine OQS_ENABLE_SIG_FAEST 1
+#cmakedefine OQS_ENABLE_SIG_faest_128s 1
+#cmakedefine OQS_ENABLE_SIG_faest_128f 1
+#cmakedefine OQS_ENABLE_SIG_faest_em_128s 1
+#cmakedefine OQS_ENABLE_SIG_faest_em_128f 1
+#cmakedefine OQS_ENABLE_SIG_faest_192s 1
+#cmakedefine OQS_ENABLE_SIG_faest_192f 1
+#cmakedefine OQS_ENABLE_SIG_faest_em_192s 1
+#cmakedefine OQS_ENABLE_SIG_faest_em_192f 1
+#cmakedefine OQS_ENABLE_SIG_faest_256s 1
+#cmakedefine OQS_ENABLE_SIG_faest_256f 1
+#cmakedefine OQS_ENABLE_SIG_faest_em_256s 1
+#cmakedefine OQS_ENABLE_SIG_faest_em_256f 1
 ///// OQS_COPY_FROM_UPSTREAM_FRAGMENT_ADD_ALG_ENABLE_DEFINES_END
 ///// OQS_COPY_FROM_SLH_DSA_FRAGMENT_ADD_ALG_ENABLE_DEFINES_START
 #cmakedefine OQS_ENABLE_SIG_SLH_DSA 1
@@ -728,17 +745,6 @@
 #cmakedefine OQS_ENABLE_SIG_slh_dsa_shake_256_prehash_shake_256s 1
 #cmakedefine OQS_ENABLE_SIG_slh_dsa_shake_256_prehash_shake_256f 1
 ///// OQS_COPY_FROM_SLH_DSA_FRAGMENT_ADD_ALG_ENABLE_DEFINES_END
-
-///// OQS_COPY_FROM_LIBJADE_FRAGMENT_ADD_ALG_ENABLE_DEFINES_START
-
-#cmakedefine01 OQS_LIBJADE_BUILD
-
-#cmakedefine OQS_ENABLE_LIBJADE_KEM_KYBER 1
-#cmakedefine OQS_ENABLE_LIBJADE_KEM_kyber_512 1
-#cmakedefine OQS_ENABLE_LIBJADE_KEM_kyber_512_avx2 1
-#cmakedefine OQS_ENABLE_LIBJADE_KEM_kyber_768 1
-#cmakedefine OQS_ENABLE_LIBJADE_KEM_kyber_768_avx2 1
-///// OQS_COPY_FROM_LIBJADE_FRAGMENT_ADD_ALG_ENABLE_DEFINES_END
 
 #cmakedefine OQS_ENABLE_SIG_STFL_XMSS 1
 #cmakedefine OQS_ENABLE_SIG_STFL_xmss_sha256_h10 1

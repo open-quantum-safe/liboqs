@@ -104,7 +104,7 @@ PRINT_TIMER_FOOTER
 
 int gettimeofday(struct timeval *tp, struct timezone *tzp) {
 	// Note: some broken versions only have 8 trailing zero's, the correct epoch has 9 trailing zero's
-	static const uint64_t EPOCH = ((uint64_t) 116444736000000000ULL);
+	static const uint64_t EPOCH = ((uint64_t)116444736000000000ULL);
 
 	SYSTEMTIME system_time;
 	FILETIME file_time;
@@ -112,10 +112,10 @@ int gettimeofday(struct timeval *tp, struct timezone *tzp) {
 
 	GetSystemTime(&system_time);
 	SystemTimeToFileTime(&system_time, &file_time);
-	time = ((uint64_t) file_time.dwLowDateTime);
-	time += ((uint64_t) file_time.dwHighDateTime) << 32;
-	tp->tv_sec = (long) ((time - EPOCH) / 10000000L);
-	tp->tv_usec = (long) (system_time.wMilliseconds * 1000);
+	time = ((uint64_t)file_time.dwLowDateTime);
+	time += ((uint64_t)file_time.dwHighDateTime) << 32;
+	tp->tv_sec = (long)((time - EPOCH) / 10000000L);
+	tp->tv_usec = (long)(system_time.wMilliseconds * 1000);
 	return 0;
 }
 #endif
@@ -128,20 +128,20 @@ static uint64_t _bench_rdtsc(void) {
 	}
 	return li.QuadPart;
 #elif defined(__i586__) || defined(__amd64__)
-	uint64_t x;
+	uint32_t lo, hi;
 	__asm__ volatile(".byte 0x0f, 0x31"
-	                 : "=A"(x));
-	return x;
+	                 : "=a"(lo), "=d"(hi));
+	return ((uint64_t)hi << 32) | lo;
 #elif defined(SPEED_USE_ARM_PMU)
 	/* Use the Performance Monitoring Unit */
 	uint64_t value;
 	/* Read the PMU register */
-	__asm__ volatile("mrs %0, PMCCNTR_EL0" : "=r" (value));
+	__asm__ volatile("mrs %0, PMCCNTR_EL0" : "=r"(value));
 	return value;
 #elif defined(__s390x__)
 #define USING_TIME_RATHER_THAN_CYCLES
 	uint64_t tod;
-	__asm__ volatile("stckf %0\n" : "=Q" (tod) : : "cc");
+	__asm__ volatile("stckf %0\n" : "=Q"(tod) : : "cc");
 	return (tod * 1000 / 4096);
 #else
 #define USING_TIME_RATHER_THAN_CYCLES
@@ -206,9 +206,6 @@ static void _bench_init_perfcounters(void) {
     _bench_cycles_end = _bench_rdtsc();                                                                                                                                     \
     gettimeofday(&_bench_timeval_end, NULL);                                                                                                                                \
     _bench_iterations += 1;                                                                                                                                                 \
-    if (_bench_cycles_end < _bench_cycles_start) {                                                                                                                          \
-        _bench_cycles_end += (uint64_t) 1 << 32;                                                                                                                            \
-    }                                                                                                                                                                       \
     _bench_cycles_diff = _bench_cycles_end;                                                                                                                                 \
     _bench_cycles_diff -= _bench_cycles_start;                                                                                                                              \
     _bench_cycles_cumulative += _bench_cycles_diff;                                                                                                                         \

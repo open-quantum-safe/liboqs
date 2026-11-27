@@ -126,6 +126,10 @@ static SLH_INLINE uint32_t adrs_get_tree_index(const slh_var_t *var)
 
 /* === Set WOTS+ hash address. */
 static SLH_INLINE void adrs_set_hash_address(slh_var_t *var, uint32_t x)
+__contract__(
+  requires(VALID_SLH_VAR_T(var))
+  assigns(var->adrs->u32[7])
+)
 {
   var->adrs->u32[7] = rev8_be32(x);
 }

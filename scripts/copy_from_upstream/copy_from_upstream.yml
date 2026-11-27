@@ -3,7 +3,7 @@ upstreams:
     name: the-sqisign
     git_url: https://github.com/bhess/the-sqisign.git
     git_branch: liboqs-staging
-    git_commit: 1f1fb9eb1efd583716a903a35170dc78e101e4a8
+    git_commit: bf37fc8f7f162e4348f6c9535f37ac8c59bc2990
     sig_scheme_path: '.'
     sig_meta_path: 'integration/liboqs/{pqclean_scheme}.yml'
     common_meta_path: 'integration/liboqs/META_Common.yml'
@@ -11,10 +11,11 @@ upstreams:
   -
     name: pqc-hqc
     git_url: https://gitlab.com/pqc-hqc/hqc.git
-    git_branch: next-release
-    git_commit: 161cd4fdf6b4a5198cf40b3a1243f9f27f13e03d
-    kem_meta_path: "integrations/{pretty_name_full}_META.yml"
+    git_branch: main
+    git_commit: 06567ccbad10580d78dd7863b15d23f41076d57f
+    kem_meta_path: "integration/liboqs/{pretty_name_full}_META.yml"
     kem_scheme_path: .
+    common_meta_path: "integration/liboqs/HQC_COMMON_META.yml"
     patches: [pqchqc-liboqs-integration.patch]
   -
     name: oldpqclean
@@ -136,6 +137,20 @@ upstreams:
     sig_meta_path: 'integration/liboqs/schemes/{pretty_name_full}/META_{pretty_name_full}.yml'
     common_meta_path: 'integration/liboqs/META_Common.yml'
     patches: [sdith-liboqs-integration.patch]
+  -
+    name: faest-ref
+    git_url: https://github.com/faest-sign/faest-ref.git
+    git_branch: main
+    git_commit: 6edd814491d56ba29a37510825493c7041221ed6
+    patches: [faest-ref-scan-build-false-positives.patch]
+    sig_scheme_path: '.'
+    # Integration metadata and generated wrappers live in liboqs (meta_root).
+    # faest-ref supplies core crypto and .in templates; OQS AES-128/192/256
+    # routing is already on faest-ref main.
+    sig_meta_path: 'scripts/copy_from_upstream/faest/{pretty_name_full}_META.yml'
+    common_meta_path: 'scripts/copy_from_upstream/faest/META_Common.yml'
+    meta_root: liboqs
+    preserve_folder_structure: True
 kems:
   -
     name: classic_mceliece
@@ -203,7 +218,6 @@ kems:
   -
     name: kyber
     default_implementation: ref
-    libjade_implementation: True
     arch_specific_implementations:
                                       aarch64: aarch64
     upstream_location: pqcrystals-kyber
@@ -214,23 +228,14 @@ kems:
         scheme: "512"
         pqclean_scheme: kyber512
         pretty_name_full: Kyber512
-        libjade_implementation: True
-        libjade_implementations:
-          - ref
-          - avx2
       -
         scheme: "768"
         pqclean_scheme: kyber768
         pretty_name_full: Kyber768
-        libjade_implementation: True
-        libjade_implementations:
-          - ref
-          - avx2
       -
         scheme: "1024"
         pqclean_scheme: kyber1024
         pretty_name_full: Kyber1024
-        libjade_implementation: False
   -
     name: ml_kem
     default_implementation: ref
@@ -917,3 +922,69 @@ sigs:
         pqclean_scheme: sqisign_p664_17
         pretty_name_full: SQIsign-p664-17
         signed_msg_order: sig_then_msg
+  -
+    name: faest
+    default_implementation: ref
+    upstream_location: faest-ref
+    schemes:
+      -
+        scheme: "128s"
+        pqclean_scheme: faest-128s
+        pretty_name_full: FAEST-128S
+        signed_msg_order: msg_then_sig
+      -
+        scheme: "128f"
+        pqclean_scheme: faest-128f
+        pretty_name_full: FAEST-128F
+        signed_msg_order: msg_then_sig
+      -
+        scheme: "em_128s"
+        pqclean_scheme: faest-em-128s
+        pretty_name_full: FAEST-EM-128S
+        signed_msg_order: msg_then_sig
+      -
+        scheme: "em_128f"
+        pqclean_scheme: faest-em-128f
+        pretty_name_full: FAEST-EM-128F
+        signed_msg_order: msg_then_sig
+      -
+        scheme: "192s"
+        pqclean_scheme: faest-192s
+        pretty_name_full: FAEST-192S
+        signed_msg_order: msg_then_sig
+      -
+        scheme: "192f"
+        pqclean_scheme: faest-192f
+        pretty_name_full: FAEST-192F
+        signed_msg_order: msg_then_sig
+      -
+        scheme: "em_192s"
+        pqclean_scheme: faest-em-192s
+        pretty_name_full: FAEST-EM-192S
+        signed_msg_order: msg_then_sig
+      -
+        scheme: "em_192f"
+        pqclean_scheme: faest-em-192f
+        pretty_name_full: FAEST-EM-192F
+        signed_msg_order: msg_then_sig
+      -
+        scheme: "256s"
+        pqclean_scheme: faest-256s
+        pretty_name_full: FAEST-256S
+        signed_msg_order: msg_then_sig
+      -
+        scheme: "256f"
+        pqclean_scheme: faest-256f
+        pretty_name_full: FAEST-256F
+        signed_msg_order: msg_then_sig
+      -
+        scheme: "em_256s"
+        pqclean_scheme: faest-em-256s
+        pretty_name_full: FAEST-EM-256S
+        signed_msg_order: msg_then_sig
+      -
+        scheme: "em_256f"
+        pqclean_scheme: faest-em-256f
+        pretty_name_full: FAEST-EM-256F
+        signed_msg_order: msg_then_sig
+

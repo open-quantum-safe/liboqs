@@ -23,6 +23,10 @@ string mallocCheckIgnoredDir() {
   // CROSS: unchecked allocations of discarded buffers in the AVX2 CSPRNG, see
   // https://github.com/CROSS-signature/CROSS-lib-oqs/blob/ce9933c7023a7aace4ac05b779995334a9996e6a/generate/crypto_sign/cross-rsdp-128-fast/avx2/csprng_hash.h#L105-L107
   result = "src/sig/cross/upcross_%_avx2/csprng_hash.h"
+  or
+  // FAEST: imported faest-ref maps faest_malloc/calloc to OQS_MEM_* without NULL
+  // checks. Fix upstream, then drop this ignore.
+  result = "src/sig/faest/%"
 }
 
 class OqsAllocation extends FunctionCall {

@@ -106,17 +106,9 @@ jobs:
             container: openquantumsafe/ci-ubuntu-latest:latest
             CMAKE_ARGS: -DOQS_DIST_BUILD=OFF -DOQS_OPT_TARGET=generic
             PYTEST_ARGS: --numprocesses=auto -k 'test_kat_all'
-          - name: generic-libjade
-            container: openquantumsafe/ci-ubuntu-latest:latest
-            CMAKE_ARGS: -DOQS_DIST_BUILD=OFF -DOQS_OPT_TARGET=generic -DOQS_LIBJADE_BUILD=ON -DOQS_MINIMAL_BUILD="${{ vars.LIBJADE_ALG_LIST }}"
-            PYTEST_ARGS: --numprocesses=auto -k 'test_kat_all'
           - name: extensions
             container: openquantumsafe/ci-ubuntu-latest:latest
             CMAKE_ARGS: -DOQS_DIST_BUILD=OFF -DOQS_OPT_TARGET=auto
-            PYTEST_ARGS: --numprocesses=auto -k 'test_kat_all'
-          - name: extensions-libjade
-            container: openquantumsafe/ci-ubuntu-latest:latest
-            CMAKE_ARGS: -DOQS_DIST_BUILD=OFF -DOQS_OPT_TARGET=auto -DOQS_LIBJADE_BUILD=ON -DOQS_MINIMAL_BUILD="${{ vars.LIBJADE_ALG_LIST}}"
             PYTEST_ARGS: --numprocesses=auto -k 'test_kat_all'
     container:
       image: ${{ matrix.container }}
@@ -130,6 +122,9 @@ jobs:
         working-directory: build
       - name: Run tests
         timeout-minutes: 360
+        env:
+          # Fast FAEST variants only; slow "s" sets remain skipped until FAEST CI time is trimmed.
+          SKIP_ALGS: 'FAEST-.*S'
         run: mkdir -p tmp && python3 -m pytest --verbose ${{ matrix.PYTEST_ARGS }}
 
   # QR-UOV ships three implementations per parameter set, and all three
@@ -261,30 +256,6 @@ jobs:
         timeout-minutes: 360
         run: mkdir -p tmp && python3 -m pytest --verbose --numprocesses=auto -k QRUOV tests/test_kat.py tests/test_kat_all.py
 
-  libjadecheck:
-    name: Check libjade code is properly integrated
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-    container: openquantumsafe/ci-ubuntu-latest:latest
-    permissions:
-      contents: read
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # pin@v4
-      - name: Configure
-        run: |
-          git config --global user.name "ciuser" && \
-          git config --global user.email "ci@openquantumsafe.org" && \
-          git config --global --add safe.directory "$PWD" && \
-          echo "LIBOQS_DIR=$PWD" >> "$GITHUB_ENV"
-      - name: Verify copy_from_upstream state after libjade
-        working-directory: "scripts/copy_from_upstream"
-        run: |
-          python3 copy_from_upstream.py -d libjade && \
-          git status --porcelain && \
-          test -z "$(git status --porcelain)"
-
   slhdsa-leak-tests:
     strategy:
       fail-fast: false
@@ -348,6 +319,9 @@ jobs:
         working-directory: build
       - name: Run tests
         timeout-minutes: 60
+        env:
+          # Fast FAEST variants only; slow "s" sets remain skipped until FAEST CI time is trimmed.
+          SKIP_ALGS: 'FAEST-.*S'
         run: mkdir -p tmp && python3 -m pytest --verbose --ignore=tests/test_code_conventions.py --ignore=tests/test_cmake_option_coverage.py --ignore=tests/test_kats_json.py --ignore=tests/test_acvp_vectors.py --ignore=tests/test_distbuild.py --ignore=tests/test_leaks.py --ignore=tests/test_kat_all.py --numprocesses=logical --dist load --maxschedchunk=1 --maxprocesses=10
 
   stfl-tests:
@@ -380,6 +354,8 @@ jobs:
         timeout-minutes: 90
         env:
           OQS_TEST_SIG_CTX_STEP: "255"
+          # Fast FAEST variants only; slow "s" sets remain skipped until FAEST CI time is trimmed.
+          SKIP_ALGS: 'FAEST-.*S'
         run: mkdir -p tmp && python3 -m pytest --verbose --ignore=tests/test_code_conventions.py --ignore=tests/test_cmake_option_coverage.py --ignore=tests/test_kats_json.py --ignore=tests/test_acvp_vectors.py --numprocesses=auto --ignore=tests/test_alg_info.py --ignore=tests/test_kat_all.py
 
   slhdsa-openssl330-test:
@@ -549,47 +525,6 @@ jobs:
         timeout-minutes: 60
         run: python3 -m pytest --verbose --numprocesses=auto tests/test_acvp_vectors.py
 
-  libjade-linux-tests:
-    name: Run libjade tests on Linux platforms
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - name: alpine-libjade
-            container: openquantumsafe/ci-alpine-amd64:latest
-            CMAKE_ARGS: -DOQS_STRICT_WARNINGS=ON -DOQS_USE_OPENSSL=ON -DBUILD_SHARED_LIBS=ON -DOQS_LIBJADE_BUILD=ON -DOQS_MINIMAL_BUILD="${{ vars.LIBJADE_ALG_LIST }}"
-            PYTEST_ARGS: --ignore=tests/test_alg_info.py --ignore=tests/test_kat_all.py
-          - name: noble-noopenssl-libjade
-            container: openquantumsafe/ci-ubuntu-latest:latest
-            CMAKE_ARGS: -DOQS_USE_OPENSSL=OFF -DOQS_LIBJADE_BUILD=ON -DOQS_MINIMAL_BUILD="${{ vars.LIBJADE_ALG_LIST }}"
-            PYTEST_ARGS: --ignore=tests/test_leaks.py --ignore=tests/test_kat_all.py
-          - name: jammy-std-openssl3-libjade
-            container: openquantumsafe/ci-ubuntu-jammy:latest
-            CMAKE_ARGS: -DOQS_STRICT_WARNINGS=ON -DOQS_ALGS_ENABLED=STD -DBUILD_SHARED_LIBS=ON -DOQS_LIBJADE_BUILD=ON -DOQS_MINIMAL_BUILD="${{ vars.LIBJADE_ALG_LIST }}"
-            PYTEST_ARGS: --ignore=tests/test_leaks.py --ignore=tests/test_kat_all.py
-          - name: jammy-std-openssl3-dlopen-libjade
-            container: openquantumsafe/ci-ubuntu-jammy:latest
-            CMAKE_ARGS: -DOQS_STRICT_WARNINGS=ON -DOQS_ALGS_ENABLED=STD -DBUILD_SHARED_LIBS=ON -DOQS_DLOPEN_OPENSSL=ON -DOQS_LIBJADE_BUILD=ON -DOQS_MINIMAL_BUILD="${{ vars.LIBJADE_ALG_LIST }}"
-            PYTEST_ARGS: --ignore=tests/test_leaks.py --ignore=tests/test_kat_all.py
-          - name: address-sanitizer-libjade
-            container: openquantumsafe/ci-ubuntu-latest:latest
-            CMAKE_ARGS: -DCMAKE_C_COMPILER=clang -DCMAKE_BUILD_TYPE=Debug -DUSE_SANITIZER=Address -DOQS_LIBJADE_BUILD=ON -DOQS_MINIMAL_BUILD="${{ vars.LIBJADE_ALG_LIST }}" -DOQS_ENABLE_SIG_SLH_DSA=OFF
-            PYTEST_ARGS: --ignore=tests/test_distbuild.py --ignore=tests/test_leaks.py --ignore=tests/test_kat_all.py --maxprocesses=10
-    container:
-      image: ${{ matrix.container }}
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # pin@v4
-      - name: Configure
-        run: mkdir build && cd build && cmake -GNinja ${{ matrix.CMAKE_ARGS }} .. && cmake -LA -N ..
-      - name: Build
-        run: ninja
-        working-directory: build
-      - name: Run tests
-        timeout-minutes: 60
-        run: mkdir -p tmp && python3 -m pytest --verbose --ignore=tests/test_code_conventions.py --ignore=tests/test_cmake_option_coverage.py --ignore=tests/test_kats_json.py --numprocesses=auto ${{ matrix.PYTEST_ARGS }}
-
   full-code-coverage:
     name: Run full code coverage with ACVP tests
     runs-on: ubuntu-latest
@@ -619,6 +554,9 @@ jobs:
         run: ninja
         working-directory: build
       - name: Run tests
+        env:
+          # Fast FAEST variants only; slow "s" sets remain skipped until FAEST CI time is trimmed.
+          SKIP_ALGS: 'FAEST-.*S'
         run: |
           python3 -m pytest --verbose --numprocesses=logical --dist load --maxschedchunk=1 \
           tests/test_acvp_vectors.py \

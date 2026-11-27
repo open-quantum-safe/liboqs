@@ -85,6 +85,7 @@ Each row has a `pr` and a `main` column; the `stage` input selects which one is 
 
 To save time, `run-suites.yml` skips the slow MQOM and QR-UOV memory leak tests on pull requests and feature-branch pushes, unless the change touches that algorithm's directory or shared code it depends on (see `scripts/detect_changed_algorithms.sh`).
 They always run on pushes to `main`.
+FAEST leak tests are always skipped on pull requests and feature-branch pushes, and slow FAEST "s" parameter sets are skipped via `SKIP_ALGS` (see #2658).
 
 #### <a name="platforms.yml"></a> All platform tests (`platforms.yml`)
 

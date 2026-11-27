@@ -82,7 +82,7 @@ def _ct_rollup(algdata: dict) -> str:
 
 
 def _fv_rollup(algdata: dict) -> str:
-    """formally-verified-upstreams lists alternative upstreams (e.g. libjade)
+    """formally-verified-upstreams lists alternative upstreams
     that carry a formal verification. By convention the primary upstream is
     not listed there, so its presence signals partial (optional) FV coverage."""
     fv = algdata.get("formally-verified-upstreams") or {}
