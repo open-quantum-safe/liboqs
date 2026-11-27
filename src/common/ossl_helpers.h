@@ -75,7 +75,7 @@ const EVP_CIPHER *oqs_aes_256_ecb(void);
 
 const EVP_CIPHER *oqs_aes_256_ctr(void);
 
-#if OPENSSL_VERSION_NUMBER >= 0x30300000L
+#if defined(OQS_USE_SHA3_OPENSSL) && OPENSSL_VERSION_NUMBER >= 0x30300000L
 /* Returns nonzero iff the active OpenSSL provider implements
  * EVP_DigestSqueeze (probed once per process against a SHAKE128 context). */
 int oqs_ossl_can_digest_squeeze(void);
