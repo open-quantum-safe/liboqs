@@ -167,6 +167,7 @@ jobs:
     container: openquantumsafe/ci-ubuntu-latest:latest
     env:
       SIG_NAME: ml_dsa_44
+      KEM_NAME: ml_kem_768
       CC: clang
       CXX: clang++
       CFLAGS: -fsanitize=fuzzer-no-link,address
@@ -183,17 +184,21 @@ jobs:
             -GNinja \
             -DOQS_STRICT_WARNINGS=ON \
             -DOQS_BUILD_FUZZ_TESTS=ON \
-            -DOQS_MINIMAL_BUILD="SIG_$SIG_NAME" \
+            -DOQS_MINIMAL_BUILD="SIG_$SIG_NAME;KEM_$KEM_NAME" \
             --warn-uninitialized . > config.log 2>&1 && \
           cat config.log && \
           cmake -LA -N . && \
           ! (grep -i "uninitialized variable" config.log)
       - name: Build code
-        run: ninja fuzz_test_sig
+        run: ninja fuzz_test_sig fuzz_test_kem_encaps
         working-directory: ${{ env.RANDOM_BUILD_DIR }}
 
       - name: Short fuzz check (30s)
         run: ./tests/fuzz_test_sig -max_total_time=30
+        working-directory: ${{ env.RANDOM_BUILD_DIR }}
+
+      - name: Short KEM encapsulation fuzz check (30s)
+        run: ./tests/fuzz_test_kem_encaps -max_total_time=30
         working-directory: ${{ env.RANDOM_BUILD_DIR }}
 
   nixflakecheck:
