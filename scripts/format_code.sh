@@ -3,11 +3,17 @@
 # SPDX-License-Identifier: MIT
 
 # usage: ./scripts/format_code.sh [--check] [file...]
+#        ./scripts/format_code.sh --staged
 #
 # Formats C sources in src/ and tests/ (or only the given files, as paths relative
 # to the repository root) according to .clang-format, skipping files listed in
 # .clang-format-ignore. With --check, files are left untouched and the script
 # exits non-zero if any file needs reformatting.
+#
+# With --staged, only the staged versions of the C files that are staged for commit
+# are checked, using git-clang-format (installed alongside clang-format by
+# requirements-linter.txt); files are left untouched, any needed changes are
+# printed as a diff, and the script exits non-zero if there are any.
 #
 # The clang-format version is pinned in requirements-linter.txt, since different versions
 # may format code differently; install it with
@@ -19,6 +25,13 @@ CLANG_FORMAT=${CLANG_FORMAT:-clang-format}
 if [ "$1" = "--check" ]; then
 	mode="--dry-run --Werror"
 	shift
+elif [ "$1" = "--staged" ]; then
+	mode="staged"
+	shift
+	if [ $# -gt 0 ]; then
+		echo "Error: --staged does not take file arguments." >&2
+		exit 1
+	fi
 else
 	mode="-i"
 fi
@@ -36,7 +49,10 @@ fi
 found=$("$CLANG_FORMAT" --version | sed -n 's/.*clang-format version \([0-9.]*\).*/\1/p')
 
 # Run clang-format
-if [ $# -gt 0 ]; then
+if [ "$mode" = "staged" ]; then
+	# Run git-clang-format on the staged C files, using the specified clang-format binary.
+	git clang-format --binary "$(command -v "$CLANG_FORMAT")" --staged --diff --whole-file --quiet --extensions c,h -- src tests
+elif [ $# -gt 0 ]; then
 	printf '%s\n' "$@" | xargs "$CLANG_FORMAT" $mode
 else
 	find src tests -name '*.[ch]' | xargs "$CLANG_FORMAT" $mode

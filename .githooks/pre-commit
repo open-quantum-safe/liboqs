@@ -9,8 +9,8 @@ fi
 
 rumdl check --config .rumdl.toml --respect-gitignore --exclude "build,**/build" . || rv=1
 
-# Check formatting of C sources (files in .clang-format-ignore are skipped)
-if ! ./scripts/format_code.sh --check; then
+# Check formatting of the staged C sources (files in .clang-format-ignore are skipped)
+if ! ./scripts/format_code.sh --staged; then
   echo "Error: C files are not formatted. Run ./scripts/format_code.sh and stage the changes." >&2
   rv=1
 fi
