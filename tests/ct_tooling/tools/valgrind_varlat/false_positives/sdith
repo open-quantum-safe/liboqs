@@ -1,0 +1,77 @@
+# These branches and addresses can be replayed from the published signature
+# after successful signing.
+
+{
+   Sorting hidden leaf indices derived from the proof of work challenge
+   Memcheck:Cond
+   fun:oqs_sig_private_sdith_avx2_partition
+}
+{
+   Zero test on the proof of work challenge
+   Memcheck:Cond
+   fun:oqs_sig_private_sdith_avx2_bitvec_is_zero_nonct
+   fun:oqs_sig_private_sdith_avx2_sdith_sign
+   fun:oqs_sig_pubapi_sdith_*_avx2_crypto_sign_sign
+   fun:OQS_SIG_sdith_*_sign
+   fun:OQS_SIG_sign
+}
+{
+   Opening size depends on the hidden leaf indices from the challenge
+   Memcheck:Cond
+   fun:oqs_sig_private_sdith_avx2_estimate_topen
+   fun:oqs_sig_private_sdith_avx2_sdith_sign
+   fun:oqs_sig_pubapi_sdith_*_avx2_crypto_sign_sign
+   fun:OQS_SIG_sdith_*_sign
+   fun:OQS_SIG_sign
+}
+{
+   Tree traversal depends on the nodes selected by the challenge
+   Memcheck:Cond
+   fun:oqs_sig_private_sdith_avx2_full_ggm_tree_open_sibling_path_from_root
+   fun:oqs_sig_private_sdith_avx2_sdith_sign
+   fun:oqs_sig_pubapi_sdith_*_avx2_crypto_sign_sign
+   fun:OQS_SIG_sdith_*_sign
+   fun:OQS_SIG_sign
+}
+{
+   Cipher grinding uses the published transcript hash and candidate counters
+   Memcheck:Cond
+   fun:oqs_sig_private_sdith_avx2_*_proofow_grind_avx2
+   fun:oqs_sig_private_sdith_avx2_proofow_grind_w_cipher_cat?_avx
+   fun:oqs_sig_private_sdith_avx2_sdith_sign
+   fun:oqs_sig_pubapi_sdith_*_avx2_crypto_sign_sign
+   fun:OQS_SIG_sdith_*_sign
+   fun:OQS_SIG_sign
+}
+{
+   SHAKE grinding uses the published transcript hash and candidate counters
+   Memcheck:Cond
+   fun:oqs_sig_private_sdith_avx2_proofow_grind_w_shake_cat?_4way
+   fun:oqs_sig_private_sdith_avx2_sdith_sign
+   fun:oqs_sig_pubapi_sdith_*_avx2_crypto_sign_sign
+   fun:OQS_SIG_sdith_*_sign
+   fun:OQS_SIG_sign
+}
+{
+   Sparse loop follows bits of the reconstructed VOLE consistency matrix
+   Memcheck:Cond
+   src:matrix_vector_products_f2_avx2.c:423 # fun:matrix_vector_product_f2_block_256
+   fun:oqs_sig_private_sdith_avx2_matrix_f2_times_vector_flambda_avx2
+   fun:oqs_sig_private_sdith_avx2_prover_vole_consistency_check
+   fun:oqs_sig_private_sdith_avx2_sdith_sign
+   fun:oqs_sig_pubapi_sdith_*_avx2_crypto_sign_sign
+   fun:OQS_SIG_sdith_*_sign
+   fun:OQS_SIG_sign
+}
+{
+   VOLE load addresses follow bits of the reconstructed consistency matrix
+   Memcheck:Value8
+   fun:_mm256_loadu_si256
+   fun:matrix_vector_product_f2_block_256
+   fun:oqs_sig_private_sdith_avx2_matrix_f2_times_vector_flambda_avx2
+   fun:oqs_sig_private_sdith_avx2_prover_vole_consistency_check
+   fun:oqs_sig_private_sdith_avx2_sdith_sign
+   fun:oqs_sig_pubapi_sdith_*_avx2_crypto_sign_sign
+   fun:OQS_SIG_sdith_*_sign
+   fun:OQS_SIG_sign
+}
